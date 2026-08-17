@@ -55,6 +55,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg> 重新整理
                 </button>
+                <button onclick="resetToDefaultStocks()" title="重置為預設股票清單" class="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-gray-200 rounded-md transition flex items-center gap-1 border border-gray-700/60">
+                    重置清單
+                </button>
             </div>
         </div>
 
@@ -254,9 +257,11 @@
             '^TWII': '台灣加權指數 (TAIEX)'
         };
 
+        const STORAGE_KEY = 'soxl_dashboard_stocks_v2';
+
         function loadStockInfo() {
             try {
-                const saved = localStorage.getItem('soxl_dashboard_stocks');
+                const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
@@ -271,9 +276,22 @@
 
         function saveStockInfo() {
             try {
-                localStorage.setItem('soxl_dashboard_stocks', JSON.stringify(stockInfo));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(stockInfo));
             } catch (e) {
                 console.error('Failed to save stock list to localStorage:', e);
+            }
+        }
+
+        function resetToDefaultStocks() {
+            if (confirm('確定要將股票清單重置為預設清單嗎？')) {
+                for (let k in stockInfo) delete stockInfo[k];
+                Object.assign(stockInfo, DEFAULT_STOCKS);
+                saveStockInfo();
+                const initialKeys = Object.keys(stockInfo);
+                currentTicker = initialKeys[0] || 'SOXL';
+                currentTab = currentTicker;
+                renderTabs();
+                switchView();
             }
         }
 
