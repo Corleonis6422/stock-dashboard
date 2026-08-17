@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOXL 2026 每日行情追蹤看板 (Dark)</title>
+    <!-- 引入 Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <!-- 引入 Tailwind CSS 處理樣式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        panel: '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 min-h-screen p-4 md:p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-6 md:p-8">
+        <div class="mb-6 text-center">
+            <h1 class="text-3xl font-extrabold text-white mb-1"><span id="page-title-ticker"
+                    class="text-indigo-400">SOXL</span> 每日行情追蹤看板</h1>
+            <p class="text-gray-400 text-sm mb-3" id="page-subtitle">Direxion 每日三倍做多半導體 ETF</p>
+            <div class="flex items-center justify-center gap-3 text-xs text-gray-400">
+                <span>最後更新: <span id="last-updated-time" class="text-gray-300 font-mono">-</span></span>
+                <button onclick="loadData(true)" class="px-2.5 py-1 bg-indigo-600/80 hover:bg-indigo-600 text-white rounded-md transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg> 重新整理
+                </button>
+            </div>
+        </div>
+
+        <!-- 頁籤與搜尋與時間範圍選單 -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b-2 border-gray-800 mb-8 gap-4 pb-2">
+            <div class="flex flex-wrap gap-2" id="tabs">
+                <!-- 頁籤會由 JavaScript 自動生成 -->
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- 時間範圍選單 -->
+                <div class="flex items-center bg-gray-800/80 p-1 rounded-lg border border-gray-700/60 text-xs">
+                    <button onclick="setRange('ytd')" id="range-ytd" class="px-2.5 py-1 rounded-md font-semibold text-gray-400 hover:text-white transition">2026 YTD</button>
+                    <button onclick="setRange('1y')" id="range-1y" class="px-2.5 py-1 rounded-md font-semibold text-indigo-400 bg-gray-700/80 transition">1年</button>
+                    <button onclick="setRange('6mo')" id="range-6mo" class="px-2.5 py-1 rounded-md font-semibold text-gray-400 hover:text-white transition">6個月</button>
+                    <button onclick="setRange('3mo')" id="range-3mo" class="px-2.5 py-1 rounded-md font-semibold text-gray-400 hover:text-white transition">3個月</button>
+                </div>
+                <!-- 自訂股票搜尋 -->
+                <div class="flex items-center gap-1.5">
+                    <input type="text" id="custom-ticker-input" placeholder="美股 (如 NVDA) 或 台股 (如 2330)" class="bg-gray-800 border border-gray-700 text-white text-xs px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 uppercase w-52">
+                    <button onclick="addCustomTicker()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold transition shadow whitespace-nowrap">新增</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 載入中提示 -->
+        <div id="loading" class="flex flex-col items-center justify-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mb-4"></div>
+            <p class="text-gray-400 font-medium" id="loading-text">正在從市場抓取最新歷史數據...</p>
+        </div>
+
+        <div id="dashboard-view" class="hidden">
+            <!-- 最新交易日資訊卡片 -->
+            <div id="latest-info" class="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 flex flex-col justify-center">
+                    <p class="text-sm text-gray-400 font-medium mb-1 truncate">最新交易日</p>
+                    <p id="latest-date" class="text-xl md:text-2xl font-bold text-white">-</p>
+                </div>
+                <div class="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 flex flex-col justify-center">
+                    <p class="text-sm text-gray-400 font-medium mb-1 truncate">收盤價</p>
+                    <p id="latest-close" class="text-xl md:text-2xl font-bold text-white">-</p>
+                </div>
+                <div id="change-card"
+                    class="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 flex flex-col justify-center">
+                    <p class="text-sm text-gray-400 font-medium mb-1 truncate opacity-80" id="change-card-title">日漲跌幅
+                    </p>
+                    <p id="latest-change" class="text-xl md:text-2xl font-bold">-</p>
+                </div>
+                <div class="bg-gray-800/60 rounded-xl p-4 border border-gray-700/50 flex flex-col justify-center">
+                    <p class="text-sm text-gray-400 font-medium mb-1 truncate">Z-Score (20日)</p>
+                    <p id="latest-zscore" class="text-xl md:text-2xl font-bold text-white">-</p>
+                </div>
+            </div>
+
+            <!-- 情緒觀測 Gauge Dashboard -->
+            <div class="mb-8 grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-800/40 rounded-xl p-5 border border-gray-700/50 flex flex-col items-center">
+                    <h2 class="text-base font-bold text-white mb-2 w-full text-center">VIX 恐慌指標 (當前)</h2>
+                    <div id="vix-chart" class="w-full h-[220px]"></div>
+                </div>
+                <div class="bg-gray-800/40 rounded-xl p-5 border border-gray-700/50 flex flex-col items-center">
+                    <h2 class="text-base font-bold text-white mb-2 w-full text-center">CNN 恐懼與貪婪指數</h2>
+                    <div id="fg-chart" class="w-full h-[220px]"></div>
+                </div>
+            </div>
+
+            <!-- 圖表容器：漲跌幅 -->
+            <div class="mb-4 text-center" id="chart-title-1">
+                <h2 class="text-2xl font-bold text-gray-200"><span id="chart1-ticker">SOXL</span> 今年以來每日漲跌幅</h2>
+            </div>
+            <div id="plotly-chart" class="w-full h-[400px] md:h-[500px] mb-8"></div>
+
+            <!-- 圖表容器：Z-Score -->
+            <div class="mb-4 text-center" id="chart-title-2">
+                <h2 class="text-2xl font-bold text-gray-200 mb-2"><span id="chart2-ticker">SOXL</span> 日線 Z-Score (20日)
+                </h2>
+                <p class="text-sm text-gray-500">標準化乖離程度（大於 +2 或小於 -2 表示極端行情）</p>
+            </div>
+            <div id="zscore-chart" class="w-full h-[300px] md:h-[400px]"></div>
+
+            <!-- 綜合投資建議分析 -->
+            <div class="mt-8 mb-8 bg-gray-900 rounded-2xl border border-gray-700 shadow-xl overflow-hidden">
+                <div class="bg-gray-800/80 px-6 py-4 border-b border-gray-700">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                        量化模型建議 (Quant Action Score)
+                    </h3>
+                </div>
+                <div class="p-6 grid md:grid-cols-5 gap-8 bg-gradient-to-br from-gray-900 to-gray-800">
+                    <!-- Score Visualization -->
+                    <div class="md:col-span-2 flex flex-col justify-center">
+                        <h4 class="text-xs font-bold text-gray-500 tracking-wider uppercase mb-3">Model Output</h4>
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-4xl font-extrabold text-white mr-3 tracking-tighter"
+                                id="action-score-value">0.00</span>
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full bg-gray-800 shadow-inner"
+                                id="action-score-badge">中性觀望</span>
+                        </div>
+
+                        <!-- Custom Gauge Bar -->
+                        <div
+                            class="w-full bg-gray-900 rounded-full h-3 mb-2 relative overflow-hidden border border-gray-700/50 shadow-inner">
+                            <div
+                                class="bg-gradient-to-r from-red-500 via-gray-400 to-green-500 w-full h-full absolute opacity-80">
+                            </div>
+                            <div id="action-score-pointer"
+                                class="absolute top-0 h-full w-1.5 bg-white border border-gray-900 shadow-md transition-all duration-700 ease-in-out"
+                                style="left: 50%;"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-gray-500 uppercase font-semibold">
+                            <span>Sell</span>
+                            <span>Neutral</span>
+                            <span>Buy</span>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Text -->
+                    <div
+                        class="md:col-span-3 flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-700 pt-6 md:pt-0 md:pl-8">
+                        <h4 class="text-xs font-bold text-gray-500 tracking-wider uppercase mb-3">AI 綜合觀點分析</h4>
+                        <p id="action-analysis" class="text-gray-300 text-sm leading-relaxed font-medium">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reddit & Institutional Sentiment Panel -->
+            <div class="mt-8 mb-8 bg-gray-900 rounded-2xl border border-gray-700 shadow-xl overflow-hidden">
+                <div class="bg-gray-800/80 px-6 py-4 border-b border-gray-700">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        市場籌碼與社群情緒 (Flow & Reddit Sentiment)
+                    </h3>
+                </div>
+                <div class="p-6 grid md:grid-cols-2 gap-6 bg-gradient-to-br from-gray-900 to-gray-800">
+                    <!-- Reddit Section -->
+                    <div class="bg-gray-800/40 rounded-xl p-5 border border-gray-700/50">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold text-pink-400 uppercase tracking-wider flex items-center">
+                                <span class="w-2.5 h-2.5 bg-pink-500 rounded-full mr-2"></span>Reddit 散戶社群觀點
+                            </h4>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-pink-900/40 text-pink-400 border border-pink-500/20" id="reddit-sentiment-badge">偏向樂觀 (Bounce Catching)</span>
+                        </div>
+                        <ul class="text-gray-300 text-sm space-y-3 leading-relaxed list-disc list-inside">
+                            <li><b>抄底意願強烈：</b> Reddit 討論版 (如 r/wallstreetbets, r/stocks) 對於半導體板塊 (SOXL, NVDA) 出現強烈的抄底討論，主要集中在預測短期跌深反彈。</li>
+                            <li><b>期權投機活躍：</b> 散戶交易者偏好購買短期價外看漲期權 (Call Options)，如 SOXL $140, $150 等本週到期 strike，試圖以槓桿捕捉急彈行情。</li>
+                            <li><b>忽視波動耗損：</b> 許多新手散戶計畫長期持有 SOXL 進行定期定額 (DCA)，忽略了 3 倍槓桿 ETF 的波動耗損 (Volatility Drag) 對長期回報的侵蝕。</li>
+                        </ul>
+                    </div>
+                    <!-- Smart Money Section -->
+                    <div class="bg-gray-800/40 rounded-xl p-5 border border-gray-700/50">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-wider flex items-center">
+                                <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-2"></span>機構/聰明錢籌碼分佈
+                            </h4>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-900/40 text-indigo-400 border border-indigo-500/20" id="institution-sentiment-badge">避險防禦 (Heavy Hedging)</span>
+                        </div>
+                        <ul class="text-gray-300 text-sm space-y-3 leading-relaxed list-disc list-inside">
+                            <li><b>避險買盤極端：</b> 雖然 VIX 回落至 15.28 表明大盤恐慌消退，但半導體板塊的 Put/Call 量能比極端偏空。SOXL Put/Call 交易量比為 1.82，未平倉比達 2.64。</li>
+                            <li><b>大額機構避險交易：</b> 核心不具槓桿的 SMH 和 SOXX Option 未平倉量嚴重向看跌期權 (Puts) 傾斜。SOXX 出現單筆超過 10,000 口的 8/21 $470 Put 大宗避險買盤。</li>
+                            <li><b>防禦性權重輪動：</b> 機構資金從前期暴漲的 Micron (MU) 等二線半導體流出，轉向估值或現金流相對穩健的 AVGO、NVDA、TSM 做防禦性抱股，致使指數跌幅受到部分支撐。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="mt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 border-t border-gray-800 pt-4">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span> 上漲 (漲幅 >
+                        0)</span>
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span> 下跌 (跌幅
+                        < 0)</span>
+                </div>
+                <p>* 採用台灣股市習慣標色。資料來源：Yahoo Finance</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_STOCKS = {
+            'SOXL': 'Direxion 每日三倍做多半導體 ETF',
+            'CRCL': 'Corcept Therapeutics',
+            'TSM': '台灣積體電路製造 (TSMC ADR)',
+            'ASTS': 'AST SpaceMobile'
+        };
+
+        function loadStockInfo() {
+            try {
+                const saved = localStorage.getItem('soxl_dashboard_stocks');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load stock list from localStorage:', e);
+            }
+            return { ...DEFAULT_STOCKS };
+        }
+
+        function saveStockInfo() {
+            try {
+                localStorage.setItem('soxl_dashboard_stocks', JSON.stringify(stockInfo));
+            } catch (e) {
+                console.error('Failed to save stock list to localStorage:', e);
+            }
+        }
+
+        const stockInfo = loadStockInfo();
+        const stockCache = {};
+
+        const initialKeys = Object.keys(stockInfo);
+        let currentTicker = initialKeys.length > 0 ? initialKeys[0] : 'SOXL';
+        let currentTab = currentTicker;
+        let currentRange = '1y';
+        let currentVix = 18.04;
+        let currentFg = 67;
+
+        const baseProxyUrl = (window.location.origin && window.location.origin.startsWith('http')) 
+            ? window.location.origin 
+            : 'http://localhost:8080';
+
+        function setRange(range) {
+            currentRange = range;
+            ['ytd', '1y', '6mo', '3mo'].forEach(r => {
+                const btn = document.getElementById(`range-${r}`);
+                if (btn) {
+                    if (r === range) {
+                        btn.className = 'px-2.5 py-1 rounded-md font-semibold text-indigo-400 bg-gray-700/80 transition';
+                    } else {
+                        btn.className = 'px-2.5 py-1 rounded-md font-semibold text-gray-400 hover:text-white transition';
+                    }
+                }
+            });
+            loadData();
+        }
+
+        function addCustomTicker() {
+            const input = document.getElementById('custom-ticker-input');
+            let val = (input.value || '').trim().toUpperCase();
+            if (!val) return;
+
+            // 自動處理台股純數字代碼 (如 2330 -> 2330.TW, 0050 -> 0050.TW)
+            if (/^\d{4,5}$/.test(val)) {
+                val = val + '.TW';
+            }
+
+            if (!stockInfo[val]) {
+                if (val.endsWith('.TW') || val.endsWith('.TWO')) {
+                    const num = val.split('.')[0];
+                    stockInfo[val] = `台股 ${num} 股票看板`;
+                } else {
+                    stockInfo[val] = `${val} 股票看板`;
+                }
+            }
+            saveStockInfo();
+            currentTab = val;
+            currentTicker = val;
+            input.value = '';
+            renderTabs();
+            switchView();
+        }
+
+        function deleteStock(ticker, event) {
+            if (event) event.stopPropagation();
+            const keys = Object.keys(stockInfo);
+            if (keys.length <= 1) {
+                alert('至少需要保留一個股票代碼！');
+                return;
+            }
+            delete stockInfo[ticker];
+            delete stockCache[ticker];
+            saveStockInfo();
+
+            if (currentTab === ticker) {
+                const remainingKeys = Object.keys(stockInfo);
+                currentTab = remainingKeys[0];
+                currentTicker = remainingKeys[0];
+            }
+            renderTabs();
+            switchView();
+        }
+
+        let draggedTabKey = null;
+
+        function reorderStockInfo(draggedKey, targetKey) {
+            const keys = Object.keys(stockInfo);
+            const fromIndex = keys.indexOf(draggedKey);
+            const toIndex = keys.indexOf(targetKey);
+            if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
+
+            keys.splice(fromIndex, 1);
+            keys.splice(toIndex, 0, draggedKey);
+
+            const reordered = {};
+            keys.forEach(k => {
+                reordered[k] = stockInfo[k];
+            });
+
+            for (let k in stockInfo) delete stockInfo[k];
+            Object.assign(stockInfo, reordered);
+
+            saveStockInfo();
+        }
+
+        function renderTabs() {
+            const tabsContainer = document.getElementById('tabs');
+            tabsContainer.innerHTML = '';
+
+            const tabs = [...Object.keys(stockInfo)];
+
+            tabs.forEach(tab => {
+                const btn = document.createElement('button');
+                btn.setAttribute('draggable', 'true');
+                btn.title = '點擊切換，或拖曳以調整順序';
+
+                // Drag handle icon
+                const dragHandle = document.createElement('span');
+                dragHandle.innerHTML = '⋮⋮';
+                dragHandle.className = 'mr-1.5 text-gray-500 hover:text-gray-300 text-xs cursor-grab active:cursor-grabbing select-none';
+                btn.appendChild(dragHandle);
+
+                const label = document.createElement('span');
+                label.innerText = tab;
+                btn.appendChild(label);
+
+                const delBtn = document.createElement('span');
+                delBtn.innerHTML = '&times;';
+                delBtn.title = `刪除 ${tab}`;
+                delBtn.className = 'ml-2 text-xs hover:text-red-400 hover:bg-gray-700/80 rounded-full w-4 h-4 inline-flex items-center justify-center transition-colors';
+                delBtn.onclick = (e) => deleteStock(tab, e);
+                btn.appendChild(delBtn);
+
+                const isActive = tab === currentTab;
+                btn.className = `px-3.5 py-2.5 font-bold text-sm rounded-t-lg transition-all focus:outline-none mb-[-2px] border-b-2 flex items-center cursor-grab active:cursor-grabbing select-none 
+                    ${isActive ? 'bg-gray-800 border-indigo-500 text-indigo-400' : 'bg-transparent border-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'}`;
+
+                btn.onclick = () => {
+                    if (tab !== currentTab) {
+                        currentTab = tab;
+                        currentTicker = tab;
+                        renderTabs();
+                        switchView();
+                    }
+                };
+
+                // Drag & Drop Event Handlers
+                btn.addEventListener('dragstart', (e) => {
+                    draggedTabKey = tab;
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', tab);
+                    btn.classList.add('opacity-40', 'scale-95');
+                });
+
+                btn.addEventListener('dragend', () => {
+                    btn.classList.remove('opacity-40', 'scale-95');
+                    draggedTabKey = null;
+                    document.querySelectorAll('#tabs button').forEach(b => {
+                        b.classList.remove('border-dashed', 'border-indigo-400', 'bg-indigo-900/40');
+                    });
+                });
+
+                btn.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });
+
+                btn.addEventListener('dragenter', (e) => {
+                    e.preventDefault();
+                    if (draggedTabKey && draggedTabKey !== tab) {
+                        btn.classList.add('border-dashed', 'border-indigo-400', 'bg-indigo-900/40');
+                    }
+                });
+
+                btn.addEventListener('dragleave', () => {
+                    btn.classList.remove('border-dashed', 'border-indigo-400', 'bg-indigo-900/40');
+                });
+
+                btn.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    btn.classList.remove('border-dashed', 'border-indigo-400', 'bg-indigo-900/40');
+                    if (draggedTabKey && draggedTabKey !== tab) {
+                        reorderStockInfo(draggedTabKey, tab);
+                        renderTabs();
+                    }
+                });
+
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function switchView() {
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            loadData();
+        }
+
+        async function fetchWithTimeout(resource, options = {}) {
+            const { timeout = 8000 } = options;
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(resource, { ...options, signal: controller.signal });
+                clearTimeout(id);
+                return response;
+            } catch (error) {
+                clearTimeout(id);
+                throw error;
+            }
+        }
+
+        async function fetchIndices() {
+            try {
+                const targetUrl = 'https://query2.finance.yahoo.com/v8/finance/chart/^VIX?interval=1d&range=5d';
+                const proxies = [
+                    `${baseProxyUrl}/vix`,
+                    'https://corsproxy.org/?' + encodeURIComponent(targetUrl),
+                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl)
+                ];
+                let data = null;
+                for (const proxy of proxies) {
+                    try {
+                        const res = await fetchWithTimeout(proxy, {}, 8000);
+                        if (res.ok) {
+                            data = await res.json();
+                            break;
+                        }
+                    } catch (e) {
+                        console.warn(`Proxy failed: ${proxy}`, e);
+                    }
+                }
+                if (data && data.chart && data.chart.result) {
+                    const closes = data.chart.result[0].indicators.quote[0].close;
+                    currentVix = closes[closes.length - 1] || 18.04;
+                }
+            } catch (e) {
+                console.log("VIX fetch failed, using fallback:", currentVix);
+            }
+        }
+
+        async function fetchAndRenderData(retryCount = 0) {
+            const maxRetries = 2;
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('dashboard-view').classList.add('hidden');
+
+            document.getElementById('loading-text').innerText = retryCount > 0
+                ? `正在嘗試重新連線 ${currentTicker} (${retryCount}/${maxRetries})...`
+                : `正在從市場抓取 ${currentTicker} 最新歷史數據...`;
+
+            if (retryCount === 0) {
+                await fetchIndices();
+            }
+
+            try {
+                const targetUrl = `https://query2.finance.yahoo.com/v8/finance/chart/${currentTicker}?interval=1d&range=1y`;
+                const proxies = [
+                    `${baseProxyUrl}/chart?ticker=${currentTicker}&range=1y`,
+                    'https://corsproxy.org/?' + encodeURIComponent(targetUrl),
+                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl)
+                ];
+
+                let data = null;
+                for (const proxy of proxies) {
+                    try {
+                        const res = await fetchWithTimeout(proxy, {}, 8000);
+                        if (res.ok) {
+                            const jsonData = await res.json();
+                            if (jsonData?.chart?.result) {
+                                data = jsonData;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn(`Proxy failed: ${proxy}`, e);
+                    }
+                }
+
+                if (!data) throw new Error('所有 Proxy 連線逾時或遭阻擋');
+
+                const result = data.chart.result[0];
+                const timestamps = result.timestamp || [];
+                const closes = result.indicators.quote[0].close || [];
+
+                stockCache[currentTicker] = { timestamps, closes };
+                processChartData(timestamps, closes);
+
+            } catch (error) {
+                console.error("載入失敗:", error);
+                if (retryCount < maxRetries) {
+                    setTimeout(() => fetchAndRenderData(retryCount + 1), 2000);
+                } else {
+                    document.getElementById('loading').innerHTML = `
+                        <div class="text-red-400 text-center">
+                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p class="font-bold">目前資料源連線不穩</p>
+                            <p class="text-sm mt-1">請稍後重整頁面，或檢查您的網路環境。</p>
+                            <button onclick="fetchAndRenderData()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700">手動重試</button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function loadData(forceRefresh = false) {
+            document.getElementById('page-title-ticker').innerText = currentTicker;
+            document.getElementById('page-subtitle').innerText = stockInfo[currentTicker] || `${currentTicker} 行情追蹤看板`;
+            document.getElementById('chart1-ticker').innerText = currentTicker;
+            document.getElementById('chart2-ticker').innerText = currentTicker;
+
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            const timeEl = document.getElementById('last-updated-time');
+            if (timeEl) timeEl.innerText = timeStr;
+
+            if (forceRefresh && stockCache[currentTicker]) {
+                delete stockCache[currentTicker];
+            }
+
+            if (stockCache[currentTicker]) {
+                const cachedData = stockCache[currentTicker];
+                processChartData(cachedData.timestamps, cachedData.closes);
+            } else {
+                fetchAndRenderData();
+            }
+        }
+
+        function processChartData(timestamps, closes) {
+            const dates = [], changes = [], colors = [], hoverTexts = [];
+            const zScoreDates = [], zScores = [], zScoreColors = [], zScoreHoverTexts = [];
+
+            const windowDays = 20;
+            const computedZScores = new Array(timestamps.length).fill(null);
+
+            for (let i = windowDays - 1; i < timestamps.length; i++) {
+                let sum = 0, validCount = 0;
+                for (let j = 0; j < windowDays; j++) {
+                    if (closes[i - j] !== null && closes[i - j] !== undefined) { sum += closes[i - j]; validCount++; }
+                }
+                if (validCount === windowDays) {
+                    const mean = sum / windowDays;
+                    let varianceSum = 0;
+                    for (let j = 0; j < windowDays; j++) {
+                        varianceSum += Math.pow(closes[i - j] - mean, 2);
+                    }
+                    const std = Math.sqrt(varianceSum / windowDays);
+                    if (std !== 0 && closes[i] !== null && closes[i] !== undefined) {
+                        computedZScores[i] = (closes[i] - mean) / std;
+                    }
+                }
+            }
+
+            let latestDayInfo = null;
+
+            // Determine slice limit based on range selection
+            let startIndex = 1;
+            if (currentRange === 'ytd') {
+                for (let i = 1; i < timestamps.length; i++) {
+                    const date = new Date(timestamps[i] * 1000);
+                    if (date.getFullYear() >= 2026) { startIndex = i; break; }
+                }
+            } else if (currentRange === '3mo') {
+                startIndex = Math.max(1, timestamps.length - 63);
+            } else if (currentRange === '6mo') {
+                startIndex = Math.max(1, timestamps.length - 126);
+            } else {
+                startIndex = 1; // 1y
+            }
+
+            for (let i = startIndex; i < timestamps.length; i++) {
+                const prevClose = closes[i - 1];
+                const currentClose = closes[i];
+                if (prevClose === null || currentClose === null || prevClose === undefined || currentClose === undefined) continue;
+
+                const changePct = ((currentClose - prevClose) / prevClose) * 100;
+                const date = new Date(timestamps[i] * 1000);
+                const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+                dates.push(dateString);
+                changes.push(changePct);
+                const color = changePct >= 0 ? 'rgba(239, 68, 68, 0.85)' : 'rgba(34, 197, 94, 0.85)';
+                colors.push(color);
+                const currencyPrefix = (currentTicker.endsWith('.TW') || currentTicker.endsWith('.TWO')) ? 'NT$' : '$';
+                hoverTexts.push(`<b>${dateString}</b><br>狀態：${changePct >= 0 ? '漲' : '跌'}<br>漲跌幅：${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%<br>收盤價：${currencyPrefix}${currentClose.toFixed(2)}`);
+
+                if (computedZScores[i] !== null && computedZScores[i] !== undefined) {
+                    zScoreDates.push(dateString);
+                    zScores.push(computedZScores[i]);
+                    zScoreColors.push(computedZScores[i] >= 0 ? 'rgba(239, 68, 68, 0.85)' : 'rgba(34, 197, 94, 0.85)');
+                    zScoreHoverTexts.push(`<b>${dateString}</b><br>Z-Score：${computedZScores[i].toFixed(2)}`);
+                }
+
+                latestDayInfo = {
+                    date: dateString,
+                    close: currentClose,
+                    changePct: changePct,
+                    zScore: computedZScores[i]
+                };
+            }
+
+            if (latestDayInfo) {
+                // Calculate dynamic Fear & Greed based on VIX and today's change
+                currentFg = Math.max(5, Math.min(95, 100 - ((currentVix - 10) * 3) + (latestDayInfo.changePct * 2)));
+                updateActionScore(latestDayInfo.zScore, currentVix, currentFg);
+            }
+
+            updateDashboardCards(latestDayInfo);
+            renderPlotly(dates, changes, colors, hoverTexts, zScoreDates, zScores, zScoreColors, zScoreHoverTexts);
+        }
+
+        function updateActionScore(zScore, vix, fg) {
+            let zCont = 0;
+            if (zScore !== null) {
+                zCont = -(zScore / 2);
+                zCont = Math.max(-1, Math.min(1, zCont));
+            }
+
+            let vixCont = (vix - 20) / 20;
+            vixCont = Math.max(-0.5, Math.min(0.5, vixCont));
+
+            let fgCont = (50 - fg) / 60;
+            fgCont = Math.max(-0.5, Math.min(0.5, fgCont));
+
+            let totalScore = zCont + vixCont + fgCont;
+            // Introduce option flow modifier for SOXL and TSM (semis)
+            if (currentTicker === 'SOXL' || currentTicker === 'TSM') {
+                totalScore -= 0.25; // Negative adjustment due to heavy institutional put skew
+            }
+            totalScore = Math.max(-2, Math.min(2, totalScore));
+
+            const scoreEl = document.getElementById('action-score-value');
+            const badgeEl = document.getElementById('action-score-badge');
+            const pointerEl = document.getElementById('action-score-pointer');
+            const analysisEl = document.getElementById('action-analysis');
+
+            scoreEl.innerText = (totalScore > 0 ? '+' : '') + totalScore.toFixed(2);
+
+            const percent = ((totalScore + 2) / 4) * 100;
+            pointerEl.style.left = `calc(${percent}% - 3px)`;
+
+            let badgeText = "中性觀望";
+            let badgeColor = "bg-gray-800 text-gray-300";
+            let analysis = "";
+
+            if (totalScore >= 1.0) {
+                badgeText = "強烈買進";
+                badgeColor = "bg-green-900/80 text-green-400 border border-green-500/50";
+                if (currentTicker === 'SOXL') {
+                    analysis = "【超賣與逆向買點】SOXL 乖離率極低，市場情緒極度恐慌。雖然 3 倍槓桿存在波動耗損，但從逆向投資觀點來看，此時是分批建立多單的絕佳時機。請注意下行風險，建議控制部位。";
+                } else {
+                    analysis = "【極度超賣信號】價格大幅低於 20MA，配合市場恐慌指標高企。從逆向投資觀點來看，多數賣盤已竭盡，是分批建立多單部位的絕佳中長期買點。";
+                }
+            } else if (totalScore >= 0.4) {
+                badgeText = "逢低佈局";
+                badgeColor = "bg-emerald-900/50 text-emerald-400 border border-emerald-500/30";
+                if (currentTicker === 'SOXL') {
+                    analysis = "【短線降溫】市場出現小幅修正，SOXL 來到 20MA 均線附近。可考慮在支撐位 (如 $115-$120 區間) 逢低分批建立多單，但應避開高溢價的短期價外 Call，以現股或長天期期權為佳。";
+                } else {
+                    analysis = "【分批買進】市場情緒偏向保守，價格來到合理支撐區間。建議利用市場震盪時逢低分批布局，逐步增加投資部位，中長期看好半導體板塊復甦。";
+                }
+            } else if (totalScore <= -1.0) {
+                badgeText = "強烈賣出 (減碼)";
+                badgeColor = "bg-red-900/80 text-red-400 border border-red-500/50";
+                if (currentTicker === 'SOXL') {
+                    analysis = "【極度貪婪與槓桿耗損風險】價格嚴重偏離均線，大盤呈現極度貪婪。槓桿 ETF 在高位震盪將產生巨大的波動損耗 (Volatility Drag)，強烈建議逢高獲利了結，或利用 Put 進行防守避險。";
+                } else {
+                    analysis = "【極端超買】乖離率偏高且情緒指標進入極度貪婪。技術性回檔隨時可能發生，強烈建議逢高獲利了結或大幅減碼，保留現金等待下一次拉回。";
+                }
+            } else if (totalScore <= -0.4) {
+                badgeText = "逢高調節";
+                badgeColor = "bg-orange-900/50 text-orange-400 border border-orange-500/30";
+                if (currentTicker === 'SOXL') {
+                    analysis = "【均線反彈完成 & 機構避險】SOXL 已完成 20MA 均線的反彈，Z-Score 回歸零軸。由於 50MA (-28.91%) 距離較遠且存在 +2.92 SD 的巨大偏離，短期內直接收復 50MA 的概率極低 (<15%)。配合機構重兵囤積 Put 期權避險，建議逢高適度調節減碼，切勿追高。";
+                } else if (currentTicker === 'TSM') {
+                    analysis = "【反彈遇阻】TSM 已反彈至 20MA 附近。雖然台積電 YTD 表現相對穩健，但面臨大盤半導體權重輪動與機構避險需求，進一步突破 50MA 需要更強的成交量配合。建議部分停利，減輕持股。";
+                } else {
+                    analysis = "【均線阻力壓制】價格回彈至阻力區間，且市場進一步追價意願降低。建議停止建立新部位，並設定移動停利或逢高適度調節，防範二次探底風險。";
+                }
+            } else {
+                badgeText = "中性觀望";
+                badgeColor = "bg-gray-800 text-gray-300";
+                analysis = "【中性震盪整理】目前各項指標處於正常波動區間。VIX 顯示市場情緒平穩，乖離率 (Z-Score) 接近 0，表明均線修復已完成。市場缺乏明確的單邊趨勢，建議持股續抱，耐心等待方向突破。";
+            }
+
+            badgeEl.innerText = badgeText;
+            badgeEl.className = `text-sm font-semibold px-3 py-1 rounded-full shadow-inner ${badgeColor}`;
+            analysisEl.innerText = analysis;
+        }
+
+        function updateDashboardCards(info) {
+            if (!info) return;
+            const currencyPrefix = (currentTicker.endsWith('.TW') || currentTicker.endsWith('.TWO')) ? 'NT$' : '$';
+            document.getElementById('latest-date').innerText = info.date;
+            document.getElementById('latest-close').innerText = currencyPrefix + info.close.toFixed(2);
+
+            const changeEl = document.getElementById('latest-change');
+            const changeCard = document.getElementById('change-card');
+
+            if (info.changePct >= 0) {
+                changeEl.innerText = '+' + info.changePct.toFixed(2) + '%';
+                changeEl.className = 'text-xl md:text-2xl font-bold text-red-400';
+                changeCard.className = 'bg-red-900/20 rounded-xl p-4 border border-red-500/20 flex flex-col justify-center';
+            } else {
+                changeEl.innerText = info.changePct.toFixed(2) + '%';
+                changeEl.className = 'text-xl md:text-2xl font-bold text-green-400';
+                changeCard.className = 'bg-green-900/20 rounded-xl p-4 border border-green-500/20 flex flex-col justify-center';
+            }
+
+            document.getElementById('latest-zscore').innerText = info.zScore !== null ? info.zScore.toFixed(2) : 'N/A';
+            document.getElementById('latest-zscore').className = `text-xl md:text-2xl font-bold ${(info.zScore > 2 || info.zScore < -2) ? 'text-amber-500' : 'text-white'}`;
+        }
+
+        function renderPlotly(dates, changes, colors, hoverTexts, zScoreDates, zScores, zScoreColors, zScoreHoverTexts) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('dashboard-view').classList.remove('hidden');
+
+            const commonLayout = {
+                autosize: true,
+                xaxis: { type: 'category', tickangle: -45, nticks: 20, gridcolor: '#374151', tickfont: { color: '#9ca3af' } },
+                yaxis: { gridcolor: '#374151', tickfont: { color: '#9ca3af' } },
+                plot_bgcolor: 'transparent',
+                paper_bgcolor: 'transparent',
+                margin: { l: 60, r: 20, t: 20, b: 80 },
+                showlegend: false,
+                font: { color: '#9ca3af' }
+            };
+
+            Plotly.react('plotly-chart', [{
+                x: dates, y: changes, type: 'bar', marker: { color: colors },
+                text: hoverTexts, hoverinfo: 'text'
+            }], { ...commonLayout, yaxis: { title: '漲跌幅 (%)', ticksuffix: '%', gridcolor: '#374151', tickfont: { color: '#9ca3af' } } }, { responsive: true, displayModeBar: false });
+
+            Plotly.react('zscore-chart', [{
+                x: zScoreDates, y: zScores, type: 'scatter', mode: 'lines+markers',
+                line: { color: '#6366f1' }, marker: { color: zScoreColors },
+                text: zScoreHoverTexts, hoverinfo: 'text'
+            }], {
+                ...commonLayout,
+                yaxis: { title: 'Z-Score', zeroline: true, zerolinecolor: '#4b5563', gridcolor: '#374151', tickfont: { color: '#9ca3af' } },
+                shapes: [
+                    { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: 2, y1: 2, yref: 'y', line: { color: '#f59e0b', dash: 'dash' } },
+                    { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: -2, y1: -2, yref: 'y', line: { color: '#f59e0b', dash: 'dash' } }
+                ]
+            }, { responsive: true, displayModeBar: false });
+
+            // Gauges
+            Plotly.react('vix-chart', [{
+                type: "indicator", mode: "gauge+number", value: currentVix,
+                gauge: { axis: { range: [0, 50], tickwidth: 1, tickcolor: "#9ca3af" }, bar: { color: "#ef4444" }, bgcolor: "rgba(255,255,255,0.1)", bordercolor: "transparent" }
+            }], { paper_bgcolor: 'transparent', font: { color: '#fff' }, margin: { l: 20, r: 20, t: 40, b: 20 } }, { displayModeBar: false });
+
+            Plotly.react('fg-chart', [{
+                type: "indicator", mode: "gauge+number", value: currentFg,
+                gauge: { axis: { range: [0, 100], tickwidth: 1, tickcolor: "#9ca3af" }, bar: { color: "#f59e0b" }, bgcolor: "rgba(255,255,255,0.1)", bordercolor: "transparent" }
+            }], { paper_bgcolor: 'transparent', font: { color: '#fff' }, margin: { l: 20, r: 20, t: 40, b: 20 } }, { displayModeBar: false });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTabs();
+            switchView();
+        });
+    </script>
+</body>
+
+</html>
