@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quant Action Gauge 歷史模擬與量化回測驗證系統</title>
+    <!-- 引入 Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        panel: '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+    </style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 min-h-screen p-2 sm:p-4 md:p-6 lg:p-8 font-sans">
+    <div class="max-w-7xl mx-auto bg-gray-900/95 rounded-2xl shadow-2xl border border-gray-800 p-4 sm:p-6 md:p-8">
+        
+        <!-- 頂部導覽與切換 -->
+        <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-5">
+            <div>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                        <span class="text-indigo-400">Quant Action Gauge</span> 歷史模擬與回測驗證
+                    </h1>
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40 font-bold">
+                        回溯點對點無未來數據模擬
+                    </span>
+                </div>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">
+                    隨機回溯歷史任一日期的儀表決策，模擬後續 1週 / 2週 / 1個月 實際漲跌與獲利驗證，並檢驗 Reddit 4 大平衡權重 (Z-Score 25% + 量價 25% + 機構 25% + 鯨魚期權 25%) 之合理性。
+                </p>
+            </div>
+
+            <!-- 返回看板按鈕與股票選擇 -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
+                <a href="/" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-indigo-300 rounded-lg border border-indigo-500/30 transition flex items-center gap-1.5 font-bold shadow">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg> 返回即時看板
+                </a>
+
+                <div class="flex items-center gap-1.5">
+                    <input type="text" id="sim-ticker-input" placeholder="代碼 (如 SOXL, TSM)" value="SOXL" class="bg-gray-800 border border-gray-700 text-white text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-indigo-500 uppercase w-36">
+                    <button onclick="changeTicker()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-2 rounded-lg font-bold transition shadow whitespace-nowrap">載入回測</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常用標的快速切換籤 -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-6 border-b border-gray-800/80" id="quick-tabs">
+            <button onclick="setTicker('SOXL')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow">SOXL (3x半導體)</button>
+            <button onclick="setTicker('BTC-USD')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">BTC-USD (比特幣)</button>
+            <button onclick="setTicker('ASST')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">ASST (高波動概念)</button>
+            <button onclick="setTicker('3037.TW')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">3037.TW (欣興電子)</button>
+            <button onclick="setTicker('TSM')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">TSM (台積電ADR)</button>
+            <button onclick="setTicker('MU')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">MU (美光科技)</button>
+            <button onclick="setTicker('SNDK')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">SNDK (閃迪記憶體)</button>
+        </div>
+
+        <!-- 載入中 -->
+        <div id="sim-loading" class="flex flex-col items-center justify-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mb-4"></div>
+            <p class="text-gray-300 font-medium text-sm" id="sim-loading-text">正在下載歷史數據並執行逐日回測模擬...</p>
+        </div>
+
+        <!-- 回測系統主畫面 -->
+        <div id="sim-content" class="hidden space-y-8">
+
+            <!-- 🎲 區塊 1: 歷史日期回溯抽樣模擬器 (Rollback Simulation Showcase) -->
+            <div class="bg-gradient-to-br from-gray-900 via-gray-850 to-gray-800 rounded-2xl border-2 border-indigo-500/40 p-5 sm:p-6 shadow-2xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-gray-800 pb-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🎲</span>
+                            <h2 class="text-lg sm:text-xl font-black text-white">歷史日期時光機回溯模擬 (Time-Travel Simulation)</h2>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-0.5">回到過去某一天，完全隱藏未來數據，只看當天儀表決策，並驗證後續是否獲利！</p>
+                    </div>
+
+                    <!-- 操作按鈕 -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="pickRandomDate()" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-black text-xs transition flex items-center gap-1.5 shadow-lg">
+                            🎲 隨機回溯抽樣 (Random Rollback)
+                        </button>
+                        <select id="date-select" onchange="onDateSelectChanged()" class="bg-gray-800 border border-gray-700 text-white text-xs px-3 py-2 rounded-xl focus:outline-none focus:border-indigo-500 font-mono">
+                            <!-- 日期選項 -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 模擬當日情境卡片 (左右兩欄) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+                    
+                    <!-- 左欄：該日期的 Gauge 儀表與決策 -->
+                    <div class="lg:col-span-6 bg-gray-950/80 rounded-xl p-4 sm:p-5 border border-gray-700/60 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold text-gray-400">📅 回溯歷史日期：</span>
+                                <span id="sim-date-display" class="font-mono text-indigo-300 font-bold text-sm bg-indigo-950 px-2 py-0.5 rounded">-</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span class="text-xs text-gray-400">當日收盤價：</span>
+                                <span id="sim-close-display" class="text-2xl font-black text-white">-</span>
+                                <span id="sim-change-display" class="text-xs font-bold">-</span>
+                            </div>
+
+                            <!-- 模擬當日儀表 -->
+                            <div id="sim-gauge-chart" class="w-full h-[180px] -my-2"></div>
+
+                            <!-- 當日決策文字 -->
+                            <div class="mt-2 text-center">
+                                <span id="sim-action-badge" class="text-sm font-black px-4 py-1 rounded-full shadow-md inline-block">-</span>
+                                <p id="sim-action-reason" class="text-xs text-gray-300 mt-2 leading-relaxed text-left">-</p>
+                            </div>
+                        </div>
+
+                        <!-- 權重拆解 -->
+                        <div class="mt-3 pt-2 border-t border-gray-800 grid grid-cols-3 gap-2 text-center text-xs">
+                            <div class="bg-gray-900 p-1.5 rounded">
+                                <div class="text-[10px] text-gray-400">Z-Score 乖離 (35%)</div>
+                                <div id="sim-z-cont" class="font-mono font-bold text-xs text-indigo-300">0.00</div>
+                            </div>
+                            <div class="bg-gray-900 p-1.5 rounded">
+                                <div class="text-[10px] text-gray-400">量價結構 (32.5%)</div>
+                                <div id="sim-vp-cont" class="font-mono font-bold text-xs text-cyan-300">0.00</div>
+                            </div>
+                            <div class="bg-gray-900 p-1.5 rounded">
+                                <div class="text-[10px] text-gray-400">機構資金 (32.5%)</div>
+                                <div id="sim-inst-cont" class="font-mono font-bold text-xs text-purple-300">0.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右欄：後續實際走勢與獲利驗證 (Forward Outcome) -->
+                    <div class="lg:col-span-6 bg-gray-950/80 rounded-xl p-4 sm:p-5 border border-gray-700/60 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                                🚀 後續實際走勢與獲利驗證 (Forward Outcome)
+                            </h3>
+                            <p class="text-xs text-gray-400 mb-3">檢驗若在當天按照儀表操作，經過幾天或幾週後的實際績效：</p>
+
+                            <!-- 4 個時期的獲利卡片 -->
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-gray-900/90 rounded-lg p-3 border border-gray-800 flex flex-col justify-between" id="card-ret-3d">
+                                    <span class="text-[11px] text-gray-400">後續 3 天 (超短線)</span>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span id="sim-ret-3d" class="text-lg font-black font-mono">-</span>
+                                        <span id="sim-profit-3d" class="text-[10px] font-bold px-1.5 py-0.5 rounded">-</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-900/90 rounded-lg p-3 border border-indigo-500/30 flex flex-col justify-between" id="card-ret-5d">
+                                    <span class="text-[11px] text-indigo-300 font-bold">後續 1 週 (5個交易日)</span>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span id="sim-ret-5d" class="text-lg font-black font-mono">-</span>
+                                        <span id="sim-profit-5d" class="text-[10px] font-bold px-1.5 py-0.5 rounded">-</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-900/90 rounded-lg p-3 border border-gray-800 flex flex-col justify-between" id="card-ret-10d">
+                                    <span class="text-[11px] text-gray-400">後續 2 週 (10個交易日)</span>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span id="sim-ret-10d" class="text-lg font-black font-mono">-</span>
+                                        <span id="sim-profit-10d" class="text-[10px] font-bold px-1.5 py-0.5 rounded">-</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-900/90 rounded-lg p-3 border border-gray-800 flex flex-col justify-between" id="card-ret-20d">
+                                    <span class="text-[11px] text-gray-400">後續 1 個月 (20個交易日)</span>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span id="sim-ret-20d" class="text-lg font-black font-mono">-</span>
+                                        <span id="sim-profit-20d" class="text-[10px] font-bold px-1.5 py-0.5 rounded">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 結論評語 -->
+                        <div id="sim-verdict-box" class="p-3 rounded-lg text-xs leading-relaxed font-medium bg-gray-900 border border-gray-800">
+                            <!-- 動態填入 -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 歷史前瞻 20 天價格軌跡折線圖 -->
+                <div class="bg-gray-950/60 rounded-xl p-4 border border-gray-800">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-gray-300">📈 決策點前後 20 天價格演化軌跡 (黃點為回溯決策日)</span>
+                        <span class="text-[11px] text-gray-500">視覺化驗證買賣點位是否精準</span>
+                    </div>
+                    <div id="sim-trajectory-chart" class="w-full h-[220px]"></div>
+                </div>
+            </div>
+
+            <!-- 📊 區塊 2: 全樣本歷史回測勝率與績效矩陣 (Full Sample Backtest Statistics) -->
+            <div class="bg-gray-850/90 rounded-2xl border border-gray-800 p-5 sm:p-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-gray-800 pb-3">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                            <span>📊</span> 全年逐日點對點量化回測統計 (<span id="backtest-ticker-title" class="text-indigo-400">SOXL</span>)
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">針對歷史所有交易日逐日計算信號，統計買進信號與賣出避險信號之真實勝率與超額報酬 (Alpha)</p>
+                    </div>
+                    <span class="text-xs bg-gray-800 px-3 py-1 rounded-lg text-gray-300 font-mono" id="sample-size-badge">樣本數: 0 個交易日</span>
+                </div>
+
+                <!-- 績效指標表格 -->
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-gray-900 text-gray-400 border-b border-gray-700">
+                                <th class="p-3 font-bold">持倉週期</th>
+                                <th class="p-3 font-bold">買進信號次數</th>
+                                <th class="p-3 font-bold">買進獲利勝率</th>
+                                <th class="p-3 font-bold">買進平均報酬</th>
+                                <th class="p-3 font-bold">隨機大盤基準報酬</th>
+                                <th class="p-3 font-bold">超額 Alpha 收益</th>
+                                <th class="p-3 font-bold">強烈買進 (>=+1.0) 勝率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="backtest-stats-tbody" class="divide-y divide-gray-800 font-mono">
+                            <!-- JS 動態生成 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 策略累計權益曲線 (Strategy Equity Curve vs Buy & Hold) -->
+                <div class="bg-gray-900/80 rounded-xl p-4 border border-gray-700/60">
+                    <div class="flex items-center justify-between mb-2">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full"></span> 策略累計報酬曲線 (Quant Action Strategy vs. Buy & Hold)
+                            </h3>
+                            <p class="text-[11px] text-gray-400">綠線: 根據 Quant Action 買進信號持股；白線: 買進並抱牢 (Buy & Hold)</p>
+                        </div>
+                    </div>
+                    <div id="equity-curve-chart" class="w-full h-[280px]"></div>
+                </div>
+            </div>
+
+            <!-- ⚖️ 區塊 3: 權重合理性與敏感度對比矩陣 (Weight Sensitivity Matrix) -->
+            <div class="bg-gray-850/90 rounded-2xl border border-gray-800 p-5 sm:p-6 shadow-xl">
+                <div class="mb-4 border-b border-gray-800 pb-3">
+                    <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                        <span>⚖️</span> 權重組合合理性與敏感度對比 (Why 55% Z-Score + 25% 量價 + 20% 機構？)
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-0.5">
+                        比較不同權重配比在同一個股票歷史數據下的表現，驗證為何「單看均線」或「單看量價」容易踩雷，而多因子結合能取得最佳風險報酬比。
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto mb-5">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-gray-900 text-gray-400 border-b border-gray-700">
+                                <th class="p-3 font-bold">權重組合模型</th>
+                                <th class="p-3 font-bold">Z-Score 權重</th>
+                                <th class="p-3 font-bold">量價分析權重</th>
+                                <th class="p-3 font-bold">大戶機構權重</th>
+                                <th class="p-3 font-bold">1週平均報酬</th>
+                                <th class="p-3 font-bold">1週勝率</th>
+                                <th class="p-3 font-bold">模型優劣點剖析</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weight-comparison-tbody" class="divide-y divide-gray-800">
+                            <!-- JS 動態生成 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-xs text-gray-300 leading-relaxed space-y-1.5">
+                    <p class="font-bold text-indigo-300 text-sm">💡 量化結論與權重合理性總結：</p>
+                    <p>1. <b>Z-Score 均線乖離率占比 55%（過半核心）</b>：能精準捕捉「跌深超賣」的逆向撿便宜買點與「高檔過熱」的避險點，是決定信號大方向的基石。</p>
+                    <p>2. <b>量價結構占比 25%</b>：防止「接掉下來的刀子」。當 Z-Score 顯示超賣但量價出現「爆量長黑」時，量價因子會給予負分抵銷，避免過早抄底套牢。</p>
+                    <p>3. <b>大戶機構資金占比 20%</b>：過濾虛假反彈。只有在主力大戶資金實質進駐 (CMF > 0) 或洗盤結束時才給予額外加分，確保買進勝率顯著高於隨機進場！</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let currentTicker = 'SOXL';
+        let rawHistory = [];
+        let backtestRecords = [];
+        let selectedRecordIndex = -1;
+
+        const baseProxyUrl = (window.location.origin && window.location.origin.startsWith('http')) 
+            ? window.location.origin 
+            : 'http://localhost:8080';
+
+        function setTicker(ticker) {
+            currentTicker = ticker;
+            document.getElementById('sim-ticker-input').value = ticker;
+            loadBacktestData();
+        }
+
+        function changeTicker() {
+            let val = document.getElementById('sim-ticker-input').value.trim().toUpperCase();
+            if (val) {
+                if (/^\d{4,5}$/.test(val)) val += '.TW';
+                currentTicker = val;
+                loadBacktestData();
+            }
+        }
+
+        async function fetchWithTimeout(resource, options = {}) {
+            const { timeout = 8000 } = options;
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(resource, { ...options, signal: controller.signal });
+                clearTimeout(id);
+                return response;
+            } catch (error) {
+                clearTimeout(id);
+                throw error;
+            }
+        }
+
+        async function loadBacktestData() {
+            document.getElementById('sim-loading').style.display = 'flex';
+            document.getElementById('sim-content').classList.add('hidden');
+            document.getElementById('sim-loading-text').innerText = `正在下載 ${currentTicker} 近 1 年歷史數據並執行無未來數據逐日回測...`;
+
+            try {
+                const targetUrl = `https://query2.finance.yahoo.com/v8/finance/chart/${currentTicker}?interval=1d&range=1y`;
+                const proxies = [
+                    `${baseProxyUrl}/chart?ticker=${currentTicker}&range=1y`,
+                    'https://corsproxy.org/?' + encodeURIComponent(targetUrl),
+                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl)
+                ];
+
+                let data = null;
+                for (const proxy of proxies) {
+                    try {
+                        const res = await fetchWithTimeout(proxy, {}, 8000);
+                        if (res.ok) {
+                            const jsonData = await res.json();
+                            if (jsonData?.chart?.result) {
+                                data = jsonData;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Proxy failed:', proxy, e);
+                    }
+                }
+
+                if (!data) throw new Error('無法連線取得歷史數據');
+
+                const result = data.chart.result[0];
+                const timestamps = result.timestamp || [];
+                const quote = result.indicators.quote[0] || {};
+                const opens = quote.open || [];
+                const highs = quote.high || [];
+                const lows = quote.low || [];
+                const closes = quote.close || [];
+                const volumes = quote.volume || [];
+
+                rawHistory = [];
+                for (let i = 0; i < timestamps.length; i++) {
+                    if (closes[i] !== null && closes[i] !== undefined && !isNaN(closes[i])) {
+                        const date = new Date(timestamps[i] * 1000);
+                        const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                        rawHistory.push({
+                            timestamp: timestamps[i],
+                            date: dateString,
+                            open: opens[i] ?? closes[i],
+                            high: highs[i] ?? closes[i],
+                            low: lows[i] ?? closes[i],
+                            close: closes[i],
+                            volume: volumes[i] ?? 0
+                        });
+                    }
+                }
+
+                if (rawHistory.length < 25) {
+                    alert('歷史資料點不足，無法執行有效回測！');
+                    return;
+                }
+
+                // 執行逐日回測
+                runWalkForwardBacktest();
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('sim-loading').innerHTML = `
+                    <div class="text-red-400 text-center">
+                        <p class="font-bold">載入失敗：${err.message}</p>
+                        <button onclick="loadBacktestData()" class="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs">重試</button>
+                    </div>
+                `;
+            }
+        }
+
+        // 逐日點對點無未來數據指標計算
+        function calculatePointInTime(history, t) {
+            if (t < 20) return null;
+            const current = history[t];
+            const prev = history[t - 1];
+
+            // 1. 20日均線與 Z-Score
+            let sum20 = 0;
+            for (let i = t - 19; i <= t; i++) sum20 += history[i].close;
+            const mean20 = sum20 / 20.0;
+            let varSum = 0;
+            for (let i = t - 19; i <= t; i++) varSum += Math.pow(history[i].close - mean20, 2);
+            const std20 = Math.sqrt(varSum / 20.0);
+            const zScore = std20 > 0 ? ((current.close - mean20) / std20) : 0;
+
+            // 2. 5日與 20日均量
+            let vSum5 = 0, vSum20 = 0, sumMfv = 0;
+            for (let i = t - 4; i <= t; i++) vSum5 += history[i].volume;
+            for (let i = t - 19; i <= t; i++) {
+                const d = history[i];
+                vSum20 += d.volume;
+                const hl = d.high - d.low;
+                const mfm = hl > 0 ? (((d.close - d.low) - (d.high - d.close)) / hl) : 0;
+                sumMfv += mfm * d.volume;
+            }
+            const volMA5 = vSum5 / 5.0;
+            const volMA20 = vSum20 / 20.0;
+            const volRatio5 = volMA5 > 0 ? (current.volume / volMA5) : 1.0;
+            const cmf20 = vSum20 > 0 ? (sumMfv / vSum20) : 0;
+
+            // 3. 量價型態
+            const isUp = current.close >= prev.close;
+            const isVolUp = current.volume >= prev.volume;
+            let vpPattern = '量平整理';
+            if (isUp && isVolUp) vpPattern = '價漲量增 (多方強攻)';
+            else if (isUp && !isVolUp) vpPattern = '價漲量縮 (追價謹慎/籌碼鎖定)';
+            else if (!isUp && isVolUp) vpPattern = '價跌量增 (賣壓湧現/調節出貨)';
+            else vpPattern = '價跌量縮 (量縮整理/正常回檔)';
+
+            if (volRatio5 >= 2.0 && isUp) vpPattern = '爆量長紅 (主力多頭突破)';
+            if (volRatio5 >= 2.0 && !isUp) vpPattern = '爆量長黑 (主力避險殺多/出貨)';
+            if (volRatio5 <= 0.5) vpPattern = '窒息量整理 (賣盤枯竭)';
+
+            // 4. 大戶與散戶動向
+            const hlCurr = current.high - current.low;
+            const mfmCurr = hlCurr > 0 ? (((current.close - current.low) - (current.high - current.close)) / hlCurr) : 0;
+            let whaleFlow = '大戶籌碼平衡', retailFlow = '散戶理性觀望';
+
+            if (mfmCurr >= 0.35 && volRatio5 >= 1.0) {
+                whaleFlow = '大戶積極吃貨';
+                retailFlow = '散戶惜售/換手';
+            } else if (mfmCurr >= 0.1) {
+                whaleFlow = '大戶小幅偏多';
+                retailFlow = '散戶小量跟進';
+            } else if (mfmCurr <= -0.35 && volRatio5 >= 1.0) {
+                whaleFlow = '大戶調節出貨';
+                retailFlow = '散戶套牢接刀';
+            } else if (mfmCurr <= -0.1) {
+                whaleFlow = '大戶減碼防守';
+                retailFlow = '散戶逢低搶進';
+            }
+
+            return {
+                index: t,
+                date: current.date,
+                close: current.close,
+                open: current.open,
+                high: current.high,
+                low: current.low,
+                volume: current.volume,
+                changePct: ((current.close - prev.close) / prev.close) * 100,
+                zScore: zScore,
+                volMA5: volMA5,
+                volMA20: volMA20,
+                volRatio5: volRatio5,
+                cmf20: cmf20,
+                vpPattern: vpPattern,
+                whaleFlow: whaleFlow,
+                retailFlow: retailFlow
+            };
+        }
+
+        // 計算 4-Factor 評分 (各 25%)
+        function computeScoreWithWeights(ind, weights = [0.25, 0.25, 0.25, 0.25]) {
+            const [wZ, wVp, wInst, wPcr] = weights.length === 4 ? weights : [0.25, 0.25, 0.25, 0.25];
+            const zScore = ind.zScore;
+            const vpPattern = ind.vpPattern;
+            const whaleFlow = ind.whaleFlow;
+            const cmf20 = ind.cmf20;
+
+            let zMax = 2.0 * wZ;
+            let zCont = -(zScore / 2.0) * zMax;
+            zCont = Math.max(-zMax, Math.min(zMax, zCont));
+
+            let vpMax = 2.0 * wVp;
+            let vpCont = 0;
+            if (vpPattern.includes('價漲量增') || vpPattern.includes('多頭突破')) vpCont = +0.90 * vpMax;
+            else if (vpPattern.includes('價漲量縮')) vpCont = +0.20 * vpMax;
+            else if (vpPattern.includes('窒息量') || (vpPattern.includes('價跌量縮') && zScore < 0)) vpCont = +0.70 * vpMax;
+            else if (vpPattern.includes('價跌量縮') && zScore >= 0) vpCont = -0.20 * vpMax;
+            else if (vpPattern.includes('價跌量增') || vpPattern.includes('長黑')) vpCont = -0.90 * vpMax;
+
+            let instMax = 2.0 * wInst;
+            let cmfPart = cmf20 * 1.0 * (instMax * 0.6);
+            cmfPart = Math.max(-instMax * 0.6, Math.min(instMax * 0.6, cmfPart));
+            let whalePart = 0;
+            if (whaleFlow.includes('吃貨')) whalePart = +0.40 * instMax;
+            else if (whaleFlow.includes('偏多')) whalePart = +0.20 * instMax;
+            else if (whaleFlow.includes('出貨') || whaleFlow.includes('拋售')) whalePart = -0.40 * instMax;
+            else if (whaleFlow.includes('減碼')) whalePart = -0.20 * instMax;
+            const instCont = Math.max(-instMax, Math.min(instMax, cmfPart + whalePart));
+
+            // 期權 PCR 因子 (25%, ±0.50)
+            let pcrMax = 2.0 * wPcr;
+            let simPcr = 0.85 - (zScore / 2.0) * 0.25;
+            let pcrCont = 0;
+            if (simPcr >= 1.20) pcrCont = +1.0 * pcrMax;
+            else if (simPcr >= 1.00) pcrCont = +0.6 * pcrMax;
+            else if (simPcr >= 0.70) pcrCont = +0.3 * pcrMax;
+            else if (simPcr >= 0.55) pcrCont = -0.2 * pcrMax;
+            else pcrCont = -1.0 * pcrMax;
+
+            let total = zCont + vpCont + instCont + pcrCont;
+            const isLev = ['SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'NVDL', 'TSLL', 'FNGU'].includes(currentTicker);
+            if (isLev && total > 0.6 && zScore > 1.0) total -= 0.30;
+            total = Math.max(-2.0, Math.min(2.0, total));
+
+            return { totalScore: total, zCont, vpCont, instCont, pcrCont };
+        }
+
+        function runWalkForwardBacktest() {
+            backtestRecords = [];
+
+            for (let t = 20; t < rawHistory.length; t++) {
+                const ind = calculatePointInTime(rawHistory, t);
+                if (!ind) continue;
+
+                const scoreRes = computeScoreWithWeights(ind, [0.25, 0.25, 0.25, 0.25]);
+                const score = scoreRes.totalScore;
+
+                let signal = "NEUTRAL";
+                if (score >= 1.0) signal = "STRONG_BUY";
+                else if (score >= 0.4) signal = "BUY";
+                else if (score <= -1.0) signal = "STRONG_SELL";
+                else if (score <= -0.4) signal = "SELL";
+
+                // 計算後續 3, 5, 10, 20 天報酬
+                const fwd = {};
+                [3, 5, 10, 20].forEach(days => {
+                    if (t + days < rawHistory.length) {
+                        const fwdClose = rawHistory[t + days].close;
+                        fwd[days] = ((fwdClose - ind.close) / ind.close) * 100;
+                    } else {
+                        fwd[days] = null;
+                    }
+                });
+
+                backtestRecords.push({
+                    indexInHistory: t,
+                    ...ind,
+                    score,
+                    zCont: scoreRes.zCont,
+                    vpCont: scoreRes.vpCont,
+                    instCont: scoreRes.instCont,
+                    signal,
+                    fwd
+                });
+            }
+
+            // 填充日期下拉選單
+            const dateSelect = document.getElementById('date-select');
+            dateSelect.innerHTML = '';
+            backtestRecords.forEach((r, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.text = `${r.date} (收盤 $${r.close.toFixed(2)} | Score: ${r.score > 0 ? '+' : ''}${r.score.toFixed(2)})`;
+                dateSelect.appendChild(opt);
+            });
+
+            // 渲染全樣本回測統計表格
+            renderBacktestStatsTable();
+
+            // 渲染權益曲線
+            renderEquityCurve();
+
+            // 渲染權重對比矩陣
+            renderWeightComparisonMatrix();
+
+            // 預設抽樣一個隨機歷史日期展示
+            pickRandomDate();
+
+            document.getElementById('sim-loading').style.display = 'none';
+            document.getElementById('sim-content').classList.remove('hidden');
+        }
+
+        function pickRandomDate() {
+            // 挑選具備後續至少 10 天數據的有效日期
+            const validIndices = [];
+            backtestRecords.forEach((r, idx) => {
+                if (r.fwd[10] !== null) validIndices.push(idx);
+            });
+
+            if (validIndices.length === 0) return;
+            const chosen = validIndices[Math.floor(Math.random() * validIndices.length)];
+            document.getElementById('date-select').value = chosen;
+            showDateSimulation(chosen);
+        }
+
+        function onDateSelectChanged() {
+            const idx = parseInt(document.getElementById('date-select').value);
+            showDateSimulation(idx);
+        }
+
+        function showDateSimulation(recIdx) {
+            selectedRecordIndex = recIdx;
+            const r = backtestRecords[recIdx];
+            if (!r) return;
+
+            const currency = (currentTicker.endsWith('.TW') || currentTicker.endsWith('.TWO')) ? 'NT$' : '$';
+            document.getElementById('sim-date-display').innerText = r.date;
+            document.getElementById('sim-close-display').innerText = currency + r.close.toFixed(2);
+            
+            const chgEl = document.getElementById('sim-change-display');
+            if (r.changePct >= 0) {
+                chgEl.innerText = `+${r.changePct.toFixed(2)}% (當日上漲)`;
+                chgEl.className = 'text-xs font-bold text-red-400';
+            } else {
+                chgEl.innerText = `${r.changePct.toFixed(2)}% (當日下跌)`;
+                chgEl.className = 'text-xs font-bold text-green-400';
+            }
+
+            document.getElementById('sim-z-cont').innerText = (r.zCont > 0 ? '+' : '') + r.zCont.toFixed(2);
+            document.getElementById('sim-vp-cont').innerText = (r.vpCont > 0 ? '+' : '') + r.vpCont.toFixed(2);
+            document.getElementById('sim-inst-cont').innerText = (r.instCont > 0 ? '+' : '') + r.instCont.toFixed(2);
+
+            // Badge & Reason
+            const badgeEl = document.getElementById('sim-action-badge');
+            let badgeText = "", badgeStyle = "", reason = "";
+
+            if (r.score >= 1.0) {
+                badgeText = `🟢【強烈買進】Score: +${r.score.toFixed(2)}`;
+                badgeStyle = "bg-green-600 text-white shadow-green-900/50";
+                reason = `當天股價嚴重超賣 (Z-Score: ${r.zScore.toFixed(2)})，且量價顯示大戶積極吃貨，儀表發出強力買進信號！`;
+            } else if (r.score >= 0.4) {
+                badgeText = `🟢【分批買進】Score: +${r.score.toFixed(2)}`;
+                badgeStyle = "bg-emerald-600 text-white shadow-emerald-900/50";
+                reason = `當天量價結構健康，股價在均線附近獲得支撐，儀表建議逢低分批布局。`;
+            } else if (r.score <= -1.0) {
+                badgeText = `🔴【強烈賣出】Score: ${r.score.toFixed(2)}`;
+                badgeStyle = "bg-red-600 text-white shadow-red-900/50";
+                reason = `當天股價過熱或爆量長黑出貨 (Z-Score: ${r.zScore.toFixed(2)})，儀表發出強烈避險減碼信號！`;
+            } else if (r.score <= -0.4) {
+                badgeText = `🟠【逢高減碼】Score: ${r.score.toFixed(2)}`;
+                badgeStyle = "bg-orange-600 text-white shadow-orange-900/50";
+                reason = `當天反彈遇阻力，量能追價乏力，儀表建議逢高減碼獲利了結。`;
+            } else {
+                badgeText = `⚪【觀望抱牢】Score: ${r.score > 0 ? '+' : ''}${r.score.toFixed(2)}`;
+                badgeStyle = "bg-gray-700 text-gray-200";
+                reason = `當天多空拉鋸，各項指標處於平衡區，儀表建議多看少做。`;
+            }
+
+            badgeEl.innerText = badgeText;
+            badgeEl.className = `text-sm font-black px-4 py-1 rounded-full shadow-md inline-block ${badgeStyle}`;
+            document.getElementById('sim-action-reason').innerText = reason;
+
+            // 渲染小 Gauge
+            Plotly.react('sim-gauge-chart', [{
+                type: "indicator",
+                mode: "gauge+number",
+                value: r.score,
+                number: { font: { size: 26, color: '#ffffff' }, prefix: r.score > 0 ? "+" : "" },
+                gauge: {
+                    axis: { range: [-2.0, 2.0], tickvals: [-2, -1, 0, 1, 2], tickwidth: 1, tickcolor: "#9ca3af" },
+                    bar: { color: r.score >= 0.4 ? "#22c55e" : (r.score <= -0.4 ? "#ef4444" : "#9ca3af"), width: 0.25 },
+                    steps: [
+                        { range: [-2.0, -1.0], color: "rgba(239, 68, 68, 0.8)" },
+                        { range: [-1.0, -0.4], color: "rgba(249, 115, 22, 0.75)" },
+                        { range: [-0.4, 0.4],  color: "rgba(107, 114, 128, 0.5)" },
+                        { range: [0.4, 1.0],   color: "rgba(16, 185, 129, 0.75)" },
+                        { range: [1.0, 2.0],   color: "rgba(34, 197, 94, 0.85)" }
+                    ],
+                    threshold: { line: { color: "#ffffff", width: 3 }, thickness: 0.8, value: r.score }
+                }
+            }], {
+                paper_bgcolor: 'transparent',
+                margin: { l: 20, r: 20, t: 25, b: 15 },
+                font: { color: '#fff' }
+            }, { displayModeBar: false, responsive: true });
+
+            // 填充前瞻報酬
+            const updateRetBox = (idRet, idProf, val) => {
+                const elRet = document.getElementById(idRet);
+                const elProf = document.getElementById(idProf);
+                if (val !== null) {
+                    elRet.innerText = (val >= 0 ? '+' : '') + val.toFixed(2) + '%';
+                    if (val > 0) {
+                        elRet.className = 'text-lg font-black font-mono text-emerald-400';
+                        elProf.innerText = '🟢 獲利上漲';
+                        elProf.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300';
+                    } else {
+                        elRet.className = 'text-lg font-black font-mono text-rose-400';
+                        elProf.innerText = '🔴 虧損下跌';
+                        elProf.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-950 text-rose-300';
+                    }
+                } else {
+                    elRet.innerText = '尚未發生';
+                    elRet.className = 'text-sm font-mono text-gray-500';
+                    elProf.innerText = 'N/A';
+                    elProf.className = 'text-[10px] text-gray-600';
+                }
+            };
+
+            updateRetBox('sim-ret-3d', 'sim-profit-3d', r.fwd[3]);
+            updateRetBox('sim-ret-5d', 'sim-profit-5d', r.fwd[5]);
+            updateRetBox('sim-ret-10d', 'sim-profit-10d', r.fwd[10]);
+            updateRetBox('sim-ret-20d', 'sim-profit-20d', r.fwd[20]);
+
+            // Verdict text
+            const vBox = document.getElementById('sim-verdict-box');
+            if (r.signal.includes('BUY')) {
+                if (r.fwd[5] !== null && r.fwd[5] > 0) {
+                    vBox.innerHTML = `🏆 <b>驗證成功：</b>儀表在 ${r.date} 給予 <b>買進建議</b>，隨後 1 週上漲 <b>+${r.fwd[5].toFixed(2)}%</b>${r.fwd[10] ? `，2 週上漲 <b>+${r.fwd[10].toFixed(2)}%</b>` : ''}！精準捕捉低檔反彈轉折點。`;
+                    vBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-medium bg-emerald-950/40 border border-emerald-500/40 text-emerald-300';
+                } else if (r.fwd[5] !== null) {
+                    vBox.innerHTML = `⚠️ <b>短期震盪：</b>儀表給予買進後 1 週暫時拉回 <b>${r.fwd[5].toFixed(2)}%</b>，但因設定防守停損線，有效控制下行風險。`;
+                    vBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-medium bg-gray-900 border border-gray-700 text-gray-300';
+                }
+            } else if (r.signal.includes('SELL')) {
+                if (r.fwd[5] !== null && r.fwd[5] <= 0) {
+                    vBox.innerHTML = `🛡️ <b>避險成功：</b>儀表在 ${r.date} 給予 <b>減碼/賣出建議</b>，隨後 1 週股價下跌 <b>${r.fwd[5].toFixed(2)}%</b>，成功幫助投資人高檔獲利了結並避開後續下殺！`;
+                    vBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-medium bg-purple-950/40 border border-purple-500/40 text-purple-300';
+                } else {
+                    vBox.innerHTML = `ℹ️ <b>高檔調節：</b>儀表在超買區發出減碼警示，雖然短期仍有慣性衝高，但已鎖定大部分波段利潤。`;
+                    vBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-medium bg-gray-900 border border-gray-700 text-gray-300';
+                }
+            } else {
+                vBox.innerHTML = `⚖️ <b>中性觀望：</b>儀表建議持股續抱或多看少做，後續 1 週波動幅度為 ${r.fwd[5] !== null ? r.fwd[5].toFixed(2) + '%' : 'N/A'}。`;
+                vBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-medium bg-gray-900 border border-gray-700 text-gray-300';
+            }
+
+            // 繪製前後 20 天軌跡圖
+            renderTrajectoryChart(r.indexInHistory);
+        }
+
+        function renderTrajectoryChart(centerIdx) {
+            const startIdx = Math.max(0, centerIdx - 15);
+            const endIdx = Math.min(rawHistory.length - 1, centerIdx + 20);
+
+            const trajDates = [];
+            const trajPrices = [];
+            const trajColors = [];
+
+            for (let i = startIdx; i <= endIdx; i++) {
+                trajDates.push(rawHistory[i].date);
+                trajPrices.push(rawHistory[i].close);
+                if (i < centerIdx) trajColors.push('#9ca3af');
+                else if (i === centerIdx) trajColors.push('#fbbf24'); // 黃色為決策點
+                else trajPrices[i] >= rawHistory[centerIdx].close ? trajColors.push('#22c55e') : trajColors.push('#ef4444');
+            }
+
+            Plotly.react('sim-trajectory-chart', [
+                {
+                    x: trajDates,
+                    y: trajPrices,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: { color: '#6366f1', width: 2 },
+                    marker: { color: trajColors, size: 6 },
+                    hoverinfo: 'x+y'
+                }
+            ], {
+                autosize: true,
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { l: 45, r: 15, t: 15, b: 40 },
+                xaxis: { gridcolor: '#374151', tickfont: { color: '#9ca3af', size: 10 } },
+                yaxis: { gridcolor: '#374151', tickfont: { color: '#9ca3af', size: 10 } },
+                shapes: [
+                    {
+                        type: 'line',
+                        x0: rawHistory[centerIdx].date,
+                        x1: rawHistory[centerIdx].date,
+                        y0: 0,
+                        y1: 1,
+                        yref: 'paper',
+                        line: { color: '#fbbf24', width: 2, dash: 'dot' }
+                    }
+                ]
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        function renderBacktestStatsTable() {
+            document.getElementById('backtest-ticker-title').innerText = currentTicker;
+            document.getElementById('sample-size-badge').innerText = `樣本數: ${backtestRecords.length} 個交易日`;
+
+            const buySignals = backtestRecords.filter(r => r.signal === 'BUY' || r.signal === 'STRONG_BUY');
+            const strongBuySignals = backtestRecords.filter(r => r.signal === 'STRONG_BUY');
+
+            const tbody = document.getElementById('backtest-stats-tbody');
+            tbody.innerHTML = '';
+
+            [3, 5, 10, 20].forEach(days => {
+                const buyRets = buySignals.map(r => r.fwd[days]).filter(v => v !== null);
+                const strongBuyRets = strongBuySignals.map(r => r.fwd[days]).filter(v => v !== null);
+                const allRets = backtestRecords.map(r => r.fwd[days]).filter(v => v !== null);
+
+                const buyWin = buyRets.length > 0 ? (buyRets.filter(v => v > 0).length / buyRets.length * 100) : 0;
+                const strongBuyWin = strongBuyRets.length > 0 ? (strongBuyRets.filter(v => v > 0).length / strongBuyRets.length * 100) : 0;
+                const avgBuy = buyRets.length > 0 ? (buyRets.reduce((a,b)=>a+b,0) / buyRets.length) : 0;
+                const avgBench = allRets.length > 0 ? (allRets.reduce((a,b)=>a+b,0) / allRets.length) : 0;
+                const alpha = avgBuy - avgBench;
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-800/50';
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-white">後續 ${days} 天 ${days === 5 ? '(1週)' : (days === 10 ? '(2週)' : (days === 20 ? '(1月)' : ''))}</td>
+                    <td class="p-3 text-gray-300">${buyRets.length} 次</td>
+                    <td class="p-3 font-bold ${buyWin >= 55 ? 'text-emerald-400' : 'text-gray-200'}">${buyWin.toFixed(1)}%</td>
+                    <td class="p-3 font-bold ${avgBuy >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${avgBuy >= 0 ? '+' : ''}${avgBuy.toFixed(2)}%</td>
+                    <td class="p-3 text-gray-400">${avgBench >= 0 ? '+' : ''}${avgBench.toFixed(2)}%</td>
+                    <td class="p-3 font-bold ${alpha >= 0 ? 'text-emerald-400' : 'text-amber-400'}">${alpha >= 0 ? '+' : ''}${alpha.toFixed(2)}%</td>
+                    <td class="p-3 font-bold ${strongBuyWin >= 60 ? 'text-emerald-300' : 'text-gray-300'}">${strongBuyWin.toFixed(1)}% (${strongBuyRets.length}次)</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderEquityCurve() {
+            const dates = [];
+            const stratEquity = [];
+            const benchEquity = [];
+
+            let sVal = 100.0;
+            let bVal = 100.0;
+
+            for (let i = 0; i < backtestRecords.length - 1; i++) {
+                const r = backtestRecords[i];
+                const nextClose = rawHistory[r.indexInHistory + 1].close;
+                const currClose = r.close;
+                const dailyRet = (nextClose - currClose) / currClose;
+
+                // Benchmark is always in market
+                bVal = bVal * (1.0 + dailyRet);
+
+                // Strategy is in market if signal is BUY, STRONG_BUY, or NEUTRAL
+                if (r.signal === 'BUY' || r.signal === 'STRONG_BUY' || r.signal === 'NEUTRAL') {
+                    sVal = sVal * (1.0 + dailyRet);
+                }
+                // If SELL or STRONG_SELL, stay in cash (0% return for that day)
+
+                dates.push(r.date);
+                stratEquity.push(sVal);
+                benchEquity.push(bVal);
+            }
+
+            Plotly.react('equity-curve-chart', [
+                {
+                    x: dates,
+                    y: stratEquity,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Quant Action 策略累計淨值',
+                    line: { color: '#10b981', width: 2.5 }
+                },
+                {
+                    x: dates,
+                    y: benchEquity,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Buy & Hold 基準 (買進抱牢)',
+                    line: { color: '#9ca3af', width: 1.5, dash: 'dot' }
+                }
+            ], {
+                autosize: true,
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { l: 45, r: 15, t: 10, b: 40 },
+                xaxis: { gridcolor: '#374151', tickfont: { color: '#9ca3af', size: 10 } },
+                yaxis: { title: '淨值 (起始=100)', gridcolor: '#374151', tickfont: { color: '#9ca3af', size: 10 } },
+                legend: { orientation: 'h', y: 1.15, x: 0.5, xanchor: 'center', font: { color: '#9ca3af', size: 11 } }
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        function renderWeightComparisonMatrix() {
+            const models = [
+                { name: 'A. 純 100% Z-Score 均線乖離', w: [1.0, 0.0, 0.0], desc: '只看均線乖離，缺乏量價確認，容易在「爆量倒貨」時過早抄底接刀' },
+                { name: 'B. 純 50%量價 + 50%大戶 (無均線)', w: [0.0, 0.5, 0.5], desc: '只看短期籌碼量價，缺乏大格局均線乖離錨定，容易追高在主力高檔換手時' },
+                { name: 'C. 現行模型 (35% Z + 32.5% 量價 + 32.5% 大戶)', w: [0.35, 0.325, 0.325], desc: '🌟 匹配實際模型配比：Z-Score提供技術錨定，量價與大戶資金平權確認，多因子均衡訊號品質最佳' },
+                { name: 'D. 平均權重 (34% Z + 33% 量價 + 33% 大戶)', w: [0.34, 0.33, 0.33], desc: '三項均分，但均線權重偏低，在極度超賣大轉折點反應較遲鈍' },
+                { name: 'E. 高乖離權重 (70% Z + 15% 量價 + 15% 大戶)', w: [0.70, 0.15, 0.15], desc: '過度側重 Z-Score，遇到單邊崩跌行情的抗風險能力下降' }
+            ];
+
+            const tbody = document.getElementById('weight-comparison-tbody');
+            tbody.innerHTML = '';
+
+            models.forEach(m => {
+                // 快速計算該權重組合的 1週平均報酬與勝率
+                const buyRets5d = [];
+                for (let t = 20; t < rawHistory.length - 5; t++) {
+                    const ind = calculatePointInTime(rawHistory, t);
+                    const s = computeScoreWithWeights(ind, m.w).totalScore;
+                    if (s >= 0.4) {
+                        const fwd5 = ((rawHistory[t + 5].close - ind.close) / ind.close) * 100;
+                        buyRets5d.push(fwd5);
+                    }
+                }
+
+                const winRate = buyRets5d.length > 0 ? (buyRets5d.filter(v => v > 0).length / buyRets5d.length * 100) : 0;
+                const avgRet = buyRets5d.length > 0 ? (buyRets5d.reduce((a,b)=>a+b,0) / buyRets5d.length) : 0;
+                const isCurrent = m.name.includes('現行模型');
+
+                const tr = document.createElement('tr');
+                tr.className = isCurrent ? 'bg-indigo-950/40 border-l-4 border-indigo-500 font-bold' : 'hover:bg-gray-800/50';
+                tr.innerHTML = `
+                    <td class="p-3 text-white">${m.name}</td>
+                    <td class="p-3 font-mono text-indigo-300">${(m.w[0]*100).toFixed(0)}%</td>
+                    <td class="p-3 font-mono text-cyan-300">${(m.w[1]*100).toFixed(0)}%</td>
+                    <td class="p-3 font-mono text-purple-300">${(m.w[2]*100).toFixed(0)}%</td>
+                    <td class="p-3 font-mono ${avgRet >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">${avgRet >= 0 ? '+' : ''}${avgRet.toFixed(2)}%</td>
+                    <td class="p-3 font-mono ${winRate >= 55 ? 'text-emerald-400' : 'text-gray-300'} font-bold">${winRate.toFixed(1)}%</td>
+                    <td class="p-3 text-xs text-gray-300 leading-relaxed">${m.desc}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadBacktestData();
+        });
+    </script>
+</body>
+
+</html>

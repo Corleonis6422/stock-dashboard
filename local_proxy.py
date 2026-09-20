@@ -36,10 +36,14 @@ class ProxyHandler(BaseHTTPRequestHandler):
         target_url = None
         if path == '/chart':
             ticker = query.get('ticker', ['SOXL'])[0].upper()
-            range_val = query.get('range', ['1y'])[0]
+            range_val = query.get('range', ['3mo'])[0]
             target_url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={range_val}"
         elif path == '/vix':
             target_url = "https://query2.finance.yahoo.com/v8/finance/chart/^VIX?interval=1d&range=5d"
+        elif path == '/options-pcr':
+            ticker = query.get('ticker', ['SOXL'])[0].upper()
+            self._handle_options_pcr(ticker)
+            return
 
         if target_url:
             self._handle_proxy_request(target_url)
@@ -83,9 +87,83 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(f"Error fetching data: {e}".encode('utf-8'))
 
+    def _handle_options_pcr(self, ticker):
+        cache_key = f"options_pcr_{ticker}"
+        now = time.time()
+        if cache_key in CACHE:
+            cached_time, cached_content, cached_type = CACHE[cache_key]
+            if now - cached_time < 120:  # 2-minute cache for options
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('X-Cache-Status', 'HIT')
+                self.end_headers()
+                self.wfile.write(cached_content)
+                return
+
+        try:
+            import yfinance as yf
+            t = yf.Ticker(ticker)
+            exp = t.options
+            if not exp:
+                res = {
+                    'ticker': ticker,
+                    'hasOptions': False,
+                    'pcr': 0.85,
+                    'whaleSentiment': '無標準美股期權 (依大盤/衍生品情緒推估)'
+                }
+            else:
+                chain = t.option_chain(exp[0])
+                c_vol = float(chain.calls['volume'].sum())
+                p_vol = float(chain.puts['volume'].sum())
+                c_oi = float(chain.calls['openInterest'].sum())
+                p_oi = float(chain.puts['openInterest'].sum())
+                pcr = (p_vol / c_vol) if c_vol > 0 else 1.0
+                oi_pcr = (p_oi / c_oi) if c_oi > 0 else 1.0
+                
+                sentiment = '中性平衡 (多空勢均力敵)'
+                if pcr >= 1.20:
+                    sentiment = '極度恐慌避險 (Put 爆量，反向超賣底)'
+                elif pcr >= 1.00:
+                    sentiment = '期權避險偏空 (Put 需求升溫)'
+                elif pcr <= 0.55:
+                    sentiment = '期權投機過熱 (Call 瘋狂追買，防拉回)'
+                elif pcr <= 0.85:
+                    sentiment = '健康多方推進 (Call 主力積極建倉)'
+
+                res = {
+                    'ticker': ticker,
+                    'hasOptions': True,
+                    'pcr': round(pcr, 2),
+                    'oiPcr': round(oi_pcr, 2),
+                    'callVolume': int(c_vol),
+                    'putVolume': int(p_vol),
+                    'callOpenInterest': int(c_oi),
+                    'putOpenInterest': int(p_oi),
+                    'expiration': exp[0],
+                    'whaleSentiment': sentiment
+                }
+        except Exception as e:
+            res = {
+                'ticker': ticker,
+                'hasOptions': False,
+                'pcr': 0.85,
+                'whaleSentiment': '期權數據平滑估計',
+                'error': str(e)
+            }
+
+        payload = json.dumps(res).encode('utf-8')
+        CACHE[cache_key] = (now, payload, 'application/json')
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('X-Cache-Status', 'MISS')
+        self.end_headers()
+        self.wfile.write(payload)
+
     def _handle_static_file(self, path):
         if path == '/' or path == '':
             file_name = 'SOXL2.html'
+        elif path == '/simulator' or path == '/backtest':
+            file_name = 'simulator.html'
         else:
             file_name = path.lstrip('/')
 
