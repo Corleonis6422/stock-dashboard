@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+scratch_*.json
+apply_black_screen_fix.py
+fix_gauge_ids.py
+replace_gauge_func.py

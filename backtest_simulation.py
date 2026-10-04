@@ -19,9 +19,33 @@ if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 def fetch_history(ticker, range_val="1y"):
-    """Fetch historical OHLCV data from Yahoo Finance API."""
-    url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={range_val}"
+    """Fetch historical OHLCV data from Binance (for crypto) or Yahoo Finance API."""
     ctx = ssl._create_unverified_context()
+    if ticker.upper() in ['BTC-USD', 'BTC', 'BTCUSDT', 'ETH-USD', 'ETH', 'SOL-USD', 'SOL']:
+        symbol = 'BTCUSDT' if ticker.upper().startswith('BTC') else ticker.upper().replace('-USD', 'USDT')
+        try:
+            b_url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1d&limit=365"
+            b_req = urllib.request.Request(b_url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(b_req, context=ctx, timeout=10) as resp:
+                klines = json.loads(resp.read().decode('utf-8'))
+                valid_days = []
+                for k in klines:
+                    ts = int(k[0] // 1000)
+                    valid_days.append({
+                        'timestamp': ts,
+                        'date': datetime.fromtimestamp(ts).strftime('%Y-%m-%d'),
+                        'open': float(k[1]),
+                        'high': float(k[2]),
+                        'low': float(k[3]),
+                        'close': float(k[4]),
+                        'volume': float(k[7])
+                    })
+                if len(valid_days) > 30:
+                    return valid_days
+        except Exception as e:
+            print(f"Binance fetch failed for {ticker}, trying Yahoo: {e}")
+
+    url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={range_val}"
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     }
@@ -148,18 +172,23 @@ def calculate_point_in_time_indicators(history, t_idx):
         'retail_flow': retail_flow
     }
 
-def compute_quant_score(indicators, ticker, weights=(0.55, 0.25, 0.20)):
+def compute_quant_score(indicators, ticker, weights=(0.15, 0.27, 0.25, 0.33)):
     """
     Compute Quant Action Score (-2.00 to +2.00) based on weights.
-    weights = (w_zscore, w_vp, w_inst)
+    weights = (w_zscore, w_vp, w_inst, w_pcr)
     """
-    w_z, w_vp, w_inst = weights
+    if len(weights) == 4:
+        w_z, w_vp, w_inst, w_pcr = weights
+    else:
+        w_z, w_vp, w_inst = weights[:3]
+        w_pcr = 0.0
+
     z_score = indicators['z_score']
     vp_pattern = indicators['vp_pattern']
     whale_flow = indicators['whale_flow']
     cmf20 = indicators['cmf20']
 
-    # 1. Z-Score Factor (Standard normalized: -2.0 to +2.0 scaled to max 2.0 * w_z)
+    # 1. Z-Score Factor (Max 2.0 * w_z)
     z_max = 2.0 * w_z
     z_cont = -(z_score / 2.0) * z_max
     z_cont = max(-z_max, min(z_max, z_cont))
@@ -167,21 +196,21 @@ def compute_quant_score(indicators, ticker, weights=(0.55, 0.25, 0.20)):
     # 2. Volume-Price Factor (Max 2.0 * w_vp)
     vp_max = 2.0 * w_vp
     if '價漲量增' in vp_pattern or '多頭突破' in vp_pattern:
-        vp_cont = +0.90 * vp_max
+        vp_cont = +1.0 * vp_max
     elif '價漲量縮' in vp_pattern:
-        vp_cont = +0.20 * vp_max
+        vp_cont = +0.22 * vp_max
     elif '窒息量' in vp_pattern or ('價跌量縮' in vp_pattern and z_score < 0):
-        vp_cont = +0.60 * vp_max
+        vp_cont = +0.75 * vp_max
     elif '價跌量縮' in vp_pattern and z_score >= 0:
-        vp_cont = -0.20 * vp_max
+        vp_cont = -0.22 * vp_max
     elif '價跌量增' in vp_pattern or '殺多' in vp_pattern or '出貨' in vp_pattern or '長黑' in vp_pattern:
-        vp_cont = -0.90 * vp_max
+        vp_cont = -1.0 * vp_max
     else:
         vp_cont = 0.0
 
     # 3. Smart Money / Institutional Factor (Max 2.0 * w_inst)
     inst_max = 2.0 * w_inst
-    cmf_part = cmf20 * 1.25 * (inst_max * 0.6)
+    cmf_part = cmf20 * 1.0 * (inst_max * 0.6)
     cmf_part = max(-inst_max * 0.6, min(inst_max * 0.6, cmf_part))
 
     whale_part = 0.0
@@ -196,12 +225,26 @@ def compute_quant_score(indicators, ticker, weights=(0.55, 0.25, 0.20)):
     
     inst_cont = max(-inst_max, min(inst_max, cmf_part + whale_part))
 
-    total_score = z_cont + vp_cont + inst_cont
+    # 4. Options PCR Factor (Max 2.0 * w_pcr)
+    pcr_max = 2.0 * w_pcr
+    sim_pcr = 0.85 - (z_score / 2.0) * 0.25
+    if sim_pcr >= 1.25:
+        pcr_cont = +1.0 * pcr_max
+    elif sim_pcr >= 1.05:
+        pcr_cont = +0.65 * pcr_max
+    elif sim_pcr >= 0.75:
+        pcr_cont = +0.35 * pcr_max
+    elif sim_pcr >= 0.55:
+        pcr_cont = -0.30 * pcr_max
+    else:
+        pcr_cont = -1.0 * pcr_max
+
+    total_score = z_cont + vp_cont + inst_cont + pcr_cont
 
     # Leveraged ETF high deviation protection
     is_leveraged = ticker in ['SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'NVDL', 'TSLL', 'FNGU']
-    if is_leveraged and total_score > 0.6 and z_score > 1.0:
-        total_score -= 0.35
+    if is_leveraged and total_score > 0.6 and z_score > 1.2:
+        total_score -= 0.30
 
     total_score = max(-2.0, min(2.0, total_score))
 
@@ -209,10 +252,11 @@ def compute_quant_score(indicators, ticker, weights=(0.55, 0.25, 0.20)):
         'total_score': total_score,
         'z_cont': z_cont,
         'vp_cont': vp_cont,
-        'inst_cont': inst_cont
+        'inst_cont': inst_cont,
+        'pcr_cont': pcr_cont
     }
 
-def run_backtest_simulation(ticker, range_val="1y", weights=(0.55, 0.25, 0.20)):
+def run_backtest_simulation(ticker, range_val="1y", weights=(0.15, 0.27, 0.25, 0.33)):
     """
     Run point-in-time walk-forward backtest across all trading days.
     Evaluates forward returns for Buy signals (+0.4 to +2.0) vs Sell signals (-2.0 to -0.4).
