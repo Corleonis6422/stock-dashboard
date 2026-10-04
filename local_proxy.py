@@ -40,7 +40,29 @@ class ProxyHandler(BaseHTTPRequestHandler):
             if ticker in ['BTC-USD', 'BTC', 'BTCUSDT', 'ETH-USD', 'ETH', 'ETHUSDT', 'SOL-USD', 'SOL', 'SOLUSDT']:
                 self._handle_crypto_chart(ticker, range_val)
                 return
+
+            # 支援台股上櫃 (.TWO) 與上市 (.TW) 智慧自動切換與字典對應
+            tw_fallback_map = {
+                '5274': '5274.TWO', '5274.TW': '5274.TWO',
+                '8069': '8069.TWO', '8069.TW': '8069.TWO',
+                '6488': '6488.TWO', '6488.TW': '6488.TWO',
+                '3293': '3293.TWO', '3293.TW': '3293.TWO',
+                '6547': '6547.TWO', '6547.TW': '6547.TWO',
+            }
+            if ticker in tw_fallback_map:
+                ticker = tw_fallback_map[ticker]
+            elif ticker.isdigit() and len(ticker) in [4, 5]:
+                ticker = f"{ticker}.TW"
+
             target_url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={range_val}"
+            alt_url = None
+            if ticker.endswith('.TW'):
+                alt_url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker[:-3]}.TWO?interval=1d&range={range_val}"
+            elif ticker.endswith('.TWO'):
+                alt_url = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker[:-4]}.TW?interval=1d&range={range_val}"
+
+            self._handle_proxy_request(target_url, alt_url=alt_url)
+            return
         elif path == '/vix':
             target_url = "https://query2.finance.yahoo.com/v8/finance/chart/^VIX?interval=1d&range=5d"
         elif path == '/options-pcr':
@@ -55,7 +77,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
         # 2. Serve static files (SOXL2.html, index.html, etc.)
         self._handle_static_file(path)
 
-    def _handle_proxy_request(self, target_url):
+    def _handle_proxy_request(self, target_url, alt_url=None):
         now = time.time()
         if target_url in CACHE:
             cached_time, cached_content, cached_type = CACHE[target_url]
@@ -85,6 +107,14 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 self.send_header('X-Cache-Status', 'MISS')
                 self.end_headers()
                 self.wfile.write(content)
+        except urllib.error.HTTPError as he:
+            if he.code == 404 and alt_url:
+                print(f"[Proxy] Primary URL returned 404 ({target_url}), auto falling back to alt URL: {alt_url}")
+                self._handle_proxy_request(alt_url, alt_url=None)
+                return
+            self.send_response(he.code)
+            self.end_headers()
+            self.wfile.write(f"Error fetching data: {he}".encode('utf-8'))
         except Exception as e:
             self.send_response(500)
             self.end_headers()
