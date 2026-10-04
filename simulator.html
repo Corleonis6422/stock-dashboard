@@ -168,7 +168,6 @@
                                 <div id="sim-z-cont" class="font-mono font-bold text-xs text-indigo-300">0.00</div>
                             </div>
                         </div>
-                    </div></div>
                     </div>
 
                     <!-- 右欄：後續實際走勢與獲利驗證 (Forward Outcome) -->
@@ -425,10 +424,32 @@
             return null;
         }
 
-        async function loadBacktestData() {
-            document.getElementById('sim-loading').style.display = 'flex';
-            document.getElementById('sim-content').classList.add('hidden');
-            document.getElementById('sim-loading-text').innerText = `正在下載 ${currentTicker} 近 1 年歷史數據並執行無未來數據逐日回測...`;
+                async function loadBacktestData() {
+            // 若有離線快照，優先秒級渲染展示，絕不讓使用者卡在轉圈圈
+            if (typeof OFFLINE_SNAPSHOTS_1Y !== 'undefined' && OFFLINE_SNAPSHOTS_1Y[currentTicker]) {
+                const s = OFFLINE_SNAPSHOTS_1Y[currentTicker];
+                rawHistory = [];
+                for (let i = 0; i < s.timestamps.length; i++) {
+                    const date = new Date(s.timestamps[i] * 1000);
+                    const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                    rawHistory.push({
+                        timestamp: s.timestamps[i],
+                        date: dateString,
+                        open: s.opens[i],
+                        high: s.highs[i],
+                        low: s.lows[i],
+                        close: s.closes[i],
+                        volume: s.volumes[i]
+                    });
+                }
+                document.getElementById('sim-loading').style.display = 'none';
+                document.getElementById('sim-content').classList.remove('hidden');
+                runWalkForwardBacktest();
+            } else {
+                document.getElementById('sim-loading').style.display = 'flex';
+                document.getElementById('sim-content').classList.add('hidden');
+                document.getElementById('sim-loading-text').innerText = `正在下載 ${currentTicker} 的 1 年歷史數據並逐日回測...`;
+            }
 
             try {
                 if (isCryptoTicker(currentTicker)) {
@@ -474,7 +495,7 @@
                     data = await fetchYahoo1Y(currentTicker.replace('.TWO', '.TW'));
                 }
 
-                if (!data) {if (!data) {
+                if (!data) {
                     if (OFFLINE_SNAPSHOTS_1Y[currentTicker]) {
                         console.warn('Proxy 連線受限，自動切換至離線 1 年回測快照');
                         const s = OFFLINE_SNAPSHOTS_1Y[currentTicker];
