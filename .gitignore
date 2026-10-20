@@ -1,0 +1,9 @@
+.venv/
+.cache/
+.qa/
+logs/
+__pycache__/
+*.pyc
+.DS_Store
+*.swp
+*.bak

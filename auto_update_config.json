@@ -1,0 +1,34 @@
+{
+  "label": "com.soxlquant.autoupdate",
+  "times": [
+    "07:30"
+  ],
+  "weekdays": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "run_at_login_if_stale": true,
+  "retries": 3,
+  "retry_wait_min": [
+    10,
+    30
+  ],
+  "refresh_cache": true,
+  "notify": true,
+  "notify_sound": "Glass",
+  "open_after_update": false,
+  "_help": {
+    "times": "本機時間 HH:MM，可放多個，例如 [\"07:30\", \"23:30\"]（23:30 ≈ 美股盤中快照）",
+    "weekdays": "launchd 星期代碼 0=日 1=一 … 6=六；預設二～六 = 美股一～五收盤後",
+    "run_at_login_if_stale": "登入/開機時若資料落後最近交易日就立刻補跑（排程時間關機也不會漏）",
+    "retries": "失敗重試次數（含第一次）",
+    "retry_wait_min": "第 n 次重試前等待的分鐘數（最後一個值會重複使用）",
+    "refresh_cache": "排程第一次嘗試是否清快取（確保抓到當日收盤）；重試時沿用快取",
+    "notify": "完成/失敗時顯示 macOS 通知",
+    "notify_sound": "通知音效名稱（Glass / Ping / Pop / 空字串 = 靜音）",
+    "open_after_update": "更新成功後自動用瀏覽器開啟新手版頁面"
+  }
+}
