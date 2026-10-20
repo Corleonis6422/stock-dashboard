@@ -19,12 +19,8 @@ def esc(v: object) -> str:
   return html.escape("" if v is None else str(v), quote=True)
 
 
-_PAREN_RE = re.compile(r"(\([^()]{1,14}\)|（[^（）]{1,14}）)")
-
-
 def _nwp(v: object) -> str:
-  """Escape, then keep short parenthetical groups together, e.g. 「(基準)」 never splits across lines."""
-  return _PAREN_RE.sub(lambda m: f'<span class="nw">{m.group(1)}</span>', esc(v))
+  return esc(v)
 
 
 def num(v, nd: int = 2, prefix: str = "", suffix: str = "", na: str = "n/a", sign: bool = False) -> str:
