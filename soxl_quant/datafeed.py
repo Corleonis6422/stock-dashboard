@@ -33,11 +33,16 @@ ALLOWED_HOSTS = {
     "cdn.cboe.com",
     "production.dataviz.cnn.io",
     "api.nasdaq.com",
+    "www.nasdaq.com",
     "home.treasury.gov",
     "news.google.com",
+    "search.cnbc.com",
+    "feeds.content.dowjones.io",
+    "seekingalpha.com",
+    "www.federalreserve.gov",
 }
 ALLOWED_TICKER_RE = re.compile(r"^[\^A-Z0-9=.\-]{1,12}$")
-ALLOWED_CBOE_SYMBOL_RE = re.compile(r"^_?[A-Z]{1,6}$")
+ALLOWED_CBOE_SYMBOL_RE = re.compile(r"^_?[A-Z][A-Z0-9]{0,7}$")
 ALLOWED_NASDAQ_RE = re.compile(r"^[A-Z]{1,6}$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -51,7 +56,9 @@ _MIN_SPACING_SEC = {
     "query1.finance.yahoo.com": 2.2,
     "query2.finance.yahoo.com": 2.2,
     "api.nasdaq.com": 0.9,
+    "www.nasdaq.com": 1.0,
     "home.treasury.gov": 0.5,
+    "seekingalpha.com": 1.0,
 }
 
 
@@ -296,6 +303,236 @@ def fetch_google_news(query: str, ttl_sec: int = 1800) -> list[dict]:
       items.append({"timestamp": ts, "title": title, "publisher": publisher, "link": link, "query": query})
   _cache_put(key, items)
   return items
+
+
+# --------------------------------------------------------------------------- #
+# Generic RSS (named, allow-listed sources) — wire / broker / exchange feeds
+# --------------------------------------------------------------------------- #
+RSS_SOURCES: dict[str, dict] = {
+    # key: {url, publisher, kind}; {sym} is substituted for per-symbol feeds
+    "nasdaq_symbol": {"url": "https://www.nasdaq.com/feed/rssoutbound?symbol={sym}", "publisher": "Nasdaq", "per_symbol": True},
+    "seekingalpha_symbol": {"url": "https://seekingalpha.com/api/sa/combined/{sym}.xml", "publisher": "Seeking Alpha", "per_symbol": True},
+    "cnbc_markets": {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258", "publisher": "CNBC"},
+    "cnbc_tech": {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=19854910", "publisher": "CNBC"},
+    "marketwatch_pulse": {"url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse", "publisher": "MarketWatch"},
+    "marketwatch_top": {"url": "https://feeds.content.dowjones.io/public/rss/mw_topstories", "publisher": "MarketWatch"},
+    "fed_press": {"url": "https://www.federalreserve.gov/feeds/press_all.xml", "publisher": "Federal Reserve"},
+}
+_RSS_SYM_RE = re.compile(r"^[A-Za-z]{1,6}$")
+
+
+def _strip_html(s: str) -> str:
+  s = re.sub(r"<[^>]+>", " ", s or "")
+  s = re.sub(r"&nbsp;|&#160;", " ", s)
+  s = re.sub(r"\s+", " ", s)
+  return s.strip()
+
+
+def parse_rss(text: str, publisher_default: str = "", query: str = "") -> list[dict]:
+  """Parse RSS 2.0 / Atom XML into the common news-item shape (never raises)."""
+  import xml.etree.ElementTree as ET
+  from email.utils import parsedate_to_datetime
+  items: list[dict] = []
+  try:
+    root = ET.fromstring(text)
+  except ET.ParseError:
+    return items
+  ns_atom = "{http://www.w3.org/2005/Atom}"
+  ns_dc = "{http://purl.org/dc/elements/1.1/}"
+
+  def _ts(s: str) -> int:
+    s = (s or "").strip()
+    if not s:
+      return 0
+    try:
+      return int(parsedate_to_datetime(s).timestamp())
+    except (TypeError, ValueError):
+      pass
+    try:
+      return int(datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp())
+    except ValueError:
+      return 0
+
+  for it in root.iter("item"):  # RSS 2.0
+    title = _strip_html(it.findtext("title") or "")
+    link = (it.findtext("link") or "").strip()
+    pub = it.findtext("pubDate") or it.findtext(f"{ns_dc}date") or ""
+    src_el = it.find("source")
+    publisher = (src_el.text or "").strip() if src_el is not None and src_el.text else publisher_default
+    author = (it.findtext(f"{ns_dc}creator") or it.findtext("author") or "").strip()
+    desc = _strip_html(it.findtext("description") or "")[:280]
+    if title:
+      items.append({"timestamp": _ts(pub), "title": title, "publisher": publisher.strip(), "author": author, "link": link, "query": query, "summary": desc})
+  for e in root.iter(f"{ns_atom}entry"):  # Atom
+    title = _strip_html(e.findtext(f"{ns_atom}title") or "")
+    link_el = e.find(f"{ns_atom}link")
+    link = (link_el.get("href") if link_el is not None else "") or ""
+    pub = e.findtext(f"{ns_atom}published") or e.findtext(f"{ns_atom}updated") or ""
+    desc = _strip_html(e.findtext(f"{ns_atom}summary") or "")[:280]
+    if title:
+      items.append({"timestamp": _ts(pub), "title": title, "publisher": publisher_default, "link": link.strip(), "query": query, "summary": desc})
+  return items
+
+
+def fetch_rss(source: str, sym: str | None = None, ttl_sec: int = 1800) -> list[dict]:
+  """Fetch one named RSS source (optionally per symbol). Returns [] on any failure."""
+  spec = RSS_SOURCES.get(source)
+  if not spec:
+    raise ValueError(f"Unknown RSS source: {source}")
+  if spec.get("per_symbol"):
+    if not sym or not _RSS_SYM_RE.match(sym):
+      raise ValueError(f"Invalid RSS symbol: {sym}")
+    url = spec["url"].format(sym=sym.lower() if source == "nasdaq_symbol" else sym.upper())
+    query = sym.upper()
+  else:
+    url, query = spec["url"], source
+  key = f"rss|{source}|{query}"
+  cached = _cache_get(key, ttl_sec)
+  if cached is not None:
+    return cached
+  try:
+    text = safe_https_get(url, extra_headers={"Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*"}, timeout=25, max_retries=2)
+  except (FeedError, urllib.error.HTTPError, ValueError):
+    _cache_put(key, [])
+    return []
+  items = parse_rss(text, spec.get("publisher", ""), query)
+  _cache_put(key, items)
+  return items
+
+
+# --------------------------------------------------------------------------- #
+# Calendars — Nasdaq earnings (per day) and the Fed's FOMC meeting schedule
+# --------------------------------------------------------------------------- #
+def fetch_nasdaq_earnings_calendar(day: str, ttl_sec: int = 12 * 3600) -> list[dict]:
+  """All companies reporting on a calendar day (YYYY-MM-DD) per Nasdaq. Returns [] on failure."""
+  if not ISO_DATE_RE.match(day):
+    raise ValueError(f"Invalid date: {day}")
+  key = f"nasdaq_earn|{day}"
+  cached = _cache_get(key, ttl_sec)
+  if cached is not None:
+    return cached
+  try:
+    raw = safe_https_get_json(f"https://api.nasdaq.com/api/calendar/earnings?date={day}", extra_headers=_NASDAQ_HEADERS, timeout=30)
+  except (FeedError, urllib.error.HTTPError, ValueError, json.JSONDecodeError):
+    return []
+  rows = ((raw.get("data") or {}).get("rows")) or []
+  out = []
+  for r in rows:
+    sym = str(r.get("symbol") or "").strip().upper()
+    if not sym:
+      continue
+    t = str(r.get("time") or "").strip().lower()
+    when = "盤前" if "pre" in t else ("盤後" if "after" in t else "時間未定")
+    out.append({"date": day, "symbol": sym, "name": str(r.get("name") or "").strip(), "when": when, "when_raw": t,
+                "eps_forecast": str(r.get("epsForecast") or "").strip(), "market_cap": str(r.get("marketCap") or "").strip(),
+                "fiscal_quarter": str(r.get("fiscalQuarterEnding") or "").strip()})
+  _cache_put(key, out)
+  return out
+
+
+_FOMC_STATIC: dict[int, list[tuple[str, str]]] = {
+    # (start, end) ISO dates; verified against federalreserve.gov/monetarypolicy/fomccalendars.htm on 2026-10-21
+    2026: [("2026-01-27", "2026-01-28"), ("2026-03-17", "2026-03-18"), ("2026-04-28", "2026-04-29"), ("2026-06-16", "2026-06-17"),
+           ("2026-07-28", "2026-07-29"), ("2026-09-15", "2026-09-16"), ("2026-10-27", "2026-10-28"), ("2026-12-08", "2026-12-09")],
+}
+_MONTHS = {m: i for i, m in enumerate(("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"), 1)}
+
+
+def fetch_fomc_calendar(year: int, ttl_sec: int = 7 * 24 * 3600) -> dict:
+  """FOMC meeting dates for a year: live parse of the Fed calendar page, static fallback.
+
+  Returns {"year", "meetings": [{"start","end","sep": bool}], "source": "federalreserve.gov" | "static"}.
+  """
+  key = f"fomc|{year}"
+  cached = _cache_get(key, ttl_sec)
+  if cached is not None:
+    return cached
+  meetings: list[dict] = []
+  source = "static"
+  try:
+    html = safe_https_get("https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", extra_headers={"Accept": "text/html"}, timeout=25, max_retries=2)
+    i = html.find(f"{year} FOMC Meetings")
+    j = html.find("FOMC Meetings", i + 20) if i >= 0 else -1
+    seg = html[i:j if j > i else None] if i >= 0 else ""
+    seg = re.sub(r"\s+", " ", seg)
+    for m in re.finditer(r'fomc-meeting__month[^"]*"><strong>([A-Za-z/]+)</strong></div>\s*<div class="fomc-meeting__date[^"]*">([^<]+)</div>', seg):
+      month_txt, day_txt = m.group(1), m.group(2).strip()
+      sep = "*" in day_txt
+      nums = re.findall(r"\d{1,2}", day_txt)
+      months = [x for x in month_txt.split("/") if x in _MONTHS]
+      if not nums or not months:
+        continue
+      m1 = _MONTHS[months[0]]
+      m2 = _MONTHS[months[-1]]
+      d1 = date(year, m1, int(nums[0]))
+      d2 = date(year, m2, int(nums[-1])) if len(nums) > 1 else d1
+      meetings.append({"start": d1.isoformat(), "end": d2.isoformat(), "sep": sep})
+    if meetings:
+      source = "federalreserve.gov"
+  except (FeedError, urllib.error.HTTPError, ValueError):
+    pass
+  if not meetings:
+    meetings = [{"start": a, "end": b, "sep": i % 2 == 1} for i, (a, b) in enumerate(_FOMC_STATIC.get(year, []))]
+  out = {"year": year, "meetings": meetings, "source": source}
+  _cache_put(key, out)
+  return out
+
+
+# --------------------------------------------------------------------------- #
+# Live quotes — Nasdaq (stocks / ETFs, ~real-time) and CBOE (indices, 15-min delayed)
+# --------------------------------------------------------------------------- #
+def fetch_nasdaq_quote(symbol: str, asset_class: str = "etf", ttl_sec: int = 120) -> dict | None:
+  """Last sale / change / market status for a symbol. Returns None on failure."""
+  if not ALLOWED_NASDAQ_RE.match(symbol) or asset_class not in {"etf", "stocks", "index"}:
+    raise ValueError(f"Invalid Nasdaq request: {symbol}/{asset_class}")
+  key = f"nasdaq_quote|{symbol}|{asset_class}"
+  cached = _cache_get(key, ttl_sec)
+  if cached is not None:
+    return cached or None
+  try:
+    info = (safe_https_get_json(f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset_class}", extra_headers=_NASDAQ_HEADERS, timeout=30).get("data") or {})
+  except (FeedError, urllib.error.HTTPError, ValueError, json.JSONDecodeError, AttributeError):
+    return None
+  pd_ = info.get("primaryData") or {}
+  sd = info.get("secondaryData") or {}
+  last = _num(pd_.get("lastSalePrice"))
+  if last is None:
+    _cache_put(key, {})
+    return None
+  chg = _num(pd_.get("netChange"))
+  pct = _num(str(pd_.get("percentageChange") or "").replace("%", ""))
+  out = {
+      "symbol": symbol, "asset_class": asset_class, "last": last, "change": chg, "change_pct": pct,
+      "market_status": str(info.get("marketStatus") or ""), "last_trade": str(pd_.get("lastTradeTimestamp") or ""),
+      "ext_last": _num(sd.get("lastSalePrice")), "ext_change_pct": _num(str(sd.get("percentageChange") or "").replace("%", "")),
+      "ext_trade": str(sd.get("lastTradeTimestamp") or ""), "volume": _num(pd_.get("volume")),
+      "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+  }
+  _cache_put(key, out)
+  return out
+
+
+def fetch_cboe_quote(symbol: str, ttl_sec: int = 120) -> dict | None:
+  """CBOE delayed quote for an index (e.g. _VIX, _VIX3M, _SKEW, _SPX). Returns None on failure."""
+  if not ALLOWED_CBOE_SYMBOL_RE.match(symbol):
+    raise ValueError(f"Invalid CBOE symbol: {symbol}")
+  key = f"cboe_quote|{symbol}"
+  cached = _cache_get(key, ttl_sec)
+  if cached is not None:
+    return cached or None
+  try:
+    d = safe_https_get_json(f"https://cdn.cboe.com/api/global/delayed_quotes/quotes/{symbol}.json", timeout=20).get("data") or {}
+  except (FeedError, urllib.error.HTTPError, ValueError, json.JSONDecodeError, AttributeError):
+    return None
+  px = _num(d.get("current_price"))
+  if px is None:
+    _cache_put(key, {})
+    return None
+  prev = _num(d.get("prev_day_close"))
+  out = {"symbol": symbol.lstrip("_"), "last": px, "change": _num(d.get("price_change")), "change_pct": _num(d.get("price_change_percent")),
+         "prev_close": prev, "last_trade": str(d.get("last_trade_time") or ""), "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")}
+  _cache_put(key, out)
+  return out
 
 
 # --------------------------------------------------------------------------- #

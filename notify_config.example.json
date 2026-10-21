@@ -1,0 +1,88 @@
+{
+  "_readme": "複製成 notify_config.json（已在 .gitignore），把要用的頻道 enabled 改成 true 並填入網址/金鑰；任何值都可以寫 \"$ENV:VAR_NAME\" 改從環境變數讀。測試：.venv/bin/python auto_update.py push-test",
+  "send_on": {
+    "success": true,
+    "failure": true,
+    "only_if_verdict_changed": false
+  },
+  "channels": [
+    {
+      "type": "macos",
+      "enabled": true,
+      "sound": "Glass"
+    },
+    {
+      "type": "webhook",
+      "enabled": false,
+      "name": "muse",
+      "url": "https://example.com/muse/inbox",
+      "format": "json",
+      "bearer_token": "$ENV:MUSE_TOKEN",
+      "hmac_secret": "",
+      "headers": {}
+    },
+    {
+      "type": "google_chat",
+      "enabled": false,
+      "url": "https://chat.googleapis.com/v1/spaces/XXXX/messages?key=...&token=..."
+    },
+    {
+      "type": "slack",
+      "enabled": false,
+      "url": "https://hooks.slack.com/services/T000/B000/XXXX"
+    },
+    {
+      "type": "discord",
+      "enabled": false,
+      "url": "https://discord.com/api/webhooks/000/XXXX"
+    },
+    {
+      "type": "telegram",
+      "enabled": false,
+      "bot_token": "$ENV:TELEGRAM_BOT_TOKEN",
+      "chat_id": "123456789"
+    },
+    {
+      "type": "line",
+      "enabled": false,
+      "channel_access_token": "$ENV:LINE_CHANNEL_TOKEN",
+      "to": "Uxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "type": "email",
+      "enabled": false,
+      "smtp_host": "smtp.gmail.com",
+      "smtp_port": 587,
+      "use_ssl": false,
+      "username": "me@gmail.com",
+      "password": "$ENV:SMTP_APP_PASSWORD",
+      "from": "me@gmail.com",
+      "to": [
+        "me@gmail.com"
+      ],
+      "attach_html": true
+    },
+    {
+      "type": "agentapi",
+      "enabled": false,
+      "mode": "new_conversation",
+      "recipient_id": "",
+      "title": "SOXL 每日簡報",
+      "model": "",
+      "prompt_prefix": "以下是今天自動產生的 SOXL 量化簡報。請先吸收全部內容，然後用三句話告訴我：今天該買、該賣還是觀望？理由是什麼？要盯哪個價位？"
+    },
+    {
+      "type": "command",
+      "enabled": false,
+      "argv": [
+        "/usr/local/bin/muse",
+        "ingest",
+        "--title",
+        "{title}",
+        "--file",
+        "{md_path}"
+      ],
+      "timeout_sec": 60
+    }
+  ]
+}

@@ -54,6 +54,8 @@ DEFAULT_CONFIG: dict = {
     "notify": True,
     "notify_sound": "Glass",
     "open_after_update": False,
+    "publish": {"git_push": True, "remote": "origin", "branch": "main"},
+    "feed": {"base_url": "https://corleonis6422.github.io/stock-dashboard/"},
     "_help": {
         "times": "本機時間 HH:MM，可放多個，例如 [\"07:30\", \"23:30\"]（23:30 ≈ 美股盤中快照）",
         "weekdays": "launchd 星期代碼 0=日 1=一 … 6=六；預設二～六 = 美股一～五收盤後",
@@ -61,15 +63,18 @@ DEFAULT_CONFIG: dict = {
         "retries": "失敗重試次數（含第一次）",
         "retry_wait_min": "第 n 次重試前等待的分鐘數（最後一個值會重複使用）",
         "refresh_cache": "排程第一次嘗試是否清快取（確保抓到當日收盤）；重試時沿用快取",
-        "notify": "完成/失敗時顯示 macOS 通知",
+        "notify": "完成/失敗時推播（macOS 通知 + notify_config.json 內啟用的頻道：webhook / Google Chat / Slack / Telegram / LINE / email / agentapi …）",
         "notify_sound": "通知音效名稱（Glass / Ping / Pop / 空字串 = 靜音）",
         "open_after_update": "更新成功後自動用瀏覽器開啟新手版頁面",
+        "publish": "git_push=true 時，每次成功更新後自動 commit 輸出檔並 push 到 remote/branch（→ GitHub Pages 更新 feed/ 與 HTML）",
+        "feed": "base_url = GitHub Pages 網址，用來組 feed/latest.json 等連結給 agent",
     },
 }
 
 _TIME_RE = re.compile(r"^([01]\d|2[0-3]):([0-5]\d)$")
 _LABEL_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]{2,63}$")
 _SOUND_RE = re.compile(r"^[A-Za-z0-9 _-]{0,32}$")
+_GITNAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$")
 _WD_ZH = {0: "日", 1: "一", 2: "二", 3: "三", 4: "四", 5: "五", 6: "六"}
 
 
@@ -101,6 +106,20 @@ def validate(cfg: dict) -> dict:
   if not isinstance(snd, str) or not _SOUND_RE.match(snd):
     raise ValueError("notify_sound 只能是英數字 / 空白")
   out["notify_sound"] = snd
+  pub = out.get("publish") if isinstance(out.get("publish"), dict) else {}
+  pub = {**DEFAULT_CONFIG["publish"], **pub}
+  pub["git_push"] = bool(pub.get("git_push"))
+  for k in ("remote", "branch"):
+    if not isinstance(pub.get(k), str) or not _GITNAME_RE.match(pub[k]):
+      raise ValueError(f"publish.{k} 必須是合法的 git 名稱")
+  if "paths" in pub and (not isinstance(pub["paths"], list) or not all(isinstance(p, str) and ".." not in p and not p.startswith("/") for p in pub["paths"])):
+    raise ValueError("publish.paths 必須是相對路徑字串清單")
+  out["publish"] = pub
+  feed = out.get("feed") if isinstance(out.get("feed"), dict) else {}
+  feed = {**DEFAULT_CONFIG["feed"], **feed}
+  if not isinstance(feed.get("base_url"), str) or not feed["base_url"].startswith("https://"):
+    raise ValueError("feed.base_url 必須是 https:// 開頭的網址")
+  out["feed"] = feed
   return out
 
 

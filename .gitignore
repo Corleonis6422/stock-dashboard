@@ -7,3 +7,5 @@ __pycache__/
 .DS_Store
 *.swp
 *.bak
+notify_config.json
+*.bak.*.json

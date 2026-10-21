@@ -184,13 +184,51 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
   if write_html:
     from . import report_html, report_simple
     out = BASE_DIR / "soxl_analysis_report.html"
-    fsio.atomic_write_text(out, report_html.render(payload))
+    html_text = report_html.render(payload)
+    fsio.atomic_write_text(out, html_text)
     _step(f"    Saved HTML → {out} ({out.stat().st_size/1024:.0f} KB)")
     out2 = BASE_DIR / "soxl_simple.html"
     fsio.atomic_write_text(out2, report_simple.render(payload))
     _step(f"    Saved 新手版 → {out2} ({out2.stat().st_size/1024:.0f} KB)")
+    fsio.atomic_write_text(BASE_DIR / "index.html", html_text)  # GitHub Pages landing page = full report
+
+  # ---- agent feed: upcoming events + live quotes + one-page brief (JSON / Markdown / text / RSS)
+  payload["_feed"] = build_feed(payload, label="    ")
   _step(f"Done in {time.time()-t0:.0f}s; warnings: {warnings or 'none'}")
   return payload
+
+
+def build_feed(payload: dict, label: str = "", with_quotes: bool = True) -> dict:
+  """Build events + quotes + brief and write the feed/ directory. Never raises; returns paths + notes."""
+  from . import brief, events, quotes
+  notes: list[str] = []
+  try:
+    ev = events.analyze()
+    _step(f"{label}events: {ev.get('summary_zh')}")
+  except Exception as e:  # noqa: BLE001
+    notes.append(f"events: {e}")
+    ev = {}
+  q: dict = {}
+  if with_quotes:
+    try:
+      q = quotes.snapshot()
+      _step(f"{label}quotes: {q.get('one_liner')}")
+    except Exception as e:  # noqa: BLE001
+      notes.append(f"quotes: {e}")
+  try:
+    cfg = scheduler.load_config(create=False)
+    base_url = (cfg.get("feed") or {}).get("base_url")
+  except Exception:  # noqa: BLE001
+    base_url = None
+  try:
+    br = brief.build(payload, ev, q, base_url)
+    paths = brief.write_all(br)
+    _step(f"{label}feed → {brief.FEED_DIR.relative_to(BASE_DIR)}/latest.{{json,md,txt}} + rss.xml ({len(brief.to_markdown(br))//1024} KB md)")
+    return {"ok": True, "paths": paths, "brief": br, "notes": notes}
+  except Exception as e:  # noqa: BLE001
+    traceback.print_exc()
+    notes.append(f"brief: {e}")
+    return {"ok": False, "paths": {}, "brief": None, "notes": notes}
 
 
 if __name__ == "__main__":

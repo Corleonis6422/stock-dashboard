@@ -1,0 +1,100 @@
+name: Daily update (cloud fallback)
+
+# Belt and braces for the Mac launchd job: if the Mac was asleep / offline and the
+# published data is still behind the latest US trading day, this runner fetches,
+# recomputes and commits the outputs itself (→ deploy.yml publishes the site).
+#
+#   22:15 UTC = 18:15 ET (EDT) / 17:15 ET (EST)  — after the close + data settle
+#   00:30 UTC = second chance (the Mac job runs at 23:30 UTC / 07:30 Taipei)
+
+on:
+  schedule:
+    - cron: "15 22 * * 1-5"
+    - cron: "30 0 * * 2-6"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run even if data is already current"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "daily-update"
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Is the published data stale?
+        id: stale
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, pathlib
+          from soxl_quant import marketclock
+          exp = marketclock.expected_latest_trading_date().isoformat()
+          try:
+              cur = json.loads(pathlib.Path("soxl_analysis_data.json").read_text())["data_as_of"]
+          except Exception:
+              cur = ""
+          stale = (not cur) or cur < exp
+          print(f"expected={exp}")
+          print(f"current={cur}")
+          print(f"stale={'true' if stale else 'false'}")
+          PY
+
+      - name: Run pipeline
+        if: steps.stale.outputs.stale == 'true' || inputs.force == true
+        env:
+          PYTHONUTF8: "1"
+          SOXL_TRIGGER: "github-actions"
+        shell: bash
+        run: |
+          echo "expected ${{ steps.stale.outputs.expected }}  current ${{ steps.stale.outputs.current }}"
+          python3 auto_update.py run --no-notify --no-publish --retries 2 --wait-min 3
+
+      - name: Verify outputs
+        if: steps.stale.outputs.stale == 'true' || inputs.force == true
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          d = json.loads(pathlib.Path("soxl_analysis_data.json").read_text())
+          b = json.loads(pathlib.Path("feed/latest.json").read_text())
+          print("data_as_of", d["data_as_of"], "verdict", b["verdict"]["label"], "warnings", d.get("warnings"))
+          for f in ("index.html", "soxl_analysis_report.html", "soxl_simple.html", "feed/latest.md", "feed/rss.xml"):
+              p = pathlib.Path(f)
+              assert p.exists() and p.stat().st_size > 1000, f"missing/empty {f}"
+          sys.exit(0)
+          PY
+
+      - name: Commit & push
+        if: steps.stale.outputs.stale == 'true' || inputs.force == true
+        shell: bash
+        run: |
+          git config user.name "soxl-quant-bot"
+          git config user.email "soxl-quant-bot@users.noreply.github.com"
+          git add -A -- soxl_analysis_data.json soxl_analysis_report.html index.html soxl_simple.html feed history/verdicts.jsonl history/snapshots
+          if git diff --cached --quiet; then
+            echo "no changes"; exit 0
+          fi
+          DATE=$(python3 -c "import json;print(json.load(open('soxl_analysis_data.json'))['data_as_of'])")
+          VERDICT=$(python3 -c "import json;b=json.load(open('feed/latest.json'))['verdict'];print(f\"{b.get('emoji') or ''} {b.get('label') or ''}\")")
+          git commit -q -m "data: ${DATE} ${VERDICT} [github-actions]"
+          git pull --rebase -X theirs origin main || true
+          git push origin HEAD:main

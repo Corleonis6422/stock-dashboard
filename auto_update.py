@@ -1,27 +1,46 @@
 #!/usr/bin/env python3
-"""SOXL Quant — 每日自動更新 (runner + macOS 排程 CLI)。
+"""SOXL Quant — 每日自動更新 (runner + macOS 排程 + 推播 + 發佈 CLI)。
 
+排程 / 更新
     .venv/bin/python auto_update.py install        安裝 launchd 排程（預設週二～六 07:30 = 美股收盤後）
-    .venv/bin/python auto_update.py status         查看排程狀態 / 上次結果 / 下次時間
-    .venv/bin/python auto_update.py run            立刻更新一次（含重試、macOS 通知）
+    .venv/bin/python auto_update.py status         查看排程狀態 / 上次結果 / 下次時間 / 推播與發佈結果
+    .venv/bin/python auto_update.py run            立刻更新一次（抓 API → 評分 → HTML → feed → 推播 → git push）
     .venv/bin/python auto_update.py run --if-stale 只在資料落後最近美股交易日時更新（排程用）
     .venv/bin/python auto_update.py uninstall      移除排程
-    .venv/bin/python auto_update.py notify-test    測試 macOS 通知
     .venv/bin/python auto_update.py config         顯示（必要時建立）auto_update_config.json
 
-每次成功更新都會：重新抓取所有 API → 重算評分 → 寫出
-soxl_analysis_data.json / soxl_analysis_report.html / soxl_simple.html（新手版）
-→ 追加 history/verdicts.jsonl → logs/last_run.json → macOS 通知今日評級。
+給 Agent / Muse 用
+    .venv/bin/python auto_update.py brief          印出最新一頁式簡報（Markdown）；--json / --text 換格式
+    .venv/bin/python auto_update.py feed           不重算模型，用既有 JSON 重建 feed/（含最新事件與報價）
+    .venv/bin/python auto_update.py quotes         即時報價快照（SOXL / 成分股 / VIX 複合體）；--json
+    .venv/bin/python auto_update.py mcp-config     印出 MCP server 設定片段（Antigravity / Gemini CLI / Claude）
+    .venv/bin/python auto_update.py mcp-install    把 MCP server 寫進 ~/.gemini/config/mcp_config.json（自動備份）
+    .venv/bin/python auto_update.py sidecar-install  Antigravity sidecar：每個交易日早上自動開一個 agent 對話讀簡報並回報（--time 07:50）
+    .venv/bin/python auto_update.py sidecar-uninstall
+
+推播 / 發佈
+    .venv/bin/python auto_update.py notify-config  建立 notify_config.json（從範本，chmod 600）
+    .venv/bin/python auto_update.py push           把最新簡報再推一次到所有啟用頻道；--only webhook,telegram
+    .venv/bin/python auto_update.py push-test      對所有啟用頻道送測試訊息
+    .venv/bin/python auto_update.py push-status    顯示推播設定（金鑰遮罩）
+    .venv/bin/python auto_update.py publish        立刻 git commit + push 輸出檔（→ GitHub Pages）
+    .venv/bin/python auto_update.py notify-test    測試 macOS 通知
+
+每次成功更新都會：重新抓取所有 API → 重算評分 → 寫出 soxl_analysis_data.json /
+soxl_analysis_report.html (= index.html) / soxl_simple.html → feed/latest.{json,md,txt} + rss.xml
+→ 追加 history/verdicts.jsonl → logs/last_run.json → 推播（macOS + notify_config.json 頻道）→ git push。
 """
 
 from __future__ import annotations
 
 import argparse
 from datetime import datetime
+import json
 import logging
 import logging.handlers
 import os
 from pathlib import Path
+import shutil
 import sys
 import time
 import traceback
@@ -29,11 +48,16 @@ import traceback
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
 
+from soxl_quant import brief as briefmod  # noqa: E402
+from soxl_quant import notify as notifymod  # noqa: E402
+from soxl_quant import publish as publishmod  # noqa: E402
 from soxl_quant import scheduler  # noqa: E402
 
 LOCK_PATH = scheduler.LOG_DIR / ".auto_update.lock"
 LOCK_STALE_SEC = 3 * 3600
 SIMPLE_HTML = BASE_DIR / "soxl_simple.html"
+REPORT_HTML = BASE_DIR / "soxl_analysis_report.html"
+MCP_SERVER = BASE_DIR / "soxl_mcp.py"
 log = logging.getLogger("auto_update")
 
 
@@ -42,7 +66,7 @@ def _setup_logging() -> None:
   fmt = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
   fh = logging.handlers.RotatingFileHandler(scheduler.LOG_DIR / "auto_update.log", maxBytes=1_000_000, backupCount=5, encoding="utf-8")
   fh.setFormatter(fmt)
-  sh = logging.StreamHandler(sys.stdout)
+  sh = logging.StreamHandler(sys.stderr)
   sh.setFormatter(fmt)
   logging.basicConfig(level=logging.INFO, handlers=[fh, sh])
 
@@ -89,6 +113,49 @@ def _summary(payload: dict) -> dict:
   }
 
 
+# --------------------------------------------------------------------------- #
+# brief / push helpers shared by run, push, push-test
+# --------------------------------------------------------------------------- #
+def _feed_paths() -> dict:
+  d = briefmod.FEED_DIR
+  return {"json": str(d / "latest.json"), "md": str(d / "latest.md"), "txt": str(d / "latest.txt"), "simple_html": str(SIMPLE_HTML), "report_html": str(REPORT_HTML)}
+
+
+def _message_from_feed(kind: str = "daily_brief") -> notifymod.Message | None:
+  br = briefmod.load_latest()
+  if not br:
+    return None
+  md_p, txt_p = briefmod.FEED_DIR / "latest.md", briefmod.FEED_DIR / "latest.txt"
+  md = md_p.read_text(encoding="utf-8") if md_p.exists() else briefmod.to_markdown(br)
+  txt = txt_p.read_text(encoding="utf-8").strip() if txt_p.exists() else briefmod.to_text(br)
+  v, pr = br.get("verdict") or {}, br.get("price") or {}
+  title = f"SOXL {br.get('data_as_of')} {v.get('emoji') or ''} {v.get('label') or ''}｜${pr.get('close')}（{(pr.get('ret_1d') or 0):+.2f}%）".strip()
+  return notifymod.Message(br, md, txt, title, kind, _feed_paths())
+
+
+def _push(m: notifymod.Message, cfg_sched: dict, only: set[str] | None = None, success: bool = True) -> list[dict]:
+  try:
+    ncfg = notifymod.load_config()
+  except ValueError as e:
+    log.error("notify_config.json 錯誤：%s", e)
+    return [{"channel": "config", "type": "config", "ok": False, "detail": str(e)}]
+  if not cfg_sched.get("notify", True):
+    return []
+  changed = ((m.brief or {}).get("changes") or {}).get("verdict_changed")
+  ok, why = notifymod.should_send(ncfg, success, changed)
+  if not ok:
+    log.info("push skipped: %s", why)
+    return [{"channel": "all", "type": "policy", "ok": True, "detail": f"skipped: {why}"}]
+  # the macOS banner uses the scheduler's sound setting unless overridden per channel
+  for ch in ncfg.get("channels", []):
+    if ch.get("type") == "macos" and "sound" not in ch:
+      ch["sound"] = cfg_sched.get("notify_sound", "Glass")
+  return notifymod.dispatch(m, ncfg, only)
+
+
+# --------------------------------------------------------------------------- #
+# run
+# --------------------------------------------------------------------------- #
 def cmd_run(args: argparse.Namespace) -> int:
   cfg = scheduler.load_config()
   trigger = os.environ.get("SOXL_TRIGGER", "manual")
@@ -129,24 +196,39 @@ def cmd_run(args: argparse.Namespace) -> int:
         continue
       finished = datetime.now()
       s = _summary(payload)
+      feed_info = payload.get("_feed") or {}
       nxt = scheduler.next_runs(cfg, count=1)
       rec = {
           "status": "ok", "trigger": trigger, "attempt": attempt, "attempts": attempts,
           "started": started.isoformat(timespec="seconds"), "finished": finished.isoformat(timespec="seconds"),
           "duration_s": round((finished - started).total_seconds()),
           "next_run": nxt[0].strftime("%Y-%m-%d %H:%M") if nxt else None,
+          "feed_ok": bool(feed_info.get("ok")), "feed_notes": feed_info.get("notes") or [],
           **s,
       }
-      scheduler.write_last_run(rec)
       log.info("OK data_as_of=%s close=%s verdict=%s composite=%s size=%s%% warnings=%s",
                s["data_as_of"], s["close"], s["verdict"], s["composite"], s["size_pct"], s["warnings"] or "none")
+      # ---- push (macOS + configured channels)
       if notify_on:
-        title = f"SOXL 今日評級 {s.get('emoji') or ''} {s.get('verdict') or ''}".strip()
-        ret = s.get("ret_1d")
-        msg = (f"收盤 ${s.get('close')}（{ret:+.2f}%）｜綜合 {s.get('composite'):+.2f}｜賣 {s.get('sell_pct', 0):.0f}% / 觀 {s.get('hold_pct', 0):.0f}% / 買 {s.get('buy_pct', 0):.0f}%｜倉位上限 {s.get('size_pct')}%"
-               if isinstance(ret, (int, float)) and isinstance(s.get("composite"), (int, float)) else f"資料 {s.get('data_as_of')} 已更新")
-        sub = f"資料 {s.get('data_as_of')} 收盤 · 檢核 {s.get('checklist')}" + ("（部分來源缺）" if s["warnings"] else "")
-        scheduler.notify(title, msg, sub, cfg["notify_sound"])
+        try:
+          m = _message_from_feed()
+          if m:
+            if s["warnings"]:
+              m.title += "（部分來源缺）"
+            rec["push"] = _push(m, cfg, success=True)
+          else:
+            title = f"SOXL 今日評級 {s.get('emoji') or ''} {s.get('verdict') or ''}".strip()
+            scheduler.notify(title, f"資料 {s.get('data_as_of')} 已更新（簡報產生失敗）", "", cfg["notify_sound"])
+            rec["push"] = [{"channel": "macos", "type": "macos", "ok": True, "detail": "fallback banner (no brief)"}]
+        except Exception as e:  # noqa: BLE001
+          log.error("push stage crashed: %s", e)
+          rec["push"] = [{"channel": "all", "type": "internal", "ok": False, "detail": f"{type(e).__name__}: {e}"}]
+      # ---- publish to GitHub (Pages)
+      if not args.no_publish:
+        pub = publishmod.publish(cfg, s)
+        rec["publish"] = pub
+        (log.info if pub.get("status") in ("ok", "nochange", "skipped", "disabled") else log.warning)("publish: %s", pub)
+      scheduler.write_last_run(rec)
       if cfg["open_after_update"] and SIMPLE_HTML.exists():
         scheduler.open_file(SIMPLE_HTML)
       return 0
@@ -160,15 +242,21 @@ def cmd_run(args: argparse.Namespace) -> int:
     last_ok = scheduler.read_last_run()
     if last_ok and last_ok.get("status") == "ok":
       rec["last_ok"] = {k: last_ok.get(k) for k in ("finished", "data_as_of", "verdict", "composite")}
-    scheduler.write_last_run(rec)
     log.error("GIVING UP after %d attempts: %s", attempts, err_text)
     if notify_on:
       scheduler.notify("SOXL 自動更新失敗", f"{err_text[:160]}", f"已重試 {attempts} 次，沿用上一份報告", "Basso")
+      prev = briefmod.load_latest() or {}
+      m = notifymod.Message(prev, f"# SOXL 自動更新失敗\n\n{err_text}\n\n已重試 {attempts} 次，沿用上一份簡報（{prev.get('data_as_of')}）。", f"自動更新失敗：{err_text[:160]}", "SOXL 自動更新失敗", "update_failed", _feed_paths())
+      rec["push"] = _push(m, cfg, success=False)
+    scheduler.write_last_run(rec)
     return 1
   finally:
     _release_lock()
 
 
+# --------------------------------------------------------------------------- #
+# schedule commands
+# --------------------------------------------------------------------------- #
 def cmd_install(_: argparse.Namespace) -> int:
   cfg = scheduler.load_config()
   res = scheduler.install(cfg)
@@ -220,8 +308,26 @@ def cmd_status(_: argparse.Namespace) -> int:
         print(f"   ⚠️ 警告：{last['warnings']}")
     else:
       print(f"上次更新：❌ {last.get('finished')} 失敗：{last.get('error')}")
+    for r in last.get("push") or []:
+      print(f"   推播 {r.get('channel')}: {'✅' if r.get('ok') else '❌'} {r.get('detail')}")
+    if last.get("publish"):
+      p = last["publish"]
+      detail = str(p.get("detail") or p.get("message") or "").strip().splitlines()
+      print(f"   發佈 git: {p.get('status')} {p.get('commit') or ''} {detail[0] if detail else ''}" + (f"（{p['hint']}）" if p.get("hint") else ""))
   else:
     print("上次更新：尚無紀錄")
+  try:
+    ncfg = notifymod.load_config()
+    chans = [c.get("name") or c.get("type") for c in notifymod.enabled_channels(ncfg)]
+    print(f"推播頻道（{notifymod.CONFIG_PATH.name}{'，預設' if ncfg.get('_default') else ''}）：{', '.join(chans) or '無'}")
+  except ValueError as e:
+    print(f"推播設定錯誤：{e}")
+  gs = publishmod.status()
+  if gs.get("git"):
+    print(f"git：{gs.get('branch')}@{gs.get('head')} → {gs.get('remote') or '（無遠端）'}；未推送 commit {gs.get('ahead')}；工作區{'有' if gs.get('dirty') else '無'}未提交變更；自動發佈 {'開' if cfg['publish']['git_push'] else '關'}")
+  fp = briefmod.FEED_DIR / "latest.json"
+  if fp.exists():
+    print(f"feed：{fp}（{datetime.fromtimestamp(fp.stat().st_mtime):%Y-%m-%d %H:%M}）；公開網址 {cfg['feed']['base_url']}feed/latest.json")
   err_log = scheduler.LAUNCHD_LOG_DIR / "launchd.err.log"
   if err_log.exists() and err_log.stat().st_size:
     tail = err_log.read_text(encoding="utf-8", errors="replace").splitlines()[-5:]
@@ -247,6 +353,224 @@ def cmd_config(_: argparse.Namespace) -> int:
   return 0
 
 
+# --------------------------------------------------------------------------- #
+# agent-facing commands
+# --------------------------------------------------------------------------- #
+def cmd_brief(args: argparse.Namespace) -> int:
+  br = briefmod.load_latest()
+  if not br:
+    print("尚無 feed/latest.json — 先執行 auto_update.py run 或 auto_update.py feed", file=sys.stderr)
+    return 1
+  if args.json:
+    print(json.dumps(br, ensure_ascii=False, indent=1))
+  elif args.text:
+    print(briefmod.to_text(br))
+  else:
+    p = briefmod.FEED_DIR / "latest.md"
+    print(p.read_text(encoding="utf-8") if p.exists() else briefmod.to_markdown(br))
+  return 0
+
+
+def cmd_feed(args: argparse.Namespace) -> int:
+  from soxl_quant import history, pipeline
+  jp = BASE_DIR / "soxl_analysis_data.json"
+  if not jp.exists():
+    print("找不到 soxl_analysis_data.json — 先執行 auto_update.py run", file=sys.stderr)
+    return 1
+  payload = json.loads(jp.read_text(encoding="utf-8"))
+  payload["verdict_history"] = history.load(60)
+  try:
+    payload["schedule"] = scheduler.schedule_summary()
+  except Exception as e:  # noqa: BLE001
+    payload["schedule"] = {"installed": False, "error": str(e)}
+  info = pipeline.build_feed(payload, with_quotes=not args.offline)
+  for k, v in (info.get("paths") or {}).items():
+    print(f"  {k:9s} {v}")
+  if info.get("notes"):
+    print("  notes:", info["notes"])
+  return 0 if info.get("ok") else 1
+
+
+def cmd_quotes(args: argparse.Namespace) -> int:
+  from soxl_quant import quotes
+  q = quotes.snapshot()
+  if args.json:
+    print(json.dumps(q, ensure_ascii=False, indent=1))
+    return 0
+  print(f"{q['fetched_at_tpe']}（{q['fetched_at_et']}）市場狀態 {q.get('market_status') or 'n/a'}")
+  print(q["one_liner"])
+  for r in q["core"] + q["leaders"] + q["volatility"]:
+    if r.get("available"):
+      ext = f"  盤後 {r['ext_last']} ({r['ext_change_pct']:+.2f}%)" if r.get("ext_last") and r.get("ext_change_pct") is not None else ""
+      print(f"  {r['symbol']:6s} {r['last']:>10.2f}  {(r.get('change_pct') or 0):+6.2f}%  {r['label']}{ext}")
+    else:
+      print(f"  {r['symbol']:6s} {'n/a':>10s}  {r['label']}")
+  return 0
+
+
+def _mcp_entry() -> dict:
+  py = scheduler.python_path()
+  return {"soxl-quant": {"command": str(py), "args": [str(MCP_SERVER)], "env": {"PYTHONUTF8": "1"}}}
+
+
+def cmd_mcp_config(_: argparse.Namespace) -> int:
+  entry = _mcp_entry()
+  print("# Antigravity / Gemini CLI（~/.gemini/config/mcp_config.json 的 mcpServers 內）")
+  print(json.dumps({"mcpServers": entry}, ensure_ascii=False, indent=2))
+  print("\n# Claude Desktop（claude_desktop_config.json）/ Cursor（.cursor/mcp.json）格式相同；")
+  print("# 任何支援 MCP stdio 的 agent 都能直接呼叫 get_brief / get_latest / get_news / get_quotes / get_events / get_history / refresh。")
+  return 0
+
+
+def cmd_mcp_install(args: argparse.Namespace) -> int:
+  target = Path(args.path or (Path.home() / ".gemini" / "config" / "mcp_config.json")).expanduser()
+  data: dict = {}
+  if target.exists():
+    try:
+      data = json.loads(target.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+      print(f"{target} 不是合法 JSON，未修改：{e}", file=sys.stderr)
+      return 2
+    backup = target.with_suffix(f".bak.{datetime.now():%Y%m%d_%H%M%S}.json")
+    shutil.copy2(target, backup)
+    print(f"備份：{backup}")
+  servers = data.setdefault("mcpServers", {})
+  if not isinstance(servers, dict):
+    print("mcpServers 不是物件，未修改", file=sys.stderr)
+    return 2
+  servers.update(_mcp_entry())
+  target.parent.mkdir(parents=True, exist_ok=True)
+  from soxl_quant import fsio
+  fsio.atomic_write_text(target, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+  json.loads(target.read_text(encoding="utf-8"))  # re-validate
+  print(f"✅ 已寫入 {target} → mcpServers.soxl-quant（重新載入 MCP / 重啟 agent 後生效）")
+  return 0
+
+
+# --------------------------------------------------------------------------- #
+# Antigravity sidecar: every trading morning open a new agent conversation with the brief
+# --------------------------------------------------------------------------- #
+SIDECAR_ID = "soxl-daily-brief"
+SIDECAR_DIR = Path.home() / ".gemini" / "config" / "sidecars" / SIDECAR_ID
+SIDECAR_PROMPT = (
+    "每日 SOXL 簡報（自動排程）。請讀取 {md}（需要數字時再讀 {js}），"
+    "先確認 data_as_of 是最近一個已收盤的美股交易日（若不是，先說明資料日期與原因，可執行 `{py} {au} status` 查看）。"
+    "然後用新手聽得懂的話、三句以內回答：今天 SOXL 該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？"
+    "接著列出：建議倉位上限、停損 / 目標價、48 小時內的風險事件（FOMC / 財報 / 到期）、消息面一句話。"
+    "最後附一句免責聲明。不要修改任何檔案。"
+)
+
+
+def _sidecar_json(time_hhmm: str, weekdays: list[int], model: str) -> dict:
+  hh, mm = (int(x) for x in time_hhmm.split(":"))
+  cron_days = ",".join(str(d) for d in weekdays)  # cron: 0=Sun … 6=Sat (same as launchd)
+  prompt = SIDECAR_PROMPT.format(md=str(briefmod.FEED_DIR / "latest.md"), js=str(briefmod.FEED_DIR / "latest.json"), py=str(scheduler.python_path()), au=str(BASE_DIR / "auto_update.py"))
+  args = [f"{mm} {hh} * * {cron_days}", "agentapi", "new-conversation", "--title=SOXL 每日簡報"]
+  if model in ("flash_lite", "flash", "pro"):
+    args.append(f"--model={model}")
+  args.append(prompt)
+  return {"builtin": "schedule", "args": args, "restart_policy": "always",
+          "description": f"每個美股交易日隔天 {time_hhmm}（台北）開一個新的 agent 對話，請它讀 feed/latest.md 並用三句話告訴你今天 SOXL 該買 / 該賣 / 觀望（由 {BASE_DIR.name}/auto_update.py sidecar-install 建立）。"}
+
+
+def cmd_sidecar_install(args: argparse.Namespace) -> int:
+  cfg = scheduler.load_config()
+  t = args.time or "07:50"
+  if not scheduler._TIME_RE.match(t):  # noqa: SLF001
+    print("時間格式必須是 HH:MM", file=sys.stderr)
+    return 2
+  from soxl_quant import fsio
+  SIDECAR_DIR.mkdir(parents=True, exist_ok=True)
+  data = _sidecar_json(t, cfg["weekdays"], args.model or "")
+  fsio.atomic_write_text(SIDECAR_DIR / "sidecar.json", json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+  print(f"✅ 已建立 Antigravity sidecar：{SIDECAR_DIR / 'sidecar.json'}")
+  print(f"   排程：{scheduler.weekday_text(cfg)} {t}（本機時間；資料更新排程為 {'、'.join(cfg['times'])}，請留 15 分鐘以上）")
+  print("   效果：每個交易日早上自動開一個新的 agent 對話，agent 會讀 feed/latest.md 並用三句話告訴你該買 / 該賣 / 觀望。")
+  print("   移除：auto_update.py sidecar-uninstall")
+  return 0
+
+
+def cmd_sidecar_uninstall(_: argparse.Namespace) -> int:
+  p = SIDECAR_DIR / "sidecar.json"
+  if p.exists():
+    p.unlink()
+    try:
+      SIDECAR_DIR.rmdir()
+    except OSError:
+      pass
+    print(f"🗑  已移除 {p}")
+  else:
+    print("sidecar 原本就不存在")
+  return 0
+
+
+# --------------------------------------------------------------------------- #
+# push / publish commands
+# --------------------------------------------------------------------------- #
+def cmd_notify_config(_: argparse.Namespace) -> int:
+  notifymod.write_example()
+  if notifymod.CONFIG_PATH.exists():
+    print(f"已存在：{notifymod.CONFIG_PATH}（範本更新於 {notifymod.EXAMPLE_PATH}）")
+  else:
+    notifymod.load_config(create=True)
+    print(f"✅ 已建立 {notifymod.CONFIG_PATH}（chmod 600，已被 .gitignore 排除）")
+  print("把要用的頻道 enabled 改成 true 並填入網址 / 金鑰，然後：.venv/bin/python auto_update.py push-test")
+  return 0
+
+
+def cmd_push(args: argparse.Namespace) -> int:
+  cfg = scheduler.load_config()
+  m = _message_from_feed()
+  if not m:
+    print("尚無 feed/latest.json — 先執行 auto_update.py run 或 feed", file=sys.stderr)
+    return 1
+  only = {x.strip() for x in (args.only or "").split(",") if x.strip()} or None
+  res = _push(m, {**cfg, "notify": True}, only, success=True)
+  for r in res:
+    print(f"  {r.get('channel'):12s} {'✅' if r.get('ok') else '❌'} {r.get('detail')}")
+  return 0 if res and all(r.get("ok") for r in res) else 1
+
+
+def cmd_push_test(args: argparse.Namespace) -> int:
+  br = briefmod.load_latest() or {"links": {}, "verdict": {}, "price": {}}
+  now = datetime.now().strftime("%Y-%m-%d %H:%M")
+  md = f"# SOXL 推播測試 {now}\n\n如果你（或你的 agent）收到這則訊息，表示每天收盤後的簡報也會送到這裡。\n\n{briefmod.to_text(br) if br.get('data_as_of') else ''}"
+  m = notifymod.Message(br, md, f"SOXL 推播測試 {now}：頻道設定正確。", f"SOXL 推播測試 {now}", "test", _feed_paths())
+  try:
+    ncfg = notifymod.load_config()
+  except ValueError as e:
+    print(f"notify_config.json 錯誤：{e}", file=sys.stderr)
+    return 2
+  only = {x.strip() for x in (args.only or "").split(",") if x.strip()} or None
+  chans = notifymod.enabled_channels(ncfg)
+  if not chans:
+    print("沒有啟用的頻道（notify_config.json → channels[*].enabled）")
+    return 1
+  res = notifymod.dispatch(m, ncfg, only)
+  for r in res:
+    print(f"  {r.get('channel'):12s} {'✅' if r.get('ok') else '❌'} {r.get('detail')}")
+  return 0 if res and all(r.get("ok") for r in res) else 1
+
+
+def cmd_push_status(_: argparse.Namespace) -> int:
+  try:
+    ncfg = notifymod.load_config()
+  except ValueError as e:
+    print(f"notify_config.json 錯誤：{e}", file=sys.stderr)
+    return 2
+  print(json.dumps(notifymod.redact(ncfg), ensure_ascii=False, indent=2))
+  return 0
+
+
+def cmd_publish(_: argparse.Namespace) -> int:
+  cfg = scheduler.load_config()
+  last = scheduler.read_last_run() or {}
+  res = publishmod.publish({**cfg, "publish": {**cfg["publish"], "git_push": True}}, last)
+  print(json.dumps(res, ensure_ascii=False, indent=1))
+  return 0 if res.get("status") in ("ok", "nochange") else 1
+
+
+# --------------------------------------------------------------------------- #
 def main(argv: list[str] | None = None) -> int:
   ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
   sub = ap.add_subparsers(dest="cmd")
@@ -255,15 +579,38 @@ def main(argv: list[str] | None = None) -> int:
   run_p.add_argument("--retries", type=int, default=None, help="覆寫重試次數")
   run_p.add_argument("--wait-min", type=float, default=None, help="覆寫重試等待分鐘數")
   run_p.add_argument("--no-refresh", action="store_true", help="不清快取")
-  run_p.add_argument("--no-notify", action="store_true", help="不顯示 macOS 通知")
-  for name in ("install", "uninstall", "status", "notify-test", "config"):
+  run_p.add_argument("--no-notify", action="store_true", help="不推播（macOS 與所有頻道）")
+  run_p.add_argument("--no-publish", action="store_true", help="不 git push")
+  for name in ("install", "uninstall", "status", "notify-test", "config", "notify-config", "push-status", "publish", "mcp-config"):
     sub.add_parser(name)
+  b = sub.add_parser("brief")
+  b.add_argument("--json", action="store_true")
+  b.add_argument("--text", action="store_true")
+  f = sub.add_parser("feed")
+  f.add_argument("--offline", action="store_true", help="不抓即時報價")
+  q = sub.add_parser("quotes")
+  q.add_argument("--json", action="store_true")
+  p = sub.add_parser("push")
+  p.add_argument("--only", default="", help="逗號分隔的頻道類型，例如 webhook,telegram")
+  pt = sub.add_parser("push-test")
+  pt.add_argument("--only", default="")
+  mi = sub.add_parser("mcp-install")
+  mi.add_argument("--path", default="", help="mcp_config.json 路徑（預設 ~/.gemini/config/mcp_config.json）")
+  si = sub.add_parser("sidecar-install")
+  si.add_argument("--time", default="", help="每天幾點開新對話（預設 07:50，本機時間）")
+  si.add_argument("--model", default="", help="flash_lite / flash / pro（預設沿用 agent 設定）")
+  sub.add_parser("sidecar-uninstall")
   args = ap.parse_args(argv)
   _setup_logging()
   cmd = args.cmd or "run"
   if cmd == "run" and args.cmd is None:
     args = run_p.parse_args([])
-  handlers = {"run": cmd_run, "install": cmd_install, "uninstall": cmd_uninstall, "status": cmd_status, "notify-test": cmd_notify_test, "config": cmd_config}
+  handlers = {
+      "run": cmd_run, "install": cmd_install, "uninstall": cmd_uninstall, "status": cmd_status, "notify-test": cmd_notify_test, "config": cmd_config,
+      "brief": cmd_brief, "feed": cmd_feed, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
+      "sidecar-install": cmd_sidecar_install, "sidecar-uninstall": cmd_sidecar_uninstall,
+      "notify-config": cmd_notify_config, "push": cmd_push, "push-test": cmd_push_test, "push-status": cmd_push_status, "publish": cmd_publish,
+  }
   try:
     return handlers[cmd](args)
   except ValueError as e:

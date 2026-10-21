@@ -66,16 +66,35 @@ GOOGLE_QUERIES = [
     "semiconductor stocks", "chip stocks selloff", "Nvidia stock", "AMD stock", "Micron stock", "Broadcom stock",
     "SOXL ETF", "Philadelphia Semiconductor Index", "AI stocks bubble", "Treasury yields stocks", "Fed rate stocks",
 ]
+# Named RSS feeds (datafeed.RSS_SOURCES): exchange / broker / wire headlines that Yahoo search often misses.
+RSS_SYMBOL_FEEDS = [("nasdaq_symbol", s) for s in ("SOXL", "NVDA", "AVGO", "AMD", "MU", "TSM", "AMAT", "LRCX")] + \
+                   [("seekingalpha_symbol", s) for s in ("SOXL", "SOXX", "NVDA", "AMD", "MU")]
+RSS_MARKET_FEEDS = ["cnbc_markets", "cnbc_tech", "marketwatch_pulse", "marketwatch_top", "fed_press"]
+# Market-wide feeds carry a lot of non-semiconductor noise; keep only headlines that touch our universe or macro drivers.
+RELEVANCE_KW = [
+    "semiconductor", "chip", "chips", "nvidia", "nvda", "amd", "micron", "broadcom", "tsmc", "taiwan semi", "intel", "qualcomm",
+    "asml", "lam research", "applied materials", "kla", "marvell", "arm holdings", "sox", "soxl", "soxx", "ai ", " ai", "data center",
+    "datacenter", "gpu", "hbm", "memory", "foundry", "export", "tariff", "fed", "fomc", "powell", "treasury", "yield", "inflation",
+    "cpi", "pce", "jobs report", "payrolls", "nasdaq", "s&p", "stocks", "wall street", "rate cut", "rate hike", "vix", "selloff", "rally",
+]
+
+
+def _relevant(title: str) -> bool:
+  t = f" {title.lower()} "
+  return any(k in t for k in RELEVANCE_KW)
 
 
 def analyze(soxl_rows: list[dict], vix_rows: list[dict], tnx_rows: list[dict] | None, brent_rows: list[dict] | None, days: int = 14) -> dict:
   seen = {}
-  sources = {"yahoo": 0, "google": 0}
+  sources = {"yahoo": 0, "google": 0, "rss": 0}
+  rss_detail: dict[str, int] = {}
 
-  def ingest(items: list[dict], src: str) -> None:
+  def ingest(items: list[dict], src: str, filter_relevance: bool = False) -> None:
     for n in items:
       key = n["title"].strip().lower()
       if not key or key in seen or not n.get("timestamp"):
+        continue
+      if filter_relevance and not _relevant(n["title"]):
         continue
       sent, tag = classify(n["title"])
       ts = n["timestamp"]
@@ -91,6 +110,22 @@ def analyze(soxl_rows: list[dict], vix_rows: list[dict], tnx_rows: list[dict] | 
   for q in GOOGLE_QUERIES:
     try:
       ingest(datafeed.fetch_google_news(q), "google")
+    except Exception:  # noqa: BLE001
+      pass
+  for src, sym in RSS_SYMBOL_FEEDS:
+    try:
+      items = datafeed.fetch_rss(src, sym)
+      before = sources["rss"]
+      ingest(items, "rss")
+      rss_detail[f"{src}:{sym}"] = sources["rss"] - before
+    except Exception:  # noqa: BLE001
+      pass
+  for src in RSS_MARKET_FEEDS:
+    try:
+      items = datafeed.fetch_rss(src)
+      before = sources["rss"]
+      ingest(items, "rss", filter_relevance=True)
+      rss_detail[src] = sources["rss"] - before
     except Exception:  # noqa: BLE001
       pass
   items = sorted(seen.values(), key=lambda x: -x["timestamp"])
@@ -136,7 +171,7 @@ def analyze(soxl_rows: list[dict], vix_rows: list[dict], tnx_rows: list[dict] | 
     for h in f["top_bull_headlines"] + f["top_bear_headlines"]:
       themes[h["zh_tag"]] = themes.get(h["zh_tag"], 0) + 1
   return {
-      "total_unique_articles": len(items), "sources": sources, "recent_bull_count": rb, "recent_bear_count": rs,
+      "total_unique_articles": len(items), "sources": sources, "rss_feeds": rss_detail, "recent_bull_count": rb, "recent_bear_count": rs,
       "bull_bear_ratio": round(rb / rs, 2) if rs else None,
       "themes_7d": sorted(({"tag": k, "count": v} for k, v in themes.items()), key=lambda x: -x["count"]),
       "daily_feed": feed,

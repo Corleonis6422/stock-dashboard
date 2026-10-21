@@ -4,7 +4,7 @@
 > 期權籌碼 → 量價技術 → 市場情緒（CNN Fear & Greed、VIX 全家族、CBOE Put/Call、大戶期權流）→ 板塊廣度 → 宏觀跨資產 → 崩跌前兆系統 → 歷史同類情境機率 → −2~+2 評分表 → 下一步劇本 → 最近一次崩跌的復盤與教訓。
 > 所有判讀文字、分數與價位**全部由資料即時計算**，沒有任何寫死的日期或價格，因此每天重跑都是正確的。
 > 報告預設為 **新手模式**：第 0 區用一個大色塊（買進 / 觀望 / 賣出）、五格評級、買賣權重比與三問三答直接給答案；進階模式才展開全部分析。
-> 另外提供 **新手版獨立頁面 `soxl_simple.html`**（一個畫面回答「今天該買還是該賣」），以及 **每日自動更新**（macOS launchd：美股收盤後自動抓所有 API、重算、重寫頁面、推送通知，並累積每日評級紀錄與事後驗證）。
+> 另外提供 **新手版獨立頁面 `soxl_simple.html`**（一個畫面回答「今天該買還是該賣」）、**每日自動更新**（macOS launchd + GitHub Actions 雲端備援：美股收盤後自動抓所有 API、重算、重寫頁面、推播、`git push` 到 GitHub Pages，並累積每日評級紀錄與事後驗證），以及 **給 AI Agent（Muse 等）的吸收層**：一頁式簡報 `feed/latest.{md,json,txt}`、RSS、MCP server、多頻道推播（webhook / Google Chat / Slack / Telegram / LINE / email / agentapi）。
 
 ---
 
@@ -12,6 +12,7 @@
 
 1. [快速開始](#1-快速開始)
    - 1.1 一次設定，之後每天自動更新
+   - 1.2 讓 Muse / AI Agent 吸收（30 秒版）
 2. [整體架構與資料流](#2-整體架構與資料流)
 3. [資料來源、快取與安全](#3-資料來源快取與安全)
 4. [新手 30 秒看懂：該買還是該賣？](#4-新手-30-秒看懂該買還是該賣)
@@ -35,6 +36,7 @@
 9. [維護與客製化](#9-維護與客製化)
 10. [檔案結構](#10-檔案結構)
 11. [每日自動更新機制詳解](#11-每日自動更新機制詳解)
+12. [AI Agent / Muse 串接：feed、MCP、推播、GitHub Pages](#12-ai-agent--muse-串接feedmcp推播github-pages)
 
 ---
 
@@ -61,11 +63,12 @@ cd /Users/hsiaochieh/Documents/folder
 | 檔案 | 說明 |
 |---|---|
 | **`soxl_simple.html`** | **新手版**：一個畫面回答「今天該買還是該賣」— 大色塊結論、評級儀表、買/觀望/賣比例、依你的狀況該怎麼做、建議倉位、三個關鍵價位、10 日劇本機率、前三大理由、120 天燈號圖與每日評級紀錄（無 JavaScript、每 30 分鐘自動重新載入） |
-| `soxl_analysis_report.html` | 完整儀表板（新手 / 進階雙模式），用瀏覽器開啟即可（無外部資源、無需網路） |
-| `soxl_analysis_data.json` | 所有模組的結構化結果（約 480 KB），可供其他程式或 LLM 讀取 |
+| `soxl_analysis_report.html`（＝ `index.html`） | 完整儀表板（新手 / 進階雙模式），用瀏覽器開啟即可（無外部資源、無需網路）；`index.html` 是同一份，給 GitHub Pages 當首頁 |
+| `soxl_analysis_data.json` | 所有模組的結構化結果（約 500 KB），可供其他程式或 LLM 讀取 |
+| **`feed/latest.md` / `latest.json` / `latest.txt`** | **給 AI Agent 的一頁式簡報**（Markdown / 結構化 JSON `soxl-quant-brief/1` / 手機短訊版）＋ `rss.xml`、`quotes.json`（即時報價快照）、`schema.json`、`index.json` 與 `YYYY-MM-DD.{json,md}` 歷史（120 天）。詳見 [第 12 節](#12-ai-agent--muse-串接feedmcp推播github-pages) 與 [AGENTS.md](AGENTS.md) |
 | `history/verdicts.jsonl` | **每日評級紀錄**（每交易日一行：評級、綜合分、倉位上限、關鍵情緒/籌碼讀數，並自動回填之後 5 / 10 日實際報酬做事後驗證） |
 | `history/snapshots/*.json.gz` | 每日完整 JSON 快照（gzip，保留 180 天，可回測或重現任一天的報告） |
-| `logs/last_run.json`、`logs/auto_update.log` | 自動更新的最近結果與紀錄 |
+| `logs/last_run.json`、`logs/auto_update.log` | 自動更新的最近結果（含推播與 git 發佈結果）與紀錄 |
 | `.cache/` | 下載資料的快取（TTL 6 小時；`--refresh` 會清除） |
 
 環境：Python 3.14（`.venv`），**只用標準函式庫**，沒有第三方套件（`requirements.txt` 為空是刻意的）。
@@ -76,18 +79,37 @@ cd /Users/hsiaochieh/Documents/folder
 # 安裝 macOS 使用者層級排程（不需 sudo）：預設 週二～週六 07:30（台北時間）= 美股週一～週五收盤後
 .venv/bin/python auto_update.py install
 
-# 查看排程狀態、上次結果、下次執行時間
+# 查看排程狀態、上次結果、下次執行時間、推播與 git 發佈結果
 .venv/bin/python auto_update.py status
 
-# 立刻手動更新一次（含重試與 macOS 通知）
+# 立刻手動更新一次（抓 API → 評分 → HTML → feed → 推播 → git push；含重試）
 .venv/bin/python auto_update.py run
 
 # 其他：uninstall（移除排程）、notify-test（測試通知）、config（看 / 建立設定檔）
 ```
 
-安裝後每次更新完成，macOS 會跳出通知「SOXL 今日評級 🔴 賣出 / 減碼｜收盤 $…｜綜合 …｜賣 61% / 觀 27% / 買 12%｜倉位上限 10%」；打開 `soxl_simple.html` 就是最新結果（頁面頂端會顯示下次自動更新時間）。詳細機制（launchd、登入補跑、重試、盤中快照、日誌、疑難排解）見 [第 11 節](#11-每日自動更新機制詳解)。
+安裝後每次更新完成，macOS 會跳出通知「SOXL 2026-10-20 🔴 賣出 / 減碼｜$97.6（-1.06%）」加三行重點；打開 `soxl_simple.html` 就是最新結果（頁面頂端會顯示下次自動更新時間）。若 repo 已設定 GitHub 遠端與 SSH 金鑰，同一次更新會自動 `git push`，GitHub Pages 上的 `index.html` / `feed/` 也跟著更新。詳細機制（launchd、登入補跑、重試、盤中快照、日誌、疑難排解）見 [第 11 節](#11-每日自動更新機制詳解)。
 
 > 第一次由排程執行時，macOS 可能跳出「python 想要存取你的「文件」資料夾」→ 請按「好」（只會問一次）。
+
+### 1.2 讓 Muse / AI Agent 吸收（30 秒版）
+
+```bash
+# A. 直接抓（任何 agent、零安裝）
+curl -s https://corleonis6422.github.io/stock-dashboard/feed/latest.md        # 一頁式簡報
+curl -s https://corleonis6422.github.io/stock-dashboard/feed/latest.json      # 結構化資料
+
+# B. 本機 MCP server（Antigravity / Gemini CLI / Claude / Cursor …）
+.venv/bin/python auto_update.py mcp-install        # 寫進 ~/.gemini/config/mcp_config.json（先備份）
+#    → agent 可呼叫 get_brief / get_quotes / get_news / get_events / get_latest(section) / refresh
+
+# C. 更新完主動推給 Muse / 你
+.venv/bin/python auto_update.py notify-config      # 建 notify_config.json（git 不追蹤、chmod 600）
+#    填入 webhook URL（Muse inbox）/ Telegram / LINE / Slack / email / agentapi …，然後
+.venv/bin/python auto_update.py push-test
+```
+
+欄位意義、新鮮度規則與 agent 該怎麼轉述，全部寫在 [AGENTS.md](AGENTS.md)。
 
 ---
 
@@ -104,6 +126,9 @@ flowchart LR
     T[美國財政部殖利率]
     Y[Yahoo 期貨/FX/加密 → ETF 代理]
     G[Google News RSS / Yahoo News]
+    R[Nasdaq / Seeking Alpha 個股 RSS<br/>CNBC / MarketWatch / Fed RSS]
+    K[Nasdaq 財報日曆 / Fed FOMC 日程]
+    Q[Nasdaq 即時報價 / CBOE 延遲指數]
   end
   N --> TECH[technicals]
   N --> HM[heatmap]
@@ -120,24 +145,33 @@ flowchart LR
   F --> EWS
   C3 --> EWS
   T --> EWS
-  G --> NEWS[news]
+  G & R --> NEWS[news]
+  K --> EV[events]
+  Q --> QT[quotes]
   TECH & OPT & SEN & HM & MAC & EWS & NEWS --> SC[scoring]
   SC --> PB[playbook]
   TECH & SEN & EWS & OPT --> PM[postmortem]
   SC & PB & PM --> OUT[(JSON + HTML)]
+  OUT & EV & QT --> BR[brief → feed/ JSON · MD · TXT · RSS]
 ```
 
 執行順序由 `soxl_quant/pipeline.py` 控制（9 個步驟），**任何一個來源失敗都只會讓該模組降級，不會中斷其他分析**；失敗原因會寫進 JSON 的 `warnings` 與 HTML 頂端提示。
-第 9 步除了寫出 JSON 與兩個 HTML，還會 (a) 追加 `history/verdicts.jsonl` 的當日評級紀錄並回填舊紀錄的 5 / 10 日實際報酬、(b) 存 gzip 快照、(c) 讀取排程狀態放進頁面；所有檔案都是**原子寫入**（先寫暫存檔再 rename），排程中途失敗不會留下半份報告。
+第 9 步除了寫出 JSON 與兩個 HTML（外加 `index.html`），還會 (a) 追加 `history/verdicts.jsonl` 的當日評級紀錄並回填舊紀錄的 5 / 10 日實際報酬、(b) 存 gzip 快照、(c) 讀取排程狀態放進頁面、(d) 抓未來事件與即時報價、產生 agent 簡報 `feed/`；所有檔案都是**原子寫入**（先寫暫存檔再 rename），排程中途失敗不會留下半份報告。
 
 ```mermaid
 flowchart LR
   L[launchd 07:30 / 登入補跑] --> A[auto_update.py run --if-stale]
+  GA[GitHub Actions 22:15 / 00:30 UTC<br/>只在 repo 資料落後時] --> A
   A -->|資料落後最近交易日| P[pipeline.run]
   A -->|已是最新| S[略過]
-  P --> J[(JSON + 2 HTML)]
+  P --> J[(JSON + 3 HTML)]
   P --> H[history/verdicts.jsonl + snapshots]
-  P --> N[macOS 通知 今日評級]
+  P --> FD[feed/latest.json · md · txt · rss.xml]
+  FD --> PUSH[推播 notify.py<br/>macOS · webhook(Muse) · Google Chat · Slack · Discord<br/>Telegram · LINE · email · agentapi · command]
+  J & FD --> GIT[publish.py git commit + push]
+  GIT --> PAGES[GitHub Pages<br/>index.html · feed/ · JSON]
+  PAGES --> AG[任何 agent 用網址 pull]
+  MCP[soxl_mcp.py MCP server] --> AG2[本機 agent 工具呼叫]
   P -->|失敗| R[等 10 / 30 分鐘重試，最多 3 次]
 ```
 
@@ -151,13 +185,15 @@ flowchart LR
 |---|---|---|---|
 | SOXL / SOXX / SOXS / SPY / QQQ / HYG / TLT / 16 檔成分股 日線 OHLCV | `api.nasdaq.com/api/quote/{SYM}/historical` | 5 年 | 技術、廣度、事件研究、資金流 |
 | 當日（或最近一個交易日）K 線補齊 | `api.nasdaq.com/api/quote/{SYM}/chart` 的 1 分鐘序列（取 09:30–16:00 ET 算 OHLC）＋ `…/info` 的官方收盤與市場狀態 | 當日 | Nasdaq 官方日線**收盤後要數小時才公布**；排程在收盤後 1–3 小時跑時，用這兩個端點補上當天的 K 線（標示「收盤即時報價補齊」），隔天自動換回官方日線。盤中執行則成為「盤中快照」 |
+| **即時報價快照**（SOXL / SOXS / SOXX / SPY / QQQ、NVDA 等 7 檔龍頭、VIX / VIX3M / VIX9D / SKEW） | `api.nasdaq.com/api/quote/{SYM}/info`（近即時，含盤後）＋ `cdn.cboe.com/api/global/delayed_quotes/quotes/_{IDX}.json`（延遲 15 分） | 當下 | `feed/quotes.json`、MCP `get_quotes`、`auto_update.py quotes` |
 | SOXL / SOXX / SOXS 選擇權鏈（含 bid/ask/last/IV/OI/Volume/Greeks/theo/change） | `cdn.cboe.com/api/global/delayed_quotes/options/{SYM}.json` | 即時（延遲報價） | 期權籌碼、GEX、大戶流、預期波動 |
 | VIX / VIX9D / VIX3M / VIX6M / VIX1D / VVIX / SKEW | `cdn.cboe.com/api/global/us_indices/daily_prices/{NAME}_History.csv` | 完整歷史 | VIX 家族、期限結構、前兆訊號、宏觀相關 |
 | 全市場 Put/Call（Total / Index / Equity / ETP / SPX / VIX） | `cdn.cboe.com/data/us/options/market_statistics/daily/{YYYY-MM-DD}_daily_options` | 近 60 日 | 情緒、前兆訊號 |
 | CNN Fear & Greed（綜合 + 7 子指標 + 1 年歷史） | `production.dataviz.cnn.io/index/fearandgreed/graphdata`（需瀏覽器 Referer） | 250 日 | 情緒、前兆訊號、同類情境 |
 | 美國公債殖利率曲線（2Y/5Y/10Y/20Y/30Y） | `home.treasury.gov/...daily-treasury-rates.csv/{year}/all` | 3–4 年 | 宏觀、前兆訊號 |
 | Brent / 美元指數 / 黃金 / 銅 / BTC / MOVE | Yahoo Finance v8 chart；**限流時自動改用 ETF 代理**：BNO / UUP / GLD / CPER / IBIT（Nasdaq） | 1–2 年 | 宏觀相關、跨資產風險溫度計 |
-| 新聞 | Yahoo Finance search API + **Google News RSS**（`news.google.com/rss/search`） | 近 2 週 | 利多/利空分類 |
+| 新聞 | Yahoo Finance search API + **Google News RSS** + **Nasdaq 個股 RSS**（SOXL / NVDA / AVGO / AMD / MU / TSM / AMAT / LRCX）+ **Seeking Alpha 個股 RSS** + **CNBC Markets / Tech、MarketWatch Pulse / Top、Fed 新聞稿 RSS**（市場型 RSS 以半導體 / 宏觀關鍵字過濾） | 近 2 週 | 利多/利空分類、簡報頭條 |
+| **未來事件** | FOMC：`federalreserve.gov/monetarypolicy/fomccalendars.htm`（解析失敗用內建 2026 日程）；成分股財報：`api.nasdaq.com/api/calendar/earnings?date=`（掃未來 10 個交易日）；週 / 月選擇權到期與 NYSE 假日由程式推算 | 未來 14 天 | 簡報「近期事件」、推播風險提醒 |
 
 ### 3.2 快取與限流
 
@@ -514,29 +550,45 @@ Yahoo 對本機限流時，系統自動改用 ETF 代理（BNO / UUP / GLD / CPE
 ```text
 folder/
 ├─ analyze_soxl.py              入口（呼叫 soxl_quant.pipeline.run）
-├─ auto_update.py               每日自動更新：run / install / uninstall / status / notify-test / config
-├─ auto_update_config.json      排程設定（時間、星期、重試、通知…；第一次執行 auto_update.py 時自動建立）
-├─ generate_html_report.py      用既有 JSON 離線重產兩個 HTML
+├─ auto_update.py               每日自動更新 + agent / 推播 / 發佈 CLI：run / install / status / brief / feed / quotes /
+│                               push / push-test / push-status / publish / mcp-config / mcp-install / notify-config …
+├─ auto_update_config.json      排程設定（時間、星期、重試、通知、publish.git_push、feed.base_url…）
+├─ notify_config.example.json   推播頻道範本（複製成 notify_config.json 填入金鑰；notify_config.json 已被 .gitignore）
+├─ soxl_mcp.py                  MCP server（stdio）：get_brief / get_latest / get_quotes / get_news / get_events / get_history / get_status / refresh
+├─ generate_html_report.py      用既有 JSON 離線重產 HTML（含 index.html）與 feed/
+├─ AGENTS.md                    給 Muse / AI Agent 的吸收指南（網址、欄位、解讀規則、推播信封）
 ├─ README.md                    本文件
 ├─ requirements.txt             空（純標準函式庫）
 ├─ soxl_analysis_data.json      輸出：結構化結果
 ├─ soxl_analysis_report.html    輸出：完整儀表板（新手 / 進階雙模式）
+├─ index.html                   輸出：完整儀表板的複本（GitHub Pages 首頁）
 ├─ soxl_simple.html             輸出：新手版一頁看板（零 JavaScript）
+├─ feed/                        輸出：agent 簡報
+│  ├─ latest.json / latest.md / latest.txt   最新簡報（結構化 / 一頁式 / 短訊）
+│  ├─ YYYY-MM-DD.json / .md     每日歸檔（保留 120 天）＋ index.json 目錄
+│  ├─ rss.xml                   RSS 2.0（一天一則）
+│  ├─ quotes.json               產生當下的即時報價快照
+│  └─ schema.json               latest.json 的 JSON Schema（soxl-quant-brief/1）
 ├─ history/
 │  ├─ verdicts.jsonl            每交易日一行的評級紀錄（含事後 5 / 10 日報酬回填）
 │  └─ snapshots/                每日完整 JSON 快照（gzip，保留 180 天）
 ├─ logs/
-│  ├─ last_run.json             最近一次自動更新的結果（status / data_as_of / verdict / next_run…）
+│  ├─ last_run.json             最近一次自動更新的結果（status / data_as_of / verdict / push[] / publish{} / next_run…）
 │  └─ auto_update.log           自動更新紀錄（1 MB 輪替 ×5）
+├─ .github/workflows/
+│  ├─ deploy.yml                push 到 main 後部署 GitHub Pages
+│  └─ daily-update.yml          雲端備援：UTC 22:15 / 00:30 檢查 repo 資料是否落後，落後才跑一次並 commit
 ├─ .cache/                      下載快取（可刪）
 ├─ .venv/                       Python 3.14 虛擬環境
 ├─ legacy/                      2026-10-09 之前的單一檔案版本（僅供參考）
 ├─ tools/
 │  ├─ qa_render.py              版面 QA：headless Chrome 多寬度檢查裁切 / 重疊 / 斷行（可截圖到 .qa/）
-│  └─ qa_stress.py              用極端假資料壓測圖表排版
+│  ├─ qa_stress.py              用極端假資料壓測圖表排版
+│  ├─ test_mcp.py               用腳本化 MCP client 驗證 soxl_mcp.py（握手、每個工具、資源、提示、錯誤路徑）
+│  └─ test_push.py              本機假 inbox 驗證推播（webhook 格式、HMAC、允許清單、command 頻道、送出政策）
 ├─ .qa/                         QA 產生的檢查用副本與截圖（可刪）
 └─ soxl_quant/
-   ├─ datafeed.py        資料層：白名單、快取、節流、熔斷、ETF 代理、當日 K 線補齊 (fetch_nasdaq_latest_session)
+   ├─ datafeed.py        資料層：白名單、快取、節流、熔斷、ETF 代理、當日 K 線補齊、RSS、財報 / FOMC 日曆、即時報價
    ├─ indicators.py      純數學：SMA/EMA/RSI/KDJ/MACD/ATR/ADX/Supertrend/SAR/MFI/CMF/OBV/布林/波段偵測/統計
    ├─ technicals.py      技術分析與 11 列指標表
    ├─ options_flow.py    期權：P/C、GEX、Gamma 翻正、牆、Max Pain、大戶流、預期波動、機率
@@ -547,13 +599,19 @@ folder/
    ├─ scoring.py         7 維度評分表與格局判定
    ├─ playbook.py        結論、價位階梯、三劇本、檢核表、新手結論 / 倉位 / 三問三答
    ├─ postmortem.py      崩跌復盤與教訓
-   ├─ news.py            新聞抓取與多空分類
+   ├─ news.py            新聞抓取（Yahoo / Google / Nasdaq / Seeking Alpha / CNBC / MarketWatch / Fed）與多空分類
+   ├─ events.py          未來事件：FOMC、成分股財報、週 / 月選擇權到期、休市
+   ├─ quotes.py          即時報價快照（Nasdaq + CBOE）
+   ├─ brief.py           agent 簡報：latest.json / md / txt、RSS、schema、歸檔、與前日差異
+   ├─ notify.py          推播：macOS / webhook / Google Chat / Slack / Discord / Telegram / LINE / email / agentapi / command
+   ├─ publish.py         git commit + rebase + push（→ GitHub Pages）
    ├─ history.py         每日評級紀錄、快照、事後報酬回填、價格燈號
    ├─ scheduler.py       launchd 排程：設定驗證、plist、下次時間、是否過期、macOS 通知
+   ├─ marketclock.py     美股交易日曆（NYSE 假日、最近交易日）
    ├─ fsio.py            原子寫檔
    ├─ report_html.py     完整儀表板渲染
    ├─ report_simple.py   新手版渲染
-   └─ pipeline.py        9 步驟流程控制
+   └─ pipeline.py        9 步驟流程控制 + build_feed()
 ```
 
 系統檔（安裝排程後才會出現）：`~/Library/LaunchAgents/com.soxlquant.autoupdate.plist`、`~/Library/Logs/soxl_quant/launchd.{out,err}.log`。
@@ -567,8 +625,9 @@ folder/
 1. **launchd LaunchAgent**（使用者層級，不需 sudo）依 `auto_update_config.json` 的 `times × weekdays` 觸發；預設 `07:30` × 週二～週六（台北時間）＝美股週一～週五收盤後 3.5 小時（冬令時間 4.5 小時）。
 2. 觸發的指令是 `auto_update.py run --if-stale`：先判斷**需不需要更新** — 沒有成功紀錄、或上次資料日期落後「最近一個已收盤的美股交易日」（以 America/New_York 計算，收盤 + 75 分鐘緩衝）、或上次是盤中快照 → 執行；若 3 小時內剛成功更新過則略過（避免登入補跑與排程重疊）。
 3. 執行 `pipeline.run(refresh=True)`：第一次嘗試清快取確保抓到當日資料；失敗則等 10 分鐘、30 分鐘重試（共 3 次，重試時沿用快取）。同時間只允許一個實例（`logs/.auto_update.lock`）。
-4. 成功後寫 `logs/last_run.json`，macOS 通知「SOXL 今日評級 …」；失敗 3 次則通知「自動更新失敗，沿用上一份報告」（舊報告不會被破壞，因為所有輸出都是原子寫入）。
+4. 成功後寫 `logs/last_run.json`，產生 `feed/`，依 `notify_config.json` 推播（macOS 通知 + 啟用的頻道），再 `git commit + push` 輸出檔（`publish.git_push`）；失敗 3 次則通知「自動更新失敗，沿用上一份報告」並推送 `soxl.update_failed` 事件（舊報告不會被破壞，因為所有輸出都是原子寫入）。
 5. `RunAtLoad` + `--if-stale`：**登入 / 開機時**若發現資料落後就立刻補跑，所以排程時間 Mac 關機也不會漏掉一天；Mac 只是睡眠的話，launchd 會在喚醒時補跑錯過的排程（這是 launchd 相對 cron 的優點）。
+6. **雲端備援**：`.github/workflows/daily-update.yml` 在 UTC 22:15 與 00:30（週一～五收盤後）檢查 repo 內 `soxl_analysis_data.json` 的 `data_as_of` 是否落後最近交易日；落後才在 GitHub Actions 跑一次 `auto_update.py run --no-notify --no-publish` 並 commit。Mac 正常運作時它永遠是「已是最新 → 略過」，所以不會互相覆蓋；Mac 端 `publish.py` 推送前會先 fetch + rebase，衝突時保留本機較新的產出檔。
 
 ### 11.2 為什麼收盤後 1–3 小時就能拿到當天收盤
 
@@ -583,10 +642,12 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 | `run_at_login_if_stale` | `true` | 登入 / 開機時資料落後就補跑 |
 | `retries` / `retry_wait_min` | `3` / `[10, 30]` | 嘗試次數與每次重試前等待分鐘 |
 | `refresh_cache` | `true` | 第一次嘗試清快取 |
-| `notify` / `notify_sound` | `true` / `"Glass"` | macOS 通知與音效（空字串 = 靜音） |
+| `notify` / `notify_sound` | `true` / `"Glass"` | 是否推播（macOS 通知 + `notify_config.json` 內啟用的頻道）與音效（空字串 = 靜音） |
 | `open_after_update` | `false` | 成功後自動用瀏覽器開啟新手版 |
+| `publish.git_push` / `remote` / `branch` | `true` / `"origin"` / `"main"` | 成功後自動 commit 輸出檔並 push（資料夾不是 git repo 或沒有遠端時自動略過） |
+| `feed.base_url` | GitHub Pages 網址 | 用來組 `feed/latest.json` 等公開連結放進簡報與推播 |
 
-改完設定後重新執行 `auto_update.py install` 讓 plist 生效。
+改完設定後重新執行 `auto_update.py install` 讓 plist 生效。推播頻道設定在另一個檔 `notify_config.json`（見第 12 節）。
 
 ### 11.4 疑難排解
 
@@ -596,4 +657,66 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 | `launchd.err.log` 出現 `Operation not permitted` / `PermissionError` 讀寫 Documents | macOS 隱私權限：系統設定 → 隱私權與安全性 → 檔案與檔案夾（或完整磁碟取用權）→ 允許 `python3.14`（Homebrew 的 `/opt/homebrew/Cellar/python@3.14/.../python3.14`）；或把專案移到非受保護資料夾 |
 | 沒有收到通知 | `auto_update.py notify-test`；系統設定 → 通知 → 允許「指令碼編輯程式 / osascript」顯示通知 |
 | 上次失敗（`last_run.json` 的 `status: error`） | 多半是某個 API 暫時 429 / 逾時；手動 `auto_update.py run` 即可，報告會沿用最近一次成功版本 |
+| `status` 的「發佈 git」顯示 `error … Permission denied (publickey)` | 這台 Mac 的 SSH 金鑰還沒加到 GitHub：`pbcopy < ~/.ssh/id_ed25519.pub` 後貼到 GitHub → Settings → SSH and GPG keys；或 `publish.git_push=false` 關閉 |
+| 推播某頻道 ❌ | `auto_update.py push-test --only <type>` 看詳細錯誤；`push-status` 檢查設定（金鑰已遮罩） |
 | 想暫停 | `auto_update.py uninstall`（移除 plist）；要恢復再 `install` |
+
+---
+
+## 12. AI Agent / Muse 串接：feed、MCP、推播、GitHub Pages
+
+> 完整的欄位表、解讀規則與推播信封格式在 [AGENTS.md](AGENTS.md)；這裡講設計與操作。
+
+### 12.1 吸收層的設計
+
+每次更新都把同一個 `brief` dict 渲染成三種形狀，agent 挑最順手的：
+
+| 檔案 | 給誰 | 內容 |
+|---|---|---|
+| `feed/latest.md`（約 7 KB） | LLM / 人 | 一頁式簡報：結論與多空比重、與前一日的變化、價格與關鍵價位、期權牆與市場定價波動、技術指標快照、情緒 / 廣度 / 宏觀、崩跌前兆、消息多空（含連結）、14 天內事件（FOMC / 成分股財報 / 選擇權到期）、行動計畫與三劇本、即時報價、連結、免責 |
+| `feed/latest.json`（約 45 KB） | 程式 / agent 工具 | 同樣內容的結構化版本，schema `soxl-quant-brief/1`（`feed/schema.json`），沒有 SVG、沒有長序列、沒有任何金鑰 |
+| `feed/latest.txt`（≤ 900 字） | 手機通知 | 收盤 / 評級 / 三個價位 / F&G·VIX·前兆 / 變化 / 事件 / 頭條 |
+
+另外有 `feed/rss.xml`（訂閱）、`feed/quotes.json`（產生當下的即時報價）、`feed/index.json` + `feed/YYYY-MM-DD.{json,md}`（120 天歸檔）。`brief.changes` 會跟 `history/verdicts.jsonl` 的前一筆比較（評級是否改變、綜合分差、連續同評級天數），讓 agent 知道「今天值不值得打擾你」。
+
+### 12.2 三種接法
+
+**A. Pull（網址）**：`git push` 之後 GitHub Pages 會更新 `https://corleonis6422.github.io/stock-dashboard/feed/latest.json` 等；任何能上網的 agent 直接 `GET`。新鮮度判斷：`data_as_of` 應等於最近一個已收盤的美股交易日。
+
+**B. MCP（本機工具）**：`soxl_mcp.py` 是純標準函式庫的 MCP stdio server（協定 2024-11-05 ～ 2025-06-18）。`auto_update.py mcp-install` 會把它寫進 `~/.gemini/config/mcp_config.json`（先備份），Antigravity 重新載入後就有 `get_brief` / `get_latest(section)` / `get_quotes` / `get_news` / `get_events` / `get_history` / `get_status` / `refresh` 八個工具、九個資源與 `daily_briefing` 提示範本。Claude Desktop / Cursor / Gemini CLI 用 `mcp-config` 印出的同一段設定。驗證：`tools/test_mcp.py`。
+
+**C. Push（推播）**：`notify_config.json`（`auto_update.py notify-config` 建立，`chmod 600`，git 不追蹤；任何值可寫 `"$ENV:NAME"` 從環境變數讀）定義頻道；`run` 成功後依 `send_on` 政策（`success` / `failure` / `only_if_verdict_changed`）逐一送出，結果寫進 `logs/last_run.json["push"]` 並顯示在 `status`。
+
+| 頻道 | 說明 |
+|---|---|
+| `webhook` | 任何 HTTPS 端點（本機 `127.0.0.1` 可用 http）。`format=json` 送完整信封（含 `brief`）、`slim` 不含 `brief`、`text` 送 Markdown 本文；可加 `bearer_token`、自訂 `headers`、`hmac_secret`（`X-SOXL-Signature: sha256=<hex>`，對 body 算 HMAC-SHA256）。**這就是給 Muse 的入口**：把 Muse 的 inbox URL 填進去即可 |
+| `google_chat` / `slack` / `discord` | incoming webhook；主機名固定允許清單 |
+| `telegram` | Bot API `sendMessage`（HTML 模式） |
+| `line` | LINE Messaging API push（channel access token + 使用者 / 群組 ID） |
+| `email` | SMTP（STARTTLS 或 SSL），本文是 Markdown 簡報，可附兩個 HTML |
+| `agentapi` | Antigravity / Jetski 的 `agentapi new-conversation`（開一個新對話，把簡報與「請吸收並用三句話回答」的前言一起丟進去）或 `send-message` 到指定對話 ID。**只在 agent 環境內可用**（需要 `ANTIGRAVITY_LS_ADDRESS`），排程推播請用下面的 sidecar |
+| `command` | 本機任意執行檔（argv 陣列、不經 shell；`{title}` `{text}` `{markdown}` `{json_path}` `{md_path}` `{html_path}` 會被代入），stdin 收到 JSON 信封 — 任何有 CLI 的 agent 都能接 |
+| `macos` | 通知中心 |
+
+安全：各頻道主機名固定（generic webhook 僅限 HTTPS 或本機），secrets 不進 log / feed / git，`push-status` 顯示時會遮罩；所有子程序都是 argv 陣列。驗證：`tools/test_push.py` 會起一個本機假 inbox 檢查格式、簽章、允許清單與政策。
+
+**D. Antigravity sidecar（Muse 就是 Antigravity agent 時）**：`auto_update.py sidecar-install` 會寫 `~/.gemini/config/sidecars/soxl-daily-brief/sidecar.json`（`builtin: schedule` → `agentapi new-conversation`，預設週二～六 07:50）。每個交易日早上 Antigravity 自動開一個「SOXL 每日簡報」對話，agent 讀 `feed/latest.md`、確認新鮮度，然後用三句話回報該買 / 該賣 / 觀望與要盯的價位。`sidecar-uninstall` 移除。
+
+### 12.3 發佈到 GitHub Pages
+
+`publish.py` 在每次成功更新後：`git add`（只加輸出檔：JSON、3 個 HTML、`feed/`、`history/`）→ `commit`（訊息 `data: <日期> close $<價> <評級> composite <分> [auto]`，作者 `soxl-quant-bot`）→ `fetch` + `rebase`（衝突時保留本機產出）→ `push`。全程 `GIT_TERMINAL_PROMPT=0`、`ssh -o BatchMode=yes`，絕不卡在密碼提示、絕不 force push。push 成功後 `deploy.yml` 自動部署 Pages。
+
+### 12.4 常用指令
+
+```bash
+.venv/bin/python auto_update.py brief            # 看最新簡報（--json / --text）
+.venv/bin/python auto_update.py quotes           # 即時報價（--json）
+.venv/bin/python auto_update.py feed             # 不重算模型，重建 feed/（含最新事件 / 報價）
+.venv/bin/python auto_update.py notify-config    # 建立推播設定檔
+.venv/bin/python auto_update.py push-test        # 測試所有啟用頻道（--only webhook）
+.venv/bin/python auto_update.py push             # 把最新簡報再推一次
+.venv/bin/python auto_update.py publish          # 立刻 git commit + push 輸出檔
+.venv/bin/python auto_update.py mcp-install      # 註冊 MCP server 到 Antigravity
+.venv/bin/python tools/test_mcp.py               # MCP 自我測試
+.venv/bin/python tools/test_push.py              # 推播自我測試
+```
