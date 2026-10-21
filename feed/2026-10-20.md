@@ -72,6 +72,10 @@
   - 板塊：16 檔成分股站上 20MA 比例 6% → 目標 >40%；大戶期權淨方向 -0.475 → 轉正
   - 崩跌前兆分數 18 → 回落 <60
 
+## 最新報價（2026-10-21 11:12 台北）
+- SOXL $97.55（-1.12%）；VIX 17.31（-6.5%），VIX/VIX3M 0.912（正常）｜市場狀態 Closed
+- SOXS 47.13（+1.07%）｜SOXX 500.01（-0.38%）｜SPY 769.05（+0.34%）｜QQQ 717.63（-0.10%）｜NVDA 216.47（-0.29%）｜AVGO 334.37（-0.07%）｜AMD 534.74（-0.62%）｜MU 896.07（-0.98%）｜TSM 425.08（+1.16%）｜AMAT 404.98（-1.97%）｜LRCX 263.45（-3.21%）｜VIX 17.31（-6.53%）
+
 ## 連結
 - 完整報告 https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html
 - 新手版 https://corleonis6422.github.io/stock-dashboard/soxl_simple.html

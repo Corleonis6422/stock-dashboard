@@ -1462,12 +1462,141 @@
   }
  },
  "quotes": {
-  "fetched_at_tpe": null,
-  "fetched_at_et": null,
-  "market_status": null,
-  "one_liner": null,
-  "vix_term_ratio": null,
-  "rows": []
+  "fetched_at_tpe": "2026-10-21 11:12 台北",
+  "fetched_at_et": "2026-10-20 23:12 ET",
+  "market_status": "Closed",
+  "one_liner": "SOXL $97.55（-1.12%）；VIX 17.31（-6.5%），VIX/VIX3M 0.912（正常）｜市場狀態 Closed",
+  "vix_term_ratio": 0.912,
+  "rows": [
+   {
+    "symbol": "SOXL",
+    "label": "SOXL 三倍做多半導體",
+    "last": 97.55,
+    "change_pct": -1.12,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SOXS",
+    "label": "SOXS 三倍做空半導體",
+    "last": 47.13,
+    "change_pct": 1.07,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SOXX",
+    "label": "SOXX 費半 ETF",
+    "last": 500.01,
+    "change_pct": -0.38,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SPY",
+    "label": "S&P 500",
+    "last": 769.05,
+    "change_pct": 0.34,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "QQQ",
+    "label": "Nasdaq 100",
+    "last": 717.63,
+    "change_pct": -0.1,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "NVDA",
+    "label": "Nvidia",
+    "last": 216.47,
+    "change_pct": -0.29,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AVGO",
+    "label": "Broadcom",
+    "last": 334.37,
+    "change_pct": -0.07,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AMD",
+    "label": "AMD",
+    "last": 534.74,
+    "change_pct": -0.62,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "MU",
+    "label": "Micron",
+    "last": 896.07,
+    "change_pct": -0.98,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "TSM",
+    "label": "TSMC ADR",
+    "last": 425.08,
+    "change_pct": 1.16,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AMAT",
+    "label": "Applied Materials",
+    "last": 404.98,
+    "change_pct": -1.97,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "LRCX",
+    "label": "Lam Research",
+    "last": 263.45,
+    "change_pct": -3.21,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "VIX",
+    "label": "VIX 恐慌指數",
+    "last": 17.31,
+    "change_pct": -6.528,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "VIX3M",
+    "label": "VIX 3 個月",
+    "last": 18.99,
+    "change_pct": -3.2122,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "VIX9D",
+    "label": "VIX 9 天",
+    "last": 16.27,
+    "change_pct": -10.2028,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SKEW",
+    "label": "SKEW 尾部風險",
+    "last": 160.4,
+    "change_pct": -0.9102,
+    "ext_last": null,
+    "ext_change_pct": null
+   }
+  ]
  },
  "changes": {
   "has_previous": true,
