@@ -1,0 +1,7 @@
+SOXL 2026-10-20 收盤 $97.55（-1.12%）
+🔴 賣出 / 減碼｜綜合 -0.87｜空 65% / 中 24% / 多 11%｜倉位上限 10%
+守 $93.44 → 看 $104.28 → $111.47；Put 牆 $90 / Call 牆 $120 / Gamma 翻正 $117.4
+F&G 27（恐懼 Fear）｜VIX 18.4（VIX/VIX3M 0.97）｜崩跌前兆 18/100
+變化：評級不變（連續 3 個交易日 🔴賣出 / 減碼）；綜合分數 -0.86 → -0.87（-0.01）
+事件：10/21（三） LRCX 財報（盤後）；10/21（三） TXN 財報（盤後）；10/23（五） 週選擇權到期
+頭條：利多「KOSPI Surges 3% as Foreign Investors Buy Semiconductor Stocks」／利空「Australian data center operator NextDC's shares plunge 40% after it slashes earnings forecast」

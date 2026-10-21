@@ -1,0 +1,408 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "$id": "soxl-quant-brief/1",
+ "title": "SOXL Quant daily brief",
+ "type": "object",
+ "required": [
+  "schema",
+  "generated_at",
+  "data_as_of",
+  "verdict",
+  "price",
+  "levels",
+  "plan",
+  "links"
+ ],
+ "properties": {
+  "schema": {
+   "const": "soxl-quant-brief/1"
+  },
+  "generated_at": {
+   "type": "string",
+   "description": "YYYY-MM-DD HH:MM:SS, Asia/Taipei"
+  },
+  "data_as_of": {
+   "type": "string",
+   "format": "date",
+   "description": "US trading day the numbers describe"
+  },
+  "data_status": {
+   "type": "object",
+   "properties": {
+    "label": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "provisional": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "final": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    }
+   }
+  },
+  "warnings": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "data sources that failed this run (empty = all good)"
+  },
+  "verdict": {
+   "type": "object",
+   "required": [
+    "label",
+    "composite",
+    "size_pct"
+   ],
+   "properties": {
+    "label": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "強力買進 / 買進 / 觀望 / 賣出 / 減碼 / 強力賣出 (zh-TW)"
+    },
+    "emoji": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "rating_5": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1,
+     "maximum": 5,
+     "description": "1 = strong sell … 5 = strong buy"
+    },
+    "composite": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "weighted score in [-2, +2]"
+    },
+    "confidence": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "consensus": {
+     "type": "object",
+     "properties": {
+      "buy_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "hold_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "sell_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "size_pct": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "suggested max position size, % of risk capital"
+    },
+    "tldr": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "price": {
+   "type": "object",
+   "properties": {
+    "close": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "ret_1d": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "ret_5d": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "ret_20d": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "drawdown_52w_pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "rvol20": {
+     "type": [
+      "number",
+      "null"
+     ]
+    }
+   }
+  },
+  "levels": {
+   "type": "object",
+   "properties": {
+    "sma20": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "sma50": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "sma200": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "ma_structure": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "ladder": {
+     "type": "array"
+    }
+   }
+  },
+  "options": {
+   "type": "object",
+   "properties": {
+    "put_wall": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "call_wall": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "gamma_flip": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "net_gex_m": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "pc_vol_ratio": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "iv30_pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    }
+   }
+  },
+  "sentiment": {
+   "type": "object"
+  },
+  "breadth": {
+   "type": "object"
+  },
+  "macro": {
+   "type": "object"
+  },
+  "crash_risk": {
+   "type": "object",
+   "properties": {
+    "score": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "0–100 percentile of crash-precursor load"
+    },
+    "zone": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "plan": {
+   "type": "object",
+   "properties": {
+    "entry": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "stop": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "target": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "stop_price": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "target1_price": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "target2_price": {
+     "type": [
+      "number",
+      "null"
+     ]
+    }
+   }
+  },
+  "scenarios": {
+   "type": "array"
+  },
+  "checklist": {
+   "type": "array"
+  },
+  "watch": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "news": {
+   "type": "object",
+   "properties": {
+    "bull_7d": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "bear_7d": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "top_bull": {
+     "type": "array"
+    },
+    "top_bear": {
+     "type": "array"
+    }
+   }
+  },
+  "events": {
+   "type": "object",
+   "properties": {
+    "upcoming": {
+     "type": "array"
+    },
+    "next_fomc": {
+     "type": [
+      "object",
+      "null"
+     ]
+    }
+   }
+  },
+  "quotes": {
+   "type": "object",
+   "description": "live snapshot at generation time (not the official close)"
+  },
+  "changes": {
+   "type": "object",
+   "properties": {
+    "verdict_changed": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "composite_delta": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "same_verdict_streak_days": {
+     "type": "integer"
+    },
+    "notes": {
+     "type": "array"
+    }
+   }
+  },
+  "history": {
+   "type": "array"
+  },
+  "links": {
+   "type": "object"
+  },
+  "disclaimer": {
+   "type": "string"
+  }
+ }
+}
