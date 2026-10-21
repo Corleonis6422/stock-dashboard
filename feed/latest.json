@@ -1,6 +1,6 @@
 {
  "schema": "soxl-quant-brief/1",
- "generated_at": "2026-10-21 11:03:49",
+ "generated_at": "2026-10-21 11:07:17",
  "generated_at_tz": "Asia/Taipei",
  "data_as_of": "2026-10-20",
  "data_as_of_zh": "10/20（二）",
@@ -1462,8 +1462,8 @@
   }
  },
  "quotes": {
-  "fetched_at_tpe": "2026-10-21 11:03 台北",
-  "fetched_at_et": "2026-10-20 23:03 ET",
+  "fetched_at_tpe": "2026-10-21 11:07 台北",
+  "fetched_at_et": "2026-10-20 23:07 ET",
   "market_status": "Closed",
   "one_liner": "SOXL $97.55（-1.12%）；VIX 17.31（-6.5%），VIX/VIX3M 0.912（正常）｜市場狀態 Closed",
   "vix_term_ratio": 0.912,
