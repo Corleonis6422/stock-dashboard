@@ -1,8 +1,23 @@
 {
  "schema": "soxl-quant-brief/1",
- "latest": "2026-10-20",
- "count": 1,
+ "latest": "2026-10-21",
+ "count": 2,
  "entries": [
+  {
+   "date": "2026-10-21",
+   "generated_at": "2026-10-22 07:35:23",
+   "verdict": "減碼 / 觀望",
+   "emoji": "🔴",
+   "rating_5": 2,
+   "composite": -0.64,
+   "size_pct": 25,
+   "close": 103.35,
+   "ret_1d": 5.95,
+   "crash_risk": 18.0,
+   "text": "SOXL 2026-10-21 收盤 $103.35（+5.95%）\n🔴 減碼 / 觀望｜綜合 -0.64｜空 54% / 中 31% / 多 15%｜倉位上限 25%\n守 $91.35 → 看 $103.97 → $109.87；Put 牆 $70 / Call 牆 $120 / Gamma 翻正 $111.3\nF&G 31（恐懼 Fear）｜VIX 17.3（VIX/VIX3M 0.93）｜崩跌前兆 18/100\n變化：評級改變：賣出 / 減碼 → 減碼 / 觀望；綜合分數 -0.87 → -0.64（+0.23）\n事件：10/23（五） 週選擇權到期；10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28\n頭條：利多「Stocks Rally on Positive AI News, with SpaceX up +7%」／利空「Broadcom Stocks Edge Lower as Arcot Targets AI Payment Scams」",
+   "json": "2026-10-21.json",
+   "md": "2026-10-21.md"
+  },
   {
    "date": "2026-10-20",
    "generated_at": "2026-10-21 11:07:17",
