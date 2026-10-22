@@ -9,3 +9,5 @@ __pycache__/
 *.bak
 notify_config.json
 *.bak.*.json
+meta.zip
+soxl_meta_pack_*.zip
