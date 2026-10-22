@@ -49,7 +49,7 @@ def plan_card_html(p: dict, heading: str = "🧭 可執行的交易計畫") -> s
   gate = '<span class="tp-ok">✅ 達標</span>' if gate_ok else f'<span class="tp-bad">❌ 不足：進場價需 ≤ {_usd(tp.get("trade_if_entry"))}</span>'
   rows = [
       ("進場", _esc(en.get("rule"))),
-      ("停損", f"<b>{_usd(st.get('price'))}</b>（{_num(st.get('dist_pct'), 1, True, '%')}；{_esc(st.get('k_atr'))}×ATR14 或結構支撐取較寬）"),
+      ("停損", f"<b>{_usd(st.get('price'))}</b>（{_num(st.get('dist_pct'), 1, True, '%')}；{'結構支撐' if st.get('kind') == 'structural' else _esc(st.get('k_atr')) + '×ATR14'}；新倉與舊倉唯一的出場價）"),
       ("目標 T1", f"{_usd(t1.get('price'))}（{_esc(t1.get('label'))}，{_num(t1.get('rr'), 2)}R）"),
       ("目標 T2", f"{_usd(t2.get('price'))}（{_esc(t2.get('label'))}，{_num(t2.get('rr'), 2)}R）"),
       ("風報比", f"加權 {_num(tp.get('rr_blend'), 2)}R（門檻 {_esc(tp.get('min_rr'))}R）{gate}"),

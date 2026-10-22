@@ -366,7 +366,7 @@ def to_markdown(br: dict, with_links: bool = True) -> str:
     L.append("| 欄位 | 值 |")
     L.append("|---|---|")
     L.append(f"| 進場 | {en.get('rule')} |")
-    L.append(f"| 停損 | **{_usd(st.get('price'))}**（{_pct(st.get('dist_pct'), 1)}；{st.get('k_atr')}×ATR 或結構支撐取較寬） |")
+    L.append(f"| 停損 | **{_usd(st.get('price'))}**（{_pct(st.get('dist_pct'), 1)}；{'結構支撐' if st.get('kind') == 'structural' else str(st.get('k_atr')) + '×ATR'}；新倉與舊倉唯一的出場價） |")
     L.append(f"| 目標 T1 | {_usd(t1.get('price'))}（{t1.get('label')}，{_num(t1.get('rr'), 2)}R） |")
     L.append(f"| 目標 T2 | {_usd(t2.get('price'))}（{t2.get('label')}，{_num(t2.get('rr'), 2)}R） |")
     gate = "✅ 達標" if (tp.get("rr_blend") or 0) >= (tp.get("min_rr") or 1.5) else f"❌ 不足，進場價需 ≤ {_usd(tp.get('trade_if_entry'))}"
@@ -395,20 +395,27 @@ def to_markdown(br: dict, with_links: bool = True) -> str:
   L.append("## 關鍵價位（由上而下）")
   L.append("| 價位 | 類型 | 來源 | 距現價 |")
   L.append("|---|---|---|---|")
+  spot_gap = ((o.get("cboe_spot") or 0) / spot - 1.0) * 100.0 if (spot and o.get("cboe_spot")) else 0.0
+  iv_stale = abs(spot_gap) >= 2.0
+  iv_words = ("1σ", "Gamma", "Max Pain")
   for r in _ladder_rows(br):
     kind = {"res": "壓力", "sup": "支撐", "cur": "現價"}.get(r.get("kind"), "")
     parts = (r.get("label") or "").split(" / ")
     lbl = " / ".join(parts[:2]) if r.get("kind") != "cur" else f"{br.get('data_as_of')} 收盤"
+    if iv_stale and r.get("kind") != "cur" and any(w in lbl for w in iv_words):
+      lbl += " ※"
     bold = "**" if r.get("kind") == "cur" else ""
     L.append(f"| {bold}{_usd(r.get('price'))}{bold} | {kind} | {lbl} | {_pct(r.get('dist'), 1) if r.get('kind') != 'cur' else '—'} |")
+  if iv_stale:
+    L.append(f"※ 以 CBOE 即時價 {_usd(o.get('cboe_spot'))} 為中心推算（與收盤差 {spot_gap:+.1f}%）；1σ 區間與 Gamma 翻正位會在下次更新隨開盤價重算，履約價型的牆不受影響。")
   em = (o.get("expected_move") or {}).get("weekly") or {}
   emm = (o.get("expected_move") or {}).get("monthly") or {}
-  spot_gap = ((o.get("cboe_spot") or 0) / spot - 1.0) * 100.0 if (spot and o.get("cboe_spot")) else 0.0
-  spot_note = f"；期權區以 CBOE 即時價 {_usd(o.get('cboe_spot'))} 為中心，與收盤差 {spot_gap:+.1f}%，牆與 1σ 區間會隨開盤重算" if abs(spot_gap) >= 2.0 else ""
+  spot_note = f"；期權區以 CBOE 即時價 {_usd(o.get('cboe_spot'))} 為中心，與收盤差 {spot_gap:+.1f}%" if iv_stale else ""
   L.append(f"- 期權牆：Put 牆 {_usd(o.get('put_wall'), 0)} / Call 牆 {_usd(o.get('call_wall'), 0)} / Gamma 翻正 {_usd(o.get('gamma_flip'), 1)}；淨 GEX {_num(o.get('net_gex_m'), 1)}M、P/C 成交 {_num(o.get('pc_vol_ratio'), 2)}、IV30 {_num(o.get('iv30_pct'), 0)}%（CBOE 延遲鏈 {o.get('chain_timestamp') or 'n/a'}；牆是以未平倉推算的模型值，不是觀察到的造市商部位{spot_note}）")
   if em:
     L.append(f"- 期權定價波動：週選 ±{_num(em.get('expected_move_pct'), 1)}% → {_usd(em.get('low'), 0)} 到 {_usd(em.get('high'), 0)}（{em.get('expiration')}）；月選 ±{_num(emm.get('expected_move_pct'), 1)}% → {_usd(emm.get('low'), 0)} 到 {_usd(emm.get('high'), 0)}")
-  L.append(f"- 均線：20MA {_usd(lv.get('sma20'), 1)}（{_pct(lv.get('dist_sma20_pct'), 1)}）/ 50MA {_usd(lv.get('sma50'), 1)} / 200MA {_usd(lv.get('sma200'), 1)}（{_pct(lv.get('dist_sma200_pct'), 1)}）→ {lv.get('ma_structure') or 'n/a'}；ATR14 {_pct(pr.get('atr_pct'), 1, False)}、RVOL {_num(pr.get('rvol20'), 2)}x")
+  L.append(f"- 均線：20MA {_usd(lv.get('sma20'), 1)}（{_pct(lv.get('dist_sma20_pct'), 1)}）/ 50MA {_usd(lv.get('sma50'), 1)} / 200MA {_usd(lv.get('sma200'), 1)}（{_pct(lv.get('dist_sma200_pct'), 1)}）→ {lv.get('ma_structure') or 'n/a'}")
+  L.append(f"- 波動：ATR14 {_pct(pr.get('atr_pct'), 1, False)}（一天正常波動的尺度，停損距離由它決定）、量能 RVOL {_num(pr.get('rvol20'), 2)}x、20 日實現波動率 {_num(pr.get('realized_vol_20d_pct'), 0)}%")
   L.append("")
 
   # ---------------------------------------------------------------- signals
