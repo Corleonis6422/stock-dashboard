@@ -49,6 +49,7 @@ def record_from_payload(p: dict) -> dict:
   vx = sen.get("vix") or {}
   opt = p.get("options") or {}
   ews = (p.get("early_warning") or {}).get("today") or {}
+  tp = p.get("trade_plan") or {}
   return {
       "date": p.get("data_as_of"), "generated_at": p.get("generated_at"),
       "close": _num(tech.get("close")), "ret_1d": _num(tech.get("ret_1d")),
@@ -63,6 +64,10 @@ def record_from_payload(p: dict) -> dict:
       "sell_pct": _num(cons.get("sell_pct"), 1), "hold_pct": _num(cons.get("hold_pct"), 1), "buy_pct": _num(cons.get("buy_pct"), 1),
       "confidence": sc.get("confidence"),
       "final": bool((p.get("data_status") or {}).get("final", True)), "provisional": bool((p.get("data_status") or {}).get("provisional", False)),
+      # v3: the explicit plan, so later runs can score it (did price reach T1 before the stop?)
+      "plan_side": tp.get("side"), "plan_entry": _num((tp.get("entry") or {}).get("price")), "plan_stop": _num((tp.get("stop") or {}).get("price")),
+      "plan_t1": _num((tp.get("t1") or {}).get("price")), "plan_t2": _num((tp.get("t2") or {}).get("price")), "plan_rr": _num(tp.get("rr_blend")),
+      "signals_fired": [s.get("key") for s in (tp.get("signals_fired") or [])],
       "fwd_ret_5d": None, "fwd_ret_10d": None,
   }
 
