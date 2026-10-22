@@ -60,7 +60,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `06_rules_for_agents.md` | 4.7 KB |
 | `07_history.md` | 1.5 KB |
 | `llms.txt` | 1.5 KB |
-| `prompts/first_time.md` | 1.4 KB |
+| `prompts/first_time.md` | 2.6 KB |
 | `prompts/daily_briefing.md` | 0.8 KB |
 | `prompts/holder_check.md` | 0.5 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
