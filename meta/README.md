@@ -27,7 +27,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `05_glossary.md` | 34 個名詞的新手定義 | 穩定 |
 | `06_rules_for_agents.md` | agent 必守的 10 條解讀規則、回答模板、好壞句子對照、問題 → 檔案對照表 | 穩定 |
 | `07_history.md` | 最近 15 個交易日的評級、計畫與事後 5 / 10 日報酬 | 每日 |
-| `prompts/` | `daily_briefing.md`（三句話版）、`holder_check.md`（持有者）、`weekly_review.md`（每週自我檢討） | 穩定 |
+| `prompts/` | `first_time.md`（第一次附上 zip 時貼）、`daily_briefing.md`（每日三句話）、`holder_check.md`（持有者）、`weekly_review.md`（每週自我檢討） | 穩定 |
 | `data/latest.json` | 結構化全部內容（schema `soxl-quant-brief/2`）；`data/schema.json` 欄位定義；`data/signals.json` 精簡訊號表 | 每日 |
 | `manifest.json` / `llms.txt` | 檔案清單、大小、`data_as_of`、公開網址 | 每日 |
 
@@ -60,6 +60,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `06_rules_for_agents.md` | 4.7 KB |
 | `07_history.md` | 1.5 KB |
 | `llms.txt` | 1.5 KB |
+| `prompts/first_time.md` | 1.4 KB |
 | `prompts/daily_briefing.md` | 0.8 KB |
 | `prompts/holder_check.md` | 0.5 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
