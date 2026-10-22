@@ -34,7 +34,7 @@ def _row(sym: str, cls: str, label: str) -> dict:
     return {"symbol": sym, "label": label, "available": False}
   return {"symbol": sym, "label": label, "available": True, "last": q["last"], "change": q.get("change"), "change_pct": q.get("change_pct"),
           "market_status": q.get("market_status"), "last_trade": q.get("last_trade"), "ext_last": q.get("ext_last"),
-          "ext_change_pct": q.get("ext_change_pct"), "ext_trade": q.get("ext_trade"), "volume": q.get("volume")}
+          "ext_change_pct": q.get("ext_change_pct"), "ext_trade": q.get("ext_trade"), "ext_kind": q.get("ext_kind"), "volume": q.get("volume")}
 
 
 def _vol_row(sym: str, label: str) -> dict:
@@ -71,7 +71,8 @@ def _one_liner(soxl: dict | None, vix: dict | None, term: float | None, status: 
     return "報價暫時無法取得"
   s = f"SOXL ${soxl['last']:.2f}（{(soxl.get('change_pct') or 0):+.2f}%）"
   if soxl.get("ext_last") and soxl.get("ext_change_pct") is not None:
-    s += f"，盤後 ${soxl['ext_last']:.2f}（{soxl['ext_change_pct']:+.2f}%）"
+    ext_label = "盤前" if soxl.get("ext_kind") == "pre" else "盤後"
+    s += f"，{ext_label} ${soxl['ext_last']:.2f}（{soxl['ext_change_pct']:+.2f}%）"
   if vix:
     s += f"；VIX {vix['last']:.2f}（{(vix.get('change_pct') or 0):+.1f}%）"
   if term is not None:

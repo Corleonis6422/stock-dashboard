@@ -481,8 +481,71 @@ def fetch_fomc_calendar(year: int, ttl_sec: int = 7 * 24 * 3600) -> dict:
 # --------------------------------------------------------------------------- #
 # Live quotes — Nasdaq (stocks / ETFs, ~real-time) and CBOE (indices, 15-min delayed)
 # --------------------------------------------------------------------------- #
+def _classify_quote_blocks(info: dict) -> dict:
+  """Split Nasdaq ``/quote/{sym}/info`` data into the regular-session print and the extended print.
+
+  Observed payloads (2026-10-22 probes):
+    * regular hours   primaryData = live print ("Oct 22, 2026 10:15 AM ET"), secondaryData empty
+    * pre-market      primaryData = pre-market print with a PLAIN timestamp ("Oct 22, 2026 9:09 AM ET"),
+                      secondaryData = previous close ("Closed at Oct 21, 2026 4:00 PM ET"), marketStatus "Pre-Market"
+    * after hours     primaryData = official close ("Closed at ..."), secondaryData = after-hours print, marketStatus "After-Hours"
+    * fully closed    primaryData = "Closed at ...", secondaryData empty or stale
+  Older payloads prefixed the extended print with "PRE-MARKET:" / "AFTER HOURS:"; both shapes are handled.
+  Rule: a block whose timestamp says "Closed at" is the regular close.  A plain-timestamp block is the live
+  regular print when no "Closed at" block exists, otherwise it is the extended print.  Position is never trusted.
+  Returns {"regular": block, "extended": block|None, "ext_kind": "pre" | "post" | None}.
+  """
+  pd_ = info.get("primaryData") or {}
+  sd = info.get("secondaryData") or {}
+  status = str(info.get("marketStatus") or "").lower()
+
+  def kind(blk: dict) -> str:
+    if not blk or _num(blk.get("lastSalePrice")) is None:
+      return "none"
+    ts = str(blk.get("lastTradeTimestamp") or "").upper()
+    if "CLOSED AT" in ts:
+      return "close"
+    if "PRE-MARKET" in ts or "PRE MARKET" in ts or "PREMARKET" in ts:
+      return "pre"
+    if "AFTER HOURS" in ts or "AFTER-HOURS" in ts or "AFTERHOURS" in ts:
+      return "post"
+    return "live"
+
+  kp, ks = kind(pd_), kind(sd)
+
+  def ext_kind(blk: dict, k: str, close_blk: dict) -> str:
+    if k in ("pre", "post"):
+      return k
+    if status.startswith("pre"):
+      return "pre"
+    if status.startswith("after") or status == "closed":
+      return "post"
+    d_ext, d_close = _parse_nasdaq_ts(str(blk.get("lastTradeTimestamp") or "")), _parse_nasdaq_ts(str(close_blk.get("lastTradeTimestamp") or ""))
+    return "pre" if (d_ext and d_close and d_ext.date() > d_close.date()) else "post"
+
+  if kp == "close":
+    if ks in ("live", "pre", "post"):
+      return {"regular": pd_, "extended": sd, "ext_kind": ext_kind(sd, ks, pd_)}
+    return {"regular": pd_, "extended": None, "ext_kind": None}
+  if ks == "close":
+    if kp in ("live", "pre", "post"):
+      return {"regular": sd, "extended": pd_, "ext_kind": ext_kind(pd_, kp, sd)}
+    return {"regular": sd, "extended": None, "ext_kind": None}
+  # no "Closed at" block anywhere: regular hours (primary live) or an explicitly prefixed extended block
+  if kp == "live":
+    return {"regular": pd_, "extended": sd if ks in ("pre", "post") else None, "ext_kind": ks if ks in ("pre", "post") else None}
+  if kp in ("pre", "post"):
+    return {"regular": sd if ks == "live" else {}, "extended": pd_, "ext_kind": kp}
+  return {"regular": pd_ if kp != "none" else sd, "extended": None, "ext_kind": None}
+
+
 def fetch_nasdaq_quote(symbol: str, asset_class: str = "etf", ttl_sec: int = 120) -> dict | None:
-  """Last sale / change / market status for a symbol. Returns None on failure."""
+  """Last sale / change / market status for a symbol. Returns None on failure.
+
+  ``last`` / ``change`` / ``change_pct`` always describe the regular session (live during the
+  session, the official close otherwise); ``ext_last`` / ``ext_change_pct`` describe the pre- or
+  after-market print when one exists (``ext_kind`` = "pre" | "post").
+  """
   if not ALLOWED_NASDAQ_RE.match(symbol) or asset_class not in {"etf", "stocks", "index"}:
     raise ValueError(f"Invalid Nasdaq request: {symbol}/{asset_class}")
   key = f"nasdaq_quote|{symbol}|{asset_class}"
@@ -493,19 +556,22 @@ def fetch_nasdaq_quote(symbol: str, asset_class: str = "etf", ttl_sec: int = 120
     info = (safe_https_get_json(f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset_class}", extra_headers=_NASDAQ_HEADERS, timeout=30).get("data") or {})
   except (FeedError, urllib.error.HTTPError, ValueError, json.JSONDecodeError, AttributeError):
     return None
-  pd_ = info.get("primaryData") or {}
-  sd = info.get("secondaryData") or {}
-  last = _num(pd_.get("lastSalePrice"))
+  blocks = _classify_quote_blocks(info)
+  reg, ext = blocks["regular"], blocks["extended"] or {}
+  last = _num(reg.get("lastSalePrice"))
+  if last is None and ext:  # no regular print at all (should not happen); fall back to the extended one
+    last = _num(ext.get("lastSalePrice"))
+    reg = ext
   if last is None:
     _cache_put(key, {})
     return None
-  chg = _num(pd_.get("netChange"))
-  pct = _num(str(pd_.get("percentageChange") or "").replace("%", ""))
+  chg = _num(reg.get("netChange"))
+  pct = _num(str(reg.get("percentageChange") or "").replace("%", ""))
   out = {
       "symbol": symbol, "asset_class": asset_class, "last": last, "change": chg, "change_pct": pct,
-      "market_status": str(info.get("marketStatus") or ""), "last_trade": str(pd_.get("lastTradeTimestamp") or ""),
-      "ext_last": _num(sd.get("lastSalePrice")), "ext_change_pct": _num(str(sd.get("percentageChange") or "").replace("%", "")),
-      "ext_trade": str(sd.get("lastTradeTimestamp") or ""), "volume": _num(pd_.get("volume")),
+      "market_status": str(info.get("marketStatus") or ""), "last_trade": str(reg.get("lastTradeTimestamp") or ""),
+      "ext_last": _num(ext.get("lastSalePrice")), "ext_change_pct": _num(str(ext.get("percentageChange") or "").replace("%", "")),
+      "ext_trade": str(ext.get("lastTradeTimestamp") or ""), "ext_kind": blocks["ext_kind"], "volume": _num((info.get("primaryData") or {}).get("volume")),
       "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
   }
   _cache_put(key, out)
