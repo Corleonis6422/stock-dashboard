@@ -1,20 +1,20 @@
 {
- "schema": "soxl-quant-brief/1",
+ "schema": "soxl-quant-brief/2",
  "latest": "2026-10-21",
  "count": 2,
  "entries": [
   {
    "date": "2026-10-21",
-   "generated_at": "2026-10-22 07:35:23",
+   "generated_at": "2026-10-22 21:27:52",
    "verdict": "減碼 / 觀望",
    "emoji": "🔴",
    "rating_5": 2,
-   "composite": -0.64,
+   "composite": -0.67,
    "size_pct": 25,
-   "close": 103.35,
-   "ret_1d": 5.95,
-   "crash_risk": 18.0,
-   "text": "SOXL 2026-10-21 收盤 $103.35（+5.95%）\n🔴 減碼 / 觀望｜綜合 -0.64｜空 54% / 中 31% / 多 15%｜倉位上限 25%\n守 $91.35 → 看 $103.97 → $109.87；Put 牆 $70 / Call 牆 $120 / Gamma 翻正 $111.3\nF&G 31（恐懼 Fear）｜VIX 17.3（VIX/VIX3M 0.93）｜崩跌前兆 18/100\n變化：評級改變：賣出 / 減碼 → 減碼 / 觀望；綜合分數 -0.87 → -0.64（+0.23）\n事件：10/23（五） 週選擇權到期；10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28\n頭條：利多「Stocks Rally on Positive AI News, with SpaceX up +7%」／利空「Broadcom Stocks Edge Lower as Arcot Targets AI Payment Scams」",
+   "close": 103.24,
+   "ret_1d": 5.83,
+   "crash_risk": 20.0,
+   "text": "SOXL 2026-10-21 收盤 $103.24（+5.83%）\n🔴 減碼 / 觀望｜綜合 -0.67｜空 58% / 中 23% / 多 19%｜倉位上限 25%\n⛔ 不開新倉｜守 $89.00 → 看 $121.33 → $134.45（加權 1.6R）\nPut 牆 $70 / Call 牆 $120 / Gamma 翻正 $106.9\nF&G 29（恐懼 Fear）｜VIX 16.7（VIX/VIX3M 0.89）｜崩跌前兆 20/100\n變化：評級改變：賣出 / 減碼 → 減碼 / 觀望；綜合分數 -0.87 → -0.67（+0.20）\n事件：10/23（五） 週選擇權到期；10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28\n頭條：利多「Stocks Rally on Positive AI News, with SpaceX up +7%」／利空「BTIG warns semiconductor stocks face 200-day average test By Investing.com」",
    "json": "2026-10-21.json",
    "md": "2026-10-21.md"
   },

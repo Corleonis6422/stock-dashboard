@@ -152,7 +152,7 @@ def t_refresh(args: dict) -> str:
 
 TOOLS = [
     {"name": "get_brief", "description": "取得 SOXL 最新一頁式每日簡報（評級、綜合分數、關鍵價位、期權牆、情緒、宏觀、崩跌前兆、消息多空、近期事件、行動計畫、即時報價）。先呼叫這個。",
-     "inputSchema": {"type": "object", "properties": {"format": {"type": "string", "enum": ["markdown", "text", "json"], "default": "markdown", "description": "markdown=一頁式；text=手機短訊版；json=結構化 (schema soxl-quant-brief/1)"}}}, "fn": t_get_brief},
+     "inputSchema": {"type": "object", "properties": {"format": {"type": "string", "enum": ["markdown", "text", "json"], "default": "markdown", "description": "markdown=一頁式；text=手機短訊版；json=結構化 (schema soxl-quant-brief/2：含 trade_plan / signals / validation)"}}}, "fn": t_get_brief},
     {"name": "get_latest", "description": "完整分析 JSON（soxl_analysis_data.json）。不給 section 回傳精簡總覽；給 section 名稱（technicals / options / sentiment / heatmap / macro / early_warning / news / scoring / playbook / postmortem）回傳該區段全部欄位。",
      "inputSchema": {"type": "object", "properties": {"section": {"type": "string", "description": "頂層區段名稱，可省略"}}}, "fn": t_get_latest},
     {"name": "get_quotes", "description": "即時報價快照：SOXL / SOXS / SOXX / SPY / QQQ、NVDA 等 7 檔龍頭、VIX / VIX3M / VIX9D / SKEW，含盤後價與市場狀態（Nasdaq 近即時、CBOE 延遲 15 分）。",
@@ -252,8 +252,8 @@ def handle(msg: dict):
       body = _read(briefmod.FEED_DIR / "latest.md")
     except FileNotFoundError as e:
       body = f"（{e}）"
-    ask = ("請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？" if style == "beginner"
-           else "請以專業交易員角度，列出：評級與信心、關鍵支撐/壓力與期權牆、情緒與宏觀風險、今日行動與停損。")
+    ask = ("請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？直接轉述「交易計畫」表的進場觸發、停損、T1/T2 與風報比（風報比不足就說不開新倉）；提到勝率時一定連同基準與樣本數一起講。最後一行列出 48 小時內的風險事件。" if style == "beginner"
+           else "請以專業交易員角度，列出：評級與信心、交易計畫（進場觸發 / 停損 / T1 / T2 / 加權風報比 / 倉位 / 失效條件）、今日觸發或待觸發的驗證訊號及其基準勝率與 p 值、關鍵支撐/壓力與期權牆、兩種 200 日線濾網的讀法、情緒與宏觀風險。")
     return _result(id_, {"description": "SOXL 每日簡報問答", "messages": [{"role": "user", "content": {"type": "text", "text": f"{ask}\n\n以下是今天自動產生的 SOXL 簡報：\n\n{body}"}}]})
   if method == "logging/setLevel":
     return _result(id_, {})

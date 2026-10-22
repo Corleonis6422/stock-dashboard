@@ -189,6 +189,7 @@ details{margin-top:4px}summary{cursor:pointer;color:var(--acc);font-weight:700;f
 
 
 def render(p: dict) -> str:
+  from .report_plan import plan_card_html, signals_table_html  # local import: keeps this module importable alone
   tech, sc, pb = p["technicals"], p["scoring"], p["playbook"]
   b = pb.get("beginner") or {}
   cons = b.get("consensus") or sc.get("consensus") or {}
@@ -266,6 +267,9 @@ def render(p: dict) -> str:
   </div>
   <div class="small" style="margin-top:8px">進場條件：{esc(plan.get("entry", ""))}。第一目標 vs 停損的報酬/風險比 {esc(rr if rr is not None else "n/a")}。</div>
 </section>
+
+{plan_card_html(p)}
+{signals_table_html(p)}
 
 <section class="card"><h2>🎲 未來 10 天最可能怎麼走？ <small>歷史同類情境統計（{esc(pb.get("analog_reference") or "n/a")}）</small></h2>
   {_scenarios(pb)}

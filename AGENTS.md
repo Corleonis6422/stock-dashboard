@@ -10,8 +10,8 @@
 
 | 你要什麼 | 去哪裡 |
 |---|---|
-| 一頁式人話簡報（Markdown，約 7 KB） | `https://corleonis6422.github.io/stock-dashboard/feed/latest.md` 或本機 `feed/latest.md` |
-| 結構化資料（JSON，schema `soxl-quant-brief/1`，約 45 KB） | `…/feed/latest.json`，欄位說明見 `…/feed/schema.json` |
+| 一頁式人話簡報（Markdown，約 8 KB；先讀「交易計畫」表） | `https://corleonis6422.github.io/stock-dashboard/feed/latest.md` 或本機 `feed/latest.md` |
+| 結構化資料（JSON，schema `soxl-quant-brief/2`，約 90 KB） | `…/feed/latest.json`，欄位說明見 `…/feed/schema.json`；v2 新增 `trade_plan`（明確進出場）、`signals`（驗證過的買賣訊號）、`validation`（方法與 200 日線濾網比較），v1 欄位全部保留 |
 | 手機短訊版（≤ 900 字） | `…/feed/latest.txt` |
 | 訂閱（RSS 2.0，一天一則） | `…/feed/rss.xml` |
 | 即時報價（更新當下的 SOXL / 龍頭股 / VIX 複合體） | `…/feed/quotes.json`；要真正即時用 MCP `get_quotes` 或 `auto_update.py quotes` |
@@ -97,7 +97,7 @@ Webhook JSON 信封：
 ```json
 {
   "event": "soxl.daily_brief",          // 或 soxl.update_failed / soxl.test
-  "schema": "soxl-quant-brief/1",
+  "schema": "soxl-quant-brief/2",
   "sent_at": "2026-10-21T07:35:10",
   "title": "SOXL 2026-10-20 🔴 賣出 / 減碼｜$97.6（-1.06%）",
   "text": "…≤ 900 字短訊…",
@@ -125,7 +125,10 @@ Webhook JSON 信封：
 | | `tldr[]`、`one_liner`、`q_no_position`、`q_holder`、`q_when` | 給人看的結論與「沒部位 / 有部位 / 何時」三問三答 |
 | `price` | `close`、`ret_1d/5d/20d`（%）、`drawdown_52w_pct`、`rvol20`（相對 20 日均量倍數） | |
 | `levels` | `sma20/50/200`、`ma_structure`、`fib`、`pivot`、`ladder[]`（由上而下的壓力 / 支撐階梯，`kind`=`res`/`sup`） | 價位皆為美元 |
-| `plan` | `stop_price`（停損）、`target1_price`、`target2_price`、`entry`、`risk_reward` | 劇本 A 反彈單的操作參數；`max_size_pct` 同 `verdict.size_pct` |
+| `plan` | `stop_price`（停損）、`target1_price`、`target2_price`、`entry`、`risk_reward` | v1 相容欄位（劇本 A 反彈單）；**請改讀 `trade_plan`** |
+| `trade_plan` | `side`（`long` 今日有驗證過的買訊成立 / `long_pending` 等觸發 / `no_trade` 不開新倉）、`tradeable`、`headline`、`entry.{type,price,rule,signal}`、`stop.{price,dist_pct,k_atr,basis}`、`t1`/`t2.{price,label,rr}`、`rr_blend`（加權風報比）、`min_rr`（門檻 1.5）、`trade_if_entry`（風報比不足時，要在哪個價位以下進場才值得）、`size.{pct,if_triggered_pct,risk_based_pct,verdict_cap_pct}`、`time_stop`、`invalidation[]`、`holder.{hard_stop,trail_stop,trail_note,edge_note}`、`regime.{soxl_own,underlying,agree}`、`explain[]` | **唯一該轉述的操作計畫**。`no_trade` 時仍有條件計畫：觸發價、停損、目標都在，只是倉位 `size.pct=0`。停損 = 結構支撐與 k×ATR 取較寬；T1/T2 = 進場上方首個 ≥1R / ≥2R 的壓力 |
+| `signals[]` | `key`、`short_name`、`side`（`long`/`exit`）、`horizon`（日）、`n`、`win_pct`、`base_win_pct`、`ci`（Wilson 95%）、`mean`、`pf`、`p_value`（單尾二項檢定 vs 基準）、`q_value`（BH 多重檢定）、`significant`、`grade`（A 可靠 / B 尚可 / B* 顯著但樣本外薄 / C 無優勢 / — 樣本不足）、`state`（`fired` 今日觸發 / `recent` 10 日內 / `pending` 待觸發 / `off`）、`pending.{price,op,dist_pct,needs}`（明天收盤到哪裡會觸發）、`dyn`（反轉買點用「收盤站上 5 日線」出場的勝率與其基準）、`dd15`（賣訊後 20 日內回撤 ≥15% 的比例 vs 基準） | 10 年 SOXL 日線、固定規則、非重疊交易、樣本外 40%。**勝率一定要連同 `base_win_pct` 一起講**；`exit` 類訊號歷史上沒有預測力，停損是保險 |
+| `validation` | `method`（進出場、樣本、`data_as_of`）、`summary.{n_graded,n_significant,n_q_lt_10,exits_predictive,dyn_base_win_pct,fired_today,pending}`、`regime_grid[]`（200 日線濾網：`series` SOXL / SOXX × `band_pct` × `confirm_days` → `cagr_pct`、`max_dd_pct`、`switches`、`in_market`）、`buy_hold` | 兩種 200 日線讀法可能不一致（SOXL 自身 vs 指數）；長期持有者看指數那條，短線看 SOXL 自身 |
 | `options` | `put_wall`、`call_wall`、`gamma_flip`、`net_gex_m`（百萬美元）、`pc_vol_ratio`、`iv30_pct`、`expected_move.{weekly,monthly}`（±% 與價格區間）、`whale.whale_net_score`（−1…+1） | CBOE 延遲鏈 |
 | `sentiment` | `fear_greed.score`（0–100）、`vix.{vix,vix3m,ratio_vix_3m,term_state,skew,vvix}`、`market_put_call.equity_pc`、`flows.ratio`（SOXL/SOXS 美元成交量比） | |
 | `breadth` | `above_sma20_pct` 等（16 檔成分股站上均線比例）、`constituents[]` | |
@@ -148,14 +151,15 @@ Webhook JSON 信封：
 1. **新鮮度**：`data_as_of` 應等於最近一個已收盤的美股交易日（美東 16:00 + 75 分鐘後換日；週末與 NYSE 假日順延）。若落後，先說「資料是 X 月 X 日的」，再給結論；可呼叫 MCP `refresh` 或等 07:30 的排程。
 2. **盤中快照不是結論**：`data_status.provisional=true 且 final=false` 時，評級只反映當下，收盤後會重算。
 3. **評級不是指令**：`verdict` 是 24 個因子的加權投票；請一併轉述 `confidence`、`consensus` 與 `size_pct`，並提醒三倍槓桿單日可 ±15%。
-4. **價位優先於形容詞**：回覆人類時至少給三個數字：停損 `plan.stop_price`、第一目標 `plan.target1_price`、關鍵牆（`options.put_wall` / `call_wall` / `gamma_flip`）。
+4. **價位優先於形容詞**：回覆人類時至少給三個數字：停損 `trade_plan.stop.price`、第一目標 `trade_plan.t1.price`、關鍵牆（`options.put_wall` / `call_wall` / `gamma_flip`）；並說明 `trade_plan.side`（`no_trade` 就直說「今天不開新倉，觸發價是 X」）。
+4b. **勝率要帶基準與樣本數**：引用 `signals[]` 時寫成「勝率 64%（基準 55%，N=62，p=0.09）」；`significant=false` 的訊號不要說「高勝率」。賣出訊號不是預測，只用來決定減碼節奏。
 5. **有變化才值得打擾**：`changes.verdict_changed=true`、`crash_risk.score` 跨過 60 / 80、`events.upcoming` 內 48 小時有 FOMC 或龍頭財報、`warnings` 非空 → 值得主動推；否則一句話即可。
 6. **引用來源**：新聞請附 `publisher` 與 `link`；數字請附 `data_as_of`。
 7. **免責**：所有輸出都要帶 `disclaimer`（自動計算的研究參考，不是投資建議）。
 
 建議給 LLM 的開場提示（也就是 MCP `daily_briefing` 提示的內容）：
 
-> 以下是今天自動產生的 SOXL 簡報。請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？最後用一行列出 48 小時內的風險事件。
+> 以下是今天自動產生的 SOXL 簡報。請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？請直接轉述「交易計畫」表的進場觸發、停損、T1/T2 與風報比（風報比不足就說不開新倉），勝率一定連同基準一起講。最後用一行列出 48 小時內的風險事件。
 
 ---
 
@@ -184,4 +188,4 @@ Webhook JSON 信封：
 
 ## English summary
 
-Daily (after the US close) this repo regenerates a SOXL quant brief. Agents should **read `feed/latest.md`** (one page, zh-TW) or **`feed/latest.json`** (schema `soxl-quant-brief/1`; see `feed/schema.json`). Public URLs live under `https://corleonis6422.github.io/stock-dashboard/`. Three integration paths: (A) pull the URLs, (B) run the stdio MCP server `soxl_mcp.py` (tools: `get_brief`, `get_latest`, `get_quotes`, `get_news`, `get_events`, `get_history`, `get_status`, `refresh`), (C) receive pushes configured in `notify_config.json` (generic HTTPS webhook with optional bearer token + HMAC-SHA256, Google Chat, Slack, Discord, Telegram, LINE, e-mail, Antigravity `agentapi`, or any local command). Always check `data_as_of` against the last completed US session, treat `data_status.provisional && !final` as intraday, relay `verdict.size_pct` and the three prices in `plan`, and include the disclaimer. Not investment advice.
+Daily (after the US close) this repo regenerates a SOXL quant brief. Agents should **read `feed/latest.md`** (one page, zh-TW) or **`feed/latest.json`** (schema `soxl-quant-brief/2`; see `feed/schema.json`; v2 adds `trade_plan`, `signals`, `validation`). Public URLs live under `https://corleonis6422.github.io/stock-dashboard/`. Three integration paths: (A) pull the URLs, (B) run the stdio MCP server `soxl_mcp.py` (tools: `get_brief`, `get_latest`, `get_quotes`, `get_news`, `get_events`, `get_history`, `get_status`, `refresh`), (C) receive pushes configured in `notify_config.json` (generic HTTPS webhook with optional bearer token + HMAC-SHA256, Google Chat, Slack, Discord, Telegram, LINE, e-mail, Antigravity `agentapi`, or any local command). Always check `data_as_of` against the last completed US session, treat `data_status.provisional && !final` as intraday, relay `trade_plan.side`, `trade_plan.stop.price`, `trade_plan.t1.price`, `trade_plan.t2.price`, `trade_plan.rr_blend` and `size`, quote every win rate together with its `base_win_pct` and `n`, and include the disclaimer. Not investment advice.

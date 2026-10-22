@@ -65,9 +65,9 @@ def main() -> int:
     for t in tools:
       assert t["inputSchema"]["type"] == "object"
     checks = [
-        ("get_brief", {}, lambda s: s.startswith("# SOXL 每日簡報")),
+        ("get_brief", {}, lambda s: s.startswith("# SOXL ") and "## 交易計畫" in s),
         ("get_brief", {"format": "text"}, lambda s: "SOXL" in s and len(s) < 1200),
-        ("get_brief", {"format": "json"}, lambda s: json.loads(s)["schema"] == "soxl-quant-brief/1"),
+        ("get_brief", {"format": "json"}, lambda s: json.loads(s)["schema"] == "soxl-quant-brief/2"),
         ("get_latest", {}, lambda s: "_sections" in json.loads(s)),
         ("get_latest", {"section": "options"}, lambda s: "put_wall" in json.loads(s)),
         ("get_news", {"days": 2, "max_per_day": 3}, lambda s: len(json.loads(s)["days"]) >= 1),
@@ -94,11 +94,11 @@ def main() -> int:
     print("  resources:", [x["uri"] for x in res])
     assert any(x["uri"] == "soxl://brief/latest.md" for x in res)
     r = c.call("resources/read", {"uri": "soxl://brief/latest.json"})
-    assert json.loads(r["result"]["contents"][0]["text"])["schema"] == "soxl-quant-brief/1"
+    assert json.loads(r["result"]["contents"][0]["text"])["schema"] == "soxl-quant-brief/2"
     pr = c.call("prompts/list")["result"]["prompts"]
     assert pr[0]["name"] == "daily_briefing"
     r = c.call("prompts/get", {"name": "daily_briefing", "arguments": {"style": "beginner"}})
-    assert "SOXL 每日簡報" in r["result"]["messages"][0]["content"]["text"]
+    assert "SOXL 簡報" in r["result"]["messages"][0]["content"]["text"] and "## 交易計畫" in r["result"]["messages"][0]["content"]["text"]
     if "--refresh" in sys.argv:
       r = c.call("tools/call", {"name": "refresh", "arguments": {"if_stale": True, "wait": False}})
       print("     → refresh:", (r["result"]["content"][0]["text"])[:160])

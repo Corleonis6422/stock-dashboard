@@ -145,6 +145,31 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
     traceback.print_exc()
     pm = {}
 
+  _step("8b/9 Signal validation (10y walk-forward backtest) & explicit trade plan ...")
+  bt: dict = {}
+  tp: dict = {}
+  try:
+    from . import backtest, tradeplan
+    soxl10 = datafeed._augment_latest("SOXL", "etf", datafeed.fetch_nasdaq_history("SOXL", "etf", years=10))
+    if soxl10 and soxl10[-1]["date"] < soxl[-1]["date"]:  # 10y series must end on the same session as the 5y series
+      soxl10 = soxl10 + [soxl[-1]]
+    try:
+      soxx10 = datafeed.fetch_nasdaq_history("SOXX", "etf", years=10)
+    except Exception as e:  # noqa: BLE001
+      warnings.append(f"soxx 10y: {e}")
+      soxx10 = None
+    vix_d = {r["date"]: r["close"] for r in (vixc.get("VIX") or [])}
+    vix3m_d = {r["date"]: r["close"] for r in (vixc.get("VIX3M") or [])}
+    bt = backtest.run(soxl10, vix_d, vix3m_d, underlying_rows=soxx10)
+    bt["ews_today"] = ews.get("today") or {}
+    sm = bt["summary"]
+    _step(f"    {sm['n_signals']} signals on {bt['method']['bars']} bars ({bt['method']['sample']}); significant {sm['n_significant']}/{sm['n_graded']}, BH q<0.10 {sm['n_q_lt_10']}; fired today {sm['fired_today'] or 'none'}; pending {sm['pending'] or 'none'}")
+    tp = tradeplan.build(tech, opt, pb, score, bt, soxl, sen)
+    _step(f"    plan: {tp['side']} entry {tp['entry']['price']} stop {tp['stop']['price']} ({tp['stop']['dist_pct']}%) T1 {tp['t1']['price']} T2 {tp['t2']['price']} R:R {tp['rr_blend']} size {tp['size']['if_triggered_pct']}% tradeable={tp['tradeable']}")
+  except Exception as e:  # noqa: BLE001
+    warnings.append(f"backtest/tradeplan: {e}")
+    traceback.print_exc()
+
   payload = {
       "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "data_as_of": tech["latest_date"],
@@ -152,6 +177,7 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
       "warnings": warnings,
       "technicals": tech, "options": opt, "sentiment": sen, "heatmap": hm, "macro": mac,
       "early_warning": ews, "news": nws, "scoring": score, "playbook": pb, "postmortem": pm,
+      "backtest": bt, "trade_plan": tp,
       "benchmarks_recent": {sym: [{"date": r["date"], "close": r["close"]} for r in (aux.get(sym) or [])[-40:]] for sym in ("SOXX", "SPY")},
       "soxl_recent": [{k: r[k] for k in ("date", "open", "high", "low", "close", "volume")} for r in soxl[-30:]],
   }

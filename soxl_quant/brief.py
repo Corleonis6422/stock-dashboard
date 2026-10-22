@@ -4,8 +4,13 @@
 Everything a downstream agent (Muse, Gemini, Claude, a Slack bot …) needs in one
 small, stable document, produced in three shapes from the same dict:
 
-* ``feed/latest.json``   compact JSON (schema ``soxl-quant-brief/1``) — ~20 KB, flat
-                         sections, no SVG / chart series, nothing secret
+* ``feed/latest.json``   compact JSON (schema ``soxl-quant-brief/2``) — ~50 KB, flat
+                         sections, no SVG / chart series, nothing secret.  v2 adds
+                         ``trade_plan`` (explicit entry / stop / targets / R:R / size /
+                         time stop / invalidation), ``signals`` (validated signal library
+                         with win rate, base rate, p-value, grade, today's state) and
+                         ``validation`` (method, regime grid, multiple-testing summary);
+                         every v1 field is still present
 * ``feed/latest.md``     one-page Markdown brief in Traditional Chinese (paste into
                          any chat / LLM; also the body of e-mail and webhook pushes)
 * ``feed/latest.txt``    ≤ ~900-character plain text for phone notifications
@@ -27,7 +32,7 @@ from . import fsio
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FEED_DIR = BASE_DIR / "feed"
-SCHEMA_ID = "soxl-quant-brief/1"
+SCHEMA_ID = "soxl-quant-brief/2"
 DEFAULT_BASE_URL = "https://corleonis6422.github.io/stock-dashboard/"
 ARCHIVE_KEEP = 120
 TPE = ZoneInfo("Asia/Taipei")
@@ -155,6 +160,33 @@ def build(p: dict, events: dict | None = None, quotes: dict | None = None, base_
   macro_kpis = [{"key": k.get("key"), "name": k.get("name"), "latest": k.get("latest"), "chg_1d": k.get("chg_1d"), "chg_20d": k.get("chg_20d"),
                  "corr_20d": k.get("corr_20d"), "corr_60d": k.get("corr_60d"), "regime": k.get("regime")} for k in (mac.get("macro_kpis") or [])]
 
+  # ---- v2: validated signals + explicit trade plan (absent when the pipeline could not run the backtest)
+  bt = p.get("backtest") or {}
+  tp = p.get("trade_plan") or {}
+  sig_rows = []
+  for s in bt.get("signals") or []:
+    td = s.get("today") or {}
+    pend = td.get("pending") or {}
+    sig_rows.append({
+        "key": s.get("key"), "short_name": s.get("short_name"), "name": s.get("name"), "family": s.get("family"), "side": s.get("side"), "horizon": s.get("horizon"), "rule": s.get("rule"),
+        "n": s.get("n"), "win_pct": s.get("win_pct"), "ci": s.get("ci"), "base_win_pct": (s.get("base") or {}).get("win_pct"), "edge_pts": s.get("edge_pts"),
+        "mean": s.get("mean"), "pf": s.get("pf"), "p_value": s.get("p_value"), "q_value": s.get("q_value"), "significant": s.get("significant"),
+        "is_win_pct": (s.get("is") or {}).get("win_pct"), "oos_win_pct": (s.get("oos") or {}).get("win_pct"), "oos_n": (s.get("oos") or {}).get("n"),
+        "grade": s.get("grade"), "grade_zh": s.get("grade_zh"), "stop_k_atr": (s.get("stop") or {}).get("k_atr"),
+        "sim_oos": {k: (s.get("sim") or {}).get(k) for k in ("n", "win_pct", "expectancy_r")} if s.get("sim") else None,
+        "dyn": ({k: (s.get("dyn") or {}).get(k) for k in ("n", "win_pct", "base_win_pct", "mean", "avg_bars", "p_value", "exit_rule")} if s.get("dyn") else None),
+        "dd15": s.get("dd15"), "state": td.get("state"), "fired": td.get("fired"), "recent_dates": td.get("recent_dates"),
+        "pending": ({k: pend.get(k) for k in ("price", "op", "dist_pct", "needs")} if pend else None), "last_signal": s.get("last_signal"),
+    })
+  validation = ({
+      "method": bt.get("method"), "summary": bt.get("summary"), "skipped": bt.get("skipped"),
+      "regime_grid": [{"series": g.get("series"), "band_pct": g.get("band_pct"), "confirm_days": g.get("confirm_days"), "cagr_pct": (g.get("strategy") or {}).get("cagr_pct"),
+                       "max_dd_pct": (g.get("strategy") or {}).get("max_dd_pct"), "switches": g.get("switches"), "time_in_market_pct": g.get("time_in_market_pct"),
+                       "in_market": (g.get("today") or {}).get("in_market"), "dist_pct": (g.get("today") or {}).get("dist_pct")} for g in ((bt.get("regime") or {}).get("grid") or [])],
+      "buy_hold": ((bt.get("regime") or {}).get("sma200") or {}).get("buy_hold"), "regime_note": (bt.get("regime") or {}).get("note"),
+      "atr14": bt.get("atr14"), "atr_pct": bt.get("atr_pct"),
+  } if bt else None)
+
   brief = {
       "schema": SCHEMA_ID,
       "generated_at": p.get("generated_at"), "generated_at_tz": "Asia/Taipei",
@@ -234,6 +266,7 @@ def build(p: dict, events: dict | None = None, quotes: dict | None = None, base_
           "bear_case": [{k: x.get(k) for k in ("metric", "value", "pts", "why")} for x in (b.get("bear_case") or [])][:5],
       },
       "plan": {k: plan.get(k) for k in ("entry", "stop", "target", "risk_reward", "max_size_pct", "stop_price", "stop_label", "stop_dist_pct", "target1_price", "target1_label", "target1_dist_pct", "target2_price", "target2_label", "target2_dist_pct")},
+      "trade_plan": (tp or None), "signals": sig_rows, "validation": validation,
       "scenarios": [{k: s.get(k) for k in ("key", "tone", "title", "prob", "trigger", "target", "action")} for s in (pb.get("scenarios") or [])],
       "checklist": [{k: c.get(k) for k in ("item", "ok", "now")} for c in (pb.get("checklist") or [])],
       "watch": b.get("watch") or [],
@@ -270,101 +303,200 @@ def _rss_items_for_news(n: dict, kind: str) -> list[str]:
   return out
 
 
+def _state_zh(state: str | None) -> str:
+  return {"fired": "🔴 今日觸發", "recent": "🟠 10 日內觸發", "pending": "⏳ 待觸發", "off": "⚪ 未觸發"}.get(state or "", "⚪ 未觸發")
+
+
+def _ladder_rows(br: dict, n_each: int = 3) -> list[dict]:
+  """3 resistances above, the close, 3 supports below (top-down), each with distance to spot."""
+  lv = br.get("levels") or {}
+  spot = (br.get("price") or {}).get("close") or 0
+  ladder = lv.get("ladder") or []
+  res = [r for r in ladder if r.get("kind") == "res" and r.get("price") and r["price"] > spot][-n_each:]
+  sup = [r for r in ladder if r.get("kind") == "sup" and r.get("price") and r["price"] < spot][:n_each]
+  rows = [dict(r, dist=(r["price"] / spot - 1.0) * 100.0 if spot else None) for r in res]
+  rows.append({"price": spot, "label": "現價", "kind": "cur", "dist": 0.0})
+  rows += [dict(r, dist=(r["price"] / spot - 1.0) * 100.0 if spot else None) for r in sup]
+  return rows
+
+
+def _history_check(hist: list[dict]) -> tuple[int, int, str]:
+  """Direction hits of past verdicts vs their realised 5-day return (rating 3 = no call, skipped)."""
+  hits = n = 0
+  for h in hist or []:
+    r5, rating = h.get("fwd_ret_5d"), h.get("rating_5")
+    if r5 is None or rating is None or rating == 3:
+      continue
+    n += 1
+    hits += 1 if ((rating >= 4 and r5 > 0) or (rating <= 2 and r5 <= 0)) else 0
+  if not n:
+    first = next((h.get("date") for h in hist or [] if h.get("date")), None)
+    return 0, 0, f"尚無 5 日後結果可對照（評級紀錄自 {first or 'n/a'} 起，第一個結果要等 5 個交易日）"
+  return hits, n, f"最近 {n} 次有結果的評級，方向正確 {hits}/{n}（{hits / n * 100:.0f}%）"
+
+
 def to_markdown(br: dict, with_links: bool = True) -> str:
-  v, pr, lv, o, s, cr, n, pl, ch, ev, q = (br.get(k) or {} for k in ("verdict", "price", "levels", "options", "sentiment", "crash_risk", "news", "plan", "changes", "events", "quotes"))
-  fg, vx, bd, mc = s.get("fear_greed") or {}, s.get("vix") or {}, br.get("breadth") or {}, br.get("macro") or {}
+  v, pr, lv, o, s, cr, n, pl, ch, ev = (br.get(k) or {} for k in ("verdict", "price", "levels", "options", "sentiment", "crash_risk", "news", "plan", "changes", "events"))
+  fg, vx, bd = s.get("fear_greed") or {}, s.get("vix") or {}, br.get("breadth") or {}
   cons = v.get("consensus") or {}
-  lines: list[str] = []
-  lines.append(f"# SOXL 每日簡報 {br.get('data_as_of')}（{br.get('data_as_of_zh', '').split('（')[-1].rstrip('）')}）收盤")
-  lines.append(f"產生時間 {br.get('generated_at')} 台北｜資料狀態：{(br.get('data_status') or {}).get('label') or 'n/a'}" + ("｜⚠️ " + "；".join(br.get("warnings") or []) if br.get("warnings") else ""))
-  lines.append("")
-  lines.append(f"## 結論：{v.get('emoji') or ''} {v.get('label') or 'n/a'}")
-  lines.append(f"- 綜合評分 **{_num(v.get('composite'), 2, True)}**（範圍 −2 ~ +2；趨勢面 {_num(v.get('trend_score'), 2, True)}、逆勢面 {_num(v.get('contrarian_score'), 2, True)}），信心 {v.get('confidence') or 'n/a'}")
-  lines.append(f"- 多空比重：偏空 {_num(cons.get('sell_pct'), 0)}% / 中性 {_num(cons.get('hold_pct'), 0)}% / 偏多 {_num(cons.get('buy_pct'), 0)}%；建議倉位上限 **{v.get('size_pct')}%**；底部檢核 {v.get('checklist')}")
-  if v.get("one_liner"):
-    lines.append(f"- 一句話：{v['one_liner']}")
-  if v.get("regime"):
-    lines.append(f"- 市場狀態：{v['regime']}")
+  tp = br.get("trade_plan") or {}
+  sigs = br.get("signals") or []
+  val = br.get("validation") or {}
+  summ = val.get("summary") or {}
+  tech = br.get("technicals") or {}
+  spot = pr.get("close") or 0
+  L: list[str] = []
+  wd = br.get("data_as_of_zh", "").split("（")[-1].rstrip("）")
+  L.append(f"# SOXL {br.get('data_as_of')}（{wd}）收盤 · {v.get('emoji') or ''} {v.get('label') or 'n/a'} · {_usd(pr.get('close'))}（{_pct(pr.get('ret_1d'))}）")
+  L.append(f"> {(br.get('data_status') or {}).get('label') or 'n/a'} · 產生 {br.get('generated_at')} 台北 · 自動計算的研究參考，不是投資建議 · 三倍槓桿單日可 ±15%"
+           + ("｜⚠️ 資料降級：" + "；".join(br.get("warnings") or []) if br.get("warnings") else ""))
+  L.append("")
+  L.append(f"**TL;DR** {v.get('one_liner') or ''} 綜合 **{_num(v.get('composite'), 2, True)}**（−2 ~ +2）· 多/中/空 {_num(cons.get('buy_pct'), 0)}%/{_num(cons.get('hold_pct'), 0)}%/{_num(cons.get('sell_pct'), 0)}% · 信心 {v.get('confidence') or 'n/a'} · 倉位上限 **{v.get('size_pct')}%** · 底部檢核 {v.get('checklist')}")
   if ch.get("notes"):
-    lines.append("- 與前一交易日相比：" + "；".join(ch["notes"]))
-  lines.append("")
-  lines.append("## 價格與關鍵價位")
-  lines.append(f"- 收盤 {_usd(pr.get('close'))}（{_pct(pr.get('ret_1d'))}）；5 日 {_pct(pr.get('ret_5d'), 1)}、20 日 {_pct(pr.get('ret_20d'), 1)}；距 52 週高點 {_pct(pr.get('drawdown_52w_pct'), 1)}；量能 RVOL {_num(pr.get('rvol20'), 2)}x")
-  lines.append(f"- 均線：20MA {_usd(lv.get('sma20'), 1)}（{_pct(lv.get('dist_sma20_pct'), 1)}）/ 50MA {_usd(lv.get('sma50'), 1)} / 200MA {_usd(lv.get('sma200'), 1)} → {lv.get('ma_structure') or 'n/a'}")
-  lines.append(f"- 計畫價位：停損 {_usd(pl.get('stop_price'))}（{pl.get('stop_label') or ''}）→ 目標一 {_usd(pl.get('target1_price'))}（{pl.get('target1_label') or ''}）→ 目標二 {_usd(pl.get('target2_price'))}（{pl.get('target2_label') or ''}）；風報比 {_num(pl.get('risk_reward'), 1)}")
-  nx = (o.get("nearest_expirations") or [{}])[0]
-  mp_txt = f"Max Pain {_usd(nx.get('max_pain'), 0)}（{nx.get('expiration')} 到期）" if nx.get("max_pain") is not None else f"月選 Max Pain {_usd(o.get('monthly_max_pain'), 0)}"
-  lines.append(f"- 期權牆：Put 牆 {_usd(o.get('put_wall'), 0)} / Call 牆 {_usd(o.get('call_wall'), 0)} / Gamma 翻正 {_usd(o.get('gamma_flip'), 1)} / {mp_txt}；淨 GEX {_num(o.get('net_gex_m'), 1)}M；P/C 成交 {_num(o.get('pc_vol_ratio'), 2)}；IV30 {_num(o.get('iv30_pct'), 0)}%")
+    L.append(f"與前一交易日：{'；'.join(ch['notes'])}")
+  L.append("")
+
+  # ---------------------------------------------------------------- trade plan
+  L.append("## 交易計畫")
+  if tp:
+    st, t1, t2, sz, ts = tp.get("stop") or {}, tp.get("t1") or {}, tp.get("t2") or {}, tp.get("size") or {}, tp.get("time_stop") or {}
+    en = tp.get("entry") or {}
+    L.append(f"**{tp.get('headline')}**")
+    L.append("")
+    L.append("| 欄位 | 值 |")
+    L.append("|---|---|")
+    L.append(f"| 進場 | {en.get('rule')} |")
+    L.append(f"| 停損 | **{_usd(st.get('price'))}**（{_pct(st.get('dist_pct'), 1)}；{st.get('k_atr')}×ATR 或結構支撐取較寬） |")
+    L.append(f"| 目標 T1 | {_usd(t1.get('price'))}（{t1.get('label')}，{_num(t1.get('rr'), 2)}R） |")
+    L.append(f"| 目標 T2 | {_usd(t2.get('price'))}（{t2.get('label')}，{_num(t2.get('rr'), 2)}R） |")
+    gate = "✅ 達標" if (tp.get("rr_blend") or 0) >= (tp.get("min_rr") or 1.5) else f"❌ 不足，進場價需 ≤ {_usd(tp.get('trade_if_entry'))}"
+    L.append(f"| 風報比 | 加權 {_num(tp.get('rr_blend'), 2)}R（門檻 {tp.get('min_rr')}R）{gate} |")
+    L.append(f"| 倉位 | {'觸發後 ' if tp.get('side') == 'no_trade' else ''}{sz.get('if_triggered_pct')}% 帳戶（每筆風險 {sz.get('risk_per_trade_pct')}% ÷ 停損距離；評級上限 {_num(sz.get('verdict_cap_pct'), 0)}%）；連續 3 次停損 = {sz.get('three_stops_pct')}% |")
+    L.append(f"| 時間停損 | {ts.get('rule')} |")
+    L.append(f"| 失效條件 | {'；'.join(tp.get('invalidation') or [])} |")
+    for e in (tp.get("explain") or [])[:3]:
+      L.append(f"- {e}")
+    hd = tp.get("holder") or {}
+    L.append("")
+    L.append("**已持有者**")
+    if hd.get("verdict_action"):
+      L.append(f"- {hd['verdict_action']}")
+    L.append(f"- 硬停損 {_usd(hd.get('hard_stop'))}（{hd.get('hard_stop_label')}）；{hd.get('trail_note')}")
+    if hd.get("reduce_into"):
+      L.append("- 減碼點：" + "、".join(f"{_usd(r.get('price'))}（{r.get('label')}）" for r in hd["reduce_into"]))
+    L.append(f"- {hd.get('edge_note')}" + (f" 近 10 日觸發的賣出訊號：{'、'.join(hd.get('exit_signals_recent') or [])}" if hd.get("exit_signals_recent") else ""))
+  else:
+    L.append(f"- 進場：{pl.get('entry') or 'n/a'}")
+    L.append(f"- 停損：{pl.get('stop') or 'n/a'}")
+    L.append(f"- 目標：{pl.get('target') or 'n/a'}（風報比 {_num(pl.get('risk_reward'), 1)}）")
+  L.append("")
+
+  # ---------------------------------------------------------------- levels
+  L.append("## 關鍵價位（由上而下）")
+  L.append("| 價位 | 類型 | 來源 | 距現價 |")
+  L.append("|---|---|---|---|")
+  for r in _ladder_rows(br):
+    kind = {"res": "壓力", "sup": "支撐", "cur": "現價"}.get(r.get("kind"), "")
+    parts = (r.get("label") or "").split(" / ")
+    lbl = " / ".join(parts[:2]) if r.get("kind") != "cur" else f"{br.get('data_as_of')} 收盤"
+    bold = "**" if r.get("kind") == "cur" else ""
+    L.append(f"| {bold}{_usd(r.get('price'))}{bold} | {kind} | {lbl} | {_pct(r.get('dist'), 1) if r.get('kind') != 'cur' else '—'} |")
   em = (o.get("expected_move") or {}).get("weekly") or {}
   emm = (o.get("expected_move") or {}).get("monthly") or {}
-  if em or emm:
-    lines.append(f"- 市場定價波動：週選 ±{_num(em.get('expected_move_pct'), 1)}%（{_usd(em.get('low'), 0)}–{_usd(em.get('high'), 0)}，{em.get('expiration')}）；月選 ±{_num(emm.get('expected_move_pct'), 1)}%（{_usd(emm.get('low'), 0)}–{_usd(emm.get('high'), 0)}）")
-  wh = o.get("whale") or {}
-  if wh.get("whale_net_score") is not None:
-    lines.append(f"- 大戶期權（權利金 ≥ $25 萬）：{wh.get('whale_count')} 筆，淨方向 {_num(wh.get('whale_net_score'), 2, True)}（看多 ${_num(wh.get('whale_bull_prem_m'), 1)}M vs 看空 ${_num(wh.get('whale_bear_prem_m'), 1)}M）")
-  lines.append("")
-  lines.append("## 技術指標快照")
-  t = br.get("technicals") or {}
-  lines.append(f"- RSI14 {_num(t.get('rsi14'), 0)}｜MACD 柱 {_num(t.get('macd_hist'), 2, True)}｜KD {_num(t.get('k9'), 0)}/{_num(t.get('d9'), 0)}｜ADX {_num(t.get('adx14'), 0)}（+DI {_num(t.get('pdi14'), 0)} / −DI {_num(t.get('ndi14'), 0)}）｜布林 %B {_num((lv.get('bollinger') or {}).get('pct_b'), 2)}｜SuperTrend {'多' if t.get('supertrend_bull') else '空'} {_usd(t.get('supertrend'), 1)}")
-  lines.append(f"- 20 日上漲/下跌量能比 {_num(t.get('up_down_vol_ratio_20d'), 2)}x｜CMF {_num(t.get('cmf20'), 2)}｜MFI {_num(t.get('mfi14'), 0)}｜技術面平均分 {_num(t.get('tech_avg_score'), 2, True)}")
-  lines.append("")
-  lines.append("## 情緒、廣度與宏觀")
-  lines.append(f"- CNN Fear & Greed {_num(fg.get('score'), 1)}（{fg.get('rating_zh') or fg.get('rating') or 'n/a'}；前值 {_num(fg.get('previous_close'), 1)}、一週前 {_num(fg.get('week_ago'), 1)}）")
-  lines.append(f"- VIX {_num(vx.get('vix'), 2)}｜VIX9D {_num(vx.get('vix9d'), 2)}｜VIX3M {_num(vx.get('vix3m'), 2)}｜VIX/VIX3M {_num(vx.get('ratio_vix_3m'), 3)}（{vx.get('term_state') or 'n/a'}）｜VVIX {_num(vx.get('vvix'), 1)}｜SKEW {_num(vx.get('skew'), 1)}（{vx.get('skew_regime') or ''}）")
-  mpc = s.get("market_put_call") or {}
-  lines.append(f"- 全市場 P/C {_num(mpc.get('total_pc'), 2)}、個股 P/C {_num(mpc.get('equity_pc'), 2)}（{mpc.get('equity_read') or 'n/a'}）；SOXL/SOXS 資金流 {_num((s.get('flows') or {}).get('ratio'), 1)}x")
-  lines.append(f"- 16 檔成分股：站上 20MA {_num(bd.get('above_sma20_pct'), 0)}% / 50MA {_num(bd.get('above_sma50_pct'), 0)}% / 200MA {_num(bd.get('above_sma200_pct'), 0)}%；權值加權日漲跌 {_pct(bd.get('weighted_ret_1d'))}；平均 RSI {_num(bd.get('avg_rsi14'), 0)}")
-  for k in (mc.get("kpis") or [])[:6]:
-    lines.append(f"- {k.get('name')}: {k.get('latest')}（1 日 {k.get('chg_1d')}，20 日 {k.get('chg_20d')}；20D 相關 {_num(k.get('corr_20d'), 2, True)}）")
-  lines.append("")
-  lines.append("## 崩跌前兆")
-  lines.append(f"- 分數 **{_num(cr.get('score'), 0)}/100**（{cr.get('zone') or 'n/a'}）；完全成立的訊號 {cr.get('n_active')} 個" + ("；主要壓力來源：" + "、".join(a.get("label") or "" for a in (cr.get("active_signals") or [])[:4]) if cr.get("active_signals") else ""))
-  if cr.get("analog_reference"):
-    lines.append(f"- 歷史同類情境：{cr['analog_reference']}")
-  lines.append("")
-  lines.append(f"## 消息面（近 7 日 利多 {n.get('bull_7d')} / 利空 {n.get('bear_7d')}，比值 {_num(n.get('bull_bear_ratio'), 2)}；共 {n.get('articles_total')} 則）")
-  if n.get("themes_7d"):
-    lines.append("- 主題：" + "、".join(f"{x.get('tag')} ×{x.get('count')}" for x in n["themes_7d"][:5]))
-  if n.get("top_bull"):
-    lines.append("- 利多：")
-    lines += _rss_items_for_news(n, "top_bull")[:4]
-  if n.get("top_bear"):
-    lines.append("- 利空：")
-    lines += _rss_items_for_news(n, "top_bear")[:4]
-  lines.append("")
-  lines.append("## 近期事件（14 天內）")
-  if ev.get("upcoming"):
-    for e in ev["upcoming"][:8]:
-      lines.append(f"- {e.get('when_zh')} {e.get('label')}" + (f"：{e['detail']}" if e.get("detail") else ""))
+  spot_gap = ((o.get("cboe_spot") or 0) / spot - 1.0) * 100.0 if (spot and o.get("cboe_spot")) else 0.0
+  spot_note = f"；期權區以 CBOE 即時價 {_usd(o.get('cboe_spot'))} 為中心，與收盤差 {spot_gap:+.1f}%，牆與 1σ 區間會隨開盤重算" if abs(spot_gap) >= 2.0 else ""
+  L.append(f"- 期權牆：Put 牆 {_usd(o.get('put_wall'), 0)} / Call 牆 {_usd(o.get('call_wall'), 0)} / Gamma 翻正 {_usd(o.get('gamma_flip'), 1)}；淨 GEX {_num(o.get('net_gex_m'), 1)}M、P/C 成交 {_num(o.get('pc_vol_ratio'), 2)}、IV30 {_num(o.get('iv30_pct'), 0)}%（CBOE 延遲鏈 {o.get('chain_timestamp') or 'n/a'}；牆是以未平倉推算的模型值，不是觀察到的造市商部位{spot_note}）")
+  if em:
+    L.append(f"- 期權定價波動：週選 ±{_num(em.get('expected_move_pct'), 1)}% → {_usd(em.get('low'), 0)} 到 {_usd(em.get('high'), 0)}（{em.get('expiration')}）；月選 ±{_num(emm.get('expected_move_pct'), 1)}% → {_usd(emm.get('low'), 0)} 到 {_usd(emm.get('high'), 0)}")
+  L.append(f"- 均線：20MA {_usd(lv.get('sma20'), 1)}（{_pct(lv.get('dist_sma20_pct'), 1)}）/ 50MA {_usd(lv.get('sma50'), 1)} / 200MA {_usd(lv.get('sma200'), 1)}（{_pct(lv.get('dist_sma200_pct'), 1)}）→ {lv.get('ma_structure') or 'n/a'}；ATR14 {_pct(pr.get('atr_pct'), 1, False)}、RVOL {_num(pr.get('rvol20'), 2)}x")
+  L.append("")
+
+  # ---------------------------------------------------------------- signals
+  if sigs:
+    meth = val.get("method") or {}
+    L.append(f"## 訊號驗證（{meth.get('sample') or ''}，非重疊交易，勝率旁為同期基準）")
+    L.append("| 訊號 | 勝率 vs 基準（N） | 平均報酬 | 狀態 |")
+    L.append("|---|---|---|---|")
+    grade_rank = {"A": 0, "B*": 1, "B": 2, "C": 3, "—": 4}
+    graded = [x for x in sigs if (x.get("n") or 0) >= 20 or x.get("state") in ("fired", "recent", "pending")]
+    graded.sort(key=lambda x: (0 if x.get("state") == "fired" else 1, grade_rank.get(x.get("grade"), 4), x.get("p_value") or 1.0))
+    for x in graded[:8]:
+      side = "買" if x.get("side") == "long" else "賣"
+      tag = f"{x.get('grade')}" + ("★" if x.get("significant") else "")
+      st_txt = _state_zh(x.get("state"))
+      if x.get("state") == "pending" and x.get("pending"):
+        st_txt += f" {x['pending'].get('op') or ''}{_usd(x['pending'].get('price'))}"
+      dyn = x.get("dyn") or {}
+      dyn_txt = f"；動態出場 {_num(dyn.get('win_pct'), 0)}% vs {_num(dyn.get('base_win_pct'), 0)}%" if dyn and dyn.get("win_pct") is not None else ""
+      L.append(f"| {side} {x.get('short_name')} [{tag}] | {_num(x.get('win_pct'), 0)}% vs {_num(x.get('base_win_pct'), 0)}%（{x.get('n')}）{dyn_txt} | {_pct(x.get('mean'), 1)} / {x.get('horizon')} 日 | {st_txt} |")
+    L.append(f"- 買進訊號的勝率 = 訊號後 h 日收高的比例，賣出訊號的勝率 = 收低的比例；等級 A 可靠、B 尚可、B* 顯著但樣本外薄、C 無優勢；★ = 顯著高於基準（p < 0.05）。{summ.get('n_graded')} 個有樣本的訊號中 {summ.get('n_significant')} 個顯著，經多重檢定校正（BH q < 0.10）剩 {summ.get('n_q_lt_10')} 個。")
+    L.append(f"- 賣出訊號：{'歷史上沒有一個的命中率高於基準，也沒有一個能預測 20 日內 ≥15% 的回撤 → 停損是保險，不是預測。' if not summ.get('exits_predictive') else '有預測力的：' + '、'.join(summ['exits_predictive'])} 反轉買點用「收盤站上 5 日線」出場時，勝率基準本身就是 {_num(summ.get('dyn_base_win_pct'), 0)}%，請以該基準比較。")
+    grid = val.get("regime_grid") or []
+    own = next((g for g in grid if g.get("series") == "SOXL" and g.get("band_pct") == 0.0), None)
+    idx = next((g for g in grid if g.get("series") != "SOXL" and g.get("band_pct") == 3.0 and g.get("confirm_days") == 2), None)
+    bh = val.get("buy_hold") or {}
+    if own and idx:
+      L.append(f"- 200 日線濾網（{meth.get('sample', '')[:7]} 起，無成本）：SOXL 自身 → {'持有' if own.get('in_market') else '空手'}（距年線 {_pct(own.get('dist_pct'), 1)}；年化 {_num(own.get('cagr_pct'), 1)}%、切換 {own.get('switches')} 次）；{idx.get('series')} 指數 ±3% 帶 2 日確認 → {'持有' if idx.get('in_market') else '空手'}（距年線 {_pct(idx.get('dist_pct'), 1)}；年化 {_num(idx.get('cagr_pct'), 1)}%、最大回撤 {_num(idx.get('max_dd_pct'), 1)}%、切換 {idx.get('switches')} 次）；買進抱牢 年化 {_num(bh.get('cagr_pct'), 1)}%、最大回撤 {_num(bh.get('max_dd_pct'), 1)}%。{'兩種讀法今天不一致。' if own.get('in_market') != idx.get('in_market') else ''}")
+    L.append("")
+
+  # ---------------------------------------------------------------- crash + events + what changes my mind
+  L.append("## 崩跌前兆")
+  zone = (cr.get("zone") or "n/a").split("；")[0]
+  L.append(f"- 分數 **{_num(cr.get('score'), 0)}/100**（{zone}；≥60 注意、≥80 警戒）；完全成立 {cr.get('n_active')} 項" + (("；主要壓力來源：" + "、".join((a.get("label") or "") for a in (cr.get("active_signals") or [])[:3])) if cr.get("active_signals") else ""))
+  es = ((cr.get("event_study") or {}).get("stats_top_80") or {})
+  if es.get("precision_pct") is not None:
+    L.append(f"- 分數 ≥80 的歷史命中率 {_num(es.get('precision_pct'), 0)}%（基準 {_num(es.get('base_rate_pct'), 0)}%，提升 {_num(es.get('lift'), 1)}x）" + (f"；歷史同類情境：{cr.get('analog_reference')}" if cr.get("analog_reference") else ""))
+  L.append("")
+  L.append("## 48 小時內事件")
+  up = ev.get("upcoming") or []
+  near = [e for e in up if (e.get("days_ahead") or 99) <= 2]
+  if near:
+    for e in near:
+      L.append(f"- {e.get('when_zh')} {e.get('label')}" + (f"：{e['detail']}" if e.get("detail") else ""))
   else:
-    lines.append("- 無已知重大排程事件")
-  lines.append("")
-  lines.append("## 行動計畫")
-  lines.append(f"- 進場：{pl.get('entry') or 'n/a'}")
-  lines.append(f"- 停損：{pl.get('stop') or 'n/a'}")
-  lines.append(f"- 目標：{pl.get('target') or 'n/a'}")
-  for sc_ in br.get("scenarios") or []:
-    lines.append(f"- {sc_.get('title')}（機率 {sc_.get('prob')}%）：{sc_.get('action')}")
-  if br.get("watch"):
-    lines.append("- 觀察清單：")
-    lines += [f"  - {w}" for w in br["watch"][:6]]
-  if q.get("one_liner"):
-    lines.append("")
-    lines.append(f"## 最新報價（{q.get('fetched_at_tpe')}）")
-    lines.append(f"- {q['one_liner']}")
-    rows = [r for r in (q.get("rows") or []) if r.get("symbol") not in ("SOXL",)][:12]
-    if rows:
-      lines.append("- " + "｜".join(f"{r['symbol']} {_num(r.get('last'), 2)}（{_pct(r.get('change_pct'), 2)}）" for r in rows))
+    L.append("- 無。")
+  later = [e for e in up if (e.get("days_ahead") or 99) > 2][:5]
+  if later:
+    L.append("- 14 天內：" + "；".join(f"{e.get('when_zh')} {e.get('label')}" for e in later))
+  L.append("")
+  L.append("## 什麼會改變結論")
+  checks = br.get("checklist") or []
+  missing = [c for c in checks if not c.get("ok") and "20 日均線" not in str(c.get("item"))][:2]
+  L.append(f"- 轉多：收盤站回 20MA {_usd(lv.get('sma20'))}" + ("；再加上 " + "；".join(f"{str(c.get('item', '')).split(' (')[0]}（目前 {c.get('now')}）" for c in missing) if missing else ""))
+  st_price = (tp.get("stop") or {}).get("price") if tp else pl.get("stop_price")
+  L.append(f"- 轉更空：收盤 < {_usd(st_price)}；VIX/VIX3M ≥ 1.0（目前 {_num(vx.get('ratio_vix_3m'), 3)}）；崩跌前兆分數 ≥ 80（目前 {_num(cr.get('score'), 0)}）")
+  L.append(f"- 資料風險：{'；'.join(br.get('warnings') or []) or '無'}；期權牆與 GEX 為模型推算、每日 OI 結算後重算")
+  L.append("")
+
+  # ---------------------------------------------------------------- sentiment + breadth (compact)
+  L.append("## 情緒、廣度與籌碼")
+  L.append(f"- CNN Fear & Greed {_num(fg.get('score'), 1)}（{fg.get('rating_zh') or fg.get('rating') or 'n/a'}；前值 {_num(fg.get('previous_close'), 1)}）｜VIX {_num(vx.get('vix'), 2)} / VIX3M {_num(vx.get('vix3m'), 2)} → {_num(vx.get('ratio_vix_3m'), 3)}（{vx.get('term_state') or 'n/a'}）｜SKEW {_num(vx.get('skew'), 1)}｜VVIX {_num(vx.get('vvix'), 1)}")
+  mpc = s.get("market_put_call") or {}
+  wh = o.get("whale") or {}
+  L.append(f"- 全市場 P/C {_num(mpc.get('total_pc'), 2)}、個股 P/C {_num(mpc.get('equity_pc'), 2)}；大戶期權 {wh.get('whale_count')} 筆 淨方向 {_num(wh.get('whale_net_score'), 2, True)}（多 ${_num(wh.get('whale_bull_prem_m'), 1)}M / 空 ${_num(wh.get('whale_bear_prem_m'), 1)}M）；SOXL/SOXS 資金流 {_num((s.get('flows') or {}).get('ratio'), 1)}x")
+  L.append(f"- 16 檔成分股站上 20MA {_num(bd.get('above_sma20_pct'), 0)}% / 50MA {_num(bd.get('above_sma50_pct'), 0)}% / 200MA {_num(bd.get('above_sma200_pct'), 0)}%；權值加權日漲跌 {_pct(bd.get('weighted_ret_1d'))}；RSI14 {_num(tech.get('rsi14'), 0)}、MACD 柱 {_num(tech.get('macd_hist'), 2, True)}、KD {_num(tech.get('k9'), 0)}/{_num(tech.get('d9'), 0)}")
+  L.append("")
+
+  # ---------------------------------------------------------------- news (no URLs here; links live in JSON news.top_bull[].link)
+  L.append(f"## 消息面（近 7 日 利多 {n.get('bull_7d')} / 利空 {n.get('bear_7d')}，比值 {_num(n.get('bull_bear_ratio'), 2)}）")
+  if n.get("themes_7d"):
+    L.append("- 主題：" + "、".join(f"{x.get('tag')} ×{x.get('count')}" for x in n["themes_7d"][:4]))
+  for h in (n.get("top_bull") or [])[:3]:
+    L.append(f"- 多 - {h.get('title')}（{h.get('publisher')}）")
+  for h in (n.get("top_bear") or [])[:3]:
+    L.append(f"- 空 - {h.get('title')}（{h.get('publisher')}）")
+  L.append("")
+
+  # ---------------------------------------------------------------- self check
+  hits, nn, hist_txt = _history_check(br.get("history") or [])
+  L.append("## 自我驗證")
+  L.append(f"- {hist_txt}；連續同評級 {ch.get('same_verdict_streak_days')} 個交易日" + (f"；上次評級改變 {ch.get('previous_date')}" if ch.get("verdict_changed") else ""))
   if with_links:
     lk = br.get("links") or {}
-    lines.append("")
-    lines.append("## 連結")
-    lines.append(f"- 完整報告 {lk.get('report_html')}")
-    lines.append(f"- 新手版 {lk.get('simple_html')}")
-    lines.append(f"- 本簡報 JSON {lk.get('brief_json')} ・ RSS {lk.get('rss')}")
-  lines.append("")
-  lines.append(f"_{br.get('disclaimer')}_")
-  return "\n".join(lines) + "\n"
+    L.append(f"- 完整報告 {lk.get('report_html')} ・ 新手版 {lk.get('simple_html')} ・ JSON {lk.get('brief_json')}（新聞連結在 news.top_bull[].link）")
+  L.append("")
+  L.append(f"_{br.get('disclaimer')}_")
+  return "\n".join(L) + "\n"
 
 
 def to_text(br: dict, max_chars: int = 900) -> str:
@@ -374,7 +506,9 @@ def to_text(br: dict, max_chars: int = 900) -> str:
   parts = [
       f"SOXL {br.get('data_as_of')} 收盤 {_usd(pr.get('close'))}（{_pct(pr.get('ret_1d'))}）",
       f"{v.get('emoji') or ''} {v.get('label') or ''}｜綜合 {_num(v.get('composite'), 2, True)}｜空 {_num(cons.get('sell_pct'), 0)}% / 中 {_num(cons.get('hold_pct'), 0)}% / 多 {_num(cons.get('buy_pct'), 0)}%｜倉位上限 {v.get('size_pct')}%",
-      f"守 {_usd(pl.get('stop_price'))} → 看 {_usd(pl.get('target1_price'))} → {_usd(pl.get('target2_price'))}；Put 牆 {_usd(o.get('put_wall'), 0)} / Call 牆 {_usd(o.get('call_wall'), 0)} / Gamma 翻正 {_usd(o.get('gamma_flip'), 1)}",
+      (f"{str((br.get('trade_plan') or {}).get('headline', '')).split('：')[0]}｜守 {_usd(((br.get('trade_plan') or {}).get('stop') or {}).get('price'))} → 看 {_usd(((br.get('trade_plan') or {}).get('t1') or {}).get('price'))} → {_usd(((br.get('trade_plan') or {}).get('t2') or {}).get('price'))}（加權 {_num((br.get('trade_plan') or {}).get('rr_blend'), 1)}R）" if br.get("trade_plan") else
+       f"守 {_usd(pl.get('stop_price'))} → 看 {_usd(pl.get('target1_price'))} → {_usd(pl.get('target2_price'))}"),
+      f"Put 牆 {_usd(o.get('put_wall'), 0)} / Call 牆 {_usd(o.get('call_wall'), 0)} / Gamma 翻正 {_usd(o.get('gamma_flip'), 1)}",
       f"F&G {_num(fg.get('score'), 0)}（{fg.get('rating_zh') or ''}）｜VIX {_num(vx.get('vix'), 1)}（VIX/VIX3M {_num(vx.get('ratio_vix_3m'), 2)}）｜崩跌前兆 {_num(cr.get('score'), 0)}/100",
   ]
   if ch.get("notes"):
@@ -415,7 +549,7 @@ def schema() -> dict:
   return {
       "$schema": "http://json-schema.org/draft-07/schema#", "$id": SCHEMA_ID, "title": "SOXL Quant daily brief",
       "type": "object",
-      "required": ["schema", "generated_at", "data_as_of", "verdict", "price", "levels", "plan", "links"],
+      "required": ["schema", "generated_at", "data_as_of", "verdict", "price", "levels", "plan", "links", "trade_plan", "signals", "validation"],
       "properties": {
           "schema": {"const": SCHEMA_ID}, "generated_at": {"type": "string", "description": "YYYY-MM-DD HH:MM:SS, Asia/Taipei"},
           "data_as_of": {"type": "string", "format": "date", "description": "US trading day the numbers describe"},
@@ -439,6 +573,25 @@ def schema() -> dict:
           "quotes": {"type": "object", "description": "live snapshot at generation time (not the official close)"},
           "changes": {"type": "object", "properties": {"verdict_changed": {"type": ["boolean", "null"]}, "composite_delta": num, "same_verdict_streak_days": {"type": "integer"}, "notes": {"type": "array"}}},
           "history": {"type": "array"}, "links": {"type": "object"}, "disclaimer": {"type": "string"},
+          "trade_plan": {"type": ["object", "null"], "description": "v2: explicit plan; null only when the backtest could not run", "properties": {
+              "side": {"type": "string", "enum": ["long", "long_pending", "no_trade"]}, "tradeable": {"type": "boolean"}, "headline": {"type": "string"},
+              "entry": {"type": "object", "properties": {"type": {"type": "string"}, "price": num, "rule": {"type": "string"}, "signal": {"type": ["string", "null"]}}},
+              "stop": {"type": "object", "properties": {"price": num, "dist_pct": num, "k_atr": num, "atr14": num, "basis": {"type": "string"}}},
+              "t1": {"type": "object", "properties": {"price": num, "label": {"type": "string"}, "rr": num, "synthetic": {"type": "boolean"}}},
+              "t2": {"type": "object", "properties": {"price": num, "label": {"type": "string"}, "rr": num, "synthetic": {"type": "boolean"}}},
+              "rr_blend": num, "min_rr": num, "trade_if_entry": {**num, "description": "entry that would satisfy min_rr with the same stop and targets (null when already satisfied)"},
+              "size": {"type": "object", "properties": {"pct": num, "if_triggered_pct": num, "risk_based_pct": num, "verdict_cap_pct": num, "risk_per_trade_pct": num}},
+              "time_stop": {"type": "object", "properties": {"days": {"type": "integer"}, "rule": {"type": "string"}, "kind": {"type": "string"}}},
+              "invalidation": {"type": "array", "items": {"type": "string"}}, "signals_fired": {"type": "array"}, "signals_pending": {"type": "array"},
+              "holder": {"type": "object"}, "regime": {"type": "object"}, "explain": {"type": "array", "items": {"type": "string"}}}},
+          "signals": {"type": "array", "description": "v2: validated signal library (fixed rules, 10y SOXL, de-clustered trades)", "items": {"type": "object", "properties": {
+              "key": {"type": "string"}, "short_name": {"type": "string"}, "side": {"type": "string", "enum": ["long", "exit"]}, "horizon": {"type": "integer"},
+              "n": {"type": "integer"}, "win_pct": num, "base_win_pct": num, "ci": {"type": ["array", "null"]}, "mean": num, "pf": num,
+              "p_value": {**num, "description": "one-sided exact binomial vs base_win_pct"}, "q_value": {**num, "description": "Benjamini-Hochberg across graded signals"}, "significant": {"type": ["boolean", "null"]},
+              "grade": {"type": "string", "description": "A / B / B* / C / —"}, "state": {"type": "string", "enum": ["fired", "recent", "pending", "off"]},
+              "pending": {"type": ["object", "null"], "description": "trigger price that would fire the rule tomorrow"}, "dyn": {"type": ["object", "null"]}, "dd15": {"type": ["object", "null"]}}}},
+          "validation": {"type": ["object", "null"], "description": "v2: method, multiple-testing summary, 200-day regime grid (SOXL vs underlying index)", "properties": {
+              "method": {"type": "object"}, "summary": {"type": "object"}, "regime_grid": {"type": "array"}, "buy_hold": {"type": ["object", "null"]}}},
       },
   }
 

@@ -65,7 +65,7 @@ cd /Users/hsiaochieh/Documents/folder
 | **`soxl_simple.html`** | **新手版**：一個畫面回答「今天該買還是該賣」— 大色塊結論、評級儀表、買/觀望/賣比例、依你的狀況該怎麼做、建議倉位、三個關鍵價位、10 日劇本機率、前三大理由、120 天燈號圖與每日評級紀錄（無 JavaScript、每 30 分鐘自動重新載入） |
 | `soxl_analysis_report.html`（＝ `index.html`） | 完整儀表板（新手 / 進階雙模式），用瀏覽器開啟即可（無外部資源、無需網路）；`index.html` 是同一份，給 GitHub Pages 當首頁 |
 | `soxl_analysis_data.json` | 所有模組的結構化結果（約 500 KB），可供其他程式或 LLM 讀取 |
-| **`feed/latest.md` / `latest.json` / `latest.txt`** | **給 AI Agent 的一頁式簡報**（Markdown / 結構化 JSON `soxl-quant-brief/1` / 手機短訊版）＋ `rss.xml`、`quotes.json`（即時報價快照）、`schema.json`、`index.json` 與 `YYYY-MM-DD.{json,md}` 歷史（120 天）。詳見 [第 12 節](#12-ai-agent--muse-串接feedmcp推播github-pages) 與 [AGENTS.md](AGENTS.md) |
+| **`feed/latest.md` / `latest.json` / `latest.txt`** | **給 AI Agent 的一頁式簡報**（Markdown / 結構化 JSON `soxl-quant-brief/2` / 手機短訊版）＋ `rss.xml`、`quotes.json`（即時報價快照）、`schema.json`、`index.json` 與 `YYYY-MM-DD.{json,md}` 歷史（120 天）。詳見 [第 12 節](#12-ai-agent--muse-串接feedmcp推播github-pages) 與 [AGENTS.md](AGENTS.md) |
 | `history/verdicts.jsonl` | **每日評級紀錄**（每交易日一行：評級、綜合分、倉位上限、關鍵情緒/籌碼讀數，並自動回填之後 5 / 10 日實際報酬做事後驗證） |
 | `history/snapshots/*.json.gz` | 每日完整 JSON 快照（gzip，保留 180 天，可回測或重現任一天的報告） |
 | `logs/last_run.json`、`logs/auto_update.log` | 自動更新的最近結果（含推播與 git 發佈結果）與紀錄 |
@@ -406,6 +406,17 @@ flowchart LR
   - `size_pct` / `size_note`：建議曝險上限（檢核 <3 → 0–10%、3–5 → 25%、6–7 → 50%、8 且偏多 → 100%）。
   - `tldr`（3 行）、`bull_case` / `bear_case`（分數 × 權重最大的正負因子各 4 條）、`plan`（進場 / 停損 / 目標 / 報酬風險比 / 部位上限）、`watch`（本週 5 條觀察）。
 
+### 5.8b 訊號驗證與交易計畫 `backtest.py` / `tradeplan.py`（v3 新增）
+
+**為什麼**：「買點 / 賣點」必須是可以每天重新驗證命中率的規則，不是形容詞。每次更新都用 10 年 SOXL 日線（2,512 根，Nasdaq 拆股調整）重跑 23 條固定規則，列出每條規則的歷史表現與今天的狀態。
+
+- **規則庫**（每條都是固定參數、不在執行期擬合）：反轉買點（Connors RSI(2)<10 / <5、連 3 黑收 5MA 下、Double 7s、布林下軌回收、投降量反轉、IBD 跟進日、KD 低檔金叉、MACD 翻正、VIX 期限結構回正、VIX 高峰回落）、趨勢買點（站回 20MA、20MA 上穿 50MA、帶量突破 20 日高）、出場（首破 20MA、吊燈 3×ATR、派發日第 4 個、拋物線噴出、RSI14>80、KD 高檔死叉、VIX 首次倒掛、死亡交叉、前兆分數 ≥80）。
+- **評估方式**：訊號日次一交易日開盤進場、第 h 日收盤結算，非重疊交易；基準 = 同一期間每根 K 線的相同統計；樣本外 = 最近 40%；每條都算 Wilson 95% 信賴區間、**單尾二項檢定 p 值（vs 基準）**、Benjamini-Hochberg q 值、逐年表現、鄰近參數變體。反轉買點另外用 Connors 的動態出場（收盤站上 5 日線）評估，並附同一出場規則的基準勝率（約 64%，因為出場規則本身只挑上漲日）。賣出訊號再用「20 日內回撤 ≥15% 的比例」評分。
+- **等級**：A 可靠（N≥30、OOS N≥10、OOS 勝率 ≥60% 且 ≥基準+5、PF≥1.5、IS/OOS 差 ≤12、變體皆優於基準、**p<0.05**）、B 尚可、B* 顯著但樣本外薄、C 無優勢、— 樣本不足。2026-10 的結果：18 條有樣本的規則只有「帶量突破 20 日高」顯著（83% vs 57%，N=24，p=0.007），多重檢定校正後 0 條；**所有賣出規則的命中率都不高於基準**，所以簡報把停損定位為保險，不是預測。
+- **200 日線濾網**：同一套 Gayed 式年線切換，分別用 SOXL 自身與 SOXX 指數當訊號、0/3/5% 帶寬、1/2 日確認，列成一張表（無交易成本）。用 SOXL 自身：年化 14.2%、切換 91 次；用 SOXX ±5%：年化 38.3%、切換 10 次；買進抱牢 36.1%、最大回撤 −90.5%。帶寬敏感度不單調，所以簡報給整張表而不是一個數字，而且兩種讀法可能同一天不一致（長期持有者看指數，短線看 SOXL 自身）。
+- **交易計畫 `tradeplan.py`**：`side` = `long`（今日有 A/B/B* 買訊成立 → 次日開盤）/ `long_pending`（最近的驗證過觸發價在 8% 內 → 收盤站上才進）/ `no_trade`（條件計畫）。停損 = 結構支撐與 k×ATR14 取較寬（k 來自該訊號勝利交易的最大逆向波動 75 分位，預設 1.2），不緊於 4%；T1/T2 = 進場上方第一個 ≥1R / ≥2R 的壓力（階梯沒有就用合成 ATR 目標並標明）；加權風報比 0.5·R(T1)+0.5·R(T2) ≥ 1.5 才算可交易，不足就印出「進場價要 ≤ X 才值得」；倉位 = 每筆 1% 帳戶風險 ÷ 停損距離，再受評級上限約束；時間停損 = 訊號 horizon 或動態出場；失效條件含停損、結構支撐、VIX/VIX3M ≥1.0、前兆分數 ≥80。已持有者另給硬停損、吊燈移動停損與減碼點。
+- **驗證工具**：`tools/test_backtest.py`（無網路：無前視、去重疊、已知結果的合成序列、Wilson / 二項 / BH 數值、觸發價反推、外部序列濾網）與 `tools/qa_brief.py`（計畫不變量、訊號統計一致性、新鮮度、Markdown 形狀 ≤12 KB / 表格 ≤4 欄、**每個數字都能在 latest.json 找到**、短訊 ≤900 字）。
+
 ### 5.9 崩跌復盤 `postmortem.py`
 
 - 以最近 30 根 K 的最高收盤為起點，列到最新日的**逐日時間軸**：SOXL 漲跌、量能倍數、SOXX / SPY 同日漲跌、VIX 與期限結構、SKEW、VVIX、10Y / 30Y、F&G、個股 P/C、前兆分數，並自動產生備註（放量長黑、爆量、SKEW 跳升、VIX 急升、期限結構走平、F&G 極度恐懼、開高走低假突破、前兆分數 ≥45…）。
@@ -568,7 +579,7 @@ folder/
 │  ├─ YYYY-MM-DD.json / .md     每日歸檔（保留 120 天）＋ index.json 目錄
 │  ├─ rss.xml                   RSS 2.0（一天一則）
 │  ├─ quotes.json               產生當下的即時報價快照
-│  └─ schema.json               latest.json 的 JSON Schema（soxl-quant-brief/1）
+│  └─ schema.json               latest.json 的 JSON Schema（soxl-quant-brief/2）
 ├─ history/
 │  ├─ verdicts.jsonl            每交易日一行的評級紀錄（含事後 5 / 10 日報酬回填）
 │  └─ snapshots/                每日完整 JSON 快照（gzip，保留 180 天）
@@ -583,6 +594,8 @@ folder/
 ├─ legacy/                      2026-10-09 之前的單一檔案版本（僅供參考）
 ├─ tools/
 │  ├─ qa_render.py              版面 QA：headless Chrome 多寬度檢查裁切 / 重疊 / 斷行（可截圖到 .qa/）
+│  ├─ test_backtest.py          回測引擎單元測試（無前視、去重疊、合成序列已知結果、統計數值）
+│  ├─ qa_brief.py               簡報 QA（計畫不變量、訊號統計、Markdown 形狀、數字可追溯、短訊長度）
 │  ├─ qa_stress.py              用極端假資料壓測圖表排版
 │  ├─ test_mcp.py               用腳本化 MCP client 驗證 soxl_mcp.py（握手、每個工具、資源、提示、錯誤路徑）
 │  └─ test_push.py              本機假 inbox 驗證推播（webhook 格式、HMAC、允許清單、command 頻道、送出政策）
@@ -674,7 +687,7 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 | 檔案 | 給誰 | 內容 |
 |---|---|---|
 | `feed/latest.md`（約 7 KB） | LLM / 人 | 一頁式簡報：結論與多空比重、與前一日的變化、價格與關鍵價位、期權牆與市場定價波動、技術指標快照、情緒 / 廣度 / 宏觀、崩跌前兆、消息多空（含連結）、14 天內事件（FOMC / 成分股財報 / 選擇權到期）、行動計畫與三劇本、即時報價、連結、免責 |
-| `feed/latest.json`（約 45 KB） | 程式 / agent 工具 | 同樣內容的結構化版本，schema `soxl-quant-brief/1`（`feed/schema.json`），沒有 SVG、沒有長序列、沒有任何金鑰 |
+| `feed/latest.json`（約 90 KB） | 程式 / agent 工具 | 同樣內容的結構化版本，schema `soxl-quant-brief/2`（`feed/schema.json`），沒有 SVG、沒有長序列、沒有任何金鑰 |
 | `feed/latest.txt`（≤ 900 字） | 手機通知 | 收盤 / 評級 / 三個價位 / F&G·VIX·前兆 / 變化 / 事件 / 頭條 |
 
 另外有 `feed/rss.xml`（訂閱）、`feed/quotes.json`（產生當下的即時報價）、`feed/index.json` + `feed/YYYY-MM-DD.{json,md}`（120 天歸檔）。`brief.changes` 會跟 `history/verdicts.jsonl` 的前一筆比較（評級是否改變、綜合分差、連續同評級天數），讓 agent 知道「今天值不值得打擾你」。
@@ -719,4 +732,7 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 .venv/bin/python auto_update.py mcp-install      # 註冊 MCP server 到 Antigravity
 .venv/bin/python tools/test_mcp.py               # MCP 自我測試
 .venv/bin/python tools/test_push.py              # 推播自我測試
+.venv/bin/python tools/test_backtest.py          # 訊號回測引擎單元測試（無網路）
+.venv/bin/python tools/qa_brief.py               # 簡報 QA：計畫不變量、數字可追溯、表格形狀、大小預算
+.venv/bin/python tests/test_quote_labels.py      # Nasdaq 報價盤前 / 盤後標籤不互換
 ```

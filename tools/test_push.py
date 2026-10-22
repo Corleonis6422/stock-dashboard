@@ -104,7 +104,7 @@ def main() -> int:
   check(j["headers"].get("x-soxl-signature") == sig, "HMAC signature valid")
   check(j["headers"].get("authorization") == "Bearer bearer-xyz", "bearer header present")
   check(j["headers"].get("x-test") == "1" and j["headers"].get("x-soxl-event") == "soxl.daily_brief", "custom + event headers present")
-  check(env["event"] == "soxl.daily_brief" and env["brief"]["schema"] == "soxl-quant-brief/1" and env["summary"]["verdict"], "json envelope shape")
+  check(env["event"] == "soxl.daily_brief" and env["brief"]["schema"] == "soxl-quant-brief/2" and env["summary"]["verdict"], "json envelope shape")
   check(rx["/text"]["headers"].get("content-type", "").startswith("text/markdown") and rx["/text"]["body"].decode().startswith("SOXL test title"), "text format body")
   slim = json.loads(rx["/slim"]["body"])
   check("brief" not in slim and slim["text"], "slim format omits full brief")

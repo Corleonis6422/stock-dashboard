@@ -1,6 +1,6 @@
 {
  "$schema": "http://json-schema.org/draft-07/schema#",
- "$id": "soxl-quant-brief/1",
+ "$id": "soxl-quant-brief/2",
  "title": "SOXL Quant daily brief",
  "type": "object",
  "required": [
@@ -11,11 +11,14 @@
   "price",
   "levels",
   "plan",
-  "links"
+  "links",
+  "trade_plan",
+  "signals",
+  "validation"
  ],
  "properties": {
   "schema": {
-   "const": "soxl-quant-brief/1"
+   "const": "soxl-quant-brief/2"
   },
   "generated_at": {
    "type": "string",
@@ -403,6 +406,356 @@
   },
   "disclaimer": {
    "type": "string"
+  },
+  "trade_plan": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "description": "v2: explicit plan; null only when the backtest could not run",
+   "properties": {
+    "side": {
+     "type": "string",
+     "enum": [
+      "long",
+      "long_pending",
+      "no_trade"
+     ]
+    },
+    "tradeable": {
+     "type": "boolean"
+    },
+    "headline": {
+     "type": "string"
+    },
+    "entry": {
+     "type": "object",
+     "properties": {
+      "type": {
+       "type": "string"
+      },
+      "price": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "rule": {
+       "type": "string"
+      },
+      "signal": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     }
+    },
+    "stop": {
+     "type": "object",
+     "properties": {
+      "price": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "dist_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "k_atr": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "atr14": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "basis": {
+       "type": "string"
+      }
+     }
+    },
+    "t1": {
+     "type": "object",
+     "properties": {
+      "price": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "label": {
+       "type": "string"
+      },
+      "rr": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "synthetic": {
+       "type": "boolean"
+      }
+     }
+    },
+    "t2": {
+     "type": "object",
+     "properties": {
+      "price": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "label": {
+       "type": "string"
+      },
+      "rr": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "synthetic": {
+       "type": "boolean"
+      }
+     }
+    },
+    "rr_blend": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "min_rr": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "trade_if_entry": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "entry that would satisfy min_rr with the same stop and targets (null when already satisfied)"
+    },
+    "size": {
+     "type": "object",
+     "properties": {
+      "pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "if_triggered_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "risk_based_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "verdict_cap_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "risk_per_trade_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "time_stop": {
+     "type": "object",
+     "properties": {
+      "days": {
+       "type": "integer"
+      },
+      "rule": {
+       "type": "string"
+      },
+      "kind": {
+       "type": "string"
+      }
+     }
+    },
+    "invalidation": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "signals_fired": {
+     "type": "array"
+    },
+    "signals_pending": {
+     "type": "array"
+    },
+    "holder": {
+     "type": "object"
+    },
+    "regime": {
+     "type": "object"
+    },
+    "explain": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "signals": {
+   "type": "array",
+   "description": "v2: validated signal library (fixed rules, 10y SOXL, de-clustered trades)",
+   "items": {
+    "type": "object",
+    "properties": {
+     "key": {
+      "type": "string"
+     },
+     "short_name": {
+      "type": "string"
+     },
+     "side": {
+      "type": "string",
+      "enum": [
+       "long",
+       "exit"
+      ]
+     },
+     "horizon": {
+      "type": "integer"
+     },
+     "n": {
+      "type": "integer"
+     },
+     "win_pct": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "base_win_pct": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "ci": {
+      "type": [
+       "array",
+       "null"
+      ]
+     },
+     "mean": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "pf": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "p_value": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "description": "one-sided exact binomial vs base_win_pct"
+     },
+     "q_value": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "description": "Benjamini-Hochberg across graded signals"
+     },
+     "significant": {
+      "type": [
+       "boolean",
+       "null"
+      ]
+     },
+     "grade": {
+      "type": "string",
+      "description": "A / B / B* / C / —"
+     },
+     "state": {
+      "type": "string",
+      "enum": [
+       "fired",
+       "recent",
+       "pending",
+       "off"
+      ]
+     },
+     "pending": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "trigger price that would fire the rule tomorrow"
+     },
+     "dyn": {
+      "type": [
+       "object",
+       "null"
+      ]
+     },
+     "dd15": {
+      "type": [
+       "object",
+       "null"
+      ]
+     }
+    }
+   }
+  },
+  "validation": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "description": "v2: method, multiple-testing summary, 200-day regime grid (SOXL vs underlying index)",
+   "properties": {
+    "method": {
+     "type": "object"
+    },
+    "summary": {
+     "type": "object"
+    },
+    "regime_grid": {
+     "type": "array"
+    },
+    "buy_hold": {
+     "type": [
+      "object",
+      "null"
+     ]
+    }
+   }
   }
  }
 }
