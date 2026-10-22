@@ -580,6 +580,12 @@ folder/
 │  ├─ rss.xml                   RSS 2.0（一天一則）
 │  ├─ quotes.json               產生當下的即時報價快照
 │  └─ schema.json               latest.json 的 JSON Schema（soxl-quant-brief/2）
+├─ meta/                        輸出：給 Meta AI / Muse 整包吸收的資料夾（純 Markdown + JSON，每次更新重建）
+│  ├─ README.md / llms.txt      怎麼餵、檔案地圖、LLM 索引
+│  ├─ 01_brief_today.md … 07_history.md   今日簡報、計畫單頁、訊號驗證表、方法論、名詞表、解讀規則、歷史
+│  ├─ prompts/                  每日三句話 / 持有者 / 每週檢討 的提示範本
+│  ├─ data/                     latest.json（schema v2）、schema.json、signals.json
+│  └─ manifest.json             檔案清單、大小、data_as_of、公開網址
 ├─ history/
 │  ├─ verdicts.jsonl            每交易日一行的評級紀錄（含事後 5 / 10 日報酬回填）
 │  └─ snapshots/                每日完整 JSON 快照（gzip，保留 180 天）
@@ -595,7 +601,7 @@ folder/
 ├─ tools/
 │  ├─ qa_render.py              版面 QA：headless Chrome 多寬度檢查裁切 / 重疊 / 斷行（可截圖到 .qa/）
 │  ├─ test_backtest.py          回測引擎單元測試（無前視、去重疊、合成序列已知結果、統計數值）
-│  ├─ qa_brief.py               簡報 QA（計畫不變量、訊號統計、Markdown 形狀、數字可追溯、短訊長度）
+│  ├─ qa_brief.py               簡報 QA（計畫不變量、訊號統計、Markdown 形狀、數字可追溯、短訊長度、meta/ 一致性）
 │  ├─ qa_stress.py              用極端假資料壓測圖表排版
 │  ├─ test_mcp.py               用腳本化 MCP client 驗證 soxl_mcp.py（握手、每個工具、資源、提示、錯誤路徑）
 │  └─ test_push.py              本機假 inbox 驗證推播（webhook 格式、HMAC、允許清單、command 頻道、送出政策）
@@ -611,6 +617,10 @@ folder/
    ├─ early_warning.py   21 項前兆、百分位校準、事件研究、同類情境、高點檢核表
    ├─ scoring.py         7 維度評分表與格局判定
    ├─ playbook.py        結論、價位階梯、三劇本、檢核表、新手結論 / 倉位 / 三問三答
+   ├─ backtest.py        23 條固定規則的 10 年走查回測：勝率 vs 基準、Wilson CI、二項 p、BH q、等級、停損校準、動態出場、200 日線濾網表
+   ├─ tradeplan.py       明確交易計畫：方向 / 進場觸發 / 唯一停損 / T1 T2 / 加權風報比 / 倉位 / 時間停損 / 失效條件 / 持有者做法
+   ├─ meta_pack.py       meta/ 吸收包：README、llms.txt、01–07 Markdown、提示範本、data/*.json、manifest
+   ├─ report_plan.py     HTML 用的交易計畫卡與訊號驗證表（兩個頁面共用）
    ├─ postmortem.py      崩跌復盤與教訓
    ├─ news.py            新聞抓取（Yahoo / Google / Nasdaq / Seeking Alpha / CNBC / MarketWatch / Fed）與多空分類
    ├─ events.py          未來事件：FOMC、成分股財報、週 / 月選擇權到期、休市
@@ -692,6 +702,10 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 
 另外有 `feed/rss.xml`（訂閱）、`feed/quotes.json`（產生當下的即時報價）、`feed/index.json` + `feed/YYYY-MM-DD.{json,md}`（120 天歸檔）。`brief.changes` 會跟 `history/verdicts.jsonl` 的前一筆比較（評級是否改變、綜合分差、連續同評級天數），讓 agent 知道「今天值不值得打擾你」。
 
+### 12.1b 整包餵給 Meta AI / Muse：`meta/`
+
+`meta/` 是一個可以整個上傳（或貼網址）的資料夾，全部純 Markdown 加一份 JSON，每次更新自動重建（`soxl_quant/meta_pack.py`，指令 `auto_update.py meta`）：`README.md`（怎麼餵、檔案地圖）、`llms.txt`（LLM 索引）、`01_brief_today.md`（= `feed/latest.md`）、`02_trade_plan.md`（計畫單頁）、`03_signals.md`（23 條規則的勝率 vs 基準、N、p、等級、觸發價、200 日線濾網表）、`04_methodology.md`、`05_glossary.md`（34 個名詞）、`06_rules_for_agents.md`（10 條解讀規則、回答模板、用今天數字示範的好壞句子）、`07_history.md`、`prompts/`（每日三句話、持有者、每週檢討）、`data/latest.json` + `schema.json` + `signals.json`、`manifest.json`。`tools/qa_brief.py` 會檢查 `meta/` 與 `feed/` 是同一次產生、表格 ≤ 4 欄、`01_brief_today.md` 與 `feed/latest.md` 逐字相同。
+
 ### 12.2 三種接法
 
 **A. Pull（網址）**：`git push` 之後 GitHub Pages 會更新 `https://corleonis6422.github.io/stock-dashboard/feed/latest.json` 等；任何能上網的 agent 直接 `GET`。新鮮度判斷：`data_as_of` 應等於最近一個已收盤的美股交易日。
@@ -732,6 +746,7 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 .venv/bin/python auto_update.py mcp-install      # 註冊 MCP server 到 Antigravity
 .venv/bin/python tools/test_mcp.py               # MCP 自我測試
 .venv/bin/python tools/test_push.py              # 推播自我測試
+.venv/bin/python auto_update.py meta             # 重建 meta/（Muse / AI agent 的 Markdown 吸收包）
 .venv/bin/python tools/test_backtest.py          # 訊號回測引擎單元測試（無網路）
 .venv/bin/python tools/qa_brief.py               # 簡報 QA：計畫不變量、數字可追溯、表格形狀、大小預算
 .venv/bin/python tests/test_quote_labels.py      # Nasdaq 報價盤前 / 盤後標籤不互換

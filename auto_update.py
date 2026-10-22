@@ -12,6 +12,7 @@
 給 Agent / Muse 用
     .venv/bin/python auto_update.py brief          印出最新一頁式簡報（Markdown）；--json / --text 換格式
     .venv/bin/python auto_update.py feed           不重算模型，用既有 JSON 重建 feed/（含最新事件與報價）
+    .venv/bin/python auto_update.py meta           用既有 feed/latest.json 重建 meta/（Muse / AI agent 的 Markdown 吸收包）
     .venv/bin/python auto_update.py quotes         即時報價快照（SOXL / 成分股 / VIX 複合體）；--json
     .venv/bin/python auto_update.py mcp-config     印出 MCP server 設定片段（Antigravity / Gemini CLI / Claude）
     .venv/bin/python auto_update.py mcp-install    把 MCP server 寫進 ~/.gemini/config/mcp_config.json（自動備份）
@@ -391,6 +392,31 @@ def cmd_feed(args: argparse.Namespace) -> int:
   return 0 if info.get("ok") else 1
 
 
+def cmd_meta(_: argparse.Namespace) -> int:
+  """Rebuild meta/ (the Muse / AI-agent Markdown pack) from the existing feed/latest.json without recomputing."""
+  from soxl_quant import brief as briefmod, meta_pack
+  br = briefmod.load_latest()
+  if not br:
+    print("尚無 feed/latest.json — 先執行 auto_update.py run 或 auto_update.py feed", file=sys.stderr)
+    return 1
+  try:
+    cfg = scheduler.load_config(create=False)
+    base_url = (cfg.get("feed") or {}).get("base_url")
+  except Exception:  # noqa: BLE001
+    base_url = None
+  res = meta_pack.build(br, None, base_url)
+  for name, size in res["files"]:
+    print(f"  {size / 1024:6.1f} KB  {name}")
+  print(f"meta/ 重建完成：{len(res['files'])} 個檔案，{res['total_bytes'] // 1024} KB，資料日 {br.get('data_as_of')} → {res['dir']}")
+  if getattr(_, "zip", None) is not None:
+    import shutil
+    target = Path(_.zip).expanduser() if _.zip else Path.home() / "Downloads" / f"soxl_meta_pack_{br.get('data_as_of')}.zip"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    out = shutil.make_archive(str(target.with_suffix("")), "zip", root_dir=str(Path(res["dir"]).parent), base_dir="meta")
+    print(f"壓縮檔（可直接上傳給 Muse）：{out}（{Path(out).stat().st_size // 1024} KB）")
+  return 0
+
+
 def cmd_quotes(args: argparse.Namespace) -> int:
   from soxl_quant import quotes
   q = quotes.snapshot()
@@ -588,6 +614,8 @@ def main(argv: list[str] | None = None) -> int:
   b.add_argument("--text", action="store_true")
   f = sub.add_parser("feed")
   f.add_argument("--offline", action="store_true", help="不抓即時報價")
+  m = sub.add_parser("meta", help="用既有 feed/latest.json 重建 meta/（給 Muse / AI agent 的 Markdown 吸收包）")
+  m.add_argument("--zip", nargs="?", const="", default=None, metavar="PATH", help="另外打包成 zip（預設 ~/Downloads/soxl_meta_pack_<日期>.zip）")
   q = sub.add_parser("quotes")
   q.add_argument("--json", action="store_true")
   p = sub.add_parser("push")
@@ -607,7 +635,7 @@ def main(argv: list[str] | None = None) -> int:
     args = run_p.parse_args([])
   handlers = {
       "run": cmd_run, "install": cmd_install, "uninstall": cmd_uninstall, "status": cmd_status, "notify-test": cmd_notify_test, "config": cmd_config,
-      "brief": cmd_brief, "feed": cmd_feed, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
+      "brief": cmd_brief, "feed": cmd_feed, "meta": cmd_meta, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
       "sidecar-install": cmd_sidecar_install, "sidecar-uninstall": cmd_sidecar_uninstall,
       "notify-config": cmd_notify_config, "push": cmd_push, "push-test": cmd_push_test, "push-status": cmd_push_status, "publish": cmd_publish,
   }

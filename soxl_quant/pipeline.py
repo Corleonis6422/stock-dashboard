@@ -249,7 +249,15 @@ def build_feed(payload: dict, label: str = "", with_quotes: bool = True) -> dict
   try:
     br = brief.build(payload, ev, q, base_url)
     paths = brief.write_all(br)
-    _step(f"{label}feed → {brief.FEED_DIR.relative_to(BASE_DIR)}/latest.{{json,md,txt}} + rss.xml ({len(brief.to_markdown(br))//1024} KB md)")
+    _step(f"{label}feed → {brief.FEED_DIR.relative_to(BASE_DIR)}/latest.{{json,md,txt}} + rss.xml ({len(brief.to_markdown(br).encode('utf-8'))//1024} KB md)")
+    try:
+      from . import meta_pack
+      mp = meta_pack.build(br, payload, base_url)
+      paths["meta"] = mp["dir"]
+      _step(f"{label}meta → {Path(mp['dir']).relative_to(BASE_DIR)}/ ({len(mp['files'])} files, {mp['total_bytes']//1024} KB) for Muse / AI agents")
+    except Exception as e:  # noqa: BLE001
+      traceback.print_exc()
+      notes.append(f"meta: {e}")
     return {"ok": True, "paths": paths, "brief": br, "notes": notes}
   except Exception as e:  # noqa: BLE001
     traceback.print_exc()

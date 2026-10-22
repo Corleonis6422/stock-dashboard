@@ -1,0 +1,22 @@
+# SOXL Quant daily brief (Meta / Muse pack)
+
+> Automated research brief for SOXL (3x semiconductor ETF). data_as_of 2026-10-21, generated 2026-10-22 21:27:52 Asia/Taipei. Not investment advice.
+
+Today: 🔴 減碼 / 觀望 | composite -0.67 | plan no_trade | stop $91.35 | T1 $120.00 | T2 $130.59 | R:R 1.70
+
+## Read in this order
+
+- [Rules for agents](https://corleonis6422.github.io/stock-dashboard/meta/06_rules_for_agents.md): freshness, base rates, disclaimer (read once)
+- [Today's brief](https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md): one page, zh-TW
+- [Trade plan](https://corleonis6422.github.io/stock-dashboard/meta/02_trade_plan.md): side, trigger, stop, T1/T2, R:R, size, invalidation
+- [Signals](https://corleonis6422.github.io/stock-dashboard/meta/03_signals.md): 23 rules with win rate vs base, N, p, grade, today's state
+- [Methodology](https://corleonis6422.github.io/stock-dashboard/meta/04_methodology.md)
+- [Glossary](https://corleonis6422.github.io/stock-dashboard/meta/05_glossary.md)
+- [History](https://corleonis6422.github.io/stock-dashboard/meta/07_history.md)
+- [Structured JSON](https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json) (schema soxl-quant-brief/2), [schema](https://corleonis6422.github.io/stock-dashboard/meta/data/schema.json)
+
+## Optional
+
+- [Full report HTML](https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html)
+- [Beginner HTML](https://corleonis6422.github.io/stock-dashboard/soxl_simple.html)
+- [RSS](https://corleonis6422.github.io/stock-dashboard/feed/rss.xml)

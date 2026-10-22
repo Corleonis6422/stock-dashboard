@@ -1,0 +1,611 @@
+{
+ "data_as_of": "2026-10-21",
+ "method": {
+  "entry": "訊號日次一交易日開盤價",
+  "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
+  "declustered": true,
+  "oos": "最近 40% 樣本（2023-02-21 起）",
+  "ci": "Wilson 95%",
+  "sample": "2017-08-24 ~ 2026-10-21",
+  "bars": 2512,
+  "data_as_of": "2026-10-21",
+  "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
+ },
+ "summary": {
+  "n_signals": 23,
+  "n_graded_a": 0,
+  "n_graded_b": 4,
+  "fired_today": [],
+  "pending": [
+   "rsi14_lt25",
+   "vix_term_invert_first"
+  ],
+  "fired_long_ab": [],
+  "fired_exit_ab": [],
+  "n_significant": 1,
+  "n_graded": 18,
+  "n_q_lt_10": 0,
+  "exits_predictive": [],
+  "dyn_base_win_pct": 63.6
+ },
+ "signals": [
+  {
+   "key": "rsi2_lt10_above200",
+   "short_name": "RSI2<10 年線上",
+   "side": "long",
+   "horizon": 5,
+   "n": 59,
+   "win_pct": 52.5,
+   "base_win_pct": 55.4,
+   "ci": [
+    40.0,
+    64.7
+   ],
+   "mean": -0.02,
+   "pf": 0.99,
+   "p_value": 0.7174,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "rsi2_lt5_any",
+   "short_name": "RSI2<5",
+   "side": "long",
+   "horizon": 5,
+   "n": 59,
+   "win_pct": 45.8,
+   "base_win_pct": 55.4,
+   "ci": [
+    33.7,
+    58.3
+   ],
+   "mean": 0.99,
+   "pf": 1.2,
+   "p_value": 0.947,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": {
+    "price": 38.91,
+    "op": "<=",
+    "dist_pct": -62.3,
+    "needs": null
+   }
+  },
+  {
+   "key": "rsi14_lt25",
+   "short_name": "RSI14<25",
+   "side": "long",
+   "horizon": 10,
+   "n": 3,
+   "win_pct": 66.7,
+   "base_win_pct": 57.5,
+   "ci": [
+    20.8,
+    93.9
+   ],
+   "mean": 4.72,
+   "pf": 1.61,
+   "p_value": 0.6117,
+   "q_value": null,
+   "significant": false,
+   "grade": "—",
+   "state": "pending",
+   "pending": {
+    "price": 61.07,
+    "op": "<=",
+    "dist_pct": -40.8,
+    "needs": null
+   }
+  },
+  {
+   "key": "bb_lower_reentry",
+   "short_name": "布林下軌回收",
+   "side": "long",
+   "horizon": 10,
+   "n": 43,
+   "win_pct": 55.8,
+   "base_win_pct": 57.5,
+   "ci": [
+    41.1,
+    69.6
+   ],
+   "mean": 1.16,
+   "pf": 1.17,
+   "p_value": 0.6495,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "three_down_sma5",
+   "short_name": "連3黑收5MA下",
+   "side": "long",
+   "horizon": 5,
+   "n": 62,
+   "win_pct": 64.5,
+   "base_win_pct": 55.4,
+   "ci": [
+    52.1,
+    75.3
+   ],
+   "mean": 2.5,
+   "pf": 1.83,
+   "p_value": 0.0932,
+   "q_value": 0.636,
+   "significant": false,
+   "grade": "B",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "double7_above200",
+   "short_name": "7日新低年線上",
+   "side": "long",
+   "horizon": 7,
+   "n": 94,
+   "win_pct": 57.4,
+   "base_win_pct": 55.1,
+   "ci": [
+    47.4,
+    67.0
+   ],
+   "mean": 2.29,
+   "pf": 1.47,
+   "p_value": 0.363,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "B",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "capitulation_reversal",
+   "short_name": "投降量反轉",
+   "side": "long",
+   "horizon": 10,
+   "n": 4,
+   "win_pct": 100.0,
+   "base_win_pct": 57.5,
+   "ci": [
+    51.0,
+    100.0
+   ],
+   "mean": 11.45,
+   "pf": 99.0,
+   "p_value": 0.1093,
+   "q_value": null,
+   "significant": false,
+   "grade": "—",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "ftd",
+   "short_name": "IBD跟進日",
+   "side": "long",
+   "horizon": 20,
+   "n": 40,
+   "win_pct": 47.5,
+   "base_win_pct": 57.3,
+   "ci": [
+    32.9,
+    62.5
+   ],
+   "mean": 4.62,
+   "pf": 1.41,
+   "p_value": 0.9205,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "reclaim_sma20",
+   "short_name": "站回20MA",
+   "side": "long",
+   "horizon": 20,
+   "n": 39,
+   "win_pct": 64.1,
+   "base_win_pct": 57.3,
+   "ci": [
+    48.4,
+    77.3
+   ],
+   "mean": 9.37,
+   "pf": 2.35,
+   "p_value": 0.2445,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "vix_term_normalize",
+   "short_name": "VIX倒掛回正",
+   "side": "long",
+   "horizon": 20,
+   "n": 25,
+   "win_pct": 48.0,
+   "base_win_pct": 57.3,
+   "ci": [
+    30.0,
+    66.5
+   ],
+   "mean": 5.79,
+   "pf": 1.68,
+   "p_value": 0.873,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "vix_spike_fade",
+   "short_name": "VIX高峰回落",
+   "side": "long",
+   "horizon": 20,
+   "n": 18,
+   "win_pct": 55.6,
+   "base_win_pct": 57.3,
+   "ci": [
+    33.7,
+    75.4
+   ],
+   "mean": 10.68,
+   "pf": 2.06,
+   "p_value": 0.6541,
+   "q_value": null,
+   "significant": false,
+   "grade": "—",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "macd_cross_up_below200",
+   "short_name": "MACD翻正年線下",
+   "side": "long",
+   "horizon": 10,
+   "n": 26,
+   "win_pct": 53.8,
+   "base_win_pct": 57.5,
+   "ci": [
+    35.5,
+    71.2
+   ],
+   "mean": 5.23,
+   "pf": 1.95,
+   "p_value": 0.7193,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "kd_golden_low",
+   "short_name": "KD低檔金叉",
+   "side": "long",
+   "horizon": 10,
+   "n": 33,
+   "win_pct": 69.7,
+   "base_win_pct": 57.5,
+   "ci": [
+    52.7,
+    82.6
+   ],
+   "mean": 6.93,
+   "pf": 2.47,
+   "p_value": 0.106,
+   "q_value": 0.636,
+   "significant": false,
+   "grade": "B",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "golden_cross_20_50",
+   "short_name": "20MA上穿50MA",
+   "side": "long",
+   "horizon": 20,
+   "n": 24,
+   "win_pct": 58.3,
+   "base_win_pct": 57.3,
+   "ci": [
+    38.8,
+    75.5
+   ],
+   "mean": 6.21,
+   "pf": 1.93,
+   "p_value": 0.5453,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "B",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "breakout20_above200",
+   "short_name": "帶量破20日高",
+   "side": "long",
+   "horizon": 20,
+   "n": 24,
+   "win_pct": 83.3,
+   "base_win_pct": 57.3,
+   "ci": [
+    64.1,
+    93.3
+   ],
+   "mean": 12.33,
+   "pf": 6.7,
+   "p_value": 0.0067,
+   "q_value": 0.1206,
+   "significant": true,
+   "grade": "B*",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "first_close_below_sma20",
+   "short_name": "首破20MA",
+   "side": "exit",
+   "horizon": 10,
+   "n": 46,
+   "win_pct": 39.1,
+   "base_win_pct": 42.5,
+   "ci": [
+    26.4,
+    53.5
+   ],
+   "mean": 2.59,
+   "pf": 1.47,
+   "p_value": 0.7277,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "chandelier_3atr",
+   "short_name": "吊燈3ATR",
+   "side": "exit",
+   "horizon": 10,
+   "n": 73,
+   "win_pct": 45.2,
+   "base_win_pct": 42.5,
+   "ci": [
+    34.3,
+    56.6
+   ],
+   "mean": 4.06,
+   "pf": 1.68,
+   "p_value": 0.3616,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "distribution_4in25",
+   "short_name": "派發日第4個",
+   "side": "exit",
+   "horizon": 20,
+   "n": 28,
+   "win_pct": 28.6,
+   "base_win_pct": 42.7,
+   "ci": [
+    15.3,
+    47.1
+   ],
+   "mean": 13.09,
+   "pf": 5.29,
+   "p_value": 0.9584,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "recent",
+   "pending": null
+  },
+  {
+   "key": "parabolic_blowoff",
+   "short_name": "拋物線噴出",
+   "side": "exit",
+   "horizon": 10,
+   "n": 38,
+   "win_pct": 39.5,
+   "base_win_pct": 42.5,
+   "ci": [
+    25.6,
+    55.3
+   ],
+   "mean": 2.72,
+   "pf": 1.52,
+   "p_value": 0.7036,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "rsi14_gt80",
+   "short_name": "RSI14>80",
+   "side": "exit",
+   "horizon": 10,
+   "n": 8,
+   "win_pct": 50.0,
+   "base_win_pct": 42.5,
+   "ci": [
+    21.5,
+    78.5
+   ],
+   "mean": 3.81,
+   "pf": 2.03,
+   "p_value": 0.4644,
+   "q_value": null,
+   "significant": false,
+   "grade": "—",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "kd_death_high",
+   "short_name": "KD高檔死叉",
+   "side": "exit",
+   "horizon": 10,
+   "n": 66,
+   "win_pct": 42.4,
+   "base_win_pct": 42.5,
+   "ci": [
+    31.2,
+    54.4
+   ],
+   "mean": 2.5,
+   "pf": 1.42,
+   "p_value": 0.552,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "off",
+   "pending": null
+  },
+  {
+   "key": "vix_term_invert_first",
+   "short_name": "VIX首次倒掛",
+   "side": "exit",
+   "horizon": 10,
+   "n": 30,
+   "win_pct": 36.7,
+   "base_win_pct": 42.5,
+   "ci": [
+    21.9,
+    54.5
+   ],
+   "mean": 3.87,
+   "pf": 1.6,
+   "p_value": 0.7959,
+   "q_value": 0.9584,
+   "significant": false,
+   "grade": "C",
+   "state": "pending",
+   "pending": {
+    "price": null,
+    "op": "",
+    "dist_pct": null,
+    "needs": "需 VIX/VIX3M ≥ 1.0（目前 0.891）"
+   }
+  },
+  {
+   "key": "death_cross_50_200",
+   "short_name": "死亡交叉",
+   "side": "exit",
+   "horizon": 20,
+   "n": 6,
+   "win_pct": 33.3,
+   "base_win_pct": 42.7,
+   "ci": [
+    9.7,
+    70.0
+   ],
+   "mean": -1.54,
+   "pf": 0.83,
+   "p_value": 0.8064,
+   "q_value": null,
+   "significant": false,
+   "grade": "—",
+   "state": "off",
+   "pending": null
+  }
+ ],
+ "regime_grid": [
+  {
+   "series": "SOXL",
+   "band_pct": 0.0,
+   "confirm_days": 1,
+   "cagr_pct": 14.2,
+   "max_dd_pct": -76.6,
+   "switches": 91,
+   "time_in_market_pct": 65.0,
+   "in_market": false,
+   "dist_pct": -16.0
+  },
+  {
+   "series": "SOXL",
+   "band_pct": 3.0,
+   "confirm_days": 1,
+   "cagr_pct": 19.8,
+   "max_dd_pct": -75.9,
+   "switches": 45,
+   "time_in_market_pct": 66.0,
+   "in_market": false,
+   "dist_pct": -16.0
+  },
+  {
+   "series": "SOXL",
+   "band_pct": 3.0,
+   "confirm_days": 2,
+   "cagr_pct": 26.5,
+   "max_dd_pct": -74.3,
+   "switches": 29,
+   "time_in_market_pct": 66.0,
+   "in_market": false,
+   "dist_pct": -16.0
+  },
+  {
+   "series": "SOXX",
+   "band_pct": 0.0,
+   "confirm_days": 1,
+   "cagr_pct": 32.7,
+   "max_dd_pct": -79.2,
+   "switches": 60,
+   "time_in_market_pct": 78.0,
+   "in_market": true,
+   "dist_pct": 8.5
+  },
+  {
+   "series": "SOXX",
+   "band_pct": 3.0,
+   "confirm_days": 1,
+   "cagr_pct": 26.9,
+   "max_dd_pct": -86.3,
+   "switches": 24,
+   "time_in_market_pct": 78.0,
+   "in_market": true,
+   "dist_pct": 8.5
+  },
+  {
+   "series": "SOXX",
+   "band_pct": 5.0,
+   "confirm_days": 1,
+   "cagr_pct": 38.3,
+   "max_dd_pct": -76.7,
+   "switches": 10,
+   "time_in_market_pct": 78.0,
+   "in_market": true,
+   "dist_pct": 8.5
+  },
+  {
+   "series": "SOXX",
+   "band_pct": 3.0,
+   "confirm_days": 2,
+   "cagr_pct": 37.0,
+   "max_dd_pct": -78.0,
+   "switches": 14,
+   "time_in_market_pct": 78.0,
+   "in_market": true,
+   "dist_pct": 8.5
+  }
+ ],
+ "disclaimer": "本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。"
+}

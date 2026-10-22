@@ -10,6 +10,7 @@
 
 | 你要什麼 | 去哪裡 |
 |---|---|
+| **整包給 Muse / 任何 agent 吸收的資料夾（純 Markdown + JSON，約 150 KB，含 README、解讀規則、名詞表、提示範本）** | `https://corleonis6422.github.io/stock-dashboard/meta/`（索引 `meta/README.md`、`meta/llms.txt`、清單 `meta/manifest.json`）或本機 `meta/` |
 | 一頁式人話簡報（Markdown，約 8 KB；先讀「交易計畫」表） | `https://corleonis6422.github.io/stock-dashboard/feed/latest.md` 或本機 `feed/latest.md` |
 | 結構化資料（JSON，schema `soxl-quant-brief/2`，約 90 KB） | `…/feed/latest.json`，欄位說明見 `…/feed/schema.json`；v2 新增 `trade_plan`（明確進出場）、`signals`（驗證過的買賣訊號）、`validation`（方法與 200 日線濾網比較），v1 欄位全部保留 |
 | 手機短訊版（≤ 900 字） | `…/feed/latest.txt` |
@@ -20,6 +21,7 @@
 | 歷史簡報 | `…/feed/index.json` 列表 → `…/feed/YYYY-MM-DD.{json,md}`（保留 120 天） |
 
 **先讀 `feed/latest.md`，需要數字再開 `feed/latest.json`。** 兩者來自同一個 dict，內容一致。
+**要一次餵整包給 Muse：上傳 `meta/` 資料夾**（或貼 `…/meta/` 下的網址）。第一次讀 `06_rules_for_agents.md` 與 `05_glossary.md`，之後每天只需 `01_brief_today.md`（= `feed/latest.md`）與 `data/latest.json`。`auto_update.py meta` 可隨時重建。
 
 ---
 

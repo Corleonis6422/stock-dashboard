@@ -203,6 +203,35 @@ def main() -> int:
     for v in ((tp.get("stop") or {}).get("price"), (tp.get("t1") or {}).get("price"), (tp.get("t2") or {}).get("price")):
       if v is not None and f"{v:,.2f}" not in txt:
         fail(f"latest.txt lacks plan price {v}")
+  # ------------------------------------------------------------ meta pack (Muse folder)
+  meta_dir = BASE / "meta"
+  man_p = meta_dir / "manifest.json"
+  if not man_p.exists():
+    fail("meta/manifest.json missing (run auto_update.py meta)")
+  else:
+    man = json.loads(man_p.read_text(encoding="utf-8"))
+    if man.get("data_as_of") != br.get("data_as_of"):
+      fail(f"meta pack data_as_of {man.get('data_as_of')} != brief {br.get('data_as_of')}")
+    missing = [f["name"] for f in man.get("files", []) if not (meta_dir / f["name"]).exists()]
+    if missing:
+      fail(f"meta files listed but missing: {missing}")
+    body = (meta_dir / "01_brief_today.md").read_text(encoding="utf-8") if (meta_dir / "01_brief_today.md").exists() else ""
+    if md.strip() not in body:
+      fail("meta/01_brief_today.md does not contain feed/latest.md verbatim")
+    mjson = json.loads((meta_dir / "data" / "latest.json").read_text(encoding="utf-8")) if (meta_dir / "data" / "latest.json").exists() else {}
+    if mjson.get("generated_at") != br.get("generated_at"):
+      fail("meta/data/latest.json is not the same build as feed/latest.json")
+    wide = []
+    for f in man.get("files", []):
+      if f["name"].endswith(".md"):
+        for l in (meta_dir / f["name"]).read_text(encoding="utf-8").splitlines():
+          if l.startswith("|") and not l.startswith("|---") and len(l.strip("|").split("|")) > 4:
+            wide.append(f["name"])
+            break
+    if wide:
+      fail(f"meta tables wider than 4 columns in {wide}")
+    if not FAILS or all("meta" not in f_ for f_ in FAILS):
+      ok(f"meta pack: {len(man.get('files', []))} files, {man.get('total_bytes', 0) // 1024} KB, data_as_of {man.get('data_as_of')}")
   print("QA BRIEF", "FAIL" if FAILS else "PASS", f"({len(FAILS)} fail, {len(WARNS)} warn)")
   return 1 if FAILS else 0
 
