@@ -1,7 +1,7 @@
 # SOXL Quant → Meta AI（Muse）吸收包
 
 > 這個資料夾是給 AI agent 整包讀的。全部是純 Markdown 加一份 JSON，沒有程式碼、沒有圖片、沒有金鑰。
-> 每個美股交易日收盤後自動重建（台北 07:30 左右）；資料日 **2026-10-21**，產生 2026-10-22 21:27:52 台北。
+> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-10-21**，產生 2026-10-22 21:27:52 台北。
 
 ## 三十秒版
 
@@ -11,7 +11,7 @@
 ## 怎麼餵給 Muse（擇一）
 
 1. **上傳整個 `meta/` 資料夾**（或壓縮檔）到 Muse 的專案 / 知識庫。檔名開頭的數字是建議閱讀順序；`README.md` 與 `llms.txt` 是索引。
-2. **貼網址**：公開版在 `https://corleonis6422.github.io/stock-dashboard/meta/`（例如 `https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md`、`https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json`）。每天更新同一組網址，Muse 只要重新抓。
+2. **貼網址**：公開版在 `https://corleonis6422.github.io/stock-dashboard/meta/`（例如 `https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md`、`https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json`）。同一組網址每個美股交易日的台北 06:15 到 06:45 之間換新（GitHub Actions；失敗時 07:00 與 08:30 重試），Muse 在 07:30 抓、不新就 09:00 再抓一次即可。
 3. **貼內容**：把 `prompts/daily_briefing.md` 的提示連同 `01_brief_today.md` 一起貼進對話；提示已經包含解讀規則。
 
 Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md`（穩定內容），之後每天只需要 `01_brief_today.md`（或 `02_trade_plan.md`）與 `data/latest.json`。
@@ -60,7 +60,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `06_rules_for_agents.md` | 4.7 KB |
 | `07_history.md` | 1.5 KB |
 | `llms.txt` | 1.5 KB |
-| `prompts/first_time.md` | 5.4 KB |
+| `prompts/first_time.md` | 6.1 KB |
 | `prompts/daily_briefing.md` | 0.8 KB |
 | `prompts/holder_check.md` | 0.5 KB |
 | `prompts/weekly_review.md` | 0.5 KB |

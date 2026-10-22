@@ -161,7 +161,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   L[launchd 07:30 / 登入補跑] --> A[auto_update.py run --if-stale]
-  GA[GitHub Actions 22:15 / 00:30 UTC<br/>只在 repo 資料落後時] --> A
+  GA[GitHub Actions 22:15 / 23:00 / 00:30 UTC<br/>只在 repo 資料落後時] --> A
   A -->|資料落後最近交易日| P[pipeline.run]
   A -->|已是最新| S[略過]
   P --> J[(JSON + 3 HTML)]
@@ -594,7 +594,7 @@ folder/
 │  └─ auto_update.log           自動更新紀錄（1 MB 輪替 ×5）
 ├─ .github/workflows/
 │  ├─ deploy.yml                push 到 main 後部署 GitHub Pages
-│  └─ daily-update.yml          雲端備援：UTC 22:15 / 00:30 檢查 repo 資料是否落後，落後才跑一次並 commit
+│  └─ daily-update.yml          雲端更新：UTC 22:15 / 23:00 / 00:30 檢查 repo 資料是否落後，落後才跑一次並 commit（含 meta/）
 ├─ .cache/                      下載快取（可刪）
 ├─ .venv/                       Python 3.14 虛擬環境
 ├─ legacy/                      2026-10-09 之前的單一檔案版本（僅供參考）
@@ -650,7 +650,7 @@ folder/
 3. 執行 `pipeline.run(refresh=True)`：第一次嘗試清快取確保抓到當日資料；失敗則等 10 分鐘、30 分鐘重試（共 3 次，重試時沿用快取）。同時間只允許一個實例（`logs/.auto_update.lock`）。
 4. 成功後寫 `logs/last_run.json`，產生 `feed/`，依 `notify_config.json` 推播（macOS 通知 + 啟用的頻道），再 `git commit + push` 輸出檔（`publish.git_push`）；失敗 3 次則通知「自動更新失敗，沿用上一份報告」並推送 `soxl.update_failed` 事件（舊報告不會被破壞，因為所有輸出都是原子寫入）。
 5. `RunAtLoad` + `--if-stale`：**登入 / 開機時**若發現資料落後就立刻補跑，所以排程時間 Mac 關機也不會漏掉一天；Mac 只是睡眠的話，launchd 會在喚醒時補跑錯過的排程（這是 launchd 相對 cron 的優點）。
-6. **雲端備援**：`.github/workflows/daily-update.yml` 在 UTC 22:15 與 00:30（週一～五收盤後）檢查 repo 內 `soxl_analysis_data.json` 的 `data_as_of` 是否落後最近交易日；落後才在 GitHub Actions 跑一次 `auto_update.py run --no-notify --no-publish` 並 commit。Mac 正常運作時它永遠是「已是最新 → 略過」，所以不會互相覆蓋；Mac 端 `publish.py` 推送前會先 fetch + rebase，衝突時保留本機較新的產出檔。
+6. **雲端更新**：`.github/workflows/daily-update.yml` 在 UTC 22:15 / 23:00 / 00:30（台北 06:15 / 07:00 / 08:30，週一～五收盤後）檢查 repo 內 `soxl_analysis_data.json` 的 `data_as_of` 是否落後最近交易日；落後才在 GitHub Actions 跑一次 `auto_update.py run --no-notify --no-publish` 並 commit（JSON、HTML、`feed/`、`meta/`、`history/`）。本機沒有 GitHub 推送權限時，這就是公開網址唯一的更新來源，Muse 等 agent 只需每天去同一組網址撈。Mac 正常運作時它永遠是「已是最新 → 略過」，所以不會互相覆蓋；Mac 端 `publish.py` 推送前會先 fetch + rebase，衝突時保留本機較新的產出檔。
 
 ### 11.2 為什麼收盤後 1–3 小時就能拿到當天收盤
 

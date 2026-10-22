@@ -13,6 +13,7 @@
     .venv/bin/python auto_update.py brief          印出最新一頁式簡報（Markdown）；--json / --text 換格式
     .venv/bin/python auto_update.py feed           不重算模型，用既有 JSON 重建 feed/（含最新事件與報價）
     .venv/bin/python auto_update.py meta           用既有 feed/latest.json 重建 meta/（Muse / AI agent 的 Markdown 吸收包）
+    .venv/bin/python auto_update.py pack-repo      把整個 repo（含 .git）壓成 zip，帶去有 GitHub 權限的電腦 push（見 PUBLISHING.md）
     .venv/bin/python auto_update.py quotes         即時報價快照（SOXL / 成分股 / VIX 複合體）；--json
     .venv/bin/python auto_update.py mcp-config     印出 MCP server 設定片段（Antigravity / Gemini CLI / Claude）
     .venv/bin/python auto_update.py mcp-install    把 MCP server 寫進 ~/.gemini/config/mcp_config.json（自動備份）
@@ -417,6 +418,54 @@ def cmd_meta(_: argparse.Namespace) -> int:
   return 0
 
 
+PACK_EXCLUDE_DIRS = {".venv", ".cache", ".qa", "logs", "__pycache__", ".pytest_cache", ".DS_Store"}
+PACK_EXCLUDE_FILES = {"notify_config.json", "meta.zip"}
+
+
+def cmd_pack_repo(args: argparse.Namespace) -> int:
+  """Zip the whole repo INCLUDING .git (so the commits travel) for pushing from another machine.
+
+  Excludes the venv, caches, logs, QA screenshots, compiled files and every secret-bearing file
+  (notify_config.json and *.bak.*.json), then verifies the archive by listing it.
+  """
+  import zipfile
+  from soxl_quant import brief as briefmod
+  br = briefmod.load_latest() or {}
+  stamp = br.get("data_as_of") or datetime.now().strftime("%Y-%m-%d")
+  target = Path(args.out).expanduser() if args.out else Path.home() / "Downloads" / f"stock-dashboard_repo_{stamp}.zip"
+  target.parent.mkdir(parents=True, exist_ok=True)
+  root = BASE_DIR
+  top = "stock-dashboard"
+  n = skipped = 0
+  with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+    for p in sorted(root.rglob("*")):
+      rel = p.relative_to(root)
+      parts = rel.parts
+      if any(part in PACK_EXCLUDE_DIRS for part in parts) or rel.name in PACK_EXCLUDE_FILES or rel.name.endswith(".pyc") or (rel.name.startswith("notify_config") and rel.suffix == ".json" and rel.name != "notify_config.example.json"):
+        skipped += 1
+        continue
+      if rel.match("*.bak.*.json"):
+        skipped += 1
+        continue
+      if p.is_dir():
+        continue
+      zf.write(p, f"{top}/{rel.as_posix()}")
+      n += 1
+    guide = root / "PUBLISHING.md"
+    if guide.exists():
+      zf.write(guide, "PUSH_ME_FIRST.md")
+  with zipfile.ZipFile(target) as zf:
+    names = zf.namelist()
+    bad = [x for x in names if "notify_config.json" in x or "/.venv/" in x or "/.cache/" in x or "/logs/" in x]
+    has_git = any(x.startswith(f"{top}/.git/") for x in names)
+  if bad or not has_git:
+    print(f"打包驗證失敗：secrets/cache 混入 {bad[:3]}，.git 存在 {has_git}", file=sys.stderr)
+    return 1
+  print(f"repo 壓縮檔：{target}（{target.stat().st_size // 1024 // 1024} MB，{n} 個檔案，含 .git 歷史；略過 {skipped} 個快取 / 密鑰 / 暫存項目）")
+  print("另一台電腦：unzip → cd stock-dashboard → git push --force origin main（詳見壓縮檔內 PUSH_ME_FIRST.md）")
+  return 0
+
+
 def cmd_quotes(args: argparse.Namespace) -> int:
   from soxl_quant import quotes
   q = quotes.snapshot()
@@ -614,6 +663,8 @@ def main(argv: list[str] | None = None) -> int:
   b.add_argument("--text", action="store_true")
   f = sub.add_parser("feed")
   f.add_argument("--offline", action="store_true", help="不抓即時報價")
+  pr = sub.add_parser("pack-repo", help="把整個 repo（含 .git）壓成 zip 帶去另一台電腦推送；不含 venv / 快取 / logs / 密鑰")
+  pr.add_argument("--out", default=None, metavar="PATH", help="輸出路徑（預設 ~/Downloads/stock-dashboard_repo_<日期>.zip）")
   m = sub.add_parser("meta", help="用既有 feed/latest.json 重建 meta/（給 Muse / AI agent 的 Markdown 吸收包）")
   m.add_argument("--zip", nargs="?", const="", default=None, metavar="PATH", help="另外打包成 zip（預設 ~/Downloads/soxl_meta_pack_<日期>.zip）")
   q = sub.add_parser("quotes")
@@ -635,7 +686,7 @@ def main(argv: list[str] | None = None) -> int:
     args = run_p.parse_args([])
   handlers = {
       "run": cmd_run, "install": cmd_install, "uninstall": cmd_uninstall, "status": cmd_status, "notify-test": cmd_notify_test, "config": cmd_config,
-      "brief": cmd_brief, "feed": cmd_feed, "meta": cmd_meta, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
+      "brief": cmd_brief, "feed": cmd_feed, "meta": cmd_meta, "pack-repo": cmd_pack_repo, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
       "sidecar-install": cmd_sidecar_install, "sidecar-uninstall": cmd_sidecar_uninstall,
       "notify-config": cmd_notify_config, "push": cmd_push, "push-test": cmd_push_test, "push-status": cmd_push_status, "publish": cmd_publish,
   }

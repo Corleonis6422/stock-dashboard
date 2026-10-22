@@ -4,13 +4,18 @@ name: Daily update (cloud fallback)
 # published data is still behind the latest US trading day, this runner fetches,
 # recomputes and commits the outputs itself (→ deploy.yml publishes the site).
 #
-#   22:15 UTC = 18:15 ET (EDT) / 17:15 ET (EST)  — after the close + data settle
-#   00:30 UTC = second chance (the Mac job runs at 23:30 UTC / 07:30 Taipei)
+#   22:15 UTC = 18:15 ET (EDT) / 17:15 ET (EST)  — after the close + data settle (06:15 Taipei)
+#   23:00 UTC = retry (07:00 Taipei); 00:30 UTC = last chance (08:30 Taipei)
+#   Each run first checks whether the published data is already current and exits in seconds if so,
+#   so the extra crons cost nothing on normal days.  The Mac job runs at 23:30 UTC / 07:30 Taipei;
+#   when the Mac cannot push (no GitHub SSH key), these runs are the only thing that refreshes the site.
+#   Outputs committed: JSON, HTML, feed/, meta/ (the Muse pack), history/.
 
 on:
   schedule:
-    - cron: "15 22 * * 1-5"
-    - cron: "30 0 * * 2-6"
+    - cron: "15 22 * * 1-5"   # 06:15 Taipei (Tue-Sat): first attempt after the US close
+    - cron: "0 23 * * 1-5"    # 07:00 Taipei: retry if the first run was late or data not ready
+    - cron: "30 0 * * 2-6"    # 08:30 Taipei: last chance (also covers the Mac job at 07:30 Taipei failing to push)
   workflow_dispatch:
     inputs:
       force:
@@ -89,7 +94,7 @@ jobs:
         run: |
           git config user.name "soxl-quant-bot"
           git config user.email "soxl-quant-bot@users.noreply.github.com"
-          git add -A -- soxl_analysis_data.json soxl_analysis_report.html index.html soxl_simple.html feed history/verdicts.jsonl history/snapshots
+          git add -A -- soxl_analysis_data.json soxl_analysis_report.html index.html soxl_simple.html feed meta history/verdicts.jsonl history/snapshots
           if git diff --cached --quiet; then
             echo "no changes"; exit 0
           fi

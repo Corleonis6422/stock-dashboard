@@ -29,7 +29,7 @@
 
 ### A. Pull：直接抓網址（最無痛，零安裝）
 
-每天台北 07:30 左右（美股收盤後 3.5 小時）內容更新；GitHub Actions 的雲端備援在 UTC 22:15 / 00:30 另外檢查一次。
+公開網址由 GitHub Actions 在每個美股交易日的台北 06:15 更新（UTC 22:15；07:00 與 08:30 重試），不依賴本機開機；本機 launchd 07:30 另外重算一次並嘗試推送。Agent 在 07:30 抓、`data_as_of` 不新就 09:00 再抓。
 Agent 端只需要：
 
 1. `GET feed/latest.json`
@@ -168,7 +168,7 @@ Webhook JSON 信封：
 ## 4. 更新節奏與資料來源
 
 - **本機 launchd**：週二～六 07:30（台北）＝美股週一～五收盤後；登入 / 喚醒時若資料過期會補跑。流程：抓 API → 重算 → HTML → `feed/` → 推播 → `git push`（→ GitHub Pages）。
-- **雲端備援** `.github/workflows/daily-update.yml`：UTC 22:15 與 00:30 檢查 repo 內 `data_as_of` 是否落後，落後才在 GitHub Actions 跑一次並 commit。
+- **雲端更新** `.github/workflows/daily-update.yml`：UTC 22:15 / 23:00 / 00:30（台北 06:15 / 07:00 / 08:30）檢查 repo 內 `data_as_of` 是否落後，落後才在 GitHub Actions 跑一次並 commit（JSON、HTML、`feed/`、`meta/`、`history/`）。本機無法推送時，這就是公開網址唯一的更新來源。
 - 來源（全部免費免金鑰）：Nasdaq（日線、當日 K 線、即時報價、財報日曆）、CBOE（選擇權鏈、VIX 家族、Put/Call、延遲指數報價）、CNN Fear & Greed、美國財政部殖利率、Fed 官網（FOMC 日程、新聞稿 RSS）、Yahoo Finance、Google News、Nasdaq / Seeking Alpha 個股 RSS、CNBC、MarketWatch。
 - 任一來源失敗只會降級該區段並寫進 `warnings`，不會中斷。
 
