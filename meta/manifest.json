@@ -1,10 +1,10 @@
 {
  "pack": "soxl-quant-meta-pack/1",
  "schema": "soxl-quant-brief/2",
- "data_as_of": "2026-10-22",
- "generated_at": "2026-10-23 00:43:07",
+ "data_as_of": "2026-10-23",
+ "generated_at": "2026-10-24 00:45:38",
  "generated_at_tz": "Asia/Taipei",
- "built_at": "2026-10-23 00:43:24",
+ "built_at": "2026-10-24 00:45:56",
  "base_url": "https://corleonis6422.github.io/stock-dashboard/meta/",
  "read_order": [
   "06_rules_for_agents.md",
@@ -18,12 +18,12 @@
  "files": [
   {
    "name": "README.md",
-   "bytes": 5517,
+   "bytes": 5516,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/README.md"
   },
   {
    "name": "01_brief_today.md",
-   "bytes": 7362,
+   "bytes": 7068,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md"
   },
   {
@@ -33,7 +33,7 @@
   },
   {
    "name": "03_signals.md",
-   "bytes": 11081,
+   "bytes": 11076,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/03_signals.md"
   },
   {
@@ -48,12 +48,12 @@
   },
   {
    "name": "06_rules_for_agents.md",
-   "bytes": 4549,
+   "bytes": 4530,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/06_rules_for_agents.md"
   },
   {
    "name": "07_history.md",
-   "bytes": 1626,
+   "bytes": 1686,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/07_history.md"
   },
   {
@@ -83,7 +83,7 @@
   },
   {
    "name": "data/latest.json",
-   "bytes": 73794,
+   "bytes": 74445,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json"
   },
   {
@@ -93,11 +93,11 @@
   },
   {
    "name": "data/signals.json",
-   "bytes": 11230,
+   "bytes": 11231,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/data/signals.json"
   }
  ],
- "total_bytes": 149645,
+ "total_bytes": 150038,
  "verdict": "賣出 / 減碼",
  "plan_side": null,
  "disclaimer": "本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。"

@@ -1,8 +1,8 @@
-SOXL 2026-10-22 收盤 $82.14（-20.44%）
-🔴 賣出 / 減碼｜綜合 -1.01｜空 66% / 中 20% / 多 14%｜倉位上限 10%
-守 $80.06 → 看 $95.41 → $96.67
-Put 牆 $70 / Call 牆 $100 / Gamma 翻正 $104.5
-F&G 20（極度恐懼 Extreme Fear）｜VIX 16.7（VIX/VIX3M 0.83）｜崩跌前兆 28/100
-變化：評級改變：減碼 / 觀望 → 賣出 / 減碼；綜合分數 -0.67 → -1.01（-0.34）
-事件：10/23（五） 週選擇權到期；10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28
-頭條：利多「What Higher Interest Rates Mean for Dividend Stocks Like AbbVie and Pfizer」／利空「Stocks Fall Sharply on Risk-Off as Meta Slides -7%」
+SOXL 2026-10-23 收盤 $83.59（+1.80%）
+🔴 賣出 / 減碼｜綜合 -0.86｜空 62% / 中 23% / 多 15%｜倉位上限 10%
+守 $80.22 → 看 $89.46 → $92.30
+Put 牆 $70 / Call 牆 $120 / Gamma 翻正 $106.8
+F&G 21（極度恐懼 Extreme Fear）｜VIX 19.0（VIX/VIX3M 0.93）｜崩跌前兆 31/100
+變化：評級不變（連續 6 個交易日 🔴賣出 / 減碼）；綜合分數 -1.01 → -0.86（+0.15）
+事件：10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28；10/28（三） KLAC 財報（盤後）
+頭條：利多「Micron Technology Stock Price Forecast: CEO Reaffirms Tight Supply for Next Two Years, How Will HBM4 Mass Production and CXMT Controversy Impact Stock Price Expectations?」／利空「Broadcom stock gets massive $600 call even as AI fears grow」

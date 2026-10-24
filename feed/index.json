@@ -1,8 +1,23 @@
 {
  "schema": "soxl-quant-brief/2",
- "latest": "2026-10-22",
- "count": 3,
+ "latest": "2026-10-23",
+ "count": 4,
  "entries": [
+  {
+   "date": "2026-10-23",
+   "generated_at": "2026-10-24 00:45:38",
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "rating_5": 2,
+   "composite": -0.86,
+   "size_pct": 10,
+   "close": 83.59,
+   "ret_1d": 1.8,
+   "crash_risk": 31.0,
+   "text": "SOXL 2026-10-23 收盤 $83.59（+1.80%）\n🔴 賣出 / 減碼｜綜合 -0.86｜空 62% / 中 23% / 多 15%｜倉位上限 10%\n守 $80.22 → 看 $89.46 → $92.30\nPut 牆 $70 / Call 牆 $120 / Gamma 翻正 $106.8\nF&G 21（極度恐懼 Extreme Fear）｜VIX 19.0（VIX/VIX3M 0.93）｜崩跌前兆 31/100\n變化：評級不變（連續 6 個交易日 🔴賣出 / 減碼）；綜合分數 -1.01 → -0.86（+0.15）\n事件：10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28；10/28（三） KLAC 財報（盤後）\n頭條：利多「Micron Technology Stock Price Forecast: CEO Reaffirms Tight Supply for Next Two Years, How Will HBM4 Mass Production and CXMT Controversy Impact Stock Price Expectations?」／利空「Broadcom stock gets massive $600 call even as AI fears grow」",
+   "json": "2026-10-23.json",
+   "md": "2026-10-23.md"
+  },
   {
    "date": "2026-10-22",
    "generated_at": "2026-10-23 00:43:07",

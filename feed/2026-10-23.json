@@ -1,0 +1,2952 @@
+{
+ "schema": "soxl-quant-brief/2",
+ "generated_at": "2026-10-24 00:45:38",
+ "generated_at_tz": "Asia/Taipei",
+ "data_as_of": "2026-10-23",
+ "data_as_of_zh": "10/23（五）",
+ "data_status": {
+  "label": "收盤即時報價補齊",
+  "provisional": true,
+  "final": true,
+  "note": "2026-10-23 的 K 線由 Nasdaq 即時報價補齊（官方日線通常收盤後數小時才公布），與官方收盤價可能有幾分錢差異，下次更新會自動換成官方數據。"
+ },
+ "warnings": [
+  "backtest/tradeplan: unsupported format string passed to NoneType.__format__"
+ ],
+ "verdict": {
+  "label": "賣出 / 減碼",
+  "emoji": "🔴",
+  "color": "bear",
+  "rating_5": 2,
+  "rating_label": "賣出 / 減碼",
+  "composite": -0.86,
+  "trend_score": -1.34,
+  "contrarian_score": 0.0,
+  "confidence": "中",
+  "agreement_pct": 57.0,
+  "regime": "空頭趨勢且情緒未到極端 → 保持觀望",
+  "one_liner": "趨勢偏空、底部條件還沒成立：現在不是買點。",
+  "headline": "趨勢已轉空、情緒尚未投降：保持觀望，等待底部確認",
+  "consensus": {
+   "buy_pct": 14.9,
+   "hold_pct": 22.8,
+   "sell_pct": 62.4,
+   "n_buy": 4,
+   "n_hold": 7,
+   "n_sell": 13
+  },
+  "size_pct": 10,
+  "size_note": "條件不足：趨勢部位 0%；若要搶反彈，總額 ≤10% 且嚴守停損",
+  "checklist": "2/8",
+  "checklist_verdict": "⛔ 條件不足：持續觀望 / 只做極短線反彈",
+  "tldr": [
+   "🔴 結論：賣出 / 減碼（綜合 -0.86，62% 權重偏空 / 23% 中性 / 15% 偏多，信心中）。",
+   "最大空方理由：均線結構 (20 / 50 / 200MA)（跌破年線 (Below 200MA) | 距 20MA -34.6% / 50MA -33.1% / 200MA -32.1%）；最大多方理由：Call/Put 成交量比 (今日)（1.21x (Call 118,412 / Put 97,811)）。",
+   "計畫：守 $80.22、看 $89.46 → $92.30；10 日內反彈 ≥10% 機率 43%、續跌 ≥10% 機率 25%（歷史同類情境）。"
+  ],
+  "q_no_position": "❌ 現在不要買。 真的想搶反彈：最多用 ≤10% 的規劃部位，進場後跌破 $80.22（近 10 日最低）就出場，反彈到 $89.46（價值區下緣 VAL）先減一半。",
+  "q_holder": "📉 減碼至少一半，剩下的部位跌破 $80.22 全出；不要攤平 3 倍槓桿。反彈到 $89.46～$92.30 是減碼點，不是加碼點。",
+  "q_when": "最先要看到這幾件事：收盤站回 20 日均線（目前 現價 $83.59 vs 20MA $127.85）；VIX 期限結構回到正價差（目前 0.929）；成分股站上 20MA 比例 > 40%（目前 12%）。目前 2/8 項成立。"
+ },
+ "price": {
+  "close": 83.59,
+  "open": 83.88,
+  "high": 84.96,
+  "low": 82.22,
+  "volume": 92700277,
+  "ret_1d": 1.8,
+  "ret_5d": -10.76,
+  "ret_20d": -44.81,
+  "ret_60d": -27.14,
+  "high_52w": 302.0,
+  "low_52w": 28.12,
+  "drawdown_52w_pct": -72.3,
+  "rvol20": 1.12,
+  "atr_pct": 14.9,
+  "realized_vol_20d_pct": 112.0,
+  "consec_down_days": 0
+ },
+ "levels": {
+  "sma20": 127.85,
+  "sma50": 124.87,
+  "sma200": 123.2,
+  "ema5": 92.3,
+  "ema10": 103.35,
+  "dist_sma20_pct": -34.6,
+  "dist_sma50_pct": -33.1,
+  "dist_sma200_pct": -32.1,
+  "ma_structure": "跌破年線 (Below 200MA)",
+  "pivot": {
+   "p": 83.59,
+   "r1": 84.96,
+   "s1": 82.22,
+   "r2": 86.33,
+   "s2": 80.85
+  },
+  "fib": {
+   "fib_236": 101.36,
+   "fib_382": 114.45,
+   "fib_500": 125.02,
+   "fib_618": 135.6,
+   "fib_786": 150.65
+  },
+  "swing": {
+   "kind": "down",
+   "low_price": 80.215,
+   "low_date": "2026-10-22",
+   "high_price": 169.83,
+   "high_date": "2026-10-06"
+  },
+  "bollinger": {
+   "upper": 183.02,
+   "mid": 127.85,
+   "lower": 72.68,
+   "pct_b": 0.1
+  },
+  "volume_profile": {
+   "poc": 112.56,
+   "vah": 172.63,
+   "val": 89.46
+  },
+  "ladder": [
+   {
+    "price": 106.83,
+    "label": "Gamma 翻正位 / 月選 1σ 上緣",
+    "kind": "res",
+    "note": "站上後造市商改為壓抑波動"
+   },
+   {
+    "price": 103.35,
+    "label": "EMA10",
+    "kind": "res",
+    "note": "短線均線（10 日）"
+   },
+   {
+    "price": 101.36,
+    "label": "Fib 23.6% 反彈位",
+    "kind": "res",
+    "note": "反彈第一道技術關卡"
+   },
+   {
+    "price": 96.37,
+    "label": "週選 1σ 上緣",
+    "kind": "res",
+    "note": "期權定價的一週常態波動上限"
+   },
+   {
+    "price": 92.3,
+    "label": "EMA5",
+    "kind": "res",
+    "note": "極短線均線（5 日）"
+   },
+   {
+    "price": 89.46,
+    "label": "價值區下緣 VAL",
+    "kind": "res",
+    "note": "半年成交密集區的下緣"
+   },
+   {
+    "price": 83.59,
+    "label": "現價",
+    "kind": "cur",
+    "note": "2026-10-23 收盤"
+   },
+   {
+    "price": 80.215,
+    "label": "近 10 日最低",
+    "kind": "sup",
+    "note": "跌破 = 續跌確認"
+   },
+   {
+    "price": 72.68,
+    "label": "布林下軌",
+    "kind": "sup",
+    "note": "統計上的超跌邊界（2σ）"
+   },
+   {
+    "price": 70.0,
+    "label": "Put 牆 (OI 44,476) / 週選 1σ 下緣",
+    "kind": "sup",
+    "note": "大量賣權未平倉 → 支撐"
+   },
+   {
+    "price": 58.8,
+    "label": "月選 1σ 下緣",
+    "kind": "sup",
+    "note": "期權定價的一個月常態波動下限"
+   }
+  ]
+ },
+ "technicals": {
+  "rsi14": 30.9,
+  "rsi6": 21.6,
+  "macd": -12.51,
+  "macd_signal": -6.33,
+  "macd_hist": -6.19,
+  "k9": 9.3,
+  "d9": 12.3,
+  "j9": 3.2,
+  "adx14": 26.4,
+  "pdi14": 15.5,
+  "ndi14": 42.1,
+  "cci20": -120.7,
+  "will_r14": -96.2,
+  "mfi14": 17.5,
+  "cmf20": -0.171,
+  "obv_bullish": false,
+  "supertrend": 122.55,
+  "supertrend_bull": false,
+  "sar": 119.52,
+  "ichimoku": {
+   "tenkan": 104.07,
+   "kijun": 125.02,
+   "cloud_top": 148.03,
+   "cloud_bot": 120.97
+  },
+  "up_down_vol_ratio_20d": 0.49,
+  "tech_avg_score": -0.91,
+  "table": [
+   {
+    "group": "均線系統",
+    "name": "均線結構 (SMA 20/50/200, EMA 5/10)",
+    "reading": "20MA $127.85 | 50MA $124.87 | 200MA $123.20",
+    "score": -2,
+    "signal": "跌破年線 (Below 200MA)"
+   },
+   {
+    "group": "趨勢指標",
+    "name": "MACD (12, 26, 9)",
+    "reading": "DIF -12.51 | DEA -6.32 | Hist -6.19",
+    "score": -1,
+    "signal": "零軸下空頭 (綠柱收斂)"
+   },
+   {
+    "group": "擺盪指標",
+    "name": "KD / KDJ (9, 3, 3)",
+    "reading": "K=9.3 | D=12.3 | J=3.2 (RSV 7.1)",
+    "score": 0,
+    "signal": "低檔鈍化 (超賣)"
+   },
+   {
+    "group": "擺盪指標",
+    "name": "慢速 KD (14, 3, 3)",
+    "reading": "Slow K=6.9 | Slow D=11.1",
+    "score": 0,
+    "signal": "低檔區"
+   },
+   {
+    "group": "動能指標",
+    "name": "多週期 RSI (6/14/24) & StochRSI",
+    "reading": "RSI6=21.6 | RSI14=30.9 | RSI24=38.0 | StochRSI=3",
+    "score": -1,
+    "signal": "中空偏弱 (<50)"
+   },
+   {
+    "group": "趨向指標",
+    "name": "ADX / DMI (14)",
+    "reading": "ADX=26.4 | +DI=15.5 | -DI=42.1",
+    "score": -1,
+    "signal": "強勢空頭趨勢"
+   },
+   {
+    "group": "趨勢追蹤",
+    "name": "Supertrend (10, 3) & Parabolic SAR",
+    "reading": "ST $122.55 (空) | SAR $119.52",
+    "score": -1,
+    "signal": "空頭壓制 (價在線下)"
+   },
+   {
+    "group": "雲圖指標",
+    "name": "一目均衡表 (9, 26, 52)",
+    "reading": "轉換線 $104.07 | 基準線 $125.02 | 雲帶 $120.97~$148.03",
+    "score": -2,
+    "signal": "雲下空頭"
+   },
+   {
+    "group": "通道指標",
+    "name": "布林通道 (20, 2)",
+    "reading": "上軌 $183.02 | 中軌 $127.85 | 下軌 $72.68 | %B=0.10",
+    "score": 0,
+    "signal": "貼近下軌"
+   },
+   {
+    "group": "黃金分割",
+    "name": "斐波那契反彈 ($169.83 2026-10-06 → $80.22 2026-10-22)",
+    "reading": "382%=$114.45 | 500%=$125.02 | 618%=$135.60",
+    "score": -2,
+    "signal": "弱勢反彈 (<23.6%)"
+   },
+   {
+    "group": "擺盪指標",
+    "name": "Williams %R (14) / CCI (20) / ROC (12)",
+    "reading": "%R=-96.2 | CCI=-120.7 | ROC12=-47.4%",
+    "score": 0,
+    "signal": "極度超賣"
+   }
+  ]
+ },
+ "options": {
+  "chain_timestamp": "2026-10-24 00:04:56",
+  "cboe_spot": 83.17,
+  "total_contracts": 2956,
+  "pc_vol_ratio": 0.826,
+  "pc_oi_ratio": 1.596,
+  "cp_prem_ratio": 0.99,
+  "net_gex_m": -15.0,
+  "gamma_flip": 106.8,
+  "call_wall": 120.0,
+  "call_wall_oi": 84932,
+  "put_wall": 70.0,
+  "put_wall_oi": 44476,
+  "near_max_pain": 115.5,
+  "monthly_max_pain": 120.0,
+  "monthly_expiration": "2026-11-20",
+  "iv30_pct": 129.3,
+  "iv30_change": -8.9,
+  "iv_skew_25d": 14.8,
+  "expected_move": {
+   "weekly": {
+    "expiration": "2026-10-30",
+    "dte": 6,
+    "expected_move_pct": 15.9,
+    "low": 69.97,
+    "high": 96.37,
+    "atm_iv_pct": 141.2
+   },
+   "monthly": {
+    "expiration": "2026-11-20",
+    "dte": 27,
+    "expected_move_pct": 29.3,
+    "low": 58.8,
+    "high": 107.55,
+    "atm_iv_pct": 131.3
+   },
+   "quarterly": {
+    "expiration": "2027-01-15",
+    "dte": 83,
+    "expected_move_pct": 45.6,
+    "low": 45.22,
+    "high": 121.12,
+    "atm_iv_pct": 121.1
+   }
+  },
+  "whale": {
+   "whale_count": 48,
+   "whale_call_prem_m": 52.76,
+   "whale_put_prem_m": 26.65,
+   "whale_net_score": 0.23,
+   "whale_bull_prem_m": 48.84,
+   "whale_bear_prem_m": 30.58,
+   "retail_cp_ratio": 0.46
+  },
+  "nearest_expirations": [
+   {
+    "expiration": "2026-10-30",
+    "dte": 6,
+    "pc_vol": 0.9,
+    "pc_oi": 1.56,
+    "max_pain": 111.0,
+    "net_gex_m": -5.89,
+    "atm_iv_pct": 144.5
+   },
+   {
+    "expiration": "2026-11-06",
+    "dte": 13,
+    "pc_vol": 0.76,
+    "pc_oi": 2.38,
+    "max_pain": 125.0,
+    "net_gex_m": -3.42,
+    "atm_iv_pct": 141.0
+   },
+   {
+    "expiration": "2026-11-13",
+    "dte": 20,
+    "pc_vol": 1.27,
+    "pc_oi": 1.78,
+    "max_pain": 120.0,
+    "net_gex_m": -1.32,
+    "atm_iv_pct": 135.7
+   }
+  ]
+ },
+ "sentiment": {
+  "fear_greed": {
+   "score": 21.0,
+   "rating": "extreme fear",
+   "rating_zh": "極度恐懼 Extreme Fear",
+   "previous_close": 19.8,
+   "week_ago": 22.1,
+   "month_ago": 32.5
+  },
+  "vix": {
+   "date": "2026-10-22",
+   "vix": 19.03,
+   "vix9d": 18.7,
+   "vix3m": 20.48,
+   "vix6m": 21.96,
+   "vvix": 109.7,
+   "skew": 152.39,
+   "ratio_vix_3m": 0.929,
+   "term_state": "contango",
+   "term_zh": "正價差 (遠月 > 近月)：常態、風險偏好穩定",
+   "vix_regime": "溫和警戒 (16-20)",
+   "vvix_regime": "偏高 (95-110)",
+   "skew_regime": "極高尾部風險定價 (>150)",
+   "vix_percentile_1y": 76.0,
+   "vix_5d_chg_pct": 15.6
+  },
+  "market_put_call": {
+   "date": "2026-10-22",
+   "total_pc": 0.94,
+   "equity_pc": 0.69,
+   "index_pc": 1.02,
+   "equity_pc_percentile": 98.0,
+   "equity_read": "中性 (0.55-0.70)",
+   "total_read": "偏避險 (0.9-1.1)"
+  },
+  "flows": {
+   "date": "2026-10-23",
+   "soxl_dollar_vol_m": 7748.8,
+   "soxs_dollar_vol_m": 3257.2,
+   "ratio": 2.38
+  },
+  "pulse": {
+   "score": 42.0,
+   "rating_zh": "恐懼 Fear"
+  },
+  "cross_asset": [
+   {
+    "symbol": "HYG",
+    "label": "HYG 高收益債 (風險偏好)",
+    "last": 77.05,
+    "chg_5d_pct": 0.25,
+    "chg_20d_pct": -1.04,
+    "percentile_1y": 4.0
+   },
+   {
+    "symbol": "TLT",
+    "label": "TLT 20年期美債 (避險)",
+    "last": 81.34,
+    "chg_5d_pct": 1.61,
+    "chg_20d_pct": 2.55,
+    "percentile_1y": 11.0
+   },
+   {
+    "symbol": "DX-Y.NYB",
+    "label": "美元指數 (UUP ETF 代理)",
+    "last": 28.95,
+    "chg_5d_pct": 0.12,
+    "chg_20d_pct": 1.17,
+    "percentile_1y": 96.0
+   },
+   {
+    "symbol": "HG=F",
+    "label": "銅 (CPER ETF 代理)",
+    "last": 39.07,
+    "chg_5d_pct": -1.09,
+    "chg_20d_pct": -3.79,
+    "percentile_1y": 73.0
+   },
+   {
+    "symbol": "GC=F",
+    "label": "黃金 (GLD ETF 代理)",
+    "last": 366.6,
+    "chg_5d_pct": -4.03,
+    "chg_20d_pct": -6.81,
+    "percentile_1y": 3.0
+   },
+   {
+    "symbol": "BTC-USD",
+    "label": "比特幣 (IBIT ETF 代理)",
+    "last": 45.96,
+    "chg_5d_pct": -0.41,
+    "chg_20d_pct": -3.38,
+    "percentile_1y": 61.0
+   }
+  ]
+ },
+ "breadth": {
+  "above_sma20_pct": 12.5,
+  "above_sma50_pct": 18.8,
+  "above_sma200_pct": 50.0,
+  "oversold_pct": 18.8,
+  "weighted_ret_1d": 0.5,
+  "weighted_ret_5d": -2.65,
+  "weighted_ret_20d": -13.58,
+  "avg_rsi14": 38.1,
+  "constituents": [
+   {
+    "ticker": "NVDA",
+    "weight": 10.2,
+    "close": 210.96,
+    "ret_1d": -0.59,
+    "ret_5d": -1.48,
+    "ret_20d": -6.27,
+    "rsi14": 38.1,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "AVGO",
+    "weight": 9.8,
+    "close": 321.68,
+    "ret_1d": -0.48,
+    "ret_5d": -2.15,
+    "ret_20d": -8.82,
+    "rsi14": 34.2,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "AMD",
+    "weight": 8.4,
+    "close": 516.79,
+    "ret_1d": 1.74,
+    "ret_5d": -2.26,
+    "ret_20d": -18.05,
+    "rsi14": 39.0,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "MU",
+    "weight": 7.6,
+    "close": 877.55,
+    "ret_1d": 2.46,
+    "ret_5d": -0.15,
+    "ret_20d": -18.92,
+    "rsi14": 38.2,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "QCOM",
+    "weight": 6.8,
+    "close": 175.91,
+    "ret_1d": 1.78,
+    "ret_5d": 2.21,
+    "ret_20d": -12.9,
+    "rsi14": 47.9,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "TXN",
+    "weight": 6.5,
+    "close": 284.69,
+    "ret_1d": 1.86,
+    "ret_5d": 2.97,
+    "ret_20d": 2.38,
+    "rsi14": 55.1,
+    "above_sma20": true,
+    "above_sma50": true,
+    "above_sma200": true
+   },
+   {
+    "ticker": "AMAT",
+    "weight": 6.1,
+    "close": 377.24,
+    "ret_1d": 0.44,
+    "ret_5d": -7.83,
+    "ret_20d": -22.22,
+    "rsi14": 26.1,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "LRCX",
+    "weight": 5.6,
+    "close": 230.1,
+    "ret_1d": -0.02,
+    "ret_5d": -12.82,
+    "ret_20d": -27.0,
+    "rsi14": 24.6,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "KLAC",
+    "weight": 5.2,
+    "close": 145.61,
+    "ret_1d": -1.5,
+    "ret_5d": -12.15,
+    "ret_20d": -22.51,
+    "rsi14": 23.3,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "INTC",
+    "weight": 4.8,
+    "close": 86.96,
+    "ret_1d": 1.72,
+    "ret_5d": -3.22,
+    "ret_20d": -29.3,
+    "rsi14": 32.8,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "ADI",
+    "weight": 4.6,
+    "close": 391.07,
+    "ret_1d": 1.38,
+    "ret_5d": -1.11,
+    "ret_20d": -0.64,
+    "rsi14": 47.3,
+    "above_sma20": false,
+    "above_sma50": true,
+    "above_sma200": true
+   },
+   {
+    "ticker": "MRVL",
+    "weight": 4.4,
+    "close": 228.51,
+    "ret_1d": 2.26,
+    "ret_5d": 0.3,
+    "ret_20d": -12.76,
+    "rsi14": 41.1,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": true
+   },
+   {
+    "ticker": "NXPI",
+    "weight": 4.1,
+    "close": 234.92,
+    "ret_1d": -1.21,
+    "ret_5d": 2.44,
+    "ret_20d": -1.33,
+    "rsi14": 51.4,
+    "above_sma20": true,
+    "above_sma50": true,
+    "above_sma200": false
+   },
+   {
+    "ticker": "MPWR",
+    "weight": 3.8,
+    "close": 1140.12,
+    "ret_1d": -2.38,
+    "ret_5d": -5.84,
+    "ret_20d": -16.62,
+    "rsi14": 35.0,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "ON",
+    "weight": 3.5,
+    "close": 72.25,
+    "ret_1d": -1.34,
+    "ret_5d": 0.32,
+    "ret_20d": -6.41,
+    "rsi14": 42.9,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   },
+   {
+    "ticker": "TER",
+    "weight": 3.2,
+    "close": 308.85,
+    "ret_1d": 0.03,
+    "ret_5d": -4.97,
+    "ret_20d": -22.47,
+    "rsi14": 32.9,
+    "above_sma20": false,
+    "above_sma50": false,
+    "above_sma200": false
+   }
+  ]
+ },
+ "macro": {
+  "latest_date": "2026-10-22",
+  "kpis": [
+   {
+    "key": "TNX_10Y",
+    "name": "美國 10 年期公債殖利率 (^TNX)",
+    "latest": "4.960%",
+    "chg_1d": "-17.0 bps",
+    "chg_20d": "-15.0 bps",
+    "corr_20d": 0.583,
+    "corr_60d": -0.028,
+    "regime": "高檔 (4.6-5.2%)"
+   },
+   {
+    "key": "TYX_30Y",
+    "name": "美國 30 年期公債殖利率 (^TYX)",
+    "latest": "5.290%",
+    "chg_1d": "-13.0 bps",
+    "chg_20d": "-11.0 bps",
+    "corr_20d": 0.571,
+    "corr_60d": 0.006,
+    "regime": "高檔 (4.9-5.5%)"
+   },
+   {
+    "key": "BRENT",
+    "name": "Brent 原油 (BNO ETF 代理)",
+    "latest": "$68.91",
+    "chg_1d": "+2.77%",
+    "chg_20d": "+14.17%",
+    "corr_20d": -0.396,
+    "corr_60d": -0.474,
+    "regime": "20 日 +14.2%"
+   },
+   {
+    "key": "VIX",
+    "name": "CBOE 恐慌指數 (VIX)",
+    "latest": "19.03",
+    "chg_1d": "+14.09%",
+    "chg_20d": "+25.36%",
+    "corr_20d": -0.809,
+    "corr_60d": -0.607,
+    "regime": "溫和 (16-20)"
+   },
+   {
+    "key": "DXY",
+    "name": "美元指數 (UUP ETF 代理)",
+    "latest": "28.90",
+    "chg_1d": "-0.07%",
+    "chg_20d": "+0.87%",
+    "corr_20d": 0.133,
+    "corr_60d": -0.138,
+    "regime": ""
+   },
+   {
+    "key": "HYG",
+    "name": "高收益債 HYG",
+    "latest": "77.10",
+    "chg_1d": "+0.16%",
+    "chg_20d": "-1.28%",
+    "corr_20d": 0.143,
+    "corr_60d": 0.378,
+    "regime": ""
+   },
+   {
+    "key": "GOLD",
+    "name": "黃金 (GLD ETF 代理)",
+    "latest": "369.00",
+    "chg_1d": "-2.63%",
+    "chg_20d": "-6.08%",
+    "corr_20d": 0.429,
+    "corr_60d": 0.301,
+    "regime": ""
+   },
+   {
+    "key": "COPPER",
+    "name": "銅 (CPER ETF 代理)",
+    "latest": "38.47",
+    "chg_1d": "-2.71%",
+    "chg_20d": "-5.27%",
+    "corr_20d": 0.53,
+    "corr_60d": 0.545,
+    "regime": ""
+   },
+   {
+    "key": "BTC",
+    "name": "比特幣 (IBIT ETF 代理)",
+    "latest": "46.06",
+    "chg_1d": "-3.72%",
+    "chg_20d": "-3.80%",
+    "corr_20d": 0.665,
+    "corr_60d": 0.275,
+    "regime": ""
+   }
+  ],
+  "beta_tnx_10bps": -4.06,
+  "beta_vix_20d": -0.8,
+  "beta_brent_20d": -1.37,
+  "missing": []
+ },
+ "crash_risk": {
+  "score": 31.0,
+  "raw": 11.6,
+  "zone": "低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆",
+  "n_active": 3,
+  "above_200ma": false,
+  "active_signals": [
+   {
+    "label": "15 日內出現 3~6 個放量下跌『派發日』",
+    "family": "B 動能",
+    "points": 5.0
+   },
+   {
+    "label": "VVIX >95 (波動率的波動升溫)",
+    "family": "C 波動",
+    "points": 2.2
+   },
+   {
+    "label": "布林通道寬度處 1 年高檔 (波動擴張)",
+    "family": "A 過熱",
+    "points": 2.1
+   }
+  ],
+  "event_study": {
+   "n_episodes": 25,
+   "stats_top_80": {
+    "threshold": 80.0,
+    "flag_days": 181,
+    "precision_pct": 12.2,
+    "recall_pct": 36.7,
+    "base_rate_pct": 9.0,
+    "lift": 1.35
+   }
+  },
+  "analog_h10": {
+   "median": 2.6,
+   "p25": -9.9,
+   "p75": 23.1,
+   "pct_positive": 55.0,
+   "pct_up10": 43.0,
+   "pct_down10": 25.0,
+   "worst": -44.4,
+   "best": 59.2
+  },
+  "analog_reference": "10 日跌幅 ≤ -30% (崩跌後)"
+ },
+ "scorecard": {
+  "categories": [
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "weight": 20,
+    "avg_score": -0.25
+   },
+   {
+    "category": "2. 量能結構 (Volume)",
+    "weight": 14,
+    "avg_score": -1.64
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "weight": 26,
+    "avg_score": -1.35
+   },
+   {
+    "category": "4. 板塊廣度 (Heat Map Breadth)",
+    "weight": 10,
+    "avg_score": -1.6
+   },
+   {
+    "category": "5. 宏觀跨資產 (Macro)",
+    "weight": 10,
+    "avg_score": -0.3
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "weight": 15,
+    "avg_score": 0.47
+   },
+   {
+    "category": "7. 消息面 (News Sentiment)",
+    "weight": 6,
+    "avg_score": -2.0
+   }
+  ],
+  "factors": [
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "metric": "Call/Put 成交量比 (今日)",
+    "value": "1.21x (Call 118,412 / Put 97,811)",
+    "score": 1,
+    "weight": 4,
+    "kind": "flow"
+   },
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "metric": "淨 Gamma 曝險 & Gamma 翻正位",
+    "value": "GEX -15.0M | Gamma 翻正位 $106.83（現價上方）",
+    "score": -2,
+    "weight": 5,
+    "kind": "flow"
+   },
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "metric": "25Δ IV 偏度 (Put IV − Call IV)",
+    "value": "+14.8% (Put 140% / Call 125%)",
+    "score": -1,
+    "weight": 3,
+    "kind": "flow"
+   },
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "metric": "大戶 (Whale) 期權淨方向",
+    "value": "淨分數 0.23 | 大單 Call $52.8M vs Put $26.6M (C/P 1.98)",
+    "score": 1,
+    "weight": 4,
+    "kind": "flow"
+   },
+   {
+    "category": "1. 期權籌碼 (Options Flow)",
+    "metric": "Max Pain 與 Call/Put 牆位置",
+    "value": "近月 Max Pain $116 (+38.2%) | Call 牆 $120.0 | Put 牆 $70.0",
+    "score": 0,
+    "weight": 4,
+    "kind": "flow"
+   },
+   {
+    "category": "2. 量能結構 (Volume)",
+    "metric": "20 日上漲/下跌量能比",
+    "value": "0.49x (漲 8 天 / 跌 12 天；RVOL 1.12x)",
+    "score": -2,
+    "weight": 5,
+    "kind": "trend"
+   },
+   {
+    "category": "2. 量能結構 (Volume)",
+    "metric": "資金流 CMF(20) / OBV / MFI(14)",
+    "value": "CMF -0.171 | OBV 空 | MFI 18",
+    "score": -2,
+    "weight": 4,
+    "kind": "trend"
+   },
+   {
+    "category": "2. 量能結構 (Volume)",
+    "metric": "籌碼位階：20D VWAP / VPVR POC / 價值區",
+    "value": "現價 $83.59 | VWAP $119.42 | POC $112.56 | 價值區 $89.46~$172.63",
+    "score": -1,
+    "weight": 5,
+    "kind": "trend"
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "metric": "均線結構 (20 / 50 / 200MA)",
+    "value": "跌破年線 (Below 200MA) | 距 20MA -34.6% / 50MA -33.1% / 200MA -32.1%",
+    "score": -2,
+    "weight": 8,
+    "kind": "trend"
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "metric": "MACD (12, 26, 9)",
+    "value": "DIF -12.51 | DEA -6.32 | Hist -6.19",
+    "score": -1,
+    "weight": 5,
+    "kind": "trend"
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "metric": "KD / KDJ (9, 3, 3)",
+    "value": "K=9.3 | D=12.3 | J=3.2 (RSV 7.1)",
+    "score": 0,
+    "weight": 4,
+    "kind": "contrarian"
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "metric": "多週期 RSI (6/14/24) & StochRSI",
+    "value": "RSI6=21.6 | RSI14=30.9 | RSI24=38.0 | StochRSI=3",
+    "score": -1,
+    "weight": 4,
+    "kind": "contrarian"
+   },
+   {
+    "category": "3. 技術趨勢 (Technicals)",
+    "metric": "斐波那契 / 一目均衡表 / Supertrend 共振",
+    "value": "弱勢反彈 (<23.6%) | 雲下空頭 | 空頭壓制 (價在線下)",
+    "score": -2,
+    "weight": 5,
+    "kind": "trend"
+   },
+   {
+    "category": "4. 板塊廣度 (Heat Map Breadth)",
+    "metric": "成分股站上 20 / 50 / 200MA 比例",
+    "value": "12% / 19% / 50% | RSI<30 佔 19%",
+    "score": -2,
+    "weight": 6,
+    "kind": "trend"
+   },
+   {
+    "category": "4. 板塊廣度 (Heat Map Breadth)",
+    "metric": "權值股加權動能 (1D / 5D / 20D)",
+    "value": "+0.50% / -2.65% / -13.58%",
+    "score": -1,
+    "weight": 4,
+    "kind": "trend"
+   },
+   {
+    "category": "5. 宏觀跨資產 (Macro)",
+    "metric": "10Y / 30Y 美債殖利率",
+    "value": "10Y 4.96% | 30Y 5.29% | 10Y 20 日 -15.0 bps",
+    "score": 0,
+    "weight": 4,
+    "kind": "trend"
+   },
+   {
+    "category": "5. 宏觀跨資產 (Macro)",
+    "metric": "原油走勢 (通膨/利率傳導，ETF 代理)",
+    "value": "Brent 原油 (BNO ETF 代理) 20 日 +14.17% | 20D 相關 -0.40",
+    "score": -1,
+    "weight": 3,
+    "kind": "trend"
+   },
+   {
+    "category": "5. 宏觀跨資產 (Macro)",
+    "metric": "VIX 水位 (趨勢面)",
+    "value": "VIX 19.03 | 溫和警戒 (16-20) | 1 年百分位 76% | 5 日 +16%",
+    "score": 0,
+    "weight": 3,
+    "kind": "trend"
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "metric": "CNN Fear & Greed (逆勢)",
+    "value": "21 極度恐懼 Extreme Fear | 一週前 22 | 一月前 32",
+    "score": 1,
+    "weight": 4,
+    "kind": "contrarian"
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "metric": "VIX 期限結構 (VIX / VIX3M)",
+    "value": "0.93 → contango | VIX9D 18.7 / VIX 19.03 / VIX3M 20.48",
+    "score": 0,
+    "weight": 3,
+    "kind": "contrarian"
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "metric": "CBOE 個股 Put/Call (5 日均, 逆勢)",
+    "value": "0.59 (單日 0.69) | 全市場 0.94 | SPX 1.23",
+    "score": 0,
+    "weight": 3,
+    "kind": "contrarian"
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "metric": "SOXL / SOXS 資金流 (散戶行為)",
+    "value": "成交金額比 2.38 (20 日均 3.34)",
+    "score": 0,
+    "weight": 2,
+    "kind": "contrarian"
+   },
+   {
+    "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
+    "metric": "崩跌前兆分數 (Crash Risk Score, 歷史百分位)",
+    "value": "31 / 100 → 低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆 | 觸發訊號 3 項",
+    "score": 1,
+    "weight": 3,
+    "kind": "trend"
+   },
+   {
+    "category": "7. 消息面 (News Sentiment)",
+    "metric": "近 7 日利多 / 利空新聞比",
+    "value": "利多 98 則 vs 利空 176 則 (0.56x)",
+    "score": -2,
+    "weight": 6,
+    "kind": "trend"
+   }
+  ],
+  "bull_case": [
+   {
+    "metric": "Call/Put 成交量比 (今日)",
+    "value": "1.21x (Call 118,412 / Put 97,811)",
+    "pts": 4,
+    "why": "今日 Put 成交 97,811 口 vs Call 118,412 口；Put/Call = 0.83。"
+   },
+   {
+    "metric": "大戶 (Whale) 期權淨方向",
+    "value": "淨分數 0.23 | 大單 Call $52.8M vs Put $26.6M (C/P 1.98)",
+    "pts": 4,
+    "why": "偵測到 48 筆大額新倉 (權利金 ≥$25 萬或 ≥1,500 口且 Vol/OI ≥0.4)；看多金額 $48.8M vs 看空 $30.6M。散戶小單 C/P = 0.46。"
+   },
+   {
+    "metric": "CNN Fear & Greed (逆勢)",
+    "value": "21 極度恐懼 Extreme Fear | 一週前 22 | 一月前 32",
+    "pts": 4,
+    "why": "七項子指標：S&P 500 動能 18；創 52 週新高 vs 新低家數 19；上漲 vs 下跌成交量 23；5 日 Put/Call 比率 21；VIX 波動率 17；垃圾債需求 40；避險需求 9"
+   },
+   {
+    "metric": "崩跌前兆分數 (Crash Risk Score, 歷史百分位)",
+    "value": "31 / 100 → 低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆 | 觸發訊號 3 項",
+    "pts": 3,
+    "why": "由 21 項過熱/動能/波動/宏觀/情緒訊號加權後換算成歷史百分位；此分數偵測『頂部型』崩跌前兆，已在空頭中則以均線結構為準。"
+   }
+  ],
+  "bear_case": [
+   {
+    "metric": "均線結構 (20 / 50 / 200MA)",
+    "value": "跌破年線 (Below 200MA) | 距 20MA -34.6% / 50MA -33.1% / 200MA -32.1%",
+    "pts": -16,
+    "why": "現價跌破 200MA 年線($123.20)，雖 50MA 仍高於 200MA，但趨勢結構已嚴重受損，需等待站回年線。"
+   },
+   {
+    "metric": "成分股站上 20 / 50 / 200MA 比例",
+    "value": "12% / 19% / 50% | RSI<30 佔 19%",
+    "pts": -12,
+    "why": "16 檔核心半導體僅 12% 站在月線上，19% 已進入 RSI 超賣；廣度洗到極端通常離短線底部不遠，但需等待首批個股站回月線確認。"
+   },
+   {
+    "metric": "近 7 日利多 / 利空新聞比",
+    "value": "利多 98 則 vs 利空 176 則 (0.56x)",
+    "pts": -12,
+    "why": "主題：個股動能/買盤利多×21、獲利了結/基本面利空×15、AI 估值/融資疑慮×9、殖利率/通膨/關稅宏觀利空×7、訂單/資本支出利多×5"
+   },
+   {
+    "metric": "淨 Gamma 曝險 & Gamma 翻正位",
+    "value": "GEX -15.0M | Gamma 翻正位 $106.83（現價上方）",
+    "pts": -10,
+    "why": "負 Gamma：造市商順勢對沖，漲跌皆被放大，日內波動劇烈。 站回 $107 以上波動才會收斂。"
+   }
+  ]
+ },
+ "plan": {
+  "entry": "站回 $89.46 且量能比 >1 時第一批；或在 $80.22 上方分批試單（僅限反彈單）",
+  "stop": "收盤跌破 $80.22（近 10 日最低）",
+  "target": "$89.46（價值區下緣 VAL） → $92.30（EMA5）",
+  "risk_reward": 1.7,
+  "max_size_pct": 10,
+  "stop_price": 80.22,
+  "stop_label": "近 10 日最低",
+  "stop_dist_pct": -4.0,
+  "target1_price": 89.46,
+  "target1_label": "價值區下緣 VAL",
+  "target1_dist_pct": 7.0,
+  "target2_price": 92.3,
+  "target2_label": "EMA5",
+  "target2_dist_pct": 10.4
+ },
+ "trade_plan": null,
+ "signals": [
+  {
+   "key": "rsi2_lt10_above200",
+   "short_name": "RSI2<10 年線上",
+   "name": "RSI(2) < 10 且價在 200 日線上（Connors）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 5,
+   "rule": "RSI(2) 跌破 10，且收盤仍在 200 日均線之上；5 個交易日後結算",
+   "n": 59,
+   "win_pct": 52.5,
+   "ci": [
+    40.0,
+    64.7
+   ],
+   "base_win_pct": 55.4,
+   "edge_pts": -2.9,
+   "mean": -0.02,
+   "pf": 0.99,
+   "p_value": 0.7174,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 44.8,
+   "oos_win_pct": 60.0,
+   "oos_n": 30,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 30,
+    "win_pct": 53.3,
+    "expectancy_r": 0.17
+   },
+   "dyn": {
+    "n": 56,
+    "win_pct": 66.1,
+    "base_win_pct": 63.6,
+    "mean": -0.15,
+    "avg_bars": 4.1,
+    "p_value": 0.4078,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-08",
+    "ret": -27.6
+   }
+  },
+  {
+   "key": "rsi2_lt5_any",
+   "short_name": "RSI2<5",
+   "name": "RSI(2) < 5（極度超賣，不分多空）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 5,
+   "rule": "RSI(2) 跌破 5；不看均線；5 個交易日後結算",
+   "n": 60,
+   "win_pct": 45.0,
+   "ci": [
+    33.1,
+    57.5
+   ],
+   "base_win_pct": 55.4,
+   "edge_pts": -10.4,
+   "mean": 0.66,
+   "pf": 1.13,
+   "p_value": 0.9596,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 41.7,
+   "oos_win_pct": 50.0,
+   "oos_n": 24,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 24,
+    "win_pct": 41.7,
+    "expectancy_r": 0.0
+   },
+   "dyn": {
+    "n": 56,
+    "win_pct": 62.5,
+    "base_win_pct": 63.6,
+    "mean": 2.04,
+    "avg_bars": 4.2,
+    "p_value": 0.6259,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "recent",
+   "fired": false,
+   "recent_dates": [
+    "2026-10-15"
+   ],
+   "pending": {
+    "price": 58.73,
+    "op": "<=",
+    "dist_pct": -29.7,
+    "needs": null
+   },
+   "last_signal": {
+    "date": "2026-10-15",
+    "ret": -18.9
+   }
+  },
+  {
+   "key": "rsi14_lt25",
+   "short_name": "RSI14<25",
+   "name": "RSI(14) < 25（極度超賣）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 10,
+   "rule": "RSI(14) 跌破 25；10 個交易日後結算",
+   "n": 3,
+   "win_pct": 66.7,
+   "ci": [
+    20.8,
+    93.9
+   ],
+   "base_win_pct": 57.4,
+   "edge_pts": 9.3,
+   "mean": 4.72,
+   "pf": 1.61,
+   "p_value": 0.6102,
+   "q_value": null,
+   "significant": false,
+   "is_win_pct": 50.0,
+   "oos_win_pct": 100.0,
+   "oos_n": 1,
+   "grade": "—",
+   "grade_zh": "樣本不足",
+   "stop_k_atr": 2.0,
+   "sim_oos": {
+    "n": 1,
+    "win_pct": 100.0,
+    "expectancy_r": 0.19
+   },
+   "dyn": {
+    "n": 3,
+    "win_pct": 100.0,
+    "base_win_pct": 63.6,
+    "mean": 26.45,
+    "avg_bars": 3.7,
+    "p_value": 0.2573,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "pending",
+   "fired": false,
+   "recent_dates": [],
+   "pending": {
+    "price": 61.33,
+    "op": "<=",
+    "dist_pct": -26.6,
+    "needs": null
+   },
+   "last_signal": {
+    "date": "2025-04-04",
+    "ret": 10.5
+   }
+  },
+  {
+   "key": "bb_lower_reentry",
+   "short_name": "布林下軌回收",
+   "name": "布林下軌回收（昨收在下軌外、今收回軌內）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 10,
+   "rule": "昨日收盤 < 下軌，今日收盤 > 下軌；10 個交易日後結算",
+   "n": 43,
+   "win_pct": 55.8,
+   "ci": [
+    41.1,
+    69.6
+   ],
+   "base_win_pct": 57.4,
+   "edge_pts": -1.6,
+   "mean": 1.16,
+   "pf": 1.17,
+   "p_value": 0.6445,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 55.6,
+   "oos_win_pct": 56.2,
+   "oos_n": 16,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 1.6,
+   "sim_oos": {
+    "n": 16,
+    "win_pct": 43.8,
+    "expectancy_r": -0.16
+   },
+   "dyn": {
+    "n": 46,
+    "win_pct": 58.7,
+    "base_win_pct": 63.6,
+    "mean": 0.28,
+    "avg_bars": 3.3,
+    "p_value": 0.8019,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "recent",
+   "fired": false,
+   "recent_dates": [
+    "2026-10-19"
+   ],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-07-30",
+    "ret": 11.9
+   }
+  },
+  {
+   "key": "three_down_sma5",
+   "short_name": "連3黑收5MA下",
+   "name": "連 3 黑且收在 5 日線下、價在 200 日線上（Connors）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 5,
+   "rule": "連續 3 日收黑、收盤 < 5MA、收盤 > 200MA；5 個交易日後結算",
+   "n": 62,
+   "win_pct": 64.5,
+   "ci": [
+    52.1,
+    75.3
+   ],
+   "base_win_pct": 55.4,
+   "edge_pts": 9.1,
+   "mean": 2.5,
+   "pf": 1.83,
+   "p_value": 0.0932,
+   "q_value": 0.6234,
+   "significant": false,
+   "is_win_pct": 62.9,
+   "oos_win_pct": 66.7,
+   "oos_n": 27,
+   "grade": "B",
+   "grade_zh": "尚可",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 27,
+    "win_pct": 51.9,
+    "expectancy_r": 0.14
+   },
+   "dyn": {
+    "n": 60,
+    "win_pct": 75.0,
+    "base_win_pct": 63.6,
+    "mean": 1.3,
+    "avg_bars": 3.7,
+    "p_value": 0.0417,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-08",
+    "ret": -27.6
+   }
+  },
+  {
+   "key": "double7_above200",
+   "short_name": "7日新低年線上",
+   "name": "7 日新低、價在 200 日線上（Double 7s）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 7,
+   "rule": "收盤創 7 日新低且仍在 200MA 之上；7 個交易日後結算",
+   "n": 94,
+   "win_pct": 57.4,
+   "ci": [
+    47.4,
+    67.0
+   ],
+   "base_win_pct": 55.0,
+   "edge_pts": 2.4,
+   "mean": 2.29,
+   "pf": 1.47,
+   "p_value": 0.3557,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 54.5,
+   "oos_win_pct": 61.5,
+   "oos_n": 39,
+   "grade": "B",
+   "grade_zh": "尚可",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 39,
+    "win_pct": 48.7,
+    "expectancy_r": 0.05
+   },
+   "dyn": {
+    "n": 101,
+    "win_pct": 66.3,
+    "base_win_pct": 63.6,
+    "mean": 1.76,
+    "avg_bars": 3.7,
+    "p_value": 0.3226,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-08",
+    "ret": -33.4
+   }
+  },
+  {
+   "key": "capitulation_reversal",
+   "short_name": "投降量反轉",
+   "name": "投降量反轉（爆量長黑後 3 日內收復該日高點）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 10,
+   "rule": "某日量 ≥ 2 倍 20 日均量且跌 ≥ 8%，之後 3 日內收盤站上該日最高價；10 個交易日後結算",
+   "n": 4,
+   "win_pct": 100.0,
+   "ci": [
+    51.0,
+    100.0
+   ],
+   "base_win_pct": 57.4,
+   "edge_pts": 42.6,
+   "mean": 11.45,
+   "pf": 99.0,
+   "p_value": 0.1086,
+   "q_value": null,
+   "significant": false,
+   "is_win_pct": 100.0,
+   "oos_win_pct": 100.0,
+   "oos_n": 2,
+   "grade": "—",
+   "grade_zh": "樣本不足",
+   "stop_k_atr": 2.0,
+   "sim_oos": {
+    "n": 2,
+    "win_pct": 100.0,
+    "expectancy_r": 0.24
+   },
+   "dyn": {
+    "n": 5,
+    "win_pct": 40.0,
+    "base_win_pct": 63.6,
+    "mean": -2.14,
+    "avg_bars": 1.2,
+    "p_value": 0.9378,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "pending",
+   "fired": false,
+   "recent_dates": [],
+   "pending": {
+    "price": 93.4,
+    "op": ">",
+    "dist_pct": 11.7,
+    "needs": "2026-10-22 為投降日"
+   },
+   "last_signal": {
+    "date": "2026-07-30",
+    "ret": 11.9
+   }
+  },
+  {
+   "key": "ftd",
+   "short_name": "IBD跟進日",
+   "name": "IBD 跟進日（反彈第 4 日起單日 ≥ +4% 且量增）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "20 日新低後反彈嘗試第 4 日起，單日收漲 ≥ 4% 且成交量 > 前一日；20 個交易日後結算",
+   "n": 40,
+   "win_pct": 47.5,
+   "ci": [
+    32.9,
+    62.5
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": -9.7,
+   "mean": 4.62,
+   "pf": 1.41,
+   "p_value": 0.9185,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 45.5,
+   "oos_win_pct": 50.0,
+   "oos_n": 18,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 3.0,
+   "sim_oos": {
+    "n": 18,
+    "win_pct": 50.0,
+    "expectancy_r": 0.14
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-09-21",
+    "ret": -28.3
+   }
+  },
+  {
+   "key": "reclaim_sma20",
+   "short_name": "站回20MA",
+   "name": "站回 20 日線（之前連續 ≥ 10 日在線下）",
+   "family": "趨勢買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "收盤站回 20MA，且先前至少 10 個交易日都收在 20MA 之下；20 個交易日後結算",
+   "n": 39,
+   "win_pct": 64.1,
+   "ci": [
+    48.4,
+    77.3
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": 6.9,
+   "mean": 9.37,
+   "pf": 2.35,
+   "p_value": 0.2405,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 71.4,
+   "oos_win_pct": 55.6,
+   "oos_n": 18,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 1.8,
+   "sim_oos": {
+    "n": 18,
+    "win_pct": 38.9,
+    "expectancy_r": -0.1
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "pending",
+   "fired": false,
+   "recent_dates": [],
+   "pending": {
+    "price": 127.09,
+    "op": ">",
+    "dist_pct": 52.0,
+    "needs": null
+   },
+   "last_signal": {
+    "date": "2026-09-08",
+    "ret": 35.5
+   }
+  },
+  {
+   "key": "vix_term_normalize",
+   "short_name": "VIX倒掛回正",
+   "name": "VIX 期限結構由倒掛回正（10 日內曾 ≥ 1.0，今 < 0.95）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "VIX/VIX3M 過去 10 日曾 ≥ 1.0（恐慌），今日首次回到 < 0.95；20 個交易日後結算",
+   "n": 25,
+   "win_pct": 48.0,
+   "ci": [
+    30.0,
+    66.5
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": -9.2,
+   "mean": 5.79,
+   "pf": 1.68,
+   "p_value": 0.8708,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 50.0,
+   "oos_win_pct": 44.4,
+   "oos_n": 9,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 2.9,
+   "sim_oos": {
+    "n": 9,
+    "win_pct": 44.4,
+    "expectancy_r": 0.16
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-04-08",
+    "ret": 143.5
+   }
+  },
+  {
+   "key": "vix_spike_fade",
+   "short_name": "VIX高峰回落",
+   "name": "VIX 高峰回落 20%（10 日高 ≥ 30）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "VIX 10 日最高 ≥ 30，今日 VIX ≤ 該高點的 80%（首日）；20 個交易日後結算",
+   "n": 18,
+   "win_pct": 55.6,
+   "ci": [
+    33.7,
+    75.4
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": -1.6,
+   "mean": 10.68,
+   "pf": 2.06,
+   "p_value": 0.6508,
+   "q_value": null,
+   "significant": false,
+   "is_win_pct": 53.3,
+   "oos_win_pct": 66.7,
+   "oos_n": 3,
+   "grade": "—",
+   "grade_zh": "樣本不足",
+   "stop_k_atr": 2.1,
+   "sim_oos": {
+    "n": 3,
+    "win_pct": 66.7,
+    "expectancy_r": 0.64
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-04-01",
+    "ret": 175.7
+   }
+  },
+  {
+   "key": "macd_cross_up_below200",
+   "short_name": "MACD翻正年線下",
+   "name": "MACD 柱翻正、價在 200 日線下（空頭反彈）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 10,
+   "rule": "MACD 柱由負翻正，且收盤 < 200MA；10 個交易日後結算",
+   "n": 26,
+   "win_pct": 53.8,
+   "ci": [
+    35.5,
+    71.2
+   ],
+   "base_win_pct": 57.4,
+   "edge_pts": -3.6,
+   "mean": 5.23,
+   "pf": 1.95,
+   "p_value": 0.7157,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 60.0,
+   "oos_win_pct": 45.5,
+   "oos_n": 11,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 11,
+    "win_pct": 54.5,
+    "expectancy_r": 0.44
+   },
+   "dyn": {
+    "n": 29,
+    "win_pct": 65.5,
+    "base_win_pct": 63.6,
+    "mean": 1.16,
+    "avg_bars": 1.7,
+    "p_value": 0.4985,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2025-06-04",
+    "ret": 10.9
+   }
+  },
+  {
+   "key": "kd_golden_low",
+   "short_name": "KD低檔金叉",
+   "name": "KD 低檔金叉（K < 20 上穿 D）",
+   "family": "反轉買點",
+   "side": "long",
+   "horizon": 10,
+   "rule": "K 值在 20 以下由下往上穿越 D；10 個交易日後結算",
+   "n": 33,
+   "win_pct": 69.7,
+   "ci": [
+    52.7,
+    82.6
+   ],
+   "base_win_pct": 57.4,
+   "edge_pts": 12.3,
+   "mean": 6.93,
+   "pf": 2.47,
+   "p_value": 0.1039,
+   "q_value": 0.6234,
+   "significant": false,
+   "is_win_pct": 65.0,
+   "oos_win_pct": 76.9,
+   "oos_n": 13,
+   "grade": "B",
+   "grade_zh": "尚可",
+   "stop_k_atr": 1.2,
+   "sim_oos": {
+    "n": 13,
+    "win_pct": 69.2,
+    "expectancy_r": 0.39
+   },
+   "dyn": {
+    "n": 35,
+    "win_pct": 62.9,
+    "base_win_pct": 63.6,
+    "mean": 0.02,
+    "avg_bars": 1.6,
+    "p_value": 0.6108,
+    "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
+   },
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-09-03",
+    "ret": 11.2
+   }
+  },
+  {
+   "key": "golden_cross_20_50",
+   "short_name": "20MA上穿50MA",
+   "name": "20 日線上穿 50 日線",
+   "family": "趨勢買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "SMA20 由下往上穿越 SMA50；20 個交易日後結算",
+   "n": 24,
+   "win_pct": 58.3,
+   "ci": [
+    38.8,
+    75.5
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": 1.1,
+   "mean": 6.21,
+   "pf": 1.93,
+   "p_value": 0.5413,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 50.0,
+   "oos_win_pct": 75.0,
+   "oos_n": 8,
+   "grade": "B",
+   "grade_zh": "尚可",
+   "stop_k_atr": 2.0,
+   "sim_oos": {
+    "n": 8,
+    "win_pct": 75.0,
+    "expectancy_r": 0.88
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-04-16",
+    "ret": 99.8
+   }
+  },
+  {
+   "key": "breakout20_above200",
+   "short_name": "帶量破20日高",
+   "name": "帶量突破 20 日高、價在 200 日線上",
+   "family": "趨勢買點",
+   "side": "long",
+   "horizon": 20,
+   "rule": "收盤 > 前 20 日最高價、收盤 > 200MA、成交量 ≥ 1.2 倍 20 日均量；20 個交易日後結算",
+   "n": 24,
+   "win_pct": 83.3,
+   "ci": [
+    64.1,
+    93.3
+   ],
+   "base_win_pct": 57.2,
+   "edge_pts": 26.1,
+   "mean": 12.33,
+   "pf": 6.7,
+   "p_value": 0.0065,
+   "q_value": 0.117,
+   "significant": true,
+   "is_win_pct": 76.5,
+   "oos_win_pct": 100.0,
+   "oos_n": 7,
+   "grade": "B*",
+   "grade_zh": "顯著但樣本薄",
+   "stop_k_atr": 3.0,
+   "sim_oos": {
+    "n": 7,
+    "win_pct": 85.7,
+    "expectancy_r": 0.83
+   },
+   "dyn": null,
+   "dd15": null,
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-01-15",
+    "ret": 5.6
+   }
+  },
+  {
+   "key": "first_close_below_sma20",
+   "short_name": "首破20MA",
+   "name": "首次跌破 20 日線（之前連續 ≥ 10 日在線上）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "收盤跌破 20MA，且先前至少 10 個交易日都收在 20MA 之上；看 10 個交易日後是否更低",
+   "n": 47,
+   "win_pct": 40.4,
+   "ci": [
+    27.6,
+    54.7
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": -2.2,
+   "mean": 1.73,
+   "pf": 1.28,
+   "p_value": 0.6709,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 44.8,
+   "oos_win_pct": 33.3,
+   "oos_n": 18,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 44.7,
+    "base_pct": 50.0,
+    "p_value": 0.8092,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-09",
+    "ret": -37.8
+   }
+  },
+  {
+   "key": "chandelier_3atr",
+   "short_name": "吊燈3ATR",
+   "name": "吊燈出場（收盤 < 22 日高 − 3×ATR）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "收盤首次跌破『22 日最高 − 3 倍 ATR(22)』；看 10 個交易日後是否更低",
+   "n": 73,
+   "win_pct": 45.2,
+   "ci": [
+    34.3,
+    56.6
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": 2.6,
+   "mean": 4.06,
+   "pf": 1.68,
+   "p_value": 0.3682,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 46.7,
+   "oos_win_pct": 42.9,
+   "oos_n": 28,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 50.7,
+    "base_pct": 50.0,
+    "p_value": 0.5,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "recent",
+   "fired": false,
+   "recent_dates": [
+    "2026-10-12"
+   ],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-09-14",
+    "ret": 36.1
+   }
+  },
+  {
+   "key": "distribution_4in25",
+   "short_name": "派發日第4個",
+   "name": "25 日內第 4 個派發日（價在 50 日線上）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 20,
+   "rule": "25 個交易日內放量下跌日累計達 4 個且收盤仍在 50MA 之上（O'Neil）；看 20 個交易日後",
+   "n": 28,
+   "win_pct": 28.6,
+   "ci": [
+    15.3,
+    47.1
+   ],
+   "base_win_pct": 42.8,
+   "edge_pts": -14.2,
+   "mean": 13.09,
+   "pf": 5.29,
+   "p_value": 0.9593,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 29.4,
+   "oos_win_pct": 27.3,
+   "oos_n": 11,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 28.6,
+    "base_pct": 50.0,
+    "p_value": 0.9937,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-04-28",
+    "ret": 89.9
+   }
+  },
+  {
+   "key": "parabolic_blowoff",
+   "short_name": "拋物線噴出",
+   "name": "拋物線噴出（20 日漲 ≥ 40% 且高於 20MA ≥ 15%）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "20 日漲幅 ≥ 40% 且收盤高於 20MA 達 15% 以上；看 10 個交易日後",
+   "n": 38,
+   "win_pct": 39.5,
+   "ci": [
+    25.6,
+    55.3
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": -3.1,
+   "mean": 2.72,
+   "pf": 1.52,
+   "p_value": 0.7079,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 45.0,
+   "oos_win_pct": 33.3,
+   "oos_n": 18,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 47.4,
+    "base_pct": 50.0,
+    "p_value": 0.6864,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-01",
+    "ret": -35.1
+   }
+  },
+  {
+   "key": "rsi14_gt80",
+   "short_name": "RSI14>80",
+   "name": "RSI(14) 突破 80（過熱）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "RSI(14) 由下往上穿越 80；看 10 個交易日後",
+   "n": 8,
+   "win_pct": 50.0,
+   "ci": [
+    21.5,
+    78.5
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": 7.4,
+   "mean": 3.81,
+   "pf": 2.03,
+   "p_value": 0.4668,
+   "q_value": null,
+   "significant": false,
+   "is_win_pct": 66.7,
+   "oos_win_pct": 40.0,
+   "oos_n": 5,
+   "grade": "—",
+   "grade_zh": "樣本不足",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 62.5,
+    "base_pct": 50.0,
+    "p_value": 0.3633,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-06-03",
+    "ret": -3.4
+   }
+  },
+  {
+   "key": "kd_death_high",
+   "short_name": "KD高檔死叉",
+   "name": "KD 高檔死叉（D > 75）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "K 由上往下穿越 D 且 D > 75；看 10 個交易日後",
+   "n": 66,
+   "win_pct": 42.4,
+   "ci": [
+    31.2,
+    54.4
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": -0.2,
+   "mean": 2.5,
+   "pf": 1.42,
+   "p_value": 0.5585,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 47.6,
+   "oos_win_pct": 33.3,
+   "oos_n": 24,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 51.5,
+    "base_pct": 50.0,
+    "p_value": 0.4511,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-10-07",
+    "ret": -31.4
+   }
+  },
+  {
+   "key": "vix_term_invert_first",
+   "short_name": "VIX首次倒掛",
+   "name": "VIX 期限結構首次倒掛（VIX/VIX3M ≥ 1.0）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 10,
+   "rule": "VIX/VIX3M 首次升破 1.0（前 5 日皆 < 1.0）；看 10 個交易日後",
+   "n": 30,
+   "win_pct": 36.7,
+   "ci": [
+    21.9,
+    54.5
+   ],
+   "base_win_pct": 42.6,
+   "edge_pts": -5.9,
+   "mean": 3.87,
+   "pf": 1.6,
+   "p_value": 0.7991,
+   "q_value": 0.9596,
+   "significant": false,
+   "is_win_pct": 35.0,
+   "oos_win_pct": 40.0,
+   "oos_n": 10,
+   "grade": "C",
+   "grade_zh": "無優勢",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 60.0,
+    "base_pct": 50.0,
+    "p_value": 0.1808,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2026-03-23",
+    "ret": 9.7
+   }
+  },
+  {
+   "key": "death_cross_50_200",
+   "short_name": "死亡交叉",
+   "name": "50 日線下穿 200 日線（死亡交叉）",
+   "family": "賣出 / 出場",
+   "side": "exit",
+   "horizon": 20,
+   "rule": "SMA50 由上往下穿越 SMA200；看 20 個交易日後",
+   "n": 6,
+   "win_pct": 33.3,
+   "ci": [
+    9.7,
+    70.0
+   ],
+   "base_win_pct": 42.8,
+   "edge_pts": -9.5,
+   "mean": -1.54,
+   "pf": 0.83,
+   "p_value": 0.8077,
+   "q_value": null,
+   "significant": false,
+   "is_win_pct": 50.0,
+   "oos_win_pct": 0.0,
+   "oos_n": 2,
+   "grade": "—",
+   "grade_zh": "樣本不足",
+   "stop_k_atr": null,
+   "sim_oos": null,
+   "dyn": null,
+   "dd15": {
+    "rate_pct": 33.3,
+    "base_pct": 50.0,
+    "p_value": 0.8906,
+    "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
+   },
+   "state": "off",
+   "fired": false,
+   "recent_dates": [],
+   "pending": null,
+   "last_signal": {
+    "date": "2024-09-16",
+    "ret": 22.5
+   }
+  }
+ ],
+ "validation": {
+  "method": {
+   "entry": "訊號日次一交易日開盤價",
+   "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
+   "declustered": true,
+   "oos": "最近 40% 樣本（2023-02-22 起）",
+   "ci": "Wilson 95%",
+   "sample": "2017-08-24 ~ 2026-10-23",
+   "bars": 2514,
+   "data_as_of": "2026-10-23",
+   "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
+  },
+  "summary": {
+   "n_signals": 23,
+   "n_graded_a": 0,
+   "n_graded_b": 4,
+   "fired_today": [],
+   "pending": [
+    "rsi14_lt25",
+    "capitulation_reversal",
+    "reclaim_sma20"
+   ],
+   "fired_long_ab": [],
+   "fired_exit_ab": [],
+   "n_significant": 1,
+   "n_graded": 18,
+   "n_q_lt_10": 0,
+   "exits_predictive": [],
+   "dyn_base_win_pct": 63.6
+  },
+  "skipped": [
+   {
+    "key": "ews_ge80",
+    "reason": "缺少崩跌前兆分數歷史"
+   }
+  ],
+  "regime_grid": [
+   {
+    "series": "SOXL",
+    "band_pct": 0.0,
+    "confirm_days": 1,
+    "cagr_pct": 14.2,
+    "max_dd_pct": -76.6,
+    "switches": 91,
+    "time_in_market_pct": 65.0,
+    "in_market": false,
+    "dist_pct": -32.2
+   },
+   {
+    "series": "SOXL",
+    "band_pct": 3.0,
+    "confirm_days": 1,
+    "cagr_pct": 19.8,
+    "max_dd_pct": -75.9,
+    "switches": 45,
+    "time_in_market_pct": 66.0,
+    "in_market": false,
+    "dist_pct": -32.2
+   },
+   {
+    "series": "SOXL",
+    "band_pct": 3.0,
+    "confirm_days": 2,
+    "cagr_pct": 26.5,
+    "max_dd_pct": -74.3,
+    "switches": 29,
+    "time_in_market_pct": 66.0,
+    "in_market": false,
+    "dist_pct": -32.2
+   },
+   {
+    "series": "SOXX",
+    "band_pct": 0.0,
+    "confirm_days": 1,
+    "cagr_pct": 29.7,
+    "max_dd_pct": -79.2,
+    "switches": 60,
+    "time_in_market_pct": 78.0,
+    "in_market": true,
+    "dist_pct": null
+   },
+   {
+    "series": "SOXX",
+    "band_pct": 3.0,
+    "confirm_days": 1,
+    "cagr_pct": 24.0,
+    "max_dd_pct": -86.3,
+    "switches": 24,
+    "time_in_market_pct": 78.0,
+    "in_market": true,
+    "dist_pct": null
+   },
+   {
+    "series": "SOXX",
+    "band_pct": 5.0,
+    "confirm_days": 1,
+    "cagr_pct": 35.1,
+    "max_dd_pct": -76.7,
+    "switches": 10,
+    "time_in_market_pct": 78.0,
+    "in_market": true,
+    "dist_pct": null
+   },
+   {
+    "series": "SOXX",
+    "band_pct": 3.0,
+    "confirm_days": 2,
+    "cagr_pct": 33.9,
+    "max_dd_pct": -78.0,
+    "switches": 14,
+    "time_in_market_pct": 78.0,
+    "in_market": true,
+    "dist_pct": null
+   }
+  ],
+  "buy_hold": {
+   "cagr_pct": 33.0,
+   "max_dd_pct": -90.5,
+   "final_multiple": 13.54
+  },
+  "regime_note": "同一套 200 日線濾網，分別用 SOXL 自身與標的指數當訊號；無交易成本，帶寬敏感度高，請看整張表而非單一數字",
+  "atr14": 12.46,
+  "atr_pct": 14.9
+ },
+ "scenarios": [
+  {
+   "key": "A",
+   "tone": "bull",
+   "title": "劇本 A：超跌反彈 (10 日內 ≥ +10%)",
+   "prob": 43,
+   "trigger": "收盤站回 價值區下緣 VAL $89.46，並帶量突破 EMA5 $92.30",
+   "target": "反彈目標 EMA5 $92.30 → 月選 1σ 上緣 $107.55",
+   "action": "只做反彈、不做趨勢多單：分批小量 (≤1/3 部位)，反彈至第一道反壓減碼；守住進場日低點為停損。"
+  },
+  {
+   "key": "B",
+   "tone": "neutral",
+   "title": "劇本 B：區間築底 / 弱勢盤整 (±10% 以內)",
+   "prob": 32,
+   "trigger": "在 近 10 日最低 $80.22 ~ 價值區下緣 VAL $89.46 之間來回",
+   "target": "等待 20MA $127.85 走平、崩跌前兆分數回落 <60、成分股站回月線比例 >40%",
+   "action": "觀望為主；可用賣出價外 Put (Put 牆附近) 收高 IV 權利金，或等底部型態 (W 底 / 突破下降趨勢線) 再進場。"
+  },
+  {
+   "key": "C",
+   "tone": "bear",
+   "title": "劇本 C：續跌 (10 日內 ≤ -10%)",
+   "prob": 25,
+   "trigger": "收盤跌破 近 10 日最低 $80.22 → 下探 布林下軌 $72.68",
+   "target": "月選 1σ 下緣 $58.80；2σ 極端 $38.97",
+   "action": "嚴守停損、不攤平 3x 槓桿；留意 SOXS/避險 Put 成本已高 (IV 極高)，避免在恐慌高點追買避險。"
+  }
+ ],
+ "checklist": [
+  {
+   "item": "收盤站回 20 日均線 (多頭停損線)",
+   "ok": false,
+   "now": "現價 $83.59 vs 20MA $127.85"
+  },
+  {
+   "item": "崩跌前兆分數 < 60 (症狀負荷回到歷史中位數以下)",
+   "ok": true,
+   "now": "31/100"
+  },
+  {
+   "item": "VIX 期限結構回到正價差 (VIX/VIX3M < 0.92)",
+   "ok": false,
+   "now": "0.929"
+  },
+  {
+   "item": "成分股站上 20MA 比例 > 40%",
+   "ok": false,
+   "now": "12%"
+  },
+  {
+   "item": "大戶期權淨方向轉正 (≥ 0)",
+   "ok": true,
+   "now": "0.23"
+  },
+  {
+   "item": "MACD 柱體連續 2 日收斂 / 翻正 (動能止跌)",
+   "ok": false,
+   "now": "Hist -6.19"
+  },
+  {
+   "item": "Fear & Greed 從極度恐懼區回升 (> 25 且上升)",
+   "ok": false,
+   "now": "21.0 (前值 19.8)"
+  },
+  {
+   "item": "5 日上漲/下跌量能比 > 1 (買盤回流)",
+   "ok": false,
+   "now": "20D U/D 0.49x"
+  }
+ ],
+ "watch": [
+  "價格：守 $80.22（近 10 日最低）、攻 $89.46（價值區下緣 VAL）",
+  "期權：2026-10-30 到期（Max Pain $111.0（離現價遠、磁吸效果弱），P/C 0.9）；Gamma 翻正位 $106.83",
+  "情緒：Fear & Greed 21.0 是否回升 >25；VIX 19.03 與期限結構 0.929（<0.92 才算回穩）",
+  "板塊：16 檔成分股站上 20MA 比例 12% → 目標 >40%；大戶期權淨方向 0.23 → 轉正",
+  "崩跌前兆分數 31 → 回落 <60"
+ ],
+ "news": {
+  "articles_total": 1181,
+  "sources": {
+   "yahoo": 0,
+   "google": 937,
+   "rss": 244
+  },
+  "bull_7d": 98,
+  "bear_7d": 176,
+  "bull_bear_ratio": 0.56,
+  "themes_7d": [
+   {
+    "tag": "個股動能/買盤利多",
+    "count": 21
+   },
+   {
+    "tag": "獲利了結/基本面利空",
+    "count": 15
+   },
+   {
+    "tag": "AI 估值/融資疑慮",
+    "count": 9
+   },
+   {
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "count": 7
+   },
+   {
+    "tag": "訂單/資本支出利多",
+    "count": 5
+   },
+   {
+    "tag": "分析師升評利多",
+    "count": 3
+   }
+  ],
+  "by_day": [
+   {
+    "date": "2026-10-24",
+    "bull_count": 0,
+    "bear_count": 1,
+    "neutral_count": 1,
+    "net_sentiment_ratio": -1.0,
+    "soxl_perf": "非交易日 / 尚未收盤"
+   },
+   {
+    "date": "2026-10-23",
+    "bull_count": 21,
+    "bear_count": 57,
+    "neutral_count": 97,
+    "net_sentiment_ratio": -0.46,
+    "soxl_perf": "$83.59 (+1.80%)"
+   },
+   {
+    "date": "2026-10-22",
+    "bull_count": 9,
+    "bear_count": 60,
+    "neutral_count": 86,
+    "net_sentiment_ratio": -0.74,
+    "soxl_perf": "$82.11 (-20.47%)"
+   },
+   {
+    "date": "2026-10-21",
+    "bull_count": 32,
+    "bear_count": 21,
+    "neutral_count": 56,
+    "net_sentiment_ratio": 0.21,
+    "soxl_perf": "$103.24 (+5.83%)"
+   },
+   {
+    "date": "2026-10-20",
+    "bull_count": 18,
+    "bear_count": 15,
+    "neutral_count": 35,
+    "net_sentiment_ratio": 0.09,
+    "soxl_perf": "$97.55 (-1.12%)"
+   },
+   {
+    "date": "2026-10-19",
+    "bull_count": 17,
+    "bear_count": 19,
+    "neutral_count": 32,
+    "net_sentiment_ratio": -0.06,
+    "soxl_perf": "$98.65 (+5.32%)"
+   },
+   {
+    "date": "2026-10-18",
+    "bull_count": 1,
+    "bear_count": 3,
+    "neutral_count": 4,
+    "net_sentiment_ratio": -0.5,
+    "soxl_perf": "非交易日 / 尚未收盤"
+   }
+  ],
+  "top_bull": [
+   {
+    "title": "Micron Technology Stock Price Forecast: CEO Reaffirms Tight Supply for Next Two Years, How Will HBM4 Mass Production and CXMT Controversy Impact Stock Price Expectations?",
+    "publisher": "TradingKey",
+    "tag": "個股動能/買盤利多",
+    "time_utc": "22:08",
+    "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPbm1SNF8yYlFFNmlpSWF3MmVMRlpCTVpMU3B2ai1pUUVnYmV5MVdWUjhTMm5oYzhqN1g0MTg3NTZ6X2kwSlEzMm43b3VuRUJTV1N6OEFINVQzemd4X2ZWeWZEUDY3Skh3WExlTkJWbTBFWmxrYWRsUE94V1FQWlVGWDBrSkdjZ055dlU1eE05NE9VX0NpRzIyY0h6UWRqZnNrSzhmQ1Z0ZTF3NVhuMkhlSUdWakQzcGNWbDhmeW1HOXhQUFNoMnZFa0lpcjlVQURpYlE?oc=5"
+   },
+   {
+    "title": "Prediction: Nvidia Will Outperform Broadcom Over the Next 5 Years",
+    "publisher": "The Motley Fool",
+    "tag": "分析師升評利多",
+    "time_utc": "21:45",
+    "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQeGlGRVBSQUtpRkJIV1UxbUJNRXpWNjFuRE5saDB4ZFJoT1NyYkEtUlNNY2FfV0QtSmRRWmpSelhRMnl5TjRlTlhTcG1wRFN3SllMQTlhUFJoQ2tRTXpaeDlPbHZpaDBNWkZrTzZBcGc5S29ya3Jvc3F3dzlTLXNMcDIxaHFRNjZlQ01BWG5uYURHRUY1WGJxTWhPWWYwX29nNW9JTW5uYVJMY0E?oc=5"
+   },
+   {
+    "title": "Micron Technology Options Spot-On: On October 23rd, 1.16 Million Contracts Were Traded, With 3.5 Million Open Interest",
+    "publisher": "Moomoo",
+    "tag": "訂單/資本支出利多",
+    "time_utc": "20:51",
+    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPdkxpVWZGQ240bHRzdXhiMEJQbU9WckdramFCWHAwOWpTb3pQbzFocUVFVlZvVUpSRm1hNmFVLTI4T3ZGOHBRTTBwR3RDbEpBN2FXWjFpb0I0RFNMY0diTkhTRXdzVHJ5RmxhMjF1a2YwZnp5VEtOM0xfVExjaXp3ZXpkRk4zUVFTU29NS2FkVXNicVpMSldXeUxIajU3Q1U?oc=5"
+   },
+   {
+    "title": "Semiconductors will rally by the end of the year, says SA analyst",
+    "publisher": "Seeking Alpha",
+    "tag": "個股動能/買盤利多",
+    "time_utc": "20:44",
+    "link": "https://seekingalpha.com/symbol/SOXX/news?source=feed_symbol_SOXX"
+   },
+   {
+    "title": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+    "publisher": "Bloomberg.com",
+    "tag": "宏觀緩和利多",
+    "time_utc": "20:05",
+    "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOZGVVVVZBVjRRcTNYSXJlNS0tV0E5MkEwOVlGcTh3anZ1eC16ZEdSYmp5ODRIcUo1T3BkU01vNkpTTmJxOUFELVFUUG9SS0o2SDNSWHQ5bE9PVGp3a29vLUROenZwc2FBTnhMQ3VOR1B4SVJiZjFvaDV6TjMwUlg3dUlQcmlkdUJXZU5PbXE2YWtrZXN1?oc=5"
+   },
+   {
+    "title": "Broadcom Stocks Rise as Decade-Long VMware Deal Targets AI Workloads",
+    "publisher": "GuruFocus",
+    "tag": "訂單/資本支出利多",
+    "time_utc": "18:32",
+    "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQlJ4Q1lHUlNFa1ZENzNLS2VjSWNaYVRjYTRHdlFEc3ZLaWp6N0U4d1R1b1BpYTVTM1VnRDNyaC0zZ2dXM0Z6UjZDMl9fWFBaUGJBVU9SM2pyRFd2ckFfbWtvNjRFUWNKTHZOTU5kNnMyWkkyLWFpS0g3OFdBTjQtZnRiR0txQ05ZLTQxM29NQmtxbUZmbWZnbTlvZk9aclJ5bFhBT1dRZ3ZNUQ?oc=5"
+   }
+  ],
+  "top_bear": [
+   {
+    "title": "Broadcom stock gets massive $600 call even as AI fears grow",
+    "publisher": "TheStreet",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "00:33",
+    "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9tNGRMTWItTW1PbmZERG5Bc2JQcXRhVUxrczdYeldXRHRHX05zYUFOOVZFb1hrTGcwZmxwNUtzVl9FMzRLVV9VNnNnRmlOSlVDX01uY19SeC0wNjJhZmZRR1VUdTdyV2ZNdVBSQS1rRXRGaHhyal9jdmsxdnM?oc=5"
+   },
+   {
+    "title": "Micron stock gets stunning $3,000 call despite 6% plunge",
+    "publisher": "TheStreet",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "23:17",
+    "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxObloxQW9TSXVqOFExT2w5akpqeWNBTkJlbm5NdTdPbkFRV3cxbC1UenB3ak9vYS0wUnQ2bUt2NHd0RTZHaWZ1TmwxZnQ3dkMtQ1NIU3JsSXFuNmpaVkhqWERISTFScGFHRWt1WHU2NG91bHFCdjM1Q0tSUHpzR0N0bWFjaTFuMm9vOHoyNmwwVXdzQUZuQnJsSkpnOWJUZw?oc=5"
+   },
+   {
+    "title": "Turmoil hits AI build-out as neoclouds face pressure, credit risks mount and Solidigm pulls IPO",
+    "publisher": "CNBC",
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "time_utc": "22:49",
+    "link": "https://www.cnbc.com/2026/10/23/ai-turmoil-neoclouds-struggle-credit-risks-jump-solidigm-pulls-ipo.html"
+   },
+   {
+    "title": "Treasury yields, tech stocks, and consumer sentiment all took a slide this week",
+    "publisher": "www.marketplace.org",
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "time_utc": "22:40",
+    "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQLTlNRFpFeEdjYVJjdGtGTFBPN3dNaWU0N01RdVZHVk5PWC1YeFBTRGdDNHhoblBXU2tUamhyY0ZEXzg2dzNRXzROTVo1YS1fWE9TTEpKMHNuSHAtODZxaWhOVDVyNjZBaDRxaWZlUUd4aDFBTjNZeEVadXR2WXI0cTVreXFpdFU3clVJY3FORWw2MVVudU01SHBFVjVXbXVGRmU5RnFRMFpQZkx0MlFmejNNa3lpYjVSelkxRGw0NA?oc=5"
+   },
+   {
+    "title": "S&P 500 Today: Stock Market Index Drops to 7,623.68 as Oil Surges and the 10-Year Treasury Yield Hovers at 5% Ahead of the Fed",
+    "publisher": "BBN Times",
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "time_utc": "22:36",
+    "link": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxQZG81TzZadUxsS2VHU1doLWlEalZQclMzUFRnaUtzT2xaYm12YnM4ZzhXRFg3MjR4aHZ3N0hfQS1qMkwzVE90REViVGJRYXdpcDlrMVJ4S2E0Z0FKMkFjWFRmQy14VTlTdDg4RGE2cExQRFJVdEZmX05YQTUxdzhEOFB4dVNIVnExbW1pMmtIUjNqbWxLc2syWTZoekl0amxLMGluOEZwSDlxa3ZBRmt0VjNDVXhyUVdaZ2x4d0R2VTdDZHphQWtzMEFidWNjQ3dOUTJfQUZoTjJla0tHVXZ3Rk5QS0wtcHRCM2ctS2ZzRGc?oc=5"
+   },
+   {
+    "title": "AMD Stock Fell 8% in a Day as Lam Research’s Supply Warning Sank Chip Stocks. Here’s Where the Stock Could Go by 2030",
+    "publisher": "TIKR.com",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "21:56",
+    "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQX180eHE3R3dPZGxZZngtbDlRbk53Q1kyZnUtaTcwZEZRZE1PeGwxMC05UTFVMWhzT09hanoxeDVLTGN0Ry1tRXdvUTFsTTVNbWJOOVRET0ppRmhuaU1pWnpUcUotVGxraEwxSlB1UXlabVJOY2xzaC1IQTZaWEhjMUxhbUNlQzZpSE43VXVZQ2lFV2R5REUyTmdyLU1RWjV3VmJsVEFzYy1xU2hOblpPdFVkbUxWZDRwY0xHdklETlRQVVdiazZ6SGVaOTZ4RGtfRUNnVi1B?oc=5"
+   }
+  ]
+ },
+ "events": {
+  "as_of": "2026-10-24",
+  "summary_zh": "10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28；10/28（三） KLAC 財報（盤後）；10/29（四） INTC 財報（盤後）；10/30（五） 週選擇權到期；11/3（二） AMD 財報（盤後）",
+  "next_fomc": {
+   "date": "2026-10-28",
+   "start": "2026-10-27",
+   "type": "fomc",
+   "days_ahead": 4,
+   "label": "FOMC 利率決議 10/27–28",
+   "detail": "決議 14:00 ET 公布、14:30 記者會；半導體與高 Beta 資產波動最大的時段",
+   "when_zh": "10/28（三）"
+  },
+  "upcoming": [
+   {
+    "date": "2026-10-27",
+    "when_zh": "10/27（二）",
+    "type": "earnings",
+    "label": "NXPI 財報（盤後）",
+    "detail": "EPS 預估 $3.78｜Sep/2026",
+    "days_ahead": 3,
+    "symbol": "NXPI"
+   },
+   {
+    "date": "2026-10-28",
+    "when_zh": "10/28（三）",
+    "type": "fomc",
+    "label": "FOMC 利率決議 10/27–28",
+    "detail": "決議 14:00 ET 公布、14:30 記者會；半導體與高 Beta 資產波動最大的時段",
+    "days_ahead": 4,
+    "symbol": null
+   },
+   {
+    "date": "2026-10-28",
+    "when_zh": "10/28（三）",
+    "type": "earnings",
+    "label": "KLAC 財報（盤後）",
+    "detail": "EPS 預估 $1.18｜Sep/2026",
+    "days_ahead": 4,
+    "symbol": "KLAC"
+   },
+   {
+    "date": "2026-10-29",
+    "when_zh": "10/29（四）",
+    "type": "earnings",
+    "label": "INTC 財報（盤後）",
+    "detail": "EPS 預估 $0.28｜Sep/2026",
+    "days_ahead": 5,
+    "symbol": "INTC"
+   },
+   {
+    "date": "2026-10-30",
+    "when_zh": "10/30（五）",
+    "type": "opex",
+    "label": "週選擇權到期",
+    "detail": "到期後造市商 Gamma 部位重置，隔週波動常改變",
+    "days_ahead": 6,
+    "symbol": null
+   },
+   {
+    "date": "2026-11-03",
+    "when_zh": "11/3（二）",
+    "type": "earnings",
+    "label": "AMD 財報（盤後）",
+    "detail": "EPS 預估 $1.68｜Sep/2026",
+    "days_ahead": 10,
+    "symbol": "AMD"
+   },
+   {
+    "date": "2026-11-06",
+    "when_zh": "11/6（五）",
+    "type": "opex",
+    "label": "週選擇權到期",
+    "detail": "到期後造市商 Gamma 部位重置，隔週波動常改變",
+    "days_ahead": 13,
+    "symbol": null
+   }
+  ],
+  "sources": {
+   "fomc": "federalreserve.gov",
+   "earnings": "nasdaq.com（掃描 7 個交易日，成分股命中 4）"
+  }
+ },
+ "quotes": {
+  "fetched_at_tpe": "2026-10-24 08:45 台北",
+  "fetched_at_et": "2026-10-23 20:45 ET",
+  "market_status": "After-Hours",
+  "one_liner": "SOXL $83.59（+1.80%），盤後 $83.23（-0.43%）；VIX 19.45（+2.2%），VIX/VIX3M 0.950（偏緊）｜市場狀態 After-Hours",
+  "vix_term_ratio": 0.95,
+  "rows": [
+   {
+    "symbol": "SOXL",
+    "label": "SOXL 三倍做多半導體",
+    "last": 83.59,
+    "change_pct": 1.8,
+    "ext_last": 83.2301,
+    "ext_change_pct": -0.43
+   },
+   {
+    "symbol": "SOXS",
+    "label": "SOXS 三倍做空半導體",
+    "last": 52.48,
+    "change_pct": -1.81,
+    "ext_last": 52.6002,
+    "ext_change_pct": 0.23
+   },
+   {
+    "symbol": "SOXX",
+    "label": "SOXX 費半 ETF",
+    "last": 478.2,
+    "change_pct": 0.53,
+    "ext_last": 477.0,
+    "ext_change_pct": -0.25
+   },
+   {
+    "symbol": "SPY",
+    "label": "S&P 500",
+    "last": 759.96,
+    "change_pct": -0.52,
+    "ext_last": 761.11,
+    "ext_change_pct": 0.15
+   },
+   {
+    "symbol": "QQQ",
+    "label": "Nasdaq 100",
+    "last": 704.4,
+    "change_pct": -0.01,
+    "ext_last": 704.88,
+    "ext_change_pct": 0.07
+   },
+   {
+    "symbol": "NVDA",
+    "label": "Nvidia",
+    "last": 210.96,
+    "change_pct": -0.59,
+    "ext_last": 211.179,
+    "ext_change_pct": 0.1
+   },
+   {
+    "symbol": "AVGO",
+    "label": "Broadcom",
+    "last": 321.68,
+    "change_pct": -0.48,
+    "ext_last": 322.357,
+    "ext_change_pct": 0.21
+   },
+   {
+    "symbol": "AMD",
+    "label": "AMD",
+    "last": 516.79,
+    "change_pct": 1.74,
+    "ext_last": 516.75,
+    "ext_change_pct": -0.01
+   },
+   {
+    "symbol": "MU",
+    "label": "Micron",
+    "last": 877.55,
+    "change_pct": 2.46,
+    "ext_last": 879.99,
+    "ext_change_pct": 0.28
+   },
+   {
+    "symbol": "TSM",
+    "label": "TSMC ADR",
+    "last": 418.19,
+    "change_pct": 1.42,
+    "ext_last": 417.4899,
+    "ext_change_pct": -0.17
+   },
+   {
+    "symbol": "AMAT",
+    "label": "Applied Materials",
+    "last": 377.24,
+    "change_pct": 0.44,
+    "ext_last": 377.3782,
+    "ext_change_pct": 0.04
+   },
+   {
+    "symbol": "LRCX",
+    "label": "Lam Research",
+    "last": 230.1,
+    "change_pct": -0.02,
+    "ext_last": 229.79,
+    "ext_change_pct": -0.13
+   },
+   {
+    "symbol": "VIX",
+    "label": "VIX 恐慌指數",
+    "last": 19.45,
+    "change_pct": 2.207,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "VIX3M",
+    "label": "VIX 3 個月",
+    "last": 20.48,
+    "change_pct": 1.7893,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "VIX9D",
+    "label": "VIX 9 天",
+    "last": 18.7,
+    "change_pct": -0.8484,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SKEW",
+    "label": "SKEW 尾部風險",
+    "last": 151.8,
+    "change_pct": -0.3872,
+    "ext_last": null,
+    "ext_change_pct": null
+   }
+  ]
+ },
+ "changes": {
+  "has_previous": true,
+  "previous_date": "2026-10-22",
+  "previous_verdict": "賣出 / 減碼",
+  "verdict_changed": false,
+  "composite_prev": -1.01,
+  "composite_delta": 0.15,
+  "crash_risk_delta": 3.0,
+  "fear_greed_delta": 1.2,
+  "vix_delta": 2.35,
+  "size_pct_prev": 10,
+  "same_verdict_streak_days": 6,
+  "notes": [
+   "評級不變（連續 6 個交易日 🔴賣出 / 減碼）",
+   "綜合分數 -1.01 → -0.86（+0.15）",
+   "崩跌前兆 28 → 31"
+  ]
+ },
+ "history": [
+  {
+   "date": "2026-10-16",
+   "close": 93.67,
+   "ret_1d": -12.74,
+   "composite": -0.77,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 70.0,
+   "fear_greed": 23.1,
+   "vix": 19.99,
+   "fwd_ret_5d": -10.76,
+   "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-10-19",
+   "close": 98.65,
+   "ret_1d": 5.32,
+   "composite": -0.86,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 18.0,
+   "fear_greed": 23.1,
+   "vix": 19.99,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-10-20",
+   "close": 97.55,
+   "ret_1d": -1.12,
+   "composite": -0.87,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 18.0,
+   "fear_greed": 27.2,
+   "vix": 18.44,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-10-21",
+   "close": 103.24,
+   "ret_1d": 5.83,
+   "composite": -0.67,
+   "rating_5": 2,
+   "verdict": "減碼 / 觀望",
+   "emoji": "🔴",
+   "size_pct": 25,
+   "crash_risk": 20.0,
+   "fear_greed": 29.2,
+   "vix": 16.68,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-10-22",
+   "close": 82.14,
+   "ret_1d": -20.44,
+   "composite": -1.01,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 28.0,
+   "fear_greed": 19.8,
+   "vix": 16.68,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-10-23",
+   "close": 83.59,
+   "ret_1d": 1.8,
+   "composite": -0.86,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 31.0,
+   "fear_greed": 21.0,
+   "vix": 19.03,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
+  }
+ ],
+ "schedule": {
+  "installed": false,
+  "times": [
+   "07:30"
+  ],
+  "weekday_text": "週二、三、四、五、六",
+  "next_run": "2026-10-24 07:30"
+ },
+ "links": {
+  "report_html": "https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html",
+  "simple_html": "https://corleonis6422.github.io/stock-dashboard/soxl_simple.html",
+  "index_html": "https://corleonis6422.github.io/stock-dashboard/",
+  "brief_json": "https://corleonis6422.github.io/stock-dashboard/feed/latest.json",
+  "brief_md": "https://corleonis6422.github.io/stock-dashboard/feed/latest.md",
+  "brief_txt": "https://corleonis6422.github.io/stock-dashboard/feed/latest.txt",
+  "quotes_json": "https://corleonis6422.github.io/stock-dashboard/feed/quotes.json",
+  "rss": "https://corleonis6422.github.io/stock-dashboard/feed/rss.xml",
+  "schema": "https://corleonis6422.github.io/stock-dashboard/feed/schema.json",
+  "full_json": "https://corleonis6422.github.io/stock-dashboard/soxl_analysis_data.json",
+  "archive_index": "https://corleonis6422.github.io/stock-dashboard/feed/index.json"
+ },
+ "disclaimer": "本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。"
+}
