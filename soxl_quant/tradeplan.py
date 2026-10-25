@@ -267,7 +267,11 @@ def build(tech: dict, opt: dict, pb: dict, score: dict, bt: dict | None, soxl_ro
       "agree": (own["today"]["in_market"] == idx["today"]["in_market"]) if (own and idx) else None,
   }
   if own and idx and not regime["agree"]:
-    explain.append(f"兩種 200 日線讀法今天不一致：SOXL 自身在年線{'上' if own['today']['in_market'] else '下'}（{own['today']['dist_pct']:+.1f}%），{idx['series']} 指數在年線{'上' if idx['today']['in_market'] else '下'}（{idx['today']['dist_pct']:+.1f}%）。長期持有者看指數那條（切換少、回測較佳），短線反彈單看 SOXL 自身。")
+    own_d = own["today"]["dist_pct"]
+    idx_d = idx["today"]["dist_pct"]
+    own_txt = f"{own_d:+.1f}%" if own_d is not None else "未知"
+    idx_txt = f"{idx_d:+.1f}%" if idx_d is not None else "未知"
+    explain.append(f"兩種 200 日線讀法今天不一致：SOXL 自身在年線{'上' if own['today']['in_market'] else '下'}（{own_txt}），{idx['series']} 指數在年線{'上' if idx['today']['in_market'] else '下'}（{idx_txt}）。長期持有者看指數那條（切換少、回測較佳），短線反彈單看 SOXL 自身。")
 
   pending_list = [{"key": s["key"], "short_name": s["short_name"], "grade": s["grade"], "price": s["today"]["pending"]["price"], "op": s["today"]["pending"].get("op"),
                    "dist_pct": s["today"]["pending"].get("dist_pct"), "needs": s["today"]["pending"].get("needs"), "win_pct": s["win_pct"], "base_win_pct": s["base"]["win_pct"], "n": s["n"]} for s in pend[:4]]
