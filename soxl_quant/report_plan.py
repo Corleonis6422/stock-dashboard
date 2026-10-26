@@ -106,3 +106,107 @@ def signals_table_html(p: dict, heading: str = "🧪 訊號驗證：這些買賣
   return (f'<style>{CSS}</style><section class="card box"><h2>{heading} <small>固定規則、10 年 SOXL 日線、樣本外 40% 檢查</small></h2>'
           f'<div class="tp-wrap"><table class="tp-tbl tp-sig"><thead><tr><th>訊號</th><th>勝率 vs 基準（N）</th><th>平均報酬 / 期間</th><th>今日狀態</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div>'
           f'<div class="tp-note">{note}</div></section>')
+
+
+BEGIN_CSS = """
+.bg-ans{font-size:1.25rem;font-weight:800;margin:4px 0 8px}.bg-ans small{font-size:.8rem;font-weight:500;opacity:.75;margin-left:6px}
+.bg-list{list-style:none;padding:0;margin:0}.bg-list li{padding:7px 0;border-top:1px solid rgba(148,163,184,.18);font-size:.9rem;line-height:1.6}.bg-list li b{opacity:.85}
+.nf-item{display:grid;grid-template-columns:1.4rem 1fr;gap:6px;padding:7px 0;border-top:1px solid rgba(148,163,184,.18);font-size:.88rem;line-height:1.55}
+.nf-meta{font-size:.74rem;opacity:.7}.nf-why{font-size:.8rem;opacity:.85}.nf-item a{color:inherit;text-decoration:underline dotted}
+.nf-bar{font-size:.84rem;margin:2px 0 6px}.nf-tag{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:999px;border:1px solid rgba(148,163,184,.45);margin-right:4px}
+.nf-caution{font-size:.84rem;padding:6px 10px;border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);margin-top:8px;border-radius:4px}
+"""
+
+
+def beginner_card_html(p: dict, heading: str = "🟢🔴 新手一眼看懂：現在該不該買？") -> str:
+  """Same text as the Markdown block (brief._beginner_block), so the page and the brief never disagree."""
+  from . import brief as briefmod
+  sc, pb, tp = p.get("scoring") or {}, p.get("playbook") or {}, p.get("trade_plan") or {}
+  b = pb.get("beginner") or {}
+  flash = p.get("newsflash") or None
+  today_ews = (p.get("early_warning") or {}).get("today") or {}
+  try:
+    bg = briefmod._beginner_block(sc, b, tp, b.get("plan") or {}, flash, [], today_ews, p.get("technicals") or {})
+  except Exception as e:  # noqa: BLE001
+    return f'<section class="card box"><h2>{heading}</h2><div class="tp-note">無法產生（{_esc(e)}）。</div></section>'
+  buy = bg.get("buy") or {}
+  w = bg.get("watch") or {}
+  items = [
+      ("今天最大的事", _esc(str(bg.get("biggest_thing") or "").replace("今天最大的事：", "", 1))),
+      ("已持有的人", _esc(bg.get("holder"))),
+      ("明天只盯一個價", f"<b>{_usd(w.get('price'))}</b>（{_esc(w.get('label'))}）" if w.get("price") else "沒有單一關鍵價位"),
+      ("48 小時內風險", _esc("；".join(bg.get("risk_48h") or ["無"])) + "（排定事件見下方日曆）"),
+  ]
+  lis = "".join(f"<li><b>{k}：</b>{v}</li>" for k, v in items)
+  return (f'<style>{BEGIN_CSS}</style><section class="card box"><h2>{heading} <small>先看這五行，其餘都是依據</small></h2>'
+          f'<div class="bg-ans">{_esc(buy.get("emoji"))} {_esc(buy.get("answer"))}<small>依據 {_esc(buy.get("basis"))}</small></div>'
+          f'<div class="tp-note" style="margin-top:0">{_esc(buy.get("text"))}</div><ul class="bg-list">{lis}</ul></section>')
+
+
+def flash_card_html(p: dict, heading: str = "📰 今天發生了什麼（過去 36 小時，對 SOXL 的影響）", limit: int = 8) -> str:
+  fl = p.get("newsflash") or {}
+  if not fl:
+    return f'<section class="card box"><h2>{heading}</h2><div class="tp-note">這次更新沒有抓到時事（新聞來源失敗或模組未執行）。</div></section>'
+  cats = " ".join(f'<span class="nf-tag">{_esc(c.get("emoji"))}{_esc(c.get("category"))} {c.get("neg")}空/{c.get("pos")}多</span>' for c in (fl.get("by_category") or [])[:6])
+  bar = (f'<div class="nf-bar">新聞氣壓 <b>{_esc(fl.get("label"))}</b>（淨影響 {_num(fl.get("net"), 2, True)}，{fl.get("n_relevant")} 則，抓取 {_esc(fl.get("fetched_at_tpe"))} 台北）<br>{cats}</div>')
+  rows = []
+  for r in (fl.get("top") or [])[:limit]:
+    imp = r.get("impact") or 0
+    dot = "🔴" if imp < 0 else ("🟢" if imp > 0 else "⚪")
+    title = _esc(r.get("title"))
+    if r.get("link"):
+      title = f'<a href="{_esc(r["link"])}" target="_blank" rel="noopener noreferrer">{title}</a>'
+    rows.append(f'<div class="nf-item"><div>{dot}</div><div>{_esc(r.get("emoji"))} <b>{_esc(r.get("category"))}</b> <span class="nf-meta">{_esc(r.get("time_tpe"))} 台北 · {_esc(r.get("publisher"))} · 影響 {imp:+d}</span><br>{title}'
+                f'<div class="nf-why">→ {_esc(r.get("why_zh"))}</div></div></div>')
+  cautions = "".join(f'<div class="nf-caution">⚠️ {_esc(c.get("text"))}<br><span class="nf-meta">依據：{_esc((c.get("evidence") or {}).get("publisher"))}「{_esc((c.get("evidence") or {}).get("title"))}」</span></div>' for c in (fl.get("cautions") or [])[:4])
+  sa_items = fl.get("seeking_alpha") or []
+  sa_html = ""
+  if sa_items:
+    lis = []
+    for t in sa_items[:6]:
+      imp = t.get("impact") or 0
+      dot = "🔴" if imp < 0 else ("🟢" if imp > 0 else "⚪")
+      title = _esc(t.get("title"))
+      if t.get("link"):
+        title = f'<a href="{_esc(t["link"])}" target="_blank" rel="noopener noreferrer">{title}</a>'
+      lis.append(f'<div class="nf-item"><div>{dot}</div><div><span class="nf-meta">{_esc(t.get("symbol"))} · {_esc(t.get("kind"))} · {_esc(t.get("time_tpe"))} 台北 · {_esc(t.get("tone"))}</span><br>{title}</div></div>')
+    sa_html = (f'<div class="nf-bar" style="margin-top:10px"><b>Seeking Alpha 觀點</b>（SOXL / SOXX / NVDA 近 72 小時；「分析」= 投稿作者意見，「新聞」= SA 新聞台）</div>{"".join(lis)}')
+  err = f'<div class="tp-note">來源部分失敗：{_esc("；".join(str(e) for e in fl["errors"][:2]))}</div>' if fl.get("errors") else ""
+  return (f'<style>{BEGIN_CSS}</style><section class="card box"><h2>{heading} <small>關鍵字規則分類，不是 AI 判讀；影響分 −2 到 +2</small></h2>{bar}{"".join(rows)}{sa_html}{cautions}{err}'
+          f'<div class="tp-note">{_esc(fl.get("method"))} 這一區只是閱讀輔助，不改變 24 因子評級；交易計畫只把旗標當作警語。</div></section>')
+
+
+DASH_CSS = """
+.dz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}
+@media(max-width:860px){.dz-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.dz-grid{grid-template-columns:1fr}}
+.dz-tile{border:1px solid rgba(148,163,184,.25);border-radius:12px;padding:10px 12px;background:rgba(148,163,184,.06);min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.dz-tile.green{border-color:rgba(34,197,94,.55)}.dz-tile.yellow{border-color:rgba(245,158,11,.6)}.dz-tile.red{border-color:rgba(239,68,68,.6)}
+.dz-t{font-size:.78rem;opacity:.8}.dz-v{font-size:1.05rem;font-weight:800;margin:3px 0;line-height:1.35;overflow-wrap:anywhere}.dz-m{font-size:.8rem;line-height:1.55;opacity:.9}
+.dz-tile details{margin-top:6px;font-size:.76rem;opacity:.85;overflow-wrap:anywhere}.dz-tile summary{cursor:pointer;opacity:.75}.dz-tile code{font-size:.7rem;opacity:.8;white-space:normal;overflow-wrap:anywhere;word-break:break-all}
+.dz-grades{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}.dz-g{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(148,163,184,.4);border-radius:999px;padding:2px 9px;font-size:.78rem}
+.dz-g b{font-size:.9rem}.dz-g.gA b{color:#22c55e}.dz-g.gB b{color:#86efac}.dz-g.gC b{color:#cbd5e1}.dz-g.gD b{color:#f59e0b}.dz-g.gF b{color:#ef4444}
+.dz-voices{margin-top:8px;font-size:.84rem}.dz-voices div{padding:5px 0;border-top:1px solid rgba(148,163,184,.18);display:flex;gap:8px;flex-wrap:wrap}.dz-voices span:first-child{opacity:.75;min-width:11em}
+"""
+
+
+def dashboard_card_html(p: dict, heading: str = "📟 六個儀表：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌") -> str:
+  d = p.get("dashboard") or {}
+  if not d.get("gauges"):
+    return f'<section class="card box"><h2>{heading}</h2><div class="tp-note">這次更新沒有產生儀表（dashboard 步驟失敗）。</div></section>'
+  tiles = []
+  for g in d["gauges"]:
+    fields = "、".join(f"<code>{_esc(f)}</code>" for f in (g.get("fields") or [])[:5])
+    tiles.append(f'<div class="dz-tile {_esc(g.get("light"))}"><div class="dz-t">{_esc(g.get("emoji"))} {_esc(g.get("title"))}</div><div class="dz-v">{_esc(g.get("short") or g.get("value"))}</div>'
+                 f'<div class="dz-m">{_esc(g.get("meaning"))}</div><details><summary>讀數與依據</summary>{_esc(g.get("value"))}<br>{_esc(g.get("detail"))}'
+                 + (f'<br>⚠ {_esc(g.get("caveat"))}' if g.get("caveat") else "") + f'<br>欄位：{fields}</details></div>')
+  grades = d.get("factor_grades") or []
+  pills = "".join(f'<span class="dz-g g{_esc(str(x.get("grade"))[:1])}">{_esc(x.get("short"))} <b>{_esc(x.get("grade"))}</b></span>' for x in grades)
+  pills += f'<span class="dz-g g{_esc(str(d.get("overall_grade"))[:1])}">總評 <b>{_esc(d.get("overall_grade"))}</b></span>'
+  vc = d.get("voices") or {}
+  tone_dot = {"bear": "🔴", "bull": "🟢", "neutral": "🟡"}
+  voices = "".join(f'<div><span>{_esc(r.get("voice"))}</span><span>{tone_dot.get(r.get("tone"), "⚪")} {_esc(r.get("reading"))}</span></div>' for r in (vc.get("rows") or []))
+  return (f'<style>{DASH_CSS}</style><section class="card box"><h2>{heading} <small>每格一個答案、一句為什麼，點「讀數與依據」看數字來源</small></h2>'
+          f'<div class="dz-grid">{"".join(tiles)}</div>'
+          f'<div class="tp-note" style="margin-top:12px"><b>因子等級</b>（借 Seeking Alpha 的 A+ … F 寫法；分數來自 24 因子評分表的 7 個類別，A+ ≥ +1.5、F < −1.0）</div><div class="dz-grades">{pills}</div>'
+          f'<div class="tp-note"><b>{_esc(vc.get("summary"))}</b></div><div class="dz-voices">{voices}</div>'
+          f'<div class="tp-note">{_esc(d.get("method"))}</div></section>')

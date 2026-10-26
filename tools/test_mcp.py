@@ -70,7 +70,7 @@ def main() -> int:
         ("get_brief", {"format": "json"}, lambda s: json.loads(s)["schema"] == "soxl-quant-brief/2"),
         ("get_latest", {}, lambda s: "_sections" in json.loads(s)),
         ("get_latest", {"section": "options"}, lambda s: "put_wall" in json.loads(s)),
-        ("get_news", {"days": 2, "max_per_day": 3}, lambda s: len(json.loads(s)["days"]) >= 1),
+        ("get_news", {"days": 2, "max_per_day": 3}, lambda s: len(json.loads(s)["days"]) >= 1 and "flash" in json.loads(s) and (json.loads(s)["flash"] or {}).get("label") in ("偏空", "中性", "偏多", None)),
         ("get_events", {"horizon_days": 14}, lambda s: "events" in json.loads(s)),
         ("get_history", {"days": 10}, lambda s: isinstance(json.loads(s), list)),
         ("get_status", {}, lambda s: "schedule" in json.loads(s)),

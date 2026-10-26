@@ -189,7 +189,7 @@ details{margin-top:4px}summary{cursor:pointer;color:var(--acc);font-weight:700;f
 
 
 def render(p: dict) -> str:
-  from .report_plan import plan_card_html, signals_table_html  # local import: keeps this module importable alone
+  from .report_plan import beginner_card_html, dashboard_card_html, flash_card_html, plan_card_html, signals_table_html  # local import: keeps this module importable alone
   tech, sc, pb = p["technicals"], p["scoring"], p["playbook"]
   b = pb.get("beginner") or {}
   cons = b.get("consensus") or sc.get("consensus") or {}
@@ -239,6 +239,10 @@ def render(p: dict) -> str:
   <div class="h-s">{esc(b.get("one_liner", ""))}</div>
   <div class="h-m"><span>現價 <b>${tech["close"]:,.2f}</b> <span class="{"up" if ret >= 0 else "dn"}">{ret:+.2f}%</span></span><span>綜合評分 <b>{sc["composite_score"]:+.2f}</b> / ±2</span><span>信心 <b>{esc(b.get("confidence", ""))}</b></span><span>底部檢核 <b>{esc(pb.get("checklist_passed", 0))}/{esc(pb.get("checklist_total", 8))}</b></span></div>
 </section>
+
+{beginner_card_html(p)}
+{dashboard_card_html(p)}
+{flash_card_html(p)}
 
 <section class="card"><h2>📊 評級儀表 <small>{len(sc.get("factors") or [])} 項指標加權投票，像分析師共識一樣看</small></h2>
   {_meter_svg(float(b.get("rating_pos") or sc.get("rating_pos") or 50), str(b.get("rating_label") or sc.get("rating_label")))}

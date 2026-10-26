@@ -63,15 +63,38 @@ jobs:
           print(f"stale={'true' if stale else 'false'}")
           PY
 
+      - name: Optional delivery config from secret (SOXL_NOTIFY_CONFIG_JSON)
+        id: notify
+        if: steps.stale.outputs.stale == 'true' || inputs.force == true
+        env:
+          NOTIFY_JSON: ${{ secrets.SOXL_NOTIFY_CONFIG_JSON }}
+        shell: bash
+        run: |
+          # The secret is the full content of notify_config.json (webhook / chat / telegram / line / email channels).
+          # It is written next to the code with mode 0600 and is git-ignored; the commit step below adds explicit paths only.
+          if [ -n "$NOTIFY_JSON" ]; then
+            printf '%s' "$NOTIFY_JSON" > notify_config.json
+            chmod 600 notify_config.json
+            if python3 -c "import json; json.load(open('notify_config.json'))"; then
+              echo "enabled=true" >> "$GITHUB_OUTPUT"; echo "delivery: enabled from secret"
+            else
+              echo "enabled=false" >> "$GITHUB_OUTPUT"; echo "::warning::SOXL_NOTIFY_CONFIG_JSON is not valid JSON; notifications skipped"; rm -f notify_config.json
+            fi
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"; echo "delivery: no secret, notifications off"
+          fi
+
       - name: Run pipeline
         if: steps.stale.outputs.stale == 'true' || inputs.force == true
         env:
           PYTHONUTF8: "1"
           SOXL_TRIGGER: "github-actions"
+          NOTIFY_ENABLED: ${{ steps.notify.outputs.enabled }}
         shell: bash
         run: |
           echo "expected ${{ steps.stale.outputs.expected }}  current ${{ steps.stale.outputs.current }}"
-          python3 auto_update.py run --no-notify --no-publish --retries 2 --wait-min 3
+          if [ "$NOTIFY_ENABLED" = "true" ]; then FLAG=""; else FLAG="--no-notify"; fi
+          python3 auto_update.py run $FLAG --no-publish --retries 2 --wait-min 3
 
       - name: Verify outputs
         if: steps.stale.outputs.stale == 'true' || inputs.force == true

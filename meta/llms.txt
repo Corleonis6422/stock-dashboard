@@ -1,8 +1,8 @@
 # SOXL Quant daily brief (Meta / Muse pack)
 
-> Automated research brief for SOXL (3x semiconductor ETF). data_as_of 2026-10-23, generated 2026-10-24 00:45:38 Asia/Taipei. Not investment advice.
+> Automated research brief for SOXL (3x semiconductor ETF). data_as_of 2026-10-23, generated 2026-10-26 19:51:41 Asia/Taipei. Not investment advice.
 
-Today: 🔴 賣出 / 減碼 | composite -0.86 | plan None | stop n/a | T1 n/a | T2 n/a | R:R n/a
+Today: 🔴 賣出 / 減碼 | composite -0.82 | plan no_trade | stop $74.17 | T1 $111.70 | T2 $123.20 | R:R 1.83
 
 ## Read in this order
 
@@ -10,6 +10,8 @@ Today: 🔴 賣出 / 減碼 | composite -0.86 | plan None | stop n/a | T1 n/a | 
 - [Today's brief](https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md): one page, zh-TW
 - [Trade plan](https://corleonis6422.github.io/stock-dashboard/meta/02_trade_plan.md): side, trigger, stop, T1/T2, R:R, size, invalidation
 - [Signals](https://corleonis6422.github.io/stock-dashboard/meta/03_signals.md): 23 rules with win rate vs base, N, p, grade, today's state
+- [Today's news flash](https://corleonis6422.github.io/stock-dashboard/meta/08_today_news.md): last 36 h headlines ranked by impact on SOXL, flags with evidence, Seeking Alpha takes
+- [Market dashboard](https://corleonis6422.github.io/stock-dashboard/meta/09_market_dashboard.md): six gauges (add-on? macro, SOX index trend, whales, put/call, crash score), factor grades A+..F, four voices
 - [Methodology](https://corleonis6422.github.io/stock-dashboard/meta/04_methodology.md)
 - [Glossary](https://corleonis6422.github.io/stock-dashboard/meta/05_glossary.md)
 - [History](https://corleonis6422.github.io/stock-dashboard/meta/07_history.md)

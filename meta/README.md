@@ -1,12 +1,12 @@
 # SOXL Quant → Meta AI（Muse）吸收包
 
 > 這個資料夾是給 AI agent 整包讀的。全部是純 Markdown 加一份 JSON，沒有程式碼、沒有圖片、沒有金鑰。
-> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-10-23**，產生 2026-10-24 00:45:38 台北。
+> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-10-23**，產生 2026-10-26 19:51:41 台北。
 
 ## 三十秒版
 
-今天：🔴 **賣出 / 減碼** · 收盤 $83.59（+1.80%）· 綜合 -0.86 · 倉位上限 10%
-計畫：**n/a** · 停損 n/a · T1 n/a · T2 n/a · 加權風報比 n/aR
+今天：🔴 **賣出 / 減碼** · 收盤 $83.56（+1.77%）· 綜合 -0.82 · 倉位上限 10%
+計畫：**⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫** · 停損 $74.17 · T1 $111.70 · T2 $123.20 · 加權風報比 1.83R
 
 ## 怎麼餵給 Muse（擇一）
 
@@ -14,19 +14,21 @@
 2. **貼網址**：公開版在 `https://corleonis6422.github.io/stock-dashboard/meta/`（例如 `https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md`、`https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json`）。同一組網址每個美股交易日的台北 06:15 到 06:45 之間換新（GitHub Actions；失敗時 07:00 與 08:30 重試），Muse 在 07:30 抓、不新就 09:00 再抓一次即可。
 3. **貼內容**：把 `prompts/daily_briefing.md` 的提示連同 `01_brief_today.md` 一起貼進對話；提示已經包含解讀規則。
 
-Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md`（穩定內容），之後每天只需要 `01_brief_today.md`（或 `02_trade_plan.md`）與 `data/latest.json`。
+Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md`（穩定內容），之後每天只需要 `01_brief_today.md`（或 `02_trade_plan.md`）與 `data/latest.json`；要講「今天發生了什麼」就加讀 `08_today_news.md`；被問「能不能加碼、費半走向、大戶、Put/Call、崩跌指數」就讀 `09_market_dashboard.md`（或 `dashboard`）。
 
 ## 檔案地圖
 
 | 檔案 | 內容 | 更新 |
 |---|---|---|
-| `01_brief_today.md` | 今日一頁簡報：TL;DR、交易計畫表、價位階梯、訊號驗證、崩跌前兆、事件、什麼會改變結論、情緒籌碼、新聞、自我驗證 | 每日 |
+| `01_brief_today.md` | 今日一頁簡報：TL;DR、新手一眼看懂（該不該買 / 今天最大的事 / 明天盯哪個價）、六個儀表、今日時事、交易計畫表、價位階梯、訊號驗證、崩跌前兆、事件、什麼會改變結論、情緒籌碼、新聞、自我驗證 | 每日 |
 | `02_trade_plan.md` | 只有計畫：方向、進場觸發、停損、T1/T2、風報比、倉位、時間停損、失效條件、持有者做法、兩種年線讀法 | 每日 |
 | `03_signals.md` | 23 條買賣規則：定義、勝率 vs 基準、N、p、等級、今日狀態、觸發價；動態出場；200 日線濾網比較表 | 每日 |
 | `04_methodology.md` | 資料來源、24 因子評級、回測協定、等級、計畫規則、崩跌前兆、期權牆 | 每日（文字穩定、數字更新） |
 | `05_glossary.md` | 34 個名詞的新手定義 | 穩定 |
 | `06_rules_for_agents.md` | agent 必守的 10 條解讀規則、回答模板、好壞句子對照、問題 → 檔案對照表 | 穩定 |
 | `07_history.md` | 最近 15 個交易日的評級、計畫與事後 5 / 10 日報酬 | 每日 |
+| `08_today_news.md` | 過去 36 小時的時事：排名前八的標題（附連結）、對 SOXL 的意義、五個旗標與依據、類別統計、Seeking Alpha 觀點、方法限制 | 每日 |
+| `09_market_dashboard.md` | 六個儀表：能不能加碼、宏觀消息、費半走向、大戶動向、Put/Call、崩跌指數；因子等級（A+…F）、四個聲音、SOXX 數字、Seeking Alpha 觀點 | 每日 |
 | `prompts/` | `first_time.md`（第一次附上 zip 時貼）、`daily_briefing.md`（每日三句話）、`holder_check.md`（持有者）、`weekly_review.md`（每週自我檢討） | 穩定 |
 | `data/latest.json` | 結構化全部內容（schema `soxl-quant-brief/2`）；`data/schema.json` 欄位定義；`data/signals.json` 精簡訊號表 | 每日 |
 | `manifest.json` / `llms.txt` | 檔案清單、大小、`data_as_of`、公開網址 | 每日 |
@@ -52,21 +54,23 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 
 | 檔案 | 大小 |
 |---|---|
-| `01_brief_today.md` | 6.9 KB |
-| `02_trade_plan.md` | 0.6 KB |
+| `01_brief_today.md` | 13.2 KB |
+| `02_trade_plan.md` | 3.8 KB |
 | `03_signals.md` | 10.8 KB |
 | `04_methodology.md` | 7.9 KB |
 | `05_glossary.md` | 4.5 KB |
-| `06_rules_for_agents.md` | 4.4 KB |
+| `06_rules_for_agents.md` | 6.2 KB |
 | `07_history.md` | 1.6 KB |
-| `llms.txt` | 1.5 KB |
-| `prompts/first_time.md` | 6.1 KB |
-| `prompts/daily_briefing.md` | 0.8 KB |
-| `prompts/holder_check.md` | 0.5 KB |
+| `08_today_news.md` | 8.8 KB |
+| `09_market_dashboard.md` | 9.1 KB |
+| `llms.txt` | 1.9 KB |
+| `prompts/first_time.md` | 7.5 KB |
+| `prompts/daily_briefing.md` | 0.9 KB |
+| `prompts/holder_check.md` | 0.6 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
-| `data/latest.json` | 72.7 KB |
-| `data/schema.json` | 11.3 KB |
-| `data/signals.json` | 11.0 KB |
+| `data/latest.json` | 105.7 KB |
+| `data/schema.json` | 17.9 KB |
+| `data/signals.json` | 11.1 KB |
 
 ## English summary
 

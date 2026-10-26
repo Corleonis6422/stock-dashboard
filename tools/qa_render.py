@@ -302,7 +302,7 @@ if __name__ == "__main__":
     sys.exit(0)
   widths = [int(w) for w in sys.argv[1:]] or [1440, 1280, 1100, 1024, 900, 768, 600, 430, 390]
   total = 0
-  for page, modes in (("soxl_analysis_report.html", ("pro", "beginner")), ("soxl_analysis_report.html", ("pro",))):
+  for page, modes in (("soxl_analysis_report.html", ("pro", "beginner")), ("soxl_simple.html", ("pro",))):
     for mode in modes:
       v = make_variant(page, mode)
       for w in widths:

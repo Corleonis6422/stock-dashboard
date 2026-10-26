@@ -115,7 +115,7 @@ def _publish(cfg: dict | None, summary: dict | None) -> dict:
   if f.returncode == 0:
     if _run(git, "merge-base", "HEAD", f"{remote}/{branch}").returncode != 0:
       return {"status": "error", "step": "history", "commit": commit,
-              "detail": f"本機與 {remote}/{branch} 沒有共同歷史；第一次請手動決定要覆蓋（git push --force）還是合併，之後自動發佈才會接手"}
+              "detail": f"本機與 {remote}/{branch} 沒有共同歷史；請先手動合併後再讓自動發佈接手，絕不覆蓋推送"}
     behind = _run(git, "rev-list", "--count", f"HEAD..{remote}/{branch}").stdout.strip()
     if behind and behind != "0":
       rb = _run(git, "rebase", f"{remote}/{branch}", timeout=120)
