@@ -65,7 +65,7 @@ def flatten_numbers(x, out: set) -> None:
 
 
 NUM = re.compile(r"(?<![\w.])[+−-]?\$?\d[\d,]*(?:\.\d+)?%?")
-REQUIRED_HEADINGS = ["## 交易計畫", "## 關鍵價位", "## 崩跌前兆", "## 48 小時內事件", "## 什麼會改變結論", "## 自我驗證"]
+REQUIRED_HEADINGS = ["## 新手一眼看懂", "## 交易計畫", "## 關鍵價位", "## 崩跌前兆", "## 48 小時內事件", "## 什麼會改變結論", "## 自我驗證"]
 
 
 def main() -> int:
@@ -143,7 +143,7 @@ def main() -> int:
 
   # ------------------------------------------------------------ markdown shape
   size = len(md.encode())
-  (ok if size <= 12 * 1024 else fail)(f"markdown {size} bytes (budget 12,288)")
+  (ok if size <= 13 * 1024 else (warn if size <= 14 * 1024 else fail))(f"markdown {size} bytes (target 13,312, hard limit 14,336)")
   if re.search(r"<(?!https?://)[a-zA-Z/][^>]*>", md):
     fail("raw HTML tag in markdown")
   if "$$" in md or "\\frac" in md or "\\(" in md:
@@ -151,6 +151,73 @@ def main() -> int:
   for h in REQUIRED_HEADINGS:
     if h not in md:
       fail(f"heading missing: {h}")
+  if "## 今日時事" not in md:
+    warn("news flash section missing from markdown (newsflash sources failed?)")
+
+  # ------------------------------------------------------------ beginner block + news flash (v2.1)
+  bg = br.get("beginner") or {}
+  fl = br.get("flash") or {}
+  if not bg or not (bg.get("buy") or {}).get("answer"):
+    fail("beginner block missing")
+  else:
+    ans = bg["buy"]["answer"]
+    side = tp.get("side")
+    if side == "no_trade" and ans in ("可以買",):
+      fail(f"beginner says {ans} but trade_plan.side is no_trade")
+    if side == "long_pending" and ans != "先別買，等觸發":
+      fail(f"beginner says {ans} but trade_plan.side is long_pending")
+    if side == "long" and tp.get("tradeable") and ans != "可以買":
+      fail(f"beginner says {ans} but a tradeable long is on")
+    if (bg.get("watch") or {}).get("price") is None:
+      warn("beginner watch price missing")
+    if len(bg.get("lines") or []) < 4:
+      fail("beginner lines < 4")
+    ok(f"beginner: {bg['buy'].get('emoji')} {ans} (side={side}); watch {(bg.get('watch') or {}).get('price')}")
+  if not fl:
+    warn("flash block missing (newsflash step failed or sources down)")
+  else:
+    bad_imp = [t for t in fl.get("top") or [] if not isinstance(t.get("impact"), int) or not -2 <= t["impact"] <= 2]
+    if bad_imp:
+      fail(f"flash impacts out of range: {bad_imp[:2]}")
+    if fl.get("label") not in ("偏空", "中性", "偏多"):
+      fail(f"flash label {fl.get('label')}")
+    for c in fl.get("cautions") or []:
+      if not (c.get("evidence") or {}).get("title"):
+        fail(f"flash caution without evidence: {c.get('flag')}")
+    if fl.get("errors"):
+      warn(f"flash sources with errors: {fl['errors'][:2]}")
+    ok(f"flash: {fl.get('label')} net {fl.get('net')}, {len(fl.get('top') or [])} top headlines, flags on {[k for k, v in (fl.get('flags') or {}).items() if v]}")
+
+  # ------------------------------------------------------------ six-gauge dashboard (v2.2)
+  dz = br.get("dashboard") or {}
+  if not dz.get("gauges"):
+    fail("dashboard block missing")
+  else:
+    keys = [g.get("key") for g in dz["gauges"]]
+    if keys != ["add_on", "macro", "soxx", "whales", "put_call", "crash"]:
+      fail(f"dashboard gauge order {keys}")
+    for g in dz["gauges"]:
+      if g.get("light") not in ("green", "yellow", "red", "grey"):
+        fail(f"gauge {g.get('key')} light {g.get('light')}")
+      if not g.get("fields") or not g.get("meaning") or not g.get("short"):
+        fail(f"gauge {g.get('key')} missing fields / meaning / short")
+    add = dz["gauges"][0]
+    r5 = (br.get("verdict") or {}).get("rating_5")
+    if add.get("light") == "green" and ((r5 or 3) <= 3 and not (tp.get("side") == "long" and tp.get("tradeable"))):
+      fail(f"add_on green with rating {r5} and plan side {tp.get('side')}")
+    if add.get("light") != "green" and tp.get("side") == "long" and tp.get("tradeable") and (br.get("crash_risk") or {}).get("score", 0) < 80:
+      warn(f"validated long but add_on {add.get('value')} (check VIX inversion)")
+    sx = dz.get("soxx_stats") or {}
+    if sx.get("available") and sx.get("date") and sx["date"] != br.get("data_as_of"):
+      warn(f"soxx_stats date {sx.get('date')} != data_as_of (SOXX history lagging a session)")
+    if len(dz.get("factor_grades") or []) < 5:
+      fail("factor grades missing")
+    if (dz.get("voices") or {}).get("summary") is None:
+      fail("voices summary missing")
+    if "## 六個儀表" not in md:
+      fail("dashboard section missing from markdown")
+    ok(f"dashboard: {dz.get('one_liner')}")
+    ok(f"grades {' '.join(str(x.get('short')) + ' ' + str(x.get('grade')) for x in dz.get('factor_grades') or [])} → {dz.get('overall_grade')}; {(dz.get('voices') or {}).get('summary')}")
   lines = md.splitlines()
   long_lines = [l for l in lines if len(l) > 400]
   (ok if not long_lines else fail)(f"{len(long_lines)} lines over 400 chars")
