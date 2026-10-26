@@ -14,6 +14,8 @@ brief dict that produces ``feed/latest.{json,md}``, so every number here is trac
   05_glossary.md            plain-language definitions of every term the brief uses
   06_rules_for_agents.md    how an agent must read, quote and caveat these numbers (freshness, base rates, disclaimer)
   07_history.md             last 15 sessions: verdict, plan, realised 5 / 10-day returns
+  08_today_news.md          last 36 h headlines ranked by impact on SOXL, flags with evidence, method
+  09_market_dashboard.md    six gauges (add-on? macro, SOXX trend, whales, put/call, crash), factor grades, four voices, SA takes
   prompts/*.md              ready-to-paste prompts (daily briefing, holder check, weekly review)
   data/latest.json          structured brief (schema soxl-quant-brief/2), data/schema.json, data/signals.json
   manifest.json             file list with sizes, data_as_of, generated_at, public URLs
@@ -320,17 +322,18 @@ def doc_rules(br: dict, base: str) -> str:
 5. **勝率一定帶基準與 N**：寫成「勝率 64%（基準 55%，N=62，p=0.09）」。`significant = false` 的訊號不可以說「高勝率」。賣出訊號歷史上沒有預測力，只能用來決定減碼節奏，停損是保險。
 6. **兩種 200 日線讀法可能不一致**：SOXL 自身 vs SOXX 指數。長期持有者看指數那條，短線反彈單看 SOXL 自身；不一致時兩個都講。
 7. **期權牆是模型值**：由公開未平倉推算，不是觀察到的部位；CBOE 即時價與收盤差 ≥ 2% 時（簡報會加 ※），1σ 區間與 Gamma 翻正位會在下次更新改變。
-8. **有變化才值得打擾**：`changes.verdict_changed = true`、`crash_risk.score` 跨過 60 / 80、48 小時內有 FOMC 或龍頭財報、`warnings` 非空、`trade_plan.side` 變成 `long` → 主動推；否則一句話即可。
-9. **引用來源**：新聞附 `publisher` 與 `link`（在 JSON `news.top_bull[].link`），數字附 `data_as_of`。
+8. **有變化才值得打擾**：`changes.verdict_changed = true`、`crash_risk.score` 跨過 60 / 80、48 小時內有 FOMC 或龍頭財報、`warnings` 非空、`trade_plan.side` 變成 `long`、`flash.flags` 任一為 true（聯準會決議 / 地緣升溫 / 關稅收緊 / 龍頭資本支出轉弱）→ 主動推；否則一句話即可。
+9. **引用來源**：新聞附 `publisher` 與 `link`（在 JSON `news.top_bull[].link` 與 `flash.top[].link`），數字附 `data_as_of`。時事的 `impact` 與 `why_zh` 是關鍵字規則套出來的，轉述時說「依標題分類」，不要說成「分析指出」。
 10. **免責**：每次輸出都帶 `disclaimer`。
+11. **問「能不能加碼」只念 `dashboard.gauges[key=add_on]`**：它和交易計畫同源；「可以加碼」只在有驗證過的買訊成立、或評級 ≥ 4 且價在 20 日線上、費半在年線濾網內時出現。問費半、大戶、Put/Call、崩跌指數就念對應的那一格，連同 `meaning` 與 `caveat`（大戶方向是 CBOE 大額權利金推估，不是 13F）。因子等級 A+ … F 是本 repo 評分表的字母化，不是 Seeking Alpha 的評級。
 
 ## 回答模板（三句話版）
 
-> （1）今天 **{{verdict.label}}**：{{trade_plan.headline}}。（2）最重要的理由：{{verdict.tldr[1]}}。（3）要盯的價位：停損 {{trade_plan.stop.price}}、T1 {{trade_plan.t1.price}}、Gamma 翻正 {{options.gamma_flip}}。48 小時內：{{events.upcoming 內 days_ahead ≤ 2 的項目，沒有就寫「無」}}。{{disclaimer}}
+> （1）今天 **{{verdict.label}}**：{{trade_plan.headline}}。（2）最重要的理由：{{verdict.tldr[1]}}；今天最大的事：{{beginner.biggest_thing}}。（3）要盯的價位：停損 {{trade_plan.stop.price}}、T1 {{trade_plan.t1.price}}、Gamma 翻正 {{options.gamma_flip}}。48 小時內：{{events.upcoming 內 days_ahead ≤ 2 的項目，沒有就寫「無」}}。{{disclaimer}}
 
 今天套進去會是：
 
-> （1）今天 **{(br.get('verdict') or {}).get('label')}**：{str(tp.get('headline', 'n/a')).rstrip('。')}。（2）最重要的理由：{reason}。（3）要盯的價位：停損 {_usd((tp.get('stop') or {}).get('price'))}、T1 {_usd((tp.get('t1') or {}).get('price'))}、Gamma 翻正 {_usd((br.get('options') or {}).get('gamma_flip'), 1)}。48 小時內：{events48}。
+> （1）今天 **{(br.get('verdict') or {}).get('label')}**：{str(tp.get('headline', 'n/a')).rstrip('。')}。（2）最重要的理由：{reason}；今天最大的事：{str((br.get('beginner') or {}).get('biggest_thing') or 'n/a').replace('今天最大的事：', '', 1).rstrip('。')}。（3）要盯的價位：停損 {_usd((tp.get('stop') or {}).get('price'))}、T1 {_usd((tp.get('t1') or {}).get('price'))}、Gamma 翻正 {_usd((br.get('options') or {}).get('gamma_flip'), 1)}。48 小時內：{events48}。
 
 ## 好句子與壞句子（數字取自今天的資料）
 
@@ -346,6 +349,9 @@ def doc_rules(br: dict, base: str) -> str:
 | 數字怎麼算 / 可信度 | 04_methodology.md、`validation` |
 | 看不懂的名詞 | 05_glossary.md |
 | 過去幾天說對了嗎 | 07_history.md、`history[]` |
+| 今天發生了什麼大事、對 SOXL 有什麼影響 | 08_today_news.md（或 `flash`、`beginner.biggest_thing`） |
+| 新手只想要一個答案 | 01_brief_today.md 的「新手一眼看懂」（或 `beginner.buy`） |
+| 能不能加碼、費半走向、大戶怎麼走、Put/Call、崩跌指數 | 09_market_dashboard.md（或 `dashboard.gauges[]`，每格有 `fields` 指出數字來源） |
 """
   return out + _foot(br)
 
@@ -360,6 +366,119 @@ def doc_history(br: dict) -> str:
   hits, n, txt = briefmod._history_check(hist)
   out += f"\n- {txt}。\n- 與前一交易日：{'；'.join(ch.get('notes') or []) or 'n/a'}；連續同評級 {ch.get('same_verdict_streak_days')} 個交易日。\n"
   out += "- 從 2026-10-21 起每日紀錄也存了計畫（`history/verdicts.jsonl` 的 `plan_*` 欄位），之後會加上「T1 先到還是停損先到」的統計。\n"
+  return out + _foot(br)
+
+
+def _plain(s) -> str:
+  """Markdown-safe headline text: no raw angle brackets or pipes (the pack checker rejects HTML-looking text)."""
+  return str(s or "").replace("<", "＜").replace(">", "＞").replace("|", "／").strip()
+
+
+def doc_today_news(br: dict) -> str:
+  fl = br.get("flash") or {}
+  bg = br.get("beginner") or {}
+  out = _hdr("08 今日時事：過去 36 小時發生了什麼，對 SOXL 有什麼影響", br,
+             "給新手與 agent 的「今天最大的事」。關鍵字規則分類（不是 LLM 判讀），影響分 −2 到 +2，排序 = |影響| × 新鮮度 × 來源權重。它不改變 24 因子評級，只在交易計畫裡變成警語。")
+  if not fl:
+    out += "這次更新沒有抓到時事（新聞來源失敗或模組未執行）。請看 01_brief_today.md 的「消息面」。\n"
+    return out + _foot(br)
+  out += f"## 一句話\n\n{_plain(fl.get('beginner_line'))}\n\n"
+  out += f"## 新聞氣壓\n\n- **{fl.get('label')}**（淨影響 {_num(fl.get('net'), 2, True)}，−1 到 +1）；{fl.get('n_relevant')} 則相關標題；抓取 {fl.get('as_of_tpe')} 台北；視窗 {fl.get('window_h')} 小時。\n"
+  out += "\n| 類別 | 則數 | 利空 | 利多 |\n|---|---|---|---|\n"
+  for c in fl.get("by_category") or []:
+    out += f"| {c.get('emoji') or ''} {c.get('category')} | {c.get('n')} | {c.get('neg')} | {c.get('pos')} |\n"
+  out += "\n## 排名前八（每類最多 2 則）\n\n| 影響 | 類別・時間（台北）・來源 | 標題 | 對 SOXL 的意義 |\n|---|---|---|---|\n"
+  for r in fl.get("top") or []:
+    imp = r.get("impact") or 0
+    dot = "🔴" if imp < 0 else ("🟢" if imp > 0 else "⚪")
+    title = _plain(r.get("title"))
+    link = r.get("link")
+    cell = f"[{title}]({link})" if link and str(link).startswith("http") else title
+    out += f"| {dot} {imp:+d} | {r.get('emoji') or ''} {r.get('category')}・{r.get('time_tpe')}・{_plain(r.get('publisher'))} | {cell} | {_plain(str(r.get('why_zh') or '').split('：')[0])} |\n"
+  more = fl.get("more") or []
+  if more:
+    out += "\n## 其他有方向的標題\n\n"
+    for r in more[:12]:
+      imp = r.get("impact") or 0
+      dot = "🔴" if imp < 0 else ("🟢" if imp > 0 else "⚪")
+      out += f"- {dot} {r.get('emoji') or ''} {r.get('category')}（{r.get('time_tpe')}，{_plain(r.get('publisher'))}）{_plain(r.get('title'))}\n"
+  out += "\n## 旗標（24 小時內、來源權重 ≥ 0.7 才會亮）\n\n| 旗標 | 狀態 | 依據 |\n|---|---|---|\n"
+  names = {"geo_escalation_24h": "地緣風險升溫", "tariff_shock_24h": "關稅 / 出口管制收緊", "capex_warning_24h": "龍頭資本支出轉弱", "fed_statement_24h": "聯準會剛公布決議", "fed_hawkish_24h": "聯準會偏鷹"}
+  evd = fl.get("flag_evidence") or {}
+  for k, zh in names.items():
+    on = (fl.get("flags") or {}).get(k)
+    e = evd.get(k) or {}
+    out += f"| {zh}（`{k}`） | {'🔺 亮' if on else '— 無'} | {(_plain(e.get('publisher')) + '「' + _plain(e.get('title')) + '」（' + str(e.get('time_tpe')) + '）') if e else '—'} |\n"
+  if fl.get("cautions"):
+    out += "\n## 交易計畫因此加上的警語\n\n"
+    for c in fl["cautions"]:
+      out += f"- ⚠️ {c.get('text')}\n"
+  if bg.get("buy"):
+    out += f"\n## 和今天的結論怎麼接\n\n- 現在該不該買？{(bg.get('buy') or {}).get('emoji')} **{(bg.get('buy') or {}).get('answer')}**（依據 {(bg.get('buy') or {}).get('basis')}）。時事只會讓「等」變得更有理由，不會把「不該買」變成「該買」。\n- 明天只盯一個價：{_usd((bg.get('watch') or {}).get('price'))}（{(bg.get('watch') or {}).get('label')}）。\n"
+  out += ("\n## 方法與限制\n\n"
+          f"- {fl.get('method')}\n"
+          "- 類別：聯準會與利率 → 政策與關稅 → 地緣政治 → 半導體與 AI → 經濟數據 → 市場波動（標題命中第一個類別就歸類）。整字比對，`war` 不會命中 `software`。\n"
+          "- 影響分：類別專屬的利空 / 利多詞表相減；地緣與政策類只要利空詞多於利多詞就直接 −2（半導體對這兩類最敏感）；混合措辭的政策標題記 0、地緣標題記 −1。\n"
+          "- 標題是英文原文（來源的原標題），`why_zh` 是依類別與方向套用的固定解釋，不是對該則新聞的個別判讀。要判讀個別新聞請點連結讀原文。\n"
+          "- 來源失敗時這份檔案會縮水並列出 `errors`；旗標只用 24 小時內、來源權重 ≥ 0.7 的標題，避免被小站或轉載觸發。\n")
+  if fl.get("errors"):
+    out += f"- 本次來源錯誤：{'；'.join(_plain(e) for e in fl['errors'][:5])}\n"
+  return out + _foot(br)
+
+
+def doc_market_dashboard(br: dict) -> str:
+  d = br.get("dashboard") or {}
+  fl = br.get("flash") or {}
+  out = _hdr("09 市場儀表板：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌指數", br,
+             "六個最常被問的問題，每個一格：讀數、燈號、一句話、細節、數字來源欄位。全部由 `data/latest.json` 既有欄位推導；燈號規則在 `soxl_quant/dashboard.py`。")
+  if not d.get("gauges"):
+    out += "這次更新沒有產生儀表（dashboard 步驟失敗）。\n"
+    return out + _foot(br)
+  out += f"## 一行版\n\n{_plain(d.get('one_liner'))}\n\n## 六個儀表\n\n"
+  for g in d["gauges"]:
+    out += f"### {g.get('emoji')} {g.get('title')}：{_plain(g.get('short') or g.get('value'))}\n\n"
+    out += f"- 讀數：{_plain(g.get('value'))}\n- 一句話：{_plain(g.get('meaning'))}\n"
+    if g.get("detail"):
+      out += f"- 細節：{_plain(g.get('detail'))}\n"
+    if g.get("caveat"):
+      out += f"- 注意：{_plain(g.get('caveat'))}\n"
+    out += "- 來源欄位：" + "、".join(f"`{f}`" for f in (g.get("fields") or [])) + "\n\n"
+  grades = d.get("factor_grades") or []
+  if grades:
+    out += "## 因子等級（借 Seeking Alpha 的 A+ … F 寫法）\n\n| 類別 | 權重 | 平均分（−2…+2） | 等級 |\n|---|---|---|---|\n"
+    for x in grades:
+      out += f"| {x.get('short')} | {x.get('weight')} | {_num(x.get('score'), 2, True)} | **{x.get('grade')}** |\n"
+    out += f"\n- 總評 **{d.get('overall_grade')}**（綜合分 {_num((br.get('verdict') or {}).get('composite'), 2, True)}）。對照表：A+ ≥ +1.5、A ≥ +1.0、B+ ≥ +0.6、B ≥ +0.3、C+ ≥ +0.1、C ≥ −0.1、C− ≥ −0.3、D ≥ −0.6、D− ≥ −1.0、F < −1.0。\n"
+    out += "- 這不是 Seeking Alpha 的量化評級；只是用同樣的字母等級呈現本 repo 的 24 因子評分表，讓看慣 SA 的人一眼看懂。\n\n"
+  vc = d.get("voices") or {}
+  if vc.get("rows"):
+    out += "## 四個聲音（借 Seeking Alpha 的 Ratings Summary 寫法）\n\n| 聲音 | 讀數 | 方向 |\n|---|---|---|\n"
+    tone_zh = {"bear": "🔴 空", "bull": "🟢 多", "neutral": "🟡 中性"}
+    for r in vc["rows"]:
+      out += f"| {r.get('voice')} | {_plain(r.get('reading'))} | {tone_zh.get(r.get('tone'), '⚪')} |\n"
+    out += f"\n- **{vc.get('summary')}**\n\n"
+  sx = d.get("soxx_stats") or {}
+  if sx.get("available"):
+    out += ("## 費半（SOXX）數字\n\n| 項目 | 值 |\n|---|---|\n"
+            f"| 收盤（{sx.get('date')}） | {_usd(sx.get('close'))}（{_pct(sx.get('ret_1d'), 2)}） |\n| 5 日 / 20 日 | {_pct(sx.get('ret_5d'))} / {_pct(sx.get('ret_20d'))} |\n"
+            f"| 20MA / 50MA / 200MA | {_usd(sx.get('sma20'))}（{_pct(sx.get('dist_sma20_pct'))}） / {_usd(sx.get('sma50'))}（{_pct(sx.get('dist_sma50_pct'))}） / {_usd(sx.get('sma200'))}（{_pct(sx.get('dist_sma200_pct'))}） |\n"
+            f"| 20 日高 / 低 | {_usd(sx.get('high_20d'))} / {_usd(sx.get('low_20d'))} |\n| 距 52 週高 | {_pct(sx.get('drawdown_52w_pct'))} |\n| 走向 | {sx.get('trend')} |\n\n"
+            "- SOXL 追蹤 SOXX 單日報酬的 3 倍：費半 −1% ≈ SOXL −3%；費半在年線上方整理時，SOXL 因為複利損耗，距自己的年線可能遠得多（今天就是）。\n\n")
+  sa = fl.get("seeking_alpha") or []
+  if sa:
+    out += "## Seeking Alpha 觀點（SOXL / SOXX / NVDA，近 72 小時）\n\n| 方向 | 標的・類型・時間 | 標題 |\n|---|---|---|\n"
+    for t in sa[:8]:
+      title = _plain(t.get("title"))
+      link = t.get("link")
+      cell = f"[{title}]({link})" if link and str(link).startswith("http") else title
+      out += f"| {t.get('tone')} | {t.get('symbol')}・{t.get('kind')}・{t.get('time_tpe')} | {cell} |\n"
+    out += "\n- 「新聞」= Seeking Alpha 新聞台；「分析」= 投稿作者的意見文章，方向只依標題關鍵字判斷。來源：Seeking Alpha 公開 RSS（個股 combined feed、Wall Street Breakfast、Market Outlook、Macro View）。\n\n"
+  out += ("## 怎麼用\n\n"
+          "- 問「能不能加碼」：讀第一格。它由 `trade_plan.side` 先決定（有驗證過的買訊才是「可以加碼」），其次評級、吊燈停損、崩跌分數、VIX 期限結構。\n"
+          "- 問「宏觀怎麼樣」：第二格 + 08_today_news.md。\n"
+          "- 問「費半走向」：第三格 + 上面的 SOXX 數字；長期持有者看 `trade_plan.regime.underlying` 的年線濾網。\n"
+          "- 問「大戶 / Put-Call / 崩跌」：第四到六格。大戶方向是 CBOE 延遲鏈的大額權利金推估，不是 13F 或暗池資料。\n"
+          f"- {_plain(d.get('method'))}\n")
   return out + _foot(br)
 
 
@@ -384,19 +503,21 @@ def doc_readme(br: dict, base: str, files: list[tuple[str, int]]) -> str:
 2. **貼網址**：公開版在 `{base}meta/`（例如 `{base}meta/01_brief_today.md`、`{base}meta/data/latest.json`）。同一組網址每個美股交易日的台北 06:15 到 06:45 之間換新（GitHub Actions；失敗時 07:00 與 08:30 重試），Muse 在 07:30 抓、不新就 09:00 再抓一次即可。
 3. **貼內容**：把 `prompts/daily_briefing.md` 的提示連同 `01_brief_today.md` 一起貼進對話；提示已經包含解讀規則。
 
-Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md`（穩定內容），之後每天只需要 `01_brief_today.md`（或 `02_trade_plan.md`）與 `data/latest.json`。
+Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md`（穩定內容），之後每天只需要 `01_brief_today.md`（或 `02_trade_plan.md`）與 `data/latest.json`；要講「今天發生了什麼」就加讀 `08_today_news.md`；被問「能不能加碼、費半走向、大戶、Put/Call、崩跌指數」就讀 `09_market_dashboard.md`（或 `dashboard`）。
 
 ## 檔案地圖
 
 | 檔案 | 內容 | 更新 |
 |---|---|---|
-| `01_brief_today.md` | 今日一頁簡報：TL;DR、交易計畫表、價位階梯、訊號驗證、崩跌前兆、事件、什麼會改變結論、情緒籌碼、新聞、自我驗證 | 每日 |
+| `01_brief_today.md` | 今日一頁簡報：TL;DR、新手一眼看懂（該不該買 / 今天最大的事 / 明天盯哪個價）、六個儀表、今日時事、交易計畫表、價位階梯、訊號驗證、崩跌前兆、事件、什麼會改變結論、情緒籌碼、新聞、自我驗證 | 每日 |
 | `02_trade_plan.md` | 只有計畫：方向、進場觸發、停損、T1/T2、風報比、倉位、時間停損、失效條件、持有者做法、兩種年線讀法 | 每日 |
 | `03_signals.md` | 23 條買賣規則：定義、勝率 vs 基準、N、p、等級、今日狀態、觸發價；動態出場；200 日線濾網比較表 | 每日 |
 | `04_methodology.md` | 資料來源、24 因子評級、回測協定、等級、計畫規則、崩跌前兆、期權牆 | 每日（文字穩定、數字更新） |
 | `05_glossary.md` | {len(GLOSSARY)} 個名詞的新手定義 | 穩定 |
 | `06_rules_for_agents.md` | agent 必守的 10 條解讀規則、回答模板、好壞句子對照、問題 → 檔案對照表 | 穩定 |
 | `07_history.md` | 最近 15 個交易日的評級、計畫與事後 5 / 10 日報酬 | 每日 |
+| `08_today_news.md` | 過去 36 小時的時事：排名前八的標題（附連結）、對 SOXL 的意義、五個旗標與依據、類別統計、Seeking Alpha 觀點、方法限制 | 每日 |
+| `09_market_dashboard.md` | 六個儀表：能不能加碼、宏觀消息、費半走向、大戶動向、Put/Call、崩跌指數；因子等級（A+…F）、四個聲音、SOXX 數字、Seeking Alpha 觀點 | 每日 |
 | `prompts/` | `first_time.md`（第一次附上 zip 時貼）、`daily_briefing.md`（每日三句話）、`holder_check.md`（持有者）、`weekly_review.md`（每週自我檢討） | 穩定 |
 | `data/latest.json` | 結構化全部內容（schema `soxl-quant-brief/2`）；`data/schema.json` 欄位定義；`data/signals.json` 精簡訊號表 | 每日 |
 | `manifest.json` / `llms.txt` | 檔案清單、大小、`data_as_of`、公開網址 | 每日 |
@@ -444,6 +565,8 @@ def doc_llms_txt(br: dict, base: str) -> str:
           f"- [Today's brief]({base}meta/01_brief_today.md): one page, zh-TW\n"
           f"- [Trade plan]({base}meta/02_trade_plan.md): side, trigger, stop, T1/T2, R:R, size, invalidation\n"
           f"- [Signals]({base}meta/03_signals.md): 23 rules with win rate vs base, N, p, grade, today's state\n"
+          f"- [Today's news flash]({base}meta/08_today_news.md): last 36 h headlines ranked by impact on SOXL, flags with evidence, Seeking Alpha takes\n"
+          f"- [Market dashboard]({base}meta/09_market_dashboard.md): six gauges (add-on? macro, SOX index trend, whales, put/call, crash score), factor grades A+..F, four voices\n"
           f"- [Methodology]({base}meta/04_methodology.md)\n- [Glossary]({base}meta/05_glossary.md)\n- [History]({base}meta/07_history.md)\n"
           f"- [Structured JSON]({base}meta/data/latest.json) (schema soxl-quant-brief/2), [schema]({base}meta/data/schema.json)\n\n"
           f"## Optional\n\n- [Full report HTML]({base}soxl_analysis_report.html)\n- [Beginner HTML]({base}soxl_simple.html)\n- [RSS]({base}feed/rss.xml)\n")
@@ -455,23 +578,23 @@ PROMPTS = {
 > 附件 meta.zip 是 SOXL（三倍做多半導體 ETF）的量化簡報資料包，當作你的長期知識庫。請照這個順序建立理解：README.md → 06_rules_for_agents.md（10 條解讀規則，之後每次回答都要遵守）→ 05_glossary.md → 04_methodology.md。
 >
 > 資料來源的規則：附件只是上傳當天的快照。真正最新的版本永遠在這組固定網址，每個美股交易日的台北 06:15 到 06:45 之間由 GitHub Actions 自動換新（失敗時 07:00 與 08:30 重試）：
-> {BASE}meta/01_brief_today.md（一頁簡報）、{BASE}meta/02_trade_plan.md（交易計畫）、{BASE}meta/data/latest.json（結構化資料）、{BASE}meta/manifest.json（data_as_of 與檔案清單）。
+> {BASE}meta/01_brief_today.md（一頁簡報）、{BASE}meta/09_market_dashboard.md（六個儀表：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌）、{BASE}meta/08_today_news.md（今日時事）、{BASE}meta/02_trade_plan.md（交易計畫）、{BASE}meta/data/latest.json（結構化資料）、{BASE}meta/manifest.json（data_as_of 與檔案清單）。
 > 每次我問 SOXL，或你要主動回報之前，先抓網址，讀 data_as_of，確認它等於最近一個已收盤的美股交易日（美東 16:00 收盤；週末與 NYSE 假日順延）。如果網址抓不到、或 data_as_of 比附件還舊，就改用附件，並且第一句先告訴我「資料是 X 月 X 日的，網址沒有更新」。
 >
-> 每個美股交易日（週二到週六）的台北 07:30，請自己抓上面的網址並主動傳一則日報給我；如果 data_as_of 還不是最近一個已收盤的美股交易日，先不要發，09:00 再抓一次，還是舊的就告訴我「今天網址沒更新，資料日是 X」。日報格式固定三句話：（1）今天該買、該賣還是觀望，直接轉述交易計畫表的 side、進場觸發、停損、T1、T2 與加權風報比，side 是 no_trade 就說「今天不開新倉，觸發價是 X」；（2）最重要的一個理由；（3）要盯的三個價位：停損、T1、期權牆或 Gamma 翻正位。最後一行列 48 小時內的風險事件（沒有就寫「無」），再附免責聲明。
+> 每個美股交易日（週二到週六）的台北 07:30，請自己抓上面的網址並主動傳一則日報給我；如果 data_as_of 還不是最近一個已收盤的美股交易日，先不要發，09:00 再抓一次，還是舊的就告訴我「今天網址沒更新，資料日是 X」。日報格式固定三句話：（1）今天該買、該賣還是觀望：先轉述「新手一眼看懂」的答案（beginner.buy.answer），再轉述交易計畫表的 side、進場觸發、停損、T1、T2 與加權風報比，side 是 no_trade 就說「今天不開新倉，觸發價是 X」；（2）最重要的一個理由，加上「今天最大的事」（beginner.biggest_thing 或 08_today_news.md 的第一則：美伊、川普、聯準會、關稅、龍頭財報等）與它對 SOXL 的影響；（3）要盯的三個價位：停損、T1、期權牆或 Gamma 翻正位。然後用一行列出六個儀表的燈號（dashboard.one_liner：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌指數）。最後一行列 48 小時內的風險事件（沒有就寫「無」），再附免責聲明。
 > 只有在這些情況才需要多寫：評級改變（changes.verdict_changed）、崩跌前兆分數跨過 60 或 80、trade_plan.side 變成 long 或 long_pending、48 小時內有 FOMC 或龍頭財報、warnings 非空。其他日子三句話就好。
 >
 > 引用規則：任何勝率都要連同基準與 N 一起講（例如「64%，基準 55%，N=62，p=0.09」），significant 為 false 的訊號不可以說「高勝率」；賣出訊號歷史上沒有預測力，只能用來決定減碼節奏，停損才是出場依據；期權牆是模型推算值，會每天變；兩種 200 日線讀法不一致時兩個都講。不要加入任何資料包以外的價格預測。
 >
-> 我追問「我持有中怎麼辦」時用 prompts/holder_check.md 的方式回答；週末用 prompts/weekly_review.md 做檢討。用繁體中文回答。
+> 我問「能不能加碼」時只讀 09_market_dashboard.md 第一格（dashboard.gauges 的 add_on），照它的燈號與一句話回答，附停損與減碼點；我追問「我持有中怎麼辦」時用 prompts/holder_check.md 的方式回答；週末用 prompts/weekly_review.md 做檢討。用繁體中文回答。
 
 English version:
 
 > The attached meta.zip is a quant brief pack for SOXL (3x semiconductor ETF); treat it as your standing knowledge base. Build understanding in this order: README.md, then 06_rules_for_agents.md (10 rules you must follow in every answer), then 05_glossary.md and 04_methodology.md.
-> Source of truth: the attachment is only a snapshot. The current version always lives at these fixed URLs, refreshed by GitHub Actions between 06:15 and 06:45 Taipei after every US close (retries at 07:00 and 08:30): {BASE}meta/01_brief_today.md, {BASE}meta/02_trade_plan.md, {BASE}meta/data/latest.json, {BASE}meta/manifest.json. Before answering any SOXL question or sending a report, fetch them, read data_as_of, and confirm it equals the last completed US session. If the URLs fail or are older than the attachment, use the attachment and open with "data is from DATE; the URL has not refreshed".
-> Every US trading day (Tuesday to Saturday) at 07:30 Taipei, fetch the URLs yourself and send me the daily brief; if data_as_of is not yet the last completed US session, do not send, fetch again at 09:00, and if it is still stale tell me "the URL did not refresh today, data is from DATE". The brief is three sentences: (1) buy, sell or stay out, relaying the trade plan's side, entry trigger, stop, T1, T2 and blended R:R (for no_trade say "no new position today, trigger is X"); (2) the single most important reason; (3) the three prices to watch: stop, T1, and the option wall or gamma flip. End with one line of risk events in the next 48 hours (or "none") and the disclaimer. Write more only when the verdict changed, crash_risk crossed 60 or 80, trade_plan.side became long or long_pending, FOMC or a leader's earnings falls within 48 hours, or warnings is non-empty.
+> Source of truth: the attachment is only a snapshot. The current version always lives at these fixed URLs, refreshed by GitHub Actions between 06:15 and 06:45 Taipei after every US close (retries at 07:00 and 08:30): {BASE}meta/01_brief_today.md, {BASE}meta/09_market_dashboard.md, {BASE}meta/08_today_news.md, {BASE}meta/02_trade_plan.md, {BASE}meta/data/latest.json, {BASE}meta/manifest.json. Before answering any SOXL question or sending a report, fetch them, read data_as_of, and confirm it equals the last completed US session. If the URLs fail or are older than the attachment, use the attachment and open with "data is from DATE; the URL has not refreshed".
+> Every US trading day (Tuesday to Saturday) at 07:30 Taipei, fetch the URLs yourself and send me the daily brief; if data_as_of is not yet the last completed US session, do not send, fetch again at 09:00, and if it is still stale tell me "the URL did not refresh today, data is from DATE". The brief is three sentences: (1) buy, sell or stay out: lead with beginner.buy.answer, then relay the trade plan's side, entry trigger, stop, T1, T2 and blended R:R (for no_trade say "no new position today, trigger is X"); (2) the single most important reason plus "the biggest thing today" (beginner.biggest_thing or the first row of 08_today_news.md: Iran, Trump, the Fed, tariffs, a chip leader's earnings) and its impact on SOXL; (3) the three prices to watch: stop, T1, and the option wall or gamma flip. Then one line with the six gauge lights (dashboard.one_liner: add-on?, macro, SOX index trend, whales, put/call, crash score). End with one line of risk events in the next 48 hours (or "none") and the disclaimer. Write more only when the verdict changed, crash_risk crossed 60 or 80, trade_plan.side became long or long_pending, FOMC or a leader's earnings falls within 48 hours, or warnings is non-empty.
 > Quoting rules: every win rate comes with its base rate and N; never call a signal with significant=false "high win rate"; sell signals have no predictive edge and only set the pace of reducing, the stop is the exit; option walls are model estimates that change daily; when the two 200-day regime readings disagree, state both. Do not add price predictions from outside the pack.
-> For "I am holding, what now" use prompts/holder_check.md; on weekends use prompts/weekly_review.md. Answer in Traditional Chinese.
+> For "can I add to my position" read only the first gauge of 09_market_dashboard.md (dashboard.gauges add_on) and answer with its light, sentence, stop and reduce levels; for "I am holding, what now" use prompts/holder_check.md; on weekends use prompts/weekly_review.md. Answer in Traditional Chinese.
 
 怎麼讓它真的每天自動更新（三選一，新資料都在同一組網址）：
 
@@ -483,11 +606,11 @@ English version:
 
 把下面這段和 `01_brief_today.md`（或 `data/latest.json`）一起貼給 Muse：
 
-> 以下是今天自動產生的 SOXL 簡報。請先確認 data_as_of 是最近一個已收盤的美股交易日，不是就先告訴我資料是哪一天的。然後用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？請直接轉述「交易計畫」表的進場觸發、停損、T1/T2 與加權風報比；trade_plan.side 是 no_trade 就直說「今天不開新倉，觸發價是 X」。提到任何勝率都要連同基準與 N 一起講，significant=false 的不要說「高勝率」。最後用一行列出 48 小時內的風險事件，並附上免責聲明。
+> 以下是今天自動產生的 SOXL 簡報。請先確認 data_as_of 是最近一個已收盤的美股交易日，不是就先告訴我資料是哪一天的。然後用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？先轉述「新手一眼看懂」的答案，再轉述「交易計畫」表的進場觸發、停損、T1/T2 與加權風報比；trade_plan.side 是 no_trade 就直說「今天不開新倉，觸發價是 X」。理由裡要包含「今日時事」的第一則（今天最大的事）與它對 SOXL 的影響，並說明那是依標題分類的結果。提到任何勝率都要連同基準與 N 一起講，significant=false 的不要說「高勝率」。最後用一行列出 48 小時內的風險事件，並附上免責聲明。
 """,
     "holder_check.md": """# 提示：我已經持有 SOXL，怎麼辦
 
-> 我持有 SOXL，成本 {{你的成本}}，部位佔總資產 {{百分比}}。請根據 02_trade_plan.md 的「已持有者」段落與 trade_plan.holder：告訴我硬停損價、移動停損是否已觸發、兩個減碼點，以及今天的評級是否要求減碼。不要預測方向；賣出訊號歷史上沒有預測力，只用停損與減碼節奏回答。如果 crash_risk.score ≥ 80 或 VIX/VIX3M ≥ 1.0，請特別標出。附免責聲明。
+> 我持有 SOXL，成本 {{你的成本}}，部位佔總資產 {{百分比}}。請根據 02_trade_plan.md 的「已持有者」段落與 trade_plan.holder：告訴我硬停損價、移動停損是否已觸發、兩個減碼點，以及今天的評級是否要求減碼；能不能加碼只看 09_market_dashboard.md 的第一格（dashboard.gauges 的 add_on）。不要預測方向；賣出訊號歷史上沒有預測力，只用停損與減碼節奏回答。如果 crash_risk.score ≥ 80 或 VIX/VIX3M ≥ 1.0，請特別標出。附免責聲明。
 """,
     "weekly_review.md": """# 提示：每週自我檢討（週末用）
 
@@ -512,6 +635,8 @@ def build(br: dict, payload: dict | None = None, base_url: str | None = None) ->
       "05_glossary.md": doc_glossary(br),
       "06_rules_for_agents.md": doc_rules(br, base),
       "07_history.md": doc_history(br),
+      "08_today_news.md": doc_today_news(br),
+      "09_market_dashboard.md": doc_market_dashboard(br),
       "llms.txt": doc_llms_txt(br, base),
   }
   for name, text in PROMPTS.items():
@@ -531,7 +656,7 @@ def build(br: dict, payload: dict | None = None, base_url: str | None = None) ->
   written.insert(0, ("README.md", len(readme.encode("utf-8"))))
   manifest = {
       "pack": "soxl-quant-meta-pack/1", "schema": br.get("schema"), "data_as_of": br.get("data_as_of"), "generated_at": br.get("generated_at"), "generated_at_tz": "Asia/Taipei",
-      "built_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "base_url": base + "meta/", "read_order": ["06_rules_for_agents.md", "01_brief_today.md", "02_trade_plan.md", "03_signals.md", "04_methodology.md", "05_glossary.md", "07_history.md"],
+      "built_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "base_url": base + "meta/", "read_order": ["06_rules_for_agents.md", "01_brief_today.md", "09_market_dashboard.md", "08_today_news.md", "02_trade_plan.md", "03_signals.md", "04_methodology.md", "05_glossary.md", "07_history.md"],
       "files": [{"name": n, "bytes": s, "url": base + "meta/" + n} for n, s in written], "total_bytes": sum(s for _, s in written),
       "verdict": (br.get("verdict") or {}).get("label"), "plan_side": (br.get("trade_plan") or {}).get("side"), "disclaimer": br.get("disclaimer"),
   }

@@ -889,7 +889,7 @@ JS = """
 
 
 def render(p: dict) -> str:
-  from .report_plan import plan_card_html, signals_table_html  # local import avoids a cycle
+  from .report_plan import beginner_card_html, dashboard_card_html, flash_card_html, plan_card_html, signals_table_html  # local import avoids a cycle
   warn = ""
   if p.get("warnings"):
     warn = f'<div class="note">⚠️ 部分來源暫時無法取得 ({esc("; ".join(p["warnings"]))})，其餘分析不受影響；稍後重跑即可補齊。</div>'
@@ -910,8 +910,9 @@ def render(p: dict) -> str:
 <title>SOXL 投資決策儀表板 — {esc(p["data_as_of"])}</title><style>{CSS}</style></head>
 <body class="beginner">
 <header class="top"><div class="brand">SOXL 投資決策儀表板 (Quant Playbook)<small>資料 {esc(p["data_as_of"])} {esc((p.get("data_status") or {}).get("label") or "收盤")} · 產生 {esc(p["generated_at"])} · {auto}</small></div>
-<nav class="nav"><a href="soxl_simple.html">👶 新手版</a><a href="#s0">0 新手一頁看懂</a><a href="#s0b">0b 交易計畫 / 驗證</a><a href="#s1">1 怎麼做</a><a href="#s2" class="pro-link">2 評分表</a><a href="#s3">3 圖表</a><a href="#s4" class="pro-link">4 情緒 &amp; 期權</a><a href="#s5" class="pro-link">5 崩跌復盤</a> <button id="modeBtn" class="mode" type="button">切換到進階模式 ▸</button></nav></header>
+<nav class="nav"><a href="soxl_simple.html">👶 新手版</a><a href="#s0a">0a 該不該買 / 六個儀表 / 時事</a><a href="#s0">0 新手一頁看懂</a><a href="#s0b">0b 交易計畫 / 驗證</a><a href="#s1">1 怎麼做</a><a href="#s2" class="pro-link">2 評分表</a><a href="#s3">3 圖表</a><a href="#s4" class="pro-link">4 情緒 &amp; 期權</a><a href="#s5" class="pro-link">5 崩跌復盤</a> <button id="modeBtn" class="mode" type="button">切換到進階模式 ▸</button></nav></header>
 {warn}
+<section id="s0a" class="box">{beginner_card_html(p, "0a. 新手一眼看懂：現在該不該買？")}{dashboard_card_html(p, "📟 六個儀表：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌")}{flash_card_html(p, "📰 今天發生了什麼（過去 36 小時，對 SOXL 的影響）")}</section>
 {sec_beginner(p)}
 <section id="s0b" class="box">{plan_card_html(p, "0b. 可執行的交易計畫")}{signals_table_html(p, "0c. 訊號驗證：買賣點歷史命中率（附基準與 p 值）")}</section>
 {sec_playbook(p)}

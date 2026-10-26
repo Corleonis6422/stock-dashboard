@@ -317,6 +317,10 @@ RSS_SOURCES: dict[str, dict] = {
     "marketwatch_pulse": {"url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse", "publisher": "MarketWatch"},
     "marketwatch_top": {"url": "https://feeds.content.dowjones.io/public/rss/mw_topstories", "publisher": "MarketWatch"},
     "fed_press": {"url": "https://www.federalreserve.gov/feeds/press_all.xml", "publisher": "Federal Reserve"},
+    # Seeking Alpha public RSS (no key): the daily macro newsletter, market-outlook and macro-view article streams
+    "sa_wall_street_breakfast": {"url": "https://seekingalpha.com/tag/wall-st-breakfast.xml", "publisher": "Seeking Alpha"},
+    "sa_market_outlook": {"url": "https://seekingalpha.com/tag/market-outlook.xml", "publisher": "Seeking Alpha"},
+    "sa_macro_view": {"url": "https://seekingalpha.com/tag/macro-view.xml", "publisher": "Seeking Alpha"},
 }
 _RSS_SYM_RE = re.compile(r"^[A-Za-z]{1,6}$")
 

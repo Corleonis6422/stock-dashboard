@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
@@ -132,6 +132,19 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
     traceback.print_exc()
     nws = {"total_unique_articles": 0, "recent_bull_count": 0, "recent_bear_count": 0, "bull_bear_ratio": None, "themes_7d": [], "daily_feed": []}
 
+  _step("7b/9 News flash: what happened in the last 36 h (Fed / Iran / tariffs / chip leaders) ...")
+  flash: dict = {}
+  try:
+    from . import newsflash
+    flash = newsflash.analyze()
+    on = [k for k, v in flash["flags"].items() if v]
+    _step(f"    {flash['n_relevant']} relevant headlines, net {flash['net']} ({flash['label']}); flags {on or 'none'}; top: {flash['top'][0]['title'][:70] if flash['top'] else '—'}")
+    if flash.get("errors"):
+      warnings.append("newsflash sources: " + "; ".join(flash["errors"][:3]))
+  except Exception as e:  # noqa: BLE001
+    warnings.append(f"newsflash: {e}")
+    traceback.print_exc()
+
   _step("8/9 Scorecard, playbook & post-mortem ...")
   score = scoring.build(tech, opt, hm, mac, sen, nws, ews)
   pb = playbook.build(tech, opt, sen, hm, ews, score, soxl)
@@ -148,6 +161,7 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
   _step("8b/9 Signal validation (10y walk-forward backtest) & explicit trade plan ...")
   bt: dict = {}
   tp: dict = {}
+  soxx10: list[dict] | None = None
   try:
     from . import backtest, tradeplan
     soxl10 = datafeed._augment_latest("SOXL", "etf", datafeed.fetch_nasdaq_history("SOXL", "etf", years=10))
@@ -170,14 +184,39 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
     warnings.append(f"backtest/tradeplan: {e}")
     traceback.print_exc()
 
+  _step("8c/9 Market dashboard: add-on? / macro / SOXX trend / whales / put-call / crash ...")
+  dash: dict = {}
+  try:
+    from . import dashboard, events as events_mod
+    try:
+      ev_list = (events_mod.analyze() or {}).get("events") or []
+    except Exception as e:  # noqa: BLE001
+      warnings.append(f"events (dashboard): {e}")
+      ev_list = []
+    soxx_rows = soxx10
+    try:  # make sure the SOXX series ends on today's session (the regime test above tolerates a lag, the gauge should not)
+      if soxx10 and soxx10[-1]["date"] < tech["latest_date"]:
+        soxx_rows = datafeed._augment_latest("SOXX", "etf", list(soxx10))
+    except Exception as e:  # noqa: BLE001
+      warnings.append(f"soxx augment: {e}")
+    dash = dashboard.build({**{k: v for k, v in (("technicals", tech), ("options", opt), ("sentiment", sen), ("heatmap", hm), ("macro", mac), ("early_warning", ews),
+                                                   ("scoring", score), ("trade_plan", tp), ("newsflash", flash), ("playbook", pb), ("data_as_of", tech["latest_date"]))},
+                            "benchmarks_recent": {"SOXX": [{"date": r["date"], "close": r["close"]} for r in (aux.get("SOXX") or [])[-40:]]}},
+                           soxx_rows=soxx_rows, events=ev_list)
+    _step(f"    {dash['one_liner']}")
+    _step(f"    grades {' '.join(f'{g['short']} {g['grade']}' for g in dash['factor_grades'])} → overall {dash['overall_grade']}; {dash['voices']['summary']}")
+  except Exception as e:  # noqa: BLE001
+    warnings.append(f"dashboard: {e}")
+    traceback.print_exc()
+
   payload = {
       "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "data_as_of": tech["latest_date"],
       "data_status": data_status,
       "warnings": warnings,
       "technicals": tech, "options": opt, "sentiment": sen, "heatmap": hm, "macro": mac,
-      "early_warning": ews, "news": nws, "scoring": score, "playbook": pb, "postmortem": pm,
-      "backtest": bt, "trade_plan": tp,
+      "early_warning": ews, "news": nws, "newsflash": flash, "scoring": score, "playbook": pb, "postmortem": pm,
+      "backtest": bt, "trade_plan": tp, "dashboard": dash,
       "benchmarks_recent": {sym: [{"date": r["date"], "close": r["close"]} for r in (aux.get(sym) or [])[-40:]] for sym in ("SOXX", "SPY")},
       "soxl_recent": [{k: r[k] for k in ("date", "open", "high", "low", "close", "volume")} for r in soxl[-30:]],
   }
@@ -241,6 +280,21 @@ def build_feed(payload: dict, label: str = "", with_quotes: bool = True) -> dict
       _step(f"{label}quotes: {q.get('one_liner')}")
     except Exception as e:  # noqa: BLE001
       notes.append(f"quotes: {e}")
+    try:  # breaking news is a freshness item like quotes: refresh when the stored flash is > 30 min old
+      from . import newsflash
+      stale = True
+      fl = payload.get("newsflash") or {}
+      if fl.get("as_of_utc"):
+        age_min = (datetime.now(timezone.utc) - datetime.strptime(fl["as_of_utc"], "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)).total_seconds() / 60
+        stale = age_min > 30
+      if stale:
+        payload["newsflash"] = newsflash.analyze()
+        _step(f"{label}newsflash: {payload['newsflash']['n_relevant']} headlines, {payload['newsflash']['label']}; {payload['newsflash']['beginner_line'][:80]}")
+        if payload.get("dashboard"):
+          from . import dashboard
+          payload["dashboard"] = dashboard.refresh_macro(payload["dashboard"], payload, (ev or {}).get("events") or [])
+    except Exception as e:  # noqa: BLE001
+      notes.append(f"newsflash: {e}")
   try:
     cfg = scheduler.load_config(create=False)
     base_url = (cfg.get("feed") or {}).get("base_url")
