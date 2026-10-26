@@ -14,6 +14,7 @@
     .venv/bin/python auto_update.py feed           不重算模型，用既有 JSON 重建 feed/（含最新事件與報價）
     .venv/bin/python auto_update.py meta           用既有 feed/latest.json 重建 meta/（Muse / AI agent 的 Markdown 吸收包）
     .venv/bin/python auto_update.py pack-repo      把整個 repo（含 .git）壓成 zip，帶去有 GitHub 權限的電腦 push（見 PUBLISHING.md）
+    .venv/bin/python auto_update.py pack-agent     給 AI agent（Muse）的操作包：README 操作員規格 + RUNBOOK.json + apis.json + meta/ + repo zip（推送、串 API、每日抓取）
     .venv/bin/python auto_update.py quotes         即時報價快照（SOXL / 成分股 / VIX 複合體）；--json
     .venv/bin/python auto_update.py mcp-config     印出 MCP server 設定片段（Antigravity / Gemini CLI / Claude）
     .venv/bin/python auto_update.py mcp-install    把 MCP server 寫進 ~/.gemini/config/mcp_config.json（自動備份）
@@ -422,17 +423,9 @@ PACK_EXCLUDE_DIRS = {".venv", ".cache", ".qa", "logs", "__pycache__", ".pytest_c
 PACK_EXCLUDE_FILES = {"notify_config.json", "meta.zip"}
 
 
-def cmd_pack_repo(args: argparse.Namespace) -> int:
-  """Zip the whole repo INCLUDING .git (so the commits travel) for pushing from another machine.
-
-  Excludes the venv, caches, logs, QA screenshots, compiled files and every secret-bearing file
-  (notify_config.json and *.bak.*.json), then verifies the archive by listing it.
-  """
+def _pack_repo(target: Path) -> tuple[int, int]:
+  """Zip the whole repo INCLUDING .git into ``target``; returns (files, skipped).  Raises RuntimeError if secrets leak."""
   import zipfile
-  from soxl_quant import brief as briefmod
-  br = briefmod.load_latest() or {}
-  stamp = br.get("data_as_of") or datetime.now().strftime("%Y-%m-%d")
-  target = Path(args.out).expanduser() if args.out else Path.home() / "Downloads" / f"stock-dashboard_repo_{stamp}.zip"
   target.parent.mkdir(parents=True, exist_ok=True)
   root = BASE_DIR
   top = "stock-dashboard"
@@ -459,10 +452,98 @@ def cmd_pack_repo(args: argparse.Namespace) -> int:
     bad = [x for x in names if "notify_config.json" in x or "/.venv/" in x or "/.cache/" in x or "/logs/" in x]
     has_git = any(x.startswith(f"{top}/.git/") for x in names)
   if bad or not has_git:
-    print(f"打包驗證失敗：secrets/cache 混入 {bad[:3]}，.git 存在 {has_git}", file=sys.stderr)
+    raise RuntimeError(f"打包驗證失敗：secrets/cache 混入 {bad[:3]}，.git 存在 {has_git}")
+  return n, skipped
+
+
+def cmd_pack_repo(args: argparse.Namespace) -> int:
+  """Zip the whole repo INCLUDING .git (so the commits travel) for pushing from another machine.
+
+  Excludes the venv, caches, logs, QA screenshots, compiled files and every secret-bearing file
+  (notify_config.json and *.bak.*.json), then verifies the archive by listing it.
+  """
+  from soxl_quant import brief as briefmod
+  br = briefmod.load_latest() or {}
+  stamp = br.get("data_as_of") or datetime.now().strftime("%Y-%m-%d")
+  target = Path(args.out).expanduser() if args.out else Path.home() / "Downloads" / f"stock-dashboard_repo_{stamp}.zip"
+  try:
+    n, skipped = _pack_repo(target)
+  except RuntimeError as e:
+    print(str(e), file=sys.stderr)
     return 1
   print(f"repo 壓縮檔：{target}（{target.stat().st_size // 1024 // 1024} MB，{n} 個檔案，含 .git 歷史；略過 {skipped} 個快取 / 密鑰 / 暫存項目）")
-  print("另一台電腦：unzip → cd stock-dashboard → git push --force origin main（詳見壓縮檔內 PUSH_ME_FIRST.md）")
+  print("另一台電腦：unzip → cd stock-dashboard → 先 git fetch origin main + rebase 再正常推送（詳見 PUBLISHING.md；絕不覆蓋推送）")
+  return 0
+
+
+def cmd_pack_agent(args: argparse.Namespace) -> int:
+  """Build the agent operator pack: README runbook + RUNBOOK.json + APIS.md / apis.json + meta/ + the repo zip, in one zip.
+
+  Written for an AI agent (Muse or any agent with a shell): how to push this repo to GitHub once, how to confirm
+  Actions + Pages, every API in three layers (upstream data, published endpoints, delivery into the agent), and the
+  daily consumption loop.  Facts (HEAD, remote, data_as_of) are measured at build time.
+  """
+  import shutil
+  import tempfile
+  import zipfile
+  from soxl_quant import agent_pack, brief as briefmod, meta_pack
+  br = briefmod.load_latest()
+  if not br:
+    print("找不到 feed/latest.json — 先執行 auto_update.py run", file=sys.stderr)
+    return 1
+  stamp = br.get("data_as_of") or datetime.now().strftime("%Y-%m-%d")
+  cfg = scheduler.load_config(create=False)
+  base_url = (cfg.get("feed") or {}).get("base_url")
+  payload = None
+  jp = BASE_DIR / "soxl_analysis_data.json"
+  if jp.exists():
+    try:
+      payload = json.loads(jp.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+      payload = None
+  man_p = Path(meta_pack.META_DIR) / "manifest.json"
+  try:
+    man = json.loads(man_p.read_text(encoding="utf-8")) if man_p.exists() else {}
+  except json.JSONDecodeError:
+    man = {}
+  if man.get("generated_at") == br.get("generated_at") and man.get("files"):
+    mp = {"dir": str(meta_pack.META_DIR), "files": man["files"], "total_bytes": man.get("total_bytes", 0)}  # already current: keep the committed copy byte-identical
+  else:
+    mp = meta_pack.build(br, payload, base_url)
+  out = Path(args.out).expanduser() if args.out else Path.home() / "Downloads" / f"soxl_agent_pack_{stamp}.zip"
+  out.parent.mkdir(parents=True, exist_ok=True)
+  top = "soxl-agent-pack"
+  with tempfile.TemporaryDirectory() as td:
+    repo_zip = Path(td) / f"stock-dashboard_repo_{stamp}.zip"
+    try:
+      n_repo, _ = _pack_repo(repo_zip)
+    except RuntimeError as e:
+      print(str(e), file=sys.stderr)
+      return 1
+    docs = agent_pack.build_docs(br, base_url, repo_zip)
+    # keep a copy of the repo zip in Downloads too (same artifact the push instructions name)
+    repo_copy = out.parent / repo_zip.name
+    shutil.copyfile(repo_zip, repo_copy)
+    with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+      for name, text in docs.items():
+        zf.writestr(f"{top}/{name}", text)
+      meta_dir = Path(mp["dir"])
+      for p in sorted(meta_dir.rglob("*")):
+        if p.is_file():
+          zf.write(p, f"{top}/meta/{p.relative_to(meta_dir).as_posix()}")
+      zf.write(repo_zip, f"{top}/{repo_zip.name}", compress_type=zipfile.ZIP_STORED)
+    with zipfile.ZipFile(out) as zf:
+      names = zf.namelist()
+  must = {f"{top}/README.md", f"{top}/RUNBOOK.json", f"{top}/apis.json", f"{top}/APIS.md", f"{top}/meta/README.md", f"{top}/meta/data/latest.json", f"{top}/{repo_zip.name}"}
+  missing = sorted(must - set(names))
+  if missing:
+    print(f"打包驗證失敗：缺 {missing}", file=sys.stderr)
+    return 1
+  print(f"agent 操作包：{out}（{out.stat().st_size // 1024 // 1024} MB，{len(names)} 個項目）")
+  print(f"  README.md（操作員規格：事實 / 路徑 / 步驟 + 期望輸出 / API 三層 / 每日迴圈 / 驗收 / 故障排除）、RUNBOOK.json、APIS.md、apis.json")
+  print(f"  meta/（{len(mp['files'])} 個檔案，資料日 {stamp}）、{repo_zip.name}（{n_repo} 個檔案，含 .git）")
+  print(f"  repo 壓縮檔另存一份：{repo_copy}")
+  print("給 agent 的一句話：把這個 zip 給它，說「照 README.md 做：先推上 GitHub，再照第 5 節每天抓」。")
   return 0
 
 
@@ -530,7 +611,7 @@ SIDECAR_DIR = Path.home() / ".gemini" / "config" / "sidecars" / SIDECAR_ID
 SIDECAR_PROMPT = (
     "每日 SOXL 簡報（自動排程）。請讀取 {md}（需要數字時再讀 {js}），"
     "先確認 data_as_of 是最近一個已收盤的美股交易日（若不是，先說明資料日期與原因，可執行 `{py} {au} status` 查看）。"
-    "然後用新手聽得懂的話、三句以內回答：今天 SOXL 該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？"
+    "然後用新手聽得懂的話、三句以內回答：今天 SOXL 該買、該賣還是觀望（先講「新手一眼看懂」的答案）？最重要的理由是什麼（帶上「今天最大的事」）？要盯哪一個價位？再用一行列出六個儀表的燈號（能不能加碼、宏觀、費半、大戶、Put/Call、崩跌指數）。"
     "接著列出：建議倉位上限、停損 / 目標價、48 小時內的風險事件（FOMC / 財報 / 到期）、消息面一句話。"
     "最後附一句免責聲明。不要修改任何檔案。"
 )
@@ -665,6 +746,8 @@ def main(argv: list[str] | None = None) -> int:
   f.add_argument("--offline", action="store_true", help="不抓即時報價")
   pr = sub.add_parser("pack-repo", help="把整個 repo（含 .git）壓成 zip 帶去另一台電腦推送；不含 venv / 快取 / logs / 密鑰")
   pr.add_argument("--out", default=None, metavar="PATH", help="輸出路徑（預設 ~/Downloads/stock-dashboard_repo_<日期>.zip）")
+  pa = sub.add_parser("pack-agent", help="給 AI agent（Muse）的操作包：README 操作員規格 + RUNBOOK.json + apis.json + meta/ + repo zip，一個 zip 搞定推送、串 API、每日抓取")
+  pa.add_argument("--out", default=None, metavar="PATH", help="輸出路徑（預設 ~/Downloads/soxl_agent_pack_<日期>.zip）")
   m = sub.add_parser("meta", help="用既有 feed/latest.json 重建 meta/（給 Muse / AI agent 的 Markdown 吸收包）")
   m.add_argument("--zip", nargs="?", const="", default=None, metavar="PATH", help="另外打包成 zip（預設 ~/Downloads/soxl_meta_pack_<日期>.zip）")
   q = sub.add_parser("quotes")
@@ -686,7 +769,7 @@ def main(argv: list[str] | None = None) -> int:
     args = run_p.parse_args([])
   handlers = {
       "run": cmd_run, "install": cmd_install, "uninstall": cmd_uninstall, "status": cmd_status, "notify-test": cmd_notify_test, "config": cmd_config,
-      "brief": cmd_brief, "feed": cmd_feed, "meta": cmd_meta, "pack-repo": cmd_pack_repo, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
+      "brief": cmd_brief, "feed": cmd_feed, "meta": cmd_meta, "pack-repo": cmd_pack_repo, "pack-agent": cmd_pack_agent, "quotes": cmd_quotes, "mcp-config": cmd_mcp_config, "mcp-install": cmd_mcp_install,
       "sidecar-install": cmd_sidecar_install, "sidecar-uninstall": cmd_sidecar_uninstall,
       "notify-config": cmd_notify_config, "push": cmd_push, "push-test": cmd_push_test, "push-status": cmd_push_status, "publish": cmd_publish,
   }

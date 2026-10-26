@@ -29,6 +29,8 @@
    - 5.8 下一步劇本 `playbook.py`
    - 5.9 崩跌復盤 `postmortem.py`
    - 5.10 新聞多空分類 `news.py`
+   - 5.10b 今日時事與「新手一眼看懂」 `newsflash.py`
+   - 5.10c 六個儀表 `dashboard.py`
    - 5.11 HTML 報告 `report_html.py` / `report_simple.py`
 6. [輸出 JSON 結構](#6-輸出-json-結構)
 7. [解讀指南：常見問題](#7-解讀指南常見問題)
@@ -431,6 +433,33 @@ flowchart LR
 - 關鍵字法分類為利多 / 利空 / 中性，並貼中文主題標籤（宏觀緩和利多、訂單/資本支出利多、分析師升評、個股動能；殖利率/通膨/關稅利空、內部人/機構減持、AI 估值/融資疑慮、監管/地緣政治、獲利了結…）。
 - 以日期分組，配上當日 SOXL / VIX / 10Y / Brent 實際變動；近 7 日利多/利空比進入評分表；7 日主題統計。
 
+### 5.10b 今日時事與「新手一眼看懂」 `newsflash.py` / `brief._beginner_block`（v3.1 新增）
+
+- **問題**：新手要的不是 24 個因子，而是「今天該不該買」與「今天發生了什麼大事」。Reddit 上最受歡迎的盤前筆記（r/TradingEdge 的 premarket report）第一句永遠是那則讓期貨跳動的頭條，然後才是價位。
+- **時事 `newsflash.py`**：Google News RSS 搜尋 23 個主題（Iran、Israel Iran strike、Taiwan China military、Trump tariffs、semiconductor export controls、Federal Reserve、FOMC decision、CPI、payrolls、Nvidia、TSMC、AI capex、chip stocks、stock market futures、VIX…）+ Fed 新聞稿 + CNBC / MarketWatch 頭條，只看最近 36 小時。每則標題：
+  - 類別（命中第一個）：聯準會與利率 → 政策與關稅 → 地緣政治 → 半導體與 AI → 經濟數據 → 市場波動。整字比對（`war` 不命中 `software`、`dow` 不命中 `down`、`ism` 不命中 `mechanism`），`word*` 為字首比對。
+  - 影響分 −2…+2：類別專屬利空 / 利多詞表相減（同一詞族不重複計）；地緣與政策類只要利空詞多於利多詞就記 −2；混合措辭的政策標題記 0、地緣標題記 −1。
+  - 權重 = 新鮮度（≤12h 1.0 / ≤24h 0.8 / 其餘 0.5）× 來源（Fed 1.0、Reuters / Bloomberg / WSJ / AP / CNBC 0.9、BBC / MarketWatch / Barron's 0.8、未知 0.6）。排序 = |影響| × 權重；前 8 則每類最多 2 則，優先權重 ≥ 0.7 的來源。
+  - 旗標（24 小時內且來源權重 ≥ 0.7，附依據標題）：`fed_statement_24h`、`geo_escalation_24h`、`tariff_shock_24h`、`capex_warning_24h`、`fed_hawkish_24h`；每個亮的旗標變成交易計畫區的一句警語。
+  - 輸出 `payload["newsflash"]`：`top[]`（title / publisher / link / time_tpe / category / impact / why_zh）、`more[]`、`by_category[]`、`net`（−1…+1）與 `label`（偏空 / 中性 / 偏多）、`flags`、`flag_evidence`、`cautions[]`、`beginner_line`（「今天最大的事：… → 類別，對 SOXL 利空：為什麼」）。`auto_update.py feed` 在線上模式下若快照超過 30 分鐘會重抓。
+- **新手一眼看懂 `brief._beginner_block`**：五行。「現在該不該買？」由 `trade_plan.side` 先決定（`long` 且風報比達標 → ✅ 可以買；`long` 但不達標 → ⏸ 等更好的價位；`long_pending` → ⏳ 等觸發），其次才看 `rating_5`（≤2 ❌ 不該買、3 ⏸ 等確認、4 🟢 可以分批小量、5 ✅ 可以買）；「今天最大的事」= `newsflash.beginner_line`；「已持有的人」= 硬停損 / 吊燈線 / 減碼點；「明天只盯一個價」= 觸發價或停損；「48 小時內風險」= 排定事件 + 亮起的旗標（附來源）+ 前兆分數 ≥ 60。Markdown、HTML 卡片（新手版第一張、完整版 0a 區）與 `beginner` JSON 同一個函式產生，不會互相矛盾；`tools/qa_brief.py` 檢查答案與 `trade_plan.side` 一致。
+- **限制**：是關鍵字規則，不是 LLM 判讀；`why_zh` 是依類別與方向套用的固定句，標題是英文原文。要判讀個別新聞請點 `link`。時事不改變 24 因子評級。
+- 測試：`tools/test_newsflash.py`（離線，25 個標題的類別 / 影響期望值 + 旗標、去重、每類上限、空輸入）。
+
+### 5.10c 六個儀表 `dashboard.py`（v3.2 新增）
+
+- **問題**：看盤的人每天問同樣六件事：SOXL 能不能加碼、現在的宏觀消息、費半整體走向、大戶怎麼走、Put/Call 多少、崩跌指數多少。這些數字原本散在期權、情緒、廣度、前兆四個區塊，現在每個問題一格，格式固定：讀數、燈號（🟢🟡🔴）、一句話、細節、`fields`（數字來自 JSON 哪些欄位）。
+- **能不能加碼 `add_on`**：先看硬性否決（崩跌前兆 ≥ 80、VIX/VIX3M ≥ 1.0 → 🔴 不能加碼），再看 `trade_plan.side`（`long` 且風報比達標 → 🟢 可以加碼，用計畫倉位、同一停損；`long_pending` → 🟡 等觸發），再看評級（≤ 2 → 🔴 不能加碼，只能減碼；3 → 🟡 先不加碼；≥ 4 且價在 20MA 上且費半在年線濾網內 → 🟢 可小量加碼，否則 🟡）。
+- **宏觀 `macro`**：36 小時新聞氣壓 + 第一則非半導體頭條 + 10Y / Brent / VIX / 美元日變動 + 7 天內的 FOMC；任何旗標亮就 🔴。
+- **費半 `soxx`**：用 10 年 SOXX 日線算 20 / 50 / 200MA、1 / 5 / 20 日報酬、20 日高低、距 52 週高；走向五選一（多頭 / 年線上方整理 / 修正中 / 年線下方反彈 / 空頭）加 16 檔成分股廣度與年線濾網狀態。
+- **大戶 `whales`**：CBOE 鏈上大額權利金的淨方向（−1…+1）、Call vs Put 權利金、最大一筆（含買賣方向推測）、大戶 vs 散戶 C/P、SOXL/SOXS 資金流；caveat 明寫這是延遲鏈推估，不是 13F。
+- **Put/Call `put_call`**：SOXL 成交與未平倉 P/C、全市場個股 P/C 與 1 年百分位；恐慌（≥ 90 百分位或 SOXL ≥ 1.2）與自滿（≤ 10 百分位或 ≤ 0.5）都標 🟡，中性 🟢。
+- **崩跌 `crash`**：前兆分數、成立中的症狀、≥ 80 的歷史命中率與基準；價在年線下時提醒「這是壓力持續度，不是新頂部前兆」。
+- **借 Seeking Alpha 的兩個呈現法**（只是呈現方式，不是 SA 的資料）：`factor_grades` 把 24 因子評分表的 7 個類別平均分映射成 A+ … F（A+ ≥ +1.5、F < −1.0），像 SA 的 Factor Grades；`voices` 把量化評級、訊號驗證、時事、費半趨勢四個獨立讀數並排，像 SA 的 Ratings Summary，並給一致 / 分歧結論（沒有任何多方聲音 → 不加碼、不開新倉）。
+- **Seeking Alpha 當來源**：`newsflash.py` 多抓 SA 公開 RSS（Wall Street Breakfast、Market Outlook、Macro View、SOXL / SOXX / NVDA 個股 combined feed）；投稿文章標成「Seeking Alpha 分析」權重 0.6、新聞台 0.8；`flash.seeking_alpha[]` 列出 72 小時內與 SOXL / SOXX / NVDA 有關的 SA 標題（附連結、新聞 / 分析、方向）。
+- 出口：`payload["dashboard"]`、`feed/latest.json` 的 `dashboard`、Markdown「## 六個儀表」表、新手版與完整版 HTML 的 📟 卡片、`meta/09_market_dashboard.md`、MCP `get_latest(section="dashboard")`。`auto_update.py feed` 重抓時事時只重算宏觀那一格與四個聲音（`dashboard.refresh_macro`）。
+- 測試：`tools/test_dashboard.py`（等級門檻、SOXX 走向分類、加碼決策矩陣含崩跌 / VIX 否決、燈號、四個聲音、空資料降級）。
+
 ### 5.11 HTML 報告 `report_html.py` / `report_simple.py`
 
 純標準函式庫產生的單一 HTML：SVG 儀表（半圓刻度 + 指針）、五格技術評級儀表、買/觀望/賣權重條、曝險油量條、整合 K 線圖（K 線、均線、布林、關鍵水平線、成交量、MACD、KD）、前兆分數疊圖（含事件起點標記）、F&G 一年走勢、期權牆長條圖；表格支援篩選與熱力圖時間切換。
@@ -542,6 +571,8 @@ Yahoo 對本機限流時，系統自動改用 ETF 代理（BNO / UUP / GLD / CPE
 | 增減宏觀資產 / 代理 | `soxl_quant/macro.py` 的 `CORE` / `EXTENDED`；`soxl_quant/datafeed.py` 的 `PROXY_FALLBACK` |
 | 改大戶門檻 | `soxl_quant/options_flow.py` 的 `whale_flow()` |
 | 改新聞關鍵字 / 查詢 | `soxl_quant/news.py` 的 `BULL_KW` / `BEAR_KW` / `QUERIES` / `GOOGLE_QUERIES` |
+| 改今日時事的主題、類別詞表、影響分、旗標 | `soxl_quant/newsflash.py` 的 `GOOGLE_QUERIES` / `RSS_FEEDS` / `SA_SYMBOLS` / `CATEGORIES` / `WHY` / `CAUTIONS`；改完跑 `tools/test_newsflash.py` |
+| 改六個儀表的燈號規則、加碼決策、等級門檻 | `soxl_quant/dashboard.py` 的 `gauge_*` / `GRADE_STEPS`；改完跑 `tools/test_dashboard.py` |
 | 改檢核表項目 | `soxl_quant/playbook.py` 的 `checks` |
 | 改新手結論 / 曝險上限 / 三問三答的規則 | `soxl_quant/playbook.py` 的 `beginner block`（`verdict`、`size_pct`、`q_*`） |
 | 改五格評級門檻或買/觀望/賣權重比 | `soxl_quant/scoring.py` 的「Beginner-friendly aggregates」段 |
@@ -623,6 +654,9 @@ folder/
    ├─ report_plan.py     HTML 用的交易計畫卡與訊號驗證表（兩個頁面共用）
    ├─ postmortem.py      崩跌復盤與教訓
    ├─ news.py            新聞抓取（Yahoo / Google / Nasdaq / Seeking Alpha / CNBC / MarketWatch / Fed）與多空分類
+   ├─ newsflash.py       最近 36 小時時事：類別 / 影響分 / 旗標 / 一句話（美伊、川普、聯準會、關稅、龍頭財報）+ Seeking Alpha 觀點
+   ├─ dashboard.py       六個儀表：能不能加碼 / 宏觀 / 費半走向 / 大戶 / Put-Call / 崩跌指數 + 因子等級 A+…F + 四個聲音
+   ├─ agent_pack.py      給 AI agent 的操作包產生器：README 操作員規格 / RUNBOOK.json / apis.json（三層 API 清單）
    ├─ events.py          未來事件：FOMC、成分股財報、週 / 月選擇權到期、休市
    ├─ quotes.py          即時報價快照（Nasdaq + CBOE）
    ├─ brief.py           agent 簡報：latest.json / md / txt、RSS、schema、歸檔、與前日差異
@@ -747,6 +781,11 @@ Nasdaq 的歷史日線 API 通常要到當天晚間（美東 9–11 點之後）
 .venv/bin/python tools/test_mcp.py               # MCP 自我測試
 .venv/bin/python tools/test_push.py              # 推播自我測試
 .venv/bin/python auto_update.py meta             # 重建 meta/（Muse / AI agent 的 Markdown 吸收包）
+.venv/bin/python auto_update.py pack-agent       # 給 AI agent（Muse）的操作包：README 操作員規格 + RUNBOOK.json + apis.json + meta/ + repo zip（推送、串 API、每日抓取）
+.venv/bin/python auto_update.py pack-repo        # 只要 repo 壓縮檔（含 .git），帶去有 GitHub 權限的電腦 push
+.venv/bin/python tools/test_agent_pack.py        # 操作包產生器測試（無網路）
+.venv/bin/python tools/test_dashboard.py         # 六個儀表單元測試（無網路）
+.venv/bin/python tools/test_newsflash.py         # 今日時事分類測試（無網路）
 .venv/bin/python tools/test_backtest.py          # 訊號回測引擎單元測試（無網路）
 .venv/bin/python tools/qa_brief.py               # 簡報 QA：計畫不變量、數字可追溯、表格形狀、大小預算
 .venv/bin/python tests/test_quote_labels.py      # Nasdaq 報價盤前 / 盤後標籤不互換

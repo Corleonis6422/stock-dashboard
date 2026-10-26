@@ -11,7 +11,7 @@
 | 你要什麼 | 去哪裡 |
 |---|---|
 | **整包給 Muse / 任何 agent 吸收的資料夾（純 Markdown + JSON，約 150 KB，含 README、解讀規則、名詞表、提示範本）** | `https://corleonis6422.github.io/stock-dashboard/meta/`（索引 `meta/README.md`、`meta/llms.txt`、清單 `meta/manifest.json`）或本機 `meta/` |
-| 一頁式人話簡報（Markdown，約 8 KB；先讀「交易計畫」表） | `https://corleonis6422.github.io/stock-dashboard/feed/latest.md` 或本機 `feed/latest.md` |
+| 一頁式人話簡報（Markdown，約 13 KB；先讀「新手一眼看懂」五行、「六個儀表」表與「今日時事」，再讀「交易計畫」表） | `https://corleonis6422.github.io/stock-dashboard/feed/latest.md` 或本機 `feed/latest.md` |
 | 結構化資料（JSON，schema `soxl-quant-brief/2`，約 90 KB） | `…/feed/latest.json`，欄位說明見 `…/feed/schema.json`；v2 新增 `trade_plan`（明確進出場）、`signals`（驗證過的買賣訊號）、`validation`（方法與 200 日線濾網比較），v1 欄位全部保留 |
 | 手機短訊版（≤ 900 字） | `…/feed/latest.txt` |
 | 訂閱（RSS 2.0，一天一則） | `…/feed/rss.xml` |
@@ -21,6 +21,7 @@
 | 歷史簡報 | `…/feed/index.json` 列表 → `…/feed/YYYY-MM-DD.{json,md}`（保留 120 天） |
 
 **先讀 `feed/latest.md`，需要數字再開 `feed/latest.json`。** 兩者來自同一個 dict，內容一致。
+**要讓 agent 自己把 repo 推上 GitHub 並串好所有 API：`auto_update.py pack-agent`** 產生 `~/Downloads/soxl_agent_pack_<日期>.zip`（README 操作員規格 + `RUNBOOK.json` + `apis.json` + `meta/` + repo zip），交給 agent 說「照 README.md 做」。雲端推播請在 repo 設 secret `SOXL_NOTIFY_CONFIG_JSON`（內容 = notify_config.json）。
 **要一次餵整包給 Muse：上傳 `meta/` 資料夾**（或貼 `…/meta/` 下的網址）。第一次讀 `06_rules_for_agents.md` 與 `05_glossary.md`，之後每天只需 `01_brief_today.md`（= `feed/latest.md`）與 `data/latest.json`。`auto_update.py meta` 可隨時重建。
 
 ---
@@ -52,7 +53,7 @@ MCP server `soxl_mcp.py`（stdio、純標準函式庫）提供：
 | 工具 | 用途 |
 |---|---|
 | `get_brief(format=markdown\|text\|json)` | 最新簡報（先呼叫這個） |
-| `get_latest(section=None)` | 完整 JSON；給 `section` 名稱（`options` / `technicals` / `sentiment` / `early_warning` / `news` / `scoring` / `playbook` …）取該區段 |
+| `get_latest(section=None)` | 完整 JSON；給 `section` 名稱（`dashboard` / `newsflash` / `options` / `technicals` / `sentiment` / `early_warning` / `news` / `scoring` / `playbook` …）取該區段 |
 | `get_quotes(include_leaders=true)` | **即時**報價：SOXL / SOXS / SOXX / SPY / QQQ、NVDA 等 7 檔、VIX / VIX3M / VIX9D / SKEW（含盤後價、市場狀態） |
 | `get_news(days=3, max_per_day=6)` | 依日分組、已分多空的新聞標題與連結 |
 | `get_events(horizon_days=14)` | FOMC（Fed 官網）、成分股財報（Nasdaq）、週/月選擇權到期、休市 |
@@ -131,6 +132,9 @@ Webhook JSON 信封：
 | `trade_plan` | `side`（`long` 今日有驗證過的買訊成立 / `long_pending` 等觸發 / `no_trade` 不開新倉）、`tradeable`、`headline`、`entry.{type,price,rule,signal}`、`stop.{price,dist_pct,k_atr,basis}`、`t1`/`t2.{price,label,rr}`、`rr_blend`（加權風報比）、`min_rr`（門檻 1.5）、`trade_if_entry`（風報比不足時，要在哪個價位以下進場才值得）、`size.{pct,if_triggered_pct,risk_based_pct,verdict_cap_pct}`、`time_stop`、`invalidation[]`、`holder.{hard_stop,trail_stop,trail_note,edge_note}`、`regime.{soxl_own,underlying,agree}`、`explain[]` | **唯一該轉述的操作計畫**。`no_trade` 時仍有條件計畫：觸發價、停損、目標都在，只是倉位 `size.pct=0`。停損 = 結構支撐與 k×ATR 取較寬；T1/T2 = 進場上方首個 ≥1R / ≥2R 的壓力 |
 | `signals[]` | `key`、`short_name`、`side`（`long`/`exit`）、`horizon`（日）、`n`、`win_pct`、`base_win_pct`、`ci`（Wilson 95%）、`mean`、`pf`、`p_value`（單尾二項檢定 vs 基準）、`q_value`（BH 多重檢定）、`significant`、`grade`（A 可靠 / B 尚可 / B* 顯著但樣本外薄 / C 無優勢 / — 樣本不足）、`state`（`fired` 今日觸發 / `recent` 10 日內 / `pending` 待觸發 / `off`）、`pending.{price,op,dist_pct,needs}`（明天收盤到哪裡會觸發）、`dyn`（反轉買點用「收盤站上 5 日線」出場的勝率與其基準）、`dd15`（賣訊後 20 日內回撤 ≥15% 的比例 vs 基準） | 10 年 SOXL 日線、固定規則、非重疊交易、樣本外 40%。**勝率一定要連同 `base_win_pct` 一起講**；`exit` 類訊號歷史上沒有預測力，停損是保險 |
 | `validation` | `method`（進出場、樣本、`data_as_of`）、`summary.{n_graded,n_significant,n_q_lt_10,exits_predictive,dyn_base_win_pct,fired_today,pending}`、`regime_grid[]`（200 日線濾網：`series` SOXL / SOXX × `band_pct` × `confirm_days` → `cagr_pct`、`max_dd_pct`、`switches`、`in_market`）、`buy_hold` | 兩種 200 日線讀法可能不一致（SOXL 自身 vs 指數）；長期持有者看指數那條，短線看 SOXL 自身 |
+| `beginner` | `buy.{answer,emoji,text,basis}`（可以買 / 可以分批小量 / 先別買，等觸發 / 先別買，等確認 / 先別買，等更好的價位 / 不該買）、`biggest_thing`、`holder`、`watch.{label,price}`、`risk_48h[]`、`lines[]` | **新手版的唯一答案**：由 `trade_plan.side` 先決定，其次 `rating_5`；與交易計畫表永遠一致（QA 檢查）。Markdown 的「## 新手一眼看懂」就是這五行 |
+| `flash` | `label`（偏空 / 中性 / 偏多）、`net`（−1…+1）、`seeking_alpha[]`（SOXL / SOXX / NVDA 近 72 小時的 SA 標題，`kind` 新聞 / 分析、`tone`、`link`）、`top[]`（`title`、`publisher`、`link`、`time_tpe`、`category`、`impact` −2…+2、`why_zh`）、`flags.{fed_statement_24h,geo_escalation_24h,tariff_shock_24h,capex_warning_24h,fed_hawkish_24h}`、`flag_evidence`、`cautions[]`（含 `evidence`）、`beginner_line`、`by_category[]`、`errors[]` | 過去 36 小時的時事（美伊、川普、聯準會、關稅、龍頭財報），關鍵字規則分類、非 LLM；轉述時說「依標題分類」並附 `publisher` 與 `link`。Markdown 的「## 今日時事」；完整版在 `meta/08_today_news.md` |
+| `dashboard` | `gauges[]`（固定順序 `add_on` 能不能加碼 / `macro` 宏觀 / `soxx` 費半走向 / `whales` 大戶 / `put_call` / `crash` 崩跌指數；每格 `value`、`short`、`light` green/yellow/red/grey、`emoji`、`meaning`、`detail`、`fields`（數字來源欄位）、`caveat`）、`factor_grades[]`（7 類別 A+…F）、`overall_grade`、`voices.{rows,summary}`、`soxx_stats`、`one_liner` | **被問「能不能加碼」只念 `add_on` 那格**；大戶方向是 CBOE 大額權利金推估（不是 13F）；等級是本 repo 評分表的字母化，不是 Seeking Alpha 評級。完整版在 `meta/09_market_dashboard.md` |
 | `options` | `put_wall`、`call_wall`、`gamma_flip`、`net_gex_m`（百萬美元）、`pc_vol_ratio`、`iv30_pct`、`expected_move.{weekly,monthly}`（±% 與價格區間）、`whale.whale_net_score`（−1…+1） | CBOE 延遲鏈 |
 | `sentiment` | `fear_greed.score`（0–100）、`vix.{vix,vix3m,ratio_vix_3m,term_state,skew,vvix}`、`market_put_call.equity_pc`、`flows.ratio`（SOXL/SOXS 美元成交量比） | |
 | `breadth` | `above_sma20_pct` 等（16 檔成分股站上均線比例）、`constituents[]` | |
@@ -154,6 +158,8 @@ Webhook JSON 信封：
 2. **盤中快照不是結論**：`data_status.provisional=true 且 final=false` 時，評級只反映當下，收盤後會重算。
 3. **評級不是指令**：`verdict` 是 24 個因子的加權投票；請一併轉述 `confidence`、`consensus` 與 `size_pct`，並提醒三倍槓桿單日可 ±15%。
 4. **價位優先於形容詞**：回覆人類時至少給三個數字：停損 `trade_plan.stop.price`、第一目標 `trade_plan.t1.price`、關鍵牆（`options.put_wall` / `call_wall` / `gamma_flip`）；並說明 `trade_plan.side`（`no_trade` 就直說「今天不開新倉，觸發價是 X」）。
+4c. **問「能不能加碼 / 費半走向 / 大戶 / Put-Call / 崩跌指數」就念 `dashboard.gauges` 對應那一格**：讀數、燈號、`meaning`，有 `caveat` 一定帶上；最後附 `dashboard.voices.summary`（四個聲音一致或分歧）。
+4a. **新手問「該不該買」就先念 `beginner.buy`**：答案、理由、`watch.price`，再帶 `beginner.biggest_thing`（今天最大的事）與它對 SOXL 的影響；`flash.cautions` 非空時把警語唸出來（附來源）。時事只會讓「等」更有理由，不會把「不該買」講成「該買」。
 4b. **勝率要帶基準與樣本數**：引用 `signals[]` 時寫成「勝率 64%（基準 55%，N=62，p=0.09）」；`significant=false` 的訊號不要說「高勝率」。賣出訊號不是預測，只用來決定減碼節奏。
 5. **有變化才值得打擾**：`changes.verdict_changed=true`、`crash_risk.score` 跨過 60 / 80、`events.upcoming` 內 48 小時有 FOMC 或龍頭財報、`warnings` 非空 → 值得主動推；否則一句話即可。
 6. **引用來源**：新聞請附 `publisher` 與 `link`；數字請附 `data_as_of`。
@@ -161,7 +167,7 @@ Webhook JSON 信封：
 
 建議給 LLM 的開場提示（也就是 MCP `daily_briefing` 提示的內容）：
 
-> 以下是今天自動產生的 SOXL 簡報。請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？請直接轉述「交易計畫」表的進場觸發、停損、T1/T2 與風報比（風報比不足就說不開新倉），勝率一定連同基準一起講。最後用一行列出 48 小時內的風險事件。
+> 以下是今天自動產生的 SOXL 簡報。請用新手聽得懂的話，三句以內回答：今天該買、該賣還是觀望？最重要的理由是什麼？要盯哪一個價位？先轉述「新手一眼看懂」的答案（`beginner.buy.answer`），再轉述「交易計畫」表的進場觸發、停損、T1/T2 與風報比（風報比不足就說不開新倉）；理由裡要帶「今天最大的事」（`beginner.biggest_thing`，說明那是依標題分類的結果），勝率一定連同基準一起講。倒數第二行用 `dashboard.one_liner` 列出六個儀表的燈號。最後用一行列出 48 小時內的風險事件。
 
 ---
 
