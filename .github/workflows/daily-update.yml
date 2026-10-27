@@ -4,18 +4,30 @@ name: Daily update (cloud fallback)
 # published data is still behind the latest US trading day, this runner fetches,
 # recomputes and commits the outputs itself (→ deploy.yml publishes the site).
 #
-#   22:15 UTC = 18:15 ET (EDT) / 17:15 ET (EST)  — after the close + data settle (06:15 Taipei)
+#   21:30 UTC = early attempt (05:30 Taipei) — delay insurance, see below
+#   22:00 UTC = early retry (06:00 Taipei)
+  #   22:15 UTC = 18:15 ET (EDT) / 17:15 ET (EST)  — after the close + data settle (06:15 Taipei)
 #   23:00 UTC = retry (07:00 Taipei); 00:30 UTC = last chance (08:30 Taipei)
 #   Each run first checks whether the published data is already current and exits in seconds if so,
 #   so the extra crons cost nothing on normal days.  The Mac job runs at 23:30 UTC / 07:30 Taipei;
 #   when the Mac cannot push (no GitHub SSH key), these runs are the only thing that refreshes the site.
 #   Outputs committed: JSON, HTML, feed/, meta/ (the Muse pack), history/.
+#
+#   2026-10-27 lesson: GitHub's scheduler slipped ~3h (the 06:15/07:00/08:30 Taipei crons did
+#   not start until 09:29/09:54 Taipei), so morning readers saw stale Pages at 07:30 and 09:00.
+#   The 05:30/06:00 crons are extra lottery tickets against that delay; they cannot cure a
+#   platform-wide slip, which is why the Muse-side morning delivery no longer depends on
+#   Pages freshness (it reads its own 06:30 bundle first). Provisional data is tolerated
+#   (labeled) by the morning instant-version rule.
 
 on:
   schedule:
+        - cron: "30 21 * * 1-5"   # 05:30 Taipei (Tue-Sat): early attempt, delay insurance
+    - cron: "0 22 * * 1-5"    # 06:00 Taipei (Tue-Sat): early retry
     - cron: "15 22 * * 1-5"   # 06:15 Taipei (Tue-Sat): first attempt after the US close
     - cron: "0 23 * * 1-5"    # 07:00 Taipei: retry if the first run was late or data not ready
     - cron: "30 0 * * 2-6"    # 08:30 Taipei: last chance (also covers the Mac job at 07:30 Taipei failing to push)
+            
   workflow_dispatch:
     inputs:
       force:
