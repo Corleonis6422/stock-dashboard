@@ -22,7 +22,7 @@ name: Daily update (cloud fallback)
 
 on:
   schedule:
-        - cron: "30 21 * * 1-5"   # 05:30 Taipei (Tue-Sat): early attempt, delay insurance
+    - cron: "30 21 * * 1-5"   # 05:30 Taipei (Tue-Sat): early attempt, delay insurance
     - cron: "0 22 * * 1-5"    # 06:00 Taipei (Tue-Sat): early retry
     - cron: "15 22 * * 1-5"   # 06:15 Taipei (Tue-Sat): first attempt after the US close
     - cron: "0 23 * * 1-5"    # 07:00 Taipei: retry if the first run was late or data not ready
