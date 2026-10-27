@@ -1,73 +1,74 @@
 # 08 今日時事：過去 36 小時發生了什麼，對 SOXL 有什麼影響
 
-> 資料日 data_as_of **2026-10-26**（美股交易日）· 產生 2026-10-27 01:31:09 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-10-27**（美股交易日）· 產生 2026-10-27 23:49:56 台北 · 資料狀態 收盤即時報價補齊 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 給新手與 agent 的「今天最大的事」。關鍵字規則分類（不是 LLM 判讀），影響分 −2 到 +2，排序 = |影響| × 新鮮度 × 來源權重。它不改變 24 因子評級，只在交易計畫裡變成警語。
 
 ## 一句話
 
-今天最大的事：Russia committed war crimes in Ukraine by attacking its energy grid, UN-backed inquiry says（AP News，10/27 06:48 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
+今天最大的事：Live updates: Iran war threatens GOP’s midterm hopes as Trump campaigns in Texas（AP News，10/28 06:46 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
 
 ## 新聞氣壓
 
-- **偏空**（淨影響 -0.32，−1 到 +1）；587 則相關標題；抓取 2026-10-27 09:30 台北；視窗 36 小時。
+- **中性**（淨影響 -0.04，−1 到 +1）；687 則相關標題；抓取 2026-10-28 07:49 台北；視窗 36 小時。
 
 | 類別 | 則數 | 利空 | 利多 |
 |---|---|---|---|
-| 🌍 地緣政治 | 219 | 86 | 12 |
-| 🔧 半導體與 AI | 130 | 10 | 17 |
-| 🏦 聯準會與利率 | 113 | 13 | 4 |
-| 📉 市場波動 | 60 | 8 | 24 |
-| 🏛️ 政策與關稅 | 50 | 4 | 11 |
-| 📊 經濟數據 | 15 | 1 | 2 |
+| 🌍 地緣政治 | 214 | 65 | 30 |
+| 🔧 半導體與 AI | 183 | 15 | 41 |
+| 🏦 聯準會與利率 | 155 | 19 | 8 |
+| 📉 市場波動 | 61 | 5 | 30 |
+| 🏛️ 政策與關稅 | 57 | 4 | 9 |
+| 📊 經濟數據 | 17 | 0 | 3 |
 
 ## 排名前八（每類最多 2 則）
 
 | 影響 | 類別・時間（台北）・來源 | 標題 | 對 SOXL 的意義 |
 |---|---|---|---|
-| 🔴 -2 | 🌍 地緣政治・10/27 06:48・AP News | [Russia committed war crimes in Ukraine by attacking its energy grid, UN-backed inquiry says](https://news.google.com/rss/articles/CBMiqgFBVV95cUxOckctdmhsdjZTU1FZLThLMWZNbUtFTHlmNDB6bE9ZT2tOeU9yd2NQLTEzVExNeHBJSTZUM1lIYjZpZDhCMmRENGV0aml4ZmpDQWpIUm5YSlVxb2JEdTRaLXJlcHFOSUhLR3M1VGFIVUZNbGJaRklpbGJZWDJldjF3ZlZaN3Y3eDJmaXpMTHZOMGI4ODRHbHFqcHVJTXBQaThUTUdxbktSaFcxQQ?oc=5) | 地緣風險升溫 |
-| 🔴 -2 | 🌍 地緣政治・10/27 03:49・WSJ | [Oil Prices Fall as Traders Weigh U.S.-Iran Diplomacy, Saudi Attacks](https://news.google.com/rss/articles/CBMitAFBVV95cUxOdHd1Q1FTWEFlUlUtZ1FQRWJfYm1QYm5KZW1jTVA2cS01R0cxb0xsNVNrdXJVNm44VTd2ZWN4WnY1R0tla0JuM3NVUmpBVF9GLTl2WEdFRmNUTFpEVUpHVHQzdUREUFBwN2ZEZ2xGcThUa0lKamdzaEY2c19pRy1PcXZCd2hPUmRfTmQ4bUNGWkFPbTM3Z04zLXB2bUdtclBvVmpmQmhqcEloSTJUOHg2ZzRsbEI?oc=5) | 地緣風險升溫 |
-| 🟢 +2 | 📉 市場波動・10/26 22:33・Seeking Alpha | [Stock market rises as Wall Street looks to rebound after difficult week (SP500:)](https://news.google.com/rss/articles/CBMiiAFBVV95cUxPMGpmRDlYZ3Z6dVN3UDVvZTJVNmI2REZUMkZiSHQzMzJ5RWVRcXFBT1poZzlwQmV5RTQwUlBwdThVMHhZWGRseVQ1UUVkTWxvUjNZYjJaLTY1WGh2SUVFdHV5MnpmRHgxZ1FlOUN4MzhEWTVCX2pzX2xlLW0yQUpoUmVNTEhxZ05h?oc=5) | 整體風險偏好改善 |
-| 🟢 +2 | 📉 市場波動・10/26 18:48・CNBC | [Stock futures climb as traders try to recover from the S&P 500′s losing week](https://news.google.com/rss/articles/CBMiuAFBVV95cUxNbFJ2d2RWX1VMSkV1TF80Z1E0SXBCWGZ6VkNaRkRKcG0xeEJHY0J1dzIyT1dmSDRIalNYcVc3LW9hMVRxUHVxV19HRmREZHdOUkh4UVlKWEczb0lKYzB0MGhCY05aUUNqRDRsU3BWMzVPVkZTTEJVOU1NaVppeUhzbE5zV1FIOTI5UnR1YWhxWF9pV3AtR2dEWUtPQmZwazBFcTFQc1R6RDcwazJEZnhiZ3JIRkh5d2Vl?oc=5) | 整體風險偏好改善 |
-| 🟢 +2 | 🏛️ 政策與關稅・10/26 20:18・Fox Business | [President Trump announces upcoming Canada trade deal, lifts certain tariffs](https://news.google.com/rss/articles/CBMiW0FVX3lxTE5ZeXM5czhBekZ1SVRrTjdLOFhFaWt1azNQRThBSFY4R2dTRWw1T1pRLXhzMlRyM00wdExFUzFvNVF5ZzNDZ1BTbkZzUzZfTUFfakZGTHVVMkhodm8?oc=5) | 關稅或管制放寬 / 達成協議 |
-| 🟢 +1 | 🏛️ 政策與關稅・10/27 07:04・Reuters | [EXCLUSIVE: US, Canada working on deal to ease steel, auto tariffs, sources say](https://news.google.com/rss/articles/CBMiogFBVV95cUxQU1JXYWUtZ2l1TGNtSDlwbkN6SkxUR1RxaWZjQnFpNk8yTzBuLTR5OEUxQ296SmZEd3dDS25tMjh1eW5hRGg4X1gtVUpVQi1UbWIyYXpJQmh6NGxpX011WWlEYWh0Z3FKRm55UUl6UnpKUTZmM3lhUElLNUVIb0tkWDBYVkI1LXI2aWxwT1Q2aUpSZjhOcUVxaTByX21WVlExQVE?oc=5) | 關稅或管制放寬 / 達成協議 |
-| 🟢 +1 | 🔧 半導體與 AI・10/26 22:23・CNBC TV18 | [Wall street opens higher as Anthropic IPO filing boosts chip stocks](https://news.google.com/rss/articles/CBMipAFBVV95cUxPUmEydTNKbnplZnlZaWdsNGhvOVdrcE9rTVV1ek1rM0hCbG9hNml0TWZLbGs5UHk0R05kZXhRZ0hzVzZCSHp4Y2p6MUExTUhhczlxb1B1OEtLbkxUV0FmT21WWk9VZ05mMmdYblJfNkR3WjdxaFlsajZlVkx0VWU2SkY5eF9wTGJwQkkyaTNwTndnckl5Mm1DNzlDMklBRWdCNE1qdtIBqgFBVV95cUxNX19icjY3N1pNSVRDTUxVQU9lYldEUEM5Q3RqN1BRU1J5LV9OSVU3RlFINDdnQXVrczE2WkdiQThhaTZzdmRmSndYMktya1VzRkQ1UTRCZC1pMzQ1REYwbWRpSTQzY3ZBZVk1R2NXTE5iREx6eG1aWEt3dnAtMURhV1hGTDBwdVhWS0tMYlBaY0V5STRUZzZab045bUF4cUNvYmphVXV2eXdsZw?oc=5) | 龍頭財報、訂單或資本支出轉強 |
-| 🔴 -1 | 🏦 聯準會與利率・10/26 17:30・WSJ | [Why the Fed Is Expected to Hold Rates Steady Despite a Case for Raising Them](https://news.google.com/rss/articles/CBMiyAFBVV95cUxOcXF0NUI3czJhVkNQQWc2Tk5GNWxTeHFIdng3S3ljT0JLWXVrVGtJUVpCcndjYU1JMnRNNGo2UjI3UlN4LTBZMnZHTUljV1RwMDZ4THRqZ0E5ZTdiVkRFMWNFLXVBVjVDcUxLZnV5LWNIcDNBN1R4b0dxdGxIMnFiX2pZQS1Qb1Etc2VBN1lEQzNSbUN6QUNyem5IYkxwR2FEWDNIT1FuWERQeWlOc0x6ODhnQmJjb0FQdDVCTFA3Vjh0ZW1zQW41Mg?oc=5) | 聯準會偏鷹（升息、延後降息、利率維持高檔） |
+| 🔴 -2 | 🌍 地緣政治・10/28 06:46・AP News | [Live updates: Iran war threatens GOP’s midterm hopes as Trump campaigns in Texas](https://news.google.com/rss/articles/CBMie0FVX3lxTE1UMjhVZmFUOGNGSzZfclcyb21RSk9Rb01qZkhVaEp0MWdhdC1WengwSGNCUW1DeGRBSk1sRnZVNTNEaS1sbjhtYm5FNER4Z3FrS25FVjZfbVhsODkzdE84U2dFOE9HMXd6c0dVeFFjMTM3TmsyZldNbVJZMA?oc=5) | 地緣風險升溫 |
+| 🔴 -2 | 🌍 地緣政治・10/28 05:47・Bloomberg.com | [Nuclear Inspectors See No Evidence Iran Repaired US-Bombed Sites](https://news.google.com/rss/articles/CBMitgFBVV95cUxOUTN5QzFhYWJ3eDVSc3JpcDlXLUZWMTJMSzZEc1haU2wtZlQ3LTlRekxnNEF5SThHbHZzUHZoWWFNTXNMa0VVc2NNaDlVTW5UWXl5SEhPTkwzQjFxVkpvemphQUw4Y3k5enRJQ0Y0VnVjWjh2ZmlIYXBHZ3V2bzlqdFNVUEs1eXliUVpXNktRNnM3UngyVnNzb2I5MXdZMFdzbXRjOWVDckJocExXUzJiUnJDYXF3UQ?oc=5) | 地緣風險升溫 |
+| 🟢 +2 | 🔧 半導體與 AI・10/28 00:50・Reuters | [Oracle expands chip supply deal with Nvidia, adds Google and Cerebras offerings](https://news.google.com/rss/articles/CBMiuwFBVV95cUxOWDJXeTV2b1RmZFlma2hTZktBN0RYbFJKNXhFU1pkN0ZzYjYxYVUtcTgyNFpqcGdQTGxWWFFxTFpHMUtGb0tBOURUcm0ya0RiSXFXMHRmTWZCYnBMeVZTUlRRR3VDZVpuWndJeDhjdTZoSjVOdWtHQjBqLThJUG9aT0l0MkNUWFBRZnhnNG9vampRVXFSTHBvZkpzSVdDZ2JDZm9xdlFvNUp6Rm0xQnBvQUZRcGVPVl9QWHU0?oc=5) | 龍頭財報、訂單或資本支出轉強 |
+| 🔴 -2 | 🏦 聯準會與利率・10/27 19:06・CNBC | [Fed expected to hold rates steady, but Warsh may point way to more hikes](https://news.google.com/rss/articles/CBMiekFVX3lxTE9DeEN1Q0lOYXdvZ1RhMGVYWm5Fcm1jU3ZEWTR4M3lCdXBQdkJ3WkJRS0VKbGFOVkpfUG8tbHFNb05yenRtRnJfMUZLV3hQdFVxZGxmdUI1OWt2d2xfSWRXYWd2OGEzUFIxelJDRnliOVJ6MHNXTk50VDh30gF_QVVfeXFMUFhDd2V2SDNUb0F3OWpneFhXVk90eDlFY2dyNVVLVEVhU2c4Z3d5d211RFBiMWZrUk5ZXzdRc0w3MGEzVTFCV0tKYjFuTWN1aklNRkZJTmJFc0l2VHFMaklvTUFRQWlqUGp2RFhLVklrRGl5NjJGLVVuM0lfTDlaNA?oc=5) | 聯準會偏鷹（升息、延後降息、利率維持高檔） |
+| 🟢 +2 | 🔧 半導體與 AI・10/27 15:02・WSJ | [Nvidia to Invest $3 Billion in Meta’s Equity Offering as They Expand AI Partnership](https://news.google.com/rss/articles/CBMiugFBVV95cUxOeVBNdzlMTTN3TWNmZmkyRFNZREhOcThOQWhMRk14VWlReXF4LW5DR2hsSjJneG1JeEdQM0VmX2tPNHJrVXdrdHhZbURadXZMdXczRkxjakpQbWFGQzBGX0lMN09mc0hQamNGX21PUnFNNDliVHZuQi02YWhucmE1SEVPcG5nSGc2aktVRUo5T1hpaEZtSnJyQTZDdHFGaXVTN1FyeU04U0YyaU5rcEZKbkhvTVdoMXFNMVE?oc=5) | 龍頭財報、訂單或資本支出轉強 |
+| 🔴 -2 | 🏛️ 政策與關稅・10/27 14:15・Reuters | [Indian media groups decry Modi’s privacy law in court, say newsrooms face shutdown risk](https://news.google.com/rss/articles/CBMitAFBVV95cUxPamZ6a0RNdDZHNVJ5M2xGeG5TR0x3VHNpSXBmaW95aTdjVS1nZDJRenJaNlZCUWltMUpzRnMwdlF4YTdPY0haaFJlSTI4bjNVRWdIR2ZWR19rWDQweElGYl94T1MyX3g4R3doWmxVYjRJX2JObDRWMVRqdFdNMzdKWl9pS1RRTEZISGhMY29FaF9FSVg1QVBKazlPRU1QWGtZcjBVV19uZ3NPVGZwel9mMGV1dzU?oc=5) | 關稅或出口管制收緊 |
+| 🟢 +2 | 📉 市場波動・10/27 21:34・Yahoo Finance | [U.S. Stock Futures Point Higher as AI Developments and Earnings Support Market Recovery: Dow Jones, S&P, Nasdaq, Wall Street](https://news.google.com/rss/articles/CBMimAFBVV95cUxOLUpWa0hvUnc1d0F5OXpVWVBxTUJyZHNaV1hucl8tX1ZmZXZiZ0tWcmp2ZHJmUm1UNEhIT21QNVhZOV9VelZueEVWYWpxU05KNDJpZVhsQXpfQTNybEYxOTNBZjc5ODUtTF9vLXRPOXl3QmpERjdlYVloU0kxdWU3Q3lUTkZ1LTVRS2pYU1pFZy1oWnRwTVM1VA?oc=5) | 整體風險偏好改善 |
+| 🟢 +2 | 📉 市場波動・10/27 12:05・Yahoo Finance | [US futures and Asian stocks advance following a rally on Wall Street](https://news.google.com/rss/articles/CBMipgFBVV95cUxQVXZwVXItaU1rRmw2LWluU0RfM1FPVlZnWkhFSVd1bGcyd19XOEpnQUFHeU1iekFiclBaNmJ1VmoyXzBrX0haLTBydUJ6bEdhTFVvaEg2NkJwVVJJSnNjdTVxWE9KYnZpNFZHSXZIa3ZBVGotSWEtbnNWeTAzcldvdjNOeDRpMVdmWE9qc2xLdy1xTkVFRGdCd3VRaW40SWE4QUpaX293?oc=5) | 整體風險偏好改善 |
 
 ## 其他有方向的標題
 
-- 🔴 🌍 地緣政治（10/27 02:01，Reuters）Russian missile strikes on Ukraine's Kharkiv kill two, injure four, mayor says
-- 🔴 🌍 地緣政治（10/26 22:53，Reuters）Hezbollah readies for new regional war with funds from Iran, sources say
-- 🔴 🌍 地緣政治（10/27 07:12，The New York Times）Civilian Suffering Was Goal of Russian Strikes in Ukraine, U.N. Panel Says
-- 🔴 🌍 地緣政治（10/27 06:44，The New York Times）Netanyahu Pushed for Attack on Iran Ahead of Israeli Election, Officials Say
-- 🔴 🌍 地緣政治（10/27 03:52，The Guardian）Netanyahu reportedly pressured military to attack Iran in run-up to election
-- 🔴 🌍 地緣政治（10/26 22:03，The Guardian）Middle East peace held back by US insistence that Iran is a threat, Oman’s foreign minister says
-- 🔴 🌍 地緣政治（10/26 18:46，AP News）In his own words: Trump on gas prices and energy costs since launching the war with Iran
-- 🔴 🌍 地緣政治（10/26 17:33，Financial Times）Iran hosts regional powers for talks to prevent fresh escalation
-- 🔴 🌍 地緣政治（10/26 13:32，Reuters）Six injured in Russian strikes on Ukraine's Zaporizhzhia, Chernihiv, officials say
-- 🔴 🌍 地緣政治（10/26 11:20，Reuters）Saudi defence pact countries push for peace in Tehran as Houthis launch more attacks
-- 🔴 🌍 地緣政治（10/27 08:54，Yahoo Finance）Oil extends losses as Iran mediation efforts ease escalation fears
-- 🔴 🌍 地緣政治（10/27 08:54，Radio Free Europe/Radio Liberty）Ukraine Says One Dead As Russian Strikes Hit Kyiv Civilian Buildings Including Dormitory
+- 🔴 🌍 地緣政治（10/28 04:32，WSJ）Overseas Handler Linked to Iran Behind Foiled RAF Air Base Attack
+- 🔴 🌍 地緣政治（10/27 23:25，AP News）Russia committed war crimes in Ukraine by attacking its energy grid, UN-backed inquiry says
+- 🟢 🔧 半導體與 AI（10/28 01:02，Yahoo Finance）Oracle Rises 5% as Google TPUs Come to Oracle Cloud and NVIDIA Deal Expands; Amazon Nudges Higher, Microsoft Treads Water
+- 🟢 🔧 半導體與 AI（10/27 21:14，Yahoo Finance）Nvidia and Meta expand their AI partnership: What to know
+- 🟢 🔧 半導體與 AI（10/27 20:45，Yahoo Finance）Nvidia Invests $3 Billion in Meta as AI Partnership Deepens
+- 🟢 🔧 半導體與 AI（10/27 20:01，Yahoo Finance）Nvidia investing $3 billion in Meta in Muse partnership
+- 🔴 🌍 地緣政治（10/27 09:34，The New York Times）Netanyahu Pushed for Attack on Iran Ahead of Israeli Election, Officials Say
+- 🟢 🔧 半導體與 AI（10/27 14:32，Seeking Alpha）Nvidia to invest $3B in Meta stock, expand AI collaboration on Muse models (NVDA:NASDAQ)
+- 🔴 🌍 地緣政治（10/28 07:03，Fox News）Trump hails Iran strikes as UN watchdog raises alarm over Tehran's unverified uranium stockpile
+- 🔴 🌍 地緣政治（10/28 06:38，NDTV）UN Nuclear Watchdog Chief Urges Iran To Grant Access
+- 🔴 🌍 地緣政治（10/28 06:24，Middle East Forum）After Months of Threats by Trump, Resumption of Iran War Now Seems Inevitable
+- 🔴 🌍 地緣政治（10/28 05:02，Iran International）Prosecutor says defendants filmed journalists' addresses to plan attacks
 
 ## 旗標（24 小時內、來源權重 ≥ 0.7 才會亮）
 
 | 旗標 | 狀態 | 依據 |
 |---|---|---|
-| 地緣風險升溫（`geo_escalation_24h`） | 🔺 亮 | AP News「Russia committed war crimes in Ukraine by attacking its energy grid, UN-backed inquiry says」（10/27 06:48） |
-| 關稅 / 出口管制收緊（`tariff_shock_24h`） | — 無 | — |
+| 地緣風險升溫（`geo_escalation_24h`） | 🔺 亮 | AP News「Live updates: Iran war threatens GOP’s midterm hopes as Trump campaigns in Texas」（10/28 06:46） |
+| 關稅 / 出口管制收緊（`tariff_shock_24h`） | 🔺 亮 | Reuters「Indian media groups decry Modi’s privacy law in court, say newsrooms face shutdown risk」（10/27 14:15） |
 | 龍頭資本支出轉弱（`capex_warning_24h`） | — 無 | — |
 | 聯準會剛公布決議（`fed_statement_24h`） | — 無 | — |
-| 聯準會偏鷹（`fed_hawkish_24h`） | 🔺 亮 | WSJ「Why the Fed Is Expected to Hold Rates Steady Despite a Case for Raising Them」（10/26 17:30） |
+| 聯準會偏鷹（`fed_hawkish_24h`） | 🔺 亮 | CNBC「Fed expected to hold rates steady, but Warsh may point way to more hikes」（10/27 19:06） |
 
 ## 交易計畫因此加上的警語
 
 - ⚠️ 地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。
+- ⚠️ 關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。
 - ⚠️ 聯準會偏鷹的消息在 24 小時內：殖利率若續升，成長股反彈空間受限。
 
 ## 和今天的結論怎麼接
 
-- 現在該不該買？✅ **可以買**（依據 trade_plan.side=long, rating_5=2, rr_blend=1.66）。時事只會讓「等」變得更有理由，不會把「不該買」變成「該買」。
-- 明天只盯一個價：$75.49（停損，唯一出場價）。
+- 現在該不該買？⏸ **先別買，等確認**（依據 trade_plan.side=no_trade, rating_5=3, rr_blend=1.64）。時事只會讓「等」變得更有理由，不會把「不該買」變成「該買」。
+- 明天只盯一個價：$103.32（條件買點，收盤站上才算）。
 
 ## 方法與限制
 
