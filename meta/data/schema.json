@@ -756,6 +756,381 @@
      ]
     }
    }
+  },
+  "beginner": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "description": "v2.1: the one-screen answer; derived from trade_plan.side first, verdict.rating_5 second",
+   "properties": {
+    "buy": {
+     "type": "object",
+     "properties": {
+      "answer": {
+       "type": "string",
+       "description": "可以買 / 可以分批小量 / 先別買，等觸發 / 先別買，等確認 / 先別買，等更好的價位 / 不該買 / 資料不足"
+      },
+      "emoji": {
+       "type": "string"
+      },
+      "text": {
+       "type": "string"
+      },
+      "basis": {
+       "type": "string"
+      }
+     }
+    },
+    "biggest_thing": {
+     "type": "string",
+     "description": "flash.beginner_line: the one headline of the last 36 h and why it matters for SOXL"
+    },
+    "holder": {
+     "type": "string"
+    },
+    "watch": {
+     "type": "object",
+     "properties": {
+      "label": {
+       "type": "string"
+      },
+      "price": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "risk_48h": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "lines": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "the 5 rendered bullets"
+    }
+   }
+  },
+  "flash": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "description": "v2.1: breaking news of the last 36 h ranked by |impact| × recency × publisher weight (keyword rules, not an LLM)",
+   "properties": {
+    "as_of_tpe": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "window_h": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "label": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "偏空 / 中性 / 偏多"
+    },
+    "net": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "beginner_line": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "top": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "publisher": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "link": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "time_tpe": {
+        "type": "string"
+       },
+       "category": {
+        "type": "string",
+        "description": "聯準會與利率 / 政策與關稅 / 地緣政治 / 半導體與 AI / 經濟數據 / 市場波動"
+       },
+       "impact": {
+        "type": "integer",
+        "minimum": -2,
+        "maximum": 2
+       },
+       "why_zh": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "flags": {
+     "type": "object",
+     "properties": {
+      "fed_statement_24h": {
+       "type": "boolean"
+      },
+      "geo_escalation_24h": {
+       "type": "boolean"
+      },
+      "tariff_shock_24h": {
+       "type": "boolean"
+      },
+      "capex_warning_24h": {
+       "type": "boolean"
+      },
+      "fed_hawkish_24h": {
+       "type": "boolean"
+      }
+     }
+    },
+    "flag_evidence": {
+     "type": "object"
+    },
+    "cautions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "flag": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "evidence": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "by_category": {
+     "type": "array"
+    },
+    "seeking_alpha": {
+     "type": "array",
+     "description": "latest Seeking Alpha items on SOXL / SOXX / NVDA (news desk + contributor analysis), 72 h"
+    },
+    "method": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "errors": {
+     "type": "array"
+    }
+   }
+  },
+  "dashboard": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "description": "v2.2: six gauges (add_on / macro / soxx / whales / put_call / crash), Seeking-Alpha-style factor grades, four-voice summary",
+   "properties": {
+    "gauges": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "key": {
+        "type": "string",
+        "enum": [
+         "add_on",
+         "macro",
+         "soxx",
+         "whales",
+         "put_call",
+         "crash"
+        ]
+       },
+       "title": {
+        "type": "string"
+       },
+       "value": {
+        "type": "string"
+       },
+       "light": {
+        "type": "string",
+        "enum": [
+         "green",
+         "yellow",
+         "red",
+         "grey"
+        ]
+       },
+       "emoji": {
+        "type": "string"
+       },
+       "meaning": {
+        "type": "string"
+       },
+       "detail": {
+        "type": "string"
+       },
+       "fields": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "JSON paths the gauge was derived from"
+       },
+       "caveat": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "lights": {
+     "type": "object"
+    },
+    "factor_grades": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "short": {
+        "type": "string"
+       },
+       "grade": {
+        "type": "string",
+        "description": "A+ … F from the category score"
+       },
+       "score": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "weight": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     }
+    },
+    "overall_grade": {
+     "type": "string"
+    },
+    "voices": {
+     "type": "object",
+     "properties": {
+      "rows": {
+       "type": "array"
+      },
+      "n_bear": {
+       "type": "integer"
+      },
+      "n_neutral": {
+       "type": "integer"
+      },
+      "n_bull": {
+       "type": "integer"
+      },
+      "summary": {
+       "type": "string"
+      }
+     }
+    },
+    "soxx_stats": {
+     "type": "object",
+     "properties": {
+      "close": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "ret_1d": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "ret_5d": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "ret_20d": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "sma20": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "sma50": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "sma200": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "dist_sma200_pct": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "trend": {
+       "type": "string"
+      },
+      "light": {
+       "type": "string"
+      }
+     }
+    },
+    "one_liner": {
+     "type": "string"
+    },
+    "method": {
+     "type": "string"
+    }
+   }
   }
  }
 }

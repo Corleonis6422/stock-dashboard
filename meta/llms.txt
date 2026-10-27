@@ -1,8 +1,8 @@
 # SOXL Quant daily brief (Meta / Muse pack)
 
-> Automated research brief for SOXL (3x semiconductor ETF). data_as_of 2026-10-23, generated 2026-10-26 19:51:41 Asia/Taipei. Not investment advice.
+> Automated research brief for SOXL (3x semiconductor ETF). data_as_of 2026-10-26, generated 2026-10-27 01:31:09 Asia/Taipei. Not investment advice.
 
-Today: 🔴 賣出 / 減碼 | composite -0.82 | plan no_trade | stop $74.17 | T1 $111.70 | T2 $123.20 | R:R 1.83
+Today: 🔴 減碼 / 觀望 | composite -0.65 | plan long | stop $75.49 | T1 $107.50 | T2 $123.40 | R:R 1.66
 
 ## Read in this order
 

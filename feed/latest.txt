@@ -1,8 +1,10 @@
-SOXL 2026-10-23 收盤 $83.59（+1.80%）
-🔴 賣出 / 減碼｜綜合 -0.86｜空 62% / 中 23% / 多 15%｜倉位上限 10%
-守 $80.22 → 看 $89.46 → $92.30
-Put 牆 $70 / Call 牆 $120 / Gamma 翻正 $106.8
-F&G 21（極度恐懼 Extreme Fear）｜VIX 19.0（VIX/VIX3M 0.93）｜崩跌前兆 31/100
-變化：評級不變（連續 6 個交易日 🔴賣出 / 減碼）；綜合分數 -1.01 → -0.86（+0.15）
+SOXL 2026-10-26 收盤 $90.50（+8.31%）
+🔴 減碼 / 觀望｜綜合 -0.65｜空 57% / 中 24% / 多 19%｜倉位上限 25%
+該不該買：✅ 可以買。驗證過的買訊今天成立（KD低檔金叉 今日觸發（勝率 69.7% vs 基準 57.4%，N=33，p=0.1039）→ 次日開盤進場）。 明天盯 $75.49（停損，唯一出場價）。
+儀表：🟢 加碼 可以加碼｜🔴 宏觀 偏空，有旗標｜🟡 費半 修正中 -12%/20日｜🟡 大戶 中性 +0.05｜🟢 P/C SOXL 0.781，個股第 66 百分位｜🟢 崩跌 31/100 低
+✅ 今日有驗證過的買進訊號成立｜守 $75.49 → 看 $107.50 → $123.40（加權 1.7R）
+Put 牆 $70 / Call 牆 $120 / Gamma 翻正 $104.1
+F&G 27（恐懼 Fear）｜VIX 19.4（VIX/VIX3M 0.97）｜崩跌前兆 31/100
+時事（偏空）：利空「Russia committed war crimes in Ukraine by attacking its energy grid, U」（AP News）
+變化：評級改變：賣出 / 減碼 → 減碼 / 觀望；綜合分數 -0.82 → -0.65（+0.17）
 事件：10/27（二） NXPI 財報（盤後）；10/28（三） FOMC 利率決議 10/27–28；10/28（三） KLAC 財報（盤後）
-頭條：利多「Micron Technology Stock Price Forecast: CEO Reaffirms Tight Supply for Next Two Years, How Will HBM4 Mass Production and CXMT Controversy Impact Stock Price Expectations?」／利空「Broadcom stock gets massive $600 call even as AI fears grow」

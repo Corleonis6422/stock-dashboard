@@ -1,6 +1,6 @@
 # 06 給 AI Agent 的解讀規則
 
-> 資料日 data_as_of **2026-10-23**（美股交易日）· 產生 2026-10-24 00:45:38 台北 · 資料狀態 收盤即時報價補齊 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-10-26**（美股交易日）· 產生 2026-10-27 01:31:09 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > Muse 或任何 agent 轉述這份資料時必須遵守的規則；違反任何一條就會把研究參考講成投資建議。
 
@@ -13,24 +13,25 @@
 5. **勝率一定帶基準與 N**：寫成「勝率 64%（基準 55%，N=62，p=0.09）」。`significant = false` 的訊號不可以說「高勝率」。賣出訊號歷史上沒有預測力，只能用來決定減碼節奏，停損是保險。
 6. **兩種 200 日線讀法可能不一致**：SOXL 自身 vs SOXX 指數。長期持有者看指數那條，短線反彈單看 SOXL 自身；不一致時兩個都講。
 7. **期權牆是模型值**：由公開未平倉推算，不是觀察到的部位；CBOE 即時價與收盤差 ≥ 2% 時（簡報會加 ※），1σ 區間與 Gamma 翻正位會在下次更新改變。
-8. **有變化才值得打擾**：`changes.verdict_changed = true`、`crash_risk.score` 跨過 60 / 80、48 小時內有 FOMC 或龍頭財報、`warnings` 非空、`trade_plan.side` 變成 `long` → 主動推；否則一句話即可。
-9. **引用來源**：新聞附 `publisher` 與 `link`（在 JSON `news.top_bull[].link`），數字附 `data_as_of`。
+8. **有變化才值得打擾**：`changes.verdict_changed = true`、`crash_risk.score` 跨過 60 / 80、48 小時內有 FOMC 或龍頭財報、`warnings` 非空、`trade_plan.side` 變成 `long`、`flash.flags` 任一為 true（聯準會決議 / 地緣升溫 / 關稅收緊 / 龍頭資本支出轉弱）→ 主動推；否則一句話即可。
+9. **引用來源**：新聞附 `publisher` 與 `link`（在 JSON `news.top_bull[].link` 與 `flash.top[].link`），數字附 `data_as_of`。時事的 `impact` 與 `why_zh` 是關鍵字規則套出來的，轉述時說「依標題分類」，不要說成「分析指出」。
 10. **免責**：每次輸出都帶 `disclaimer`。
+11. **問「能不能加碼」只念 `dashboard.gauges[key=add_on]`**：它和交易計畫同源；「可以加碼」只在有驗證過的買訊成立、或評級 ≥ 4 且價在 20 日線上、費半在年線濾網內時出現。問費半、大戶、Put/Call、崩跌指數就念對應的那一格，連同 `meaning` 與 `caveat`（大戶方向是 CBOE 大額權利金推估，不是 13F）。因子等級 A+ … F 是本 repo 評分表的字母化，不是 Seeking Alpha 的評級。
 
 ## 回答模板（三句話版）
 
-> （1）今天 **{verdict.label}**：{trade_plan.headline}。（2）最重要的理由：{verdict.tldr[1]}。（3）要盯的價位：停損 {trade_plan.stop.price}、T1 {trade_plan.t1.price}、Gamma 翻正 {options.gamma_flip}。48 小時內：{events.upcoming 內 days_ahead ≤ 2 的項目，沒有就寫「無」}。{disclaimer}
+> （1）今天 **{verdict.label}**：{trade_plan.headline}。（2）最重要的理由：{verdict.tldr[1]}；今天最大的事：{beginner.biggest_thing}。（3）要盯的價位：停損 {trade_plan.stop.price}、T1 {trade_plan.t1.price}、Gamma 翻正 {options.gamma_flip}。48 小時內：{events.upcoming 內 days_ahead ≤ 2 的項目，沒有就寫「無」}。{disclaimer}
 
 今天套進去會是：
 
-> （1）今天 **賣出 / 減碼**：n/a。（2）最重要的理由：最大空方理由：均線結構 (20 / 50 / 200MA)（跌破年線 (Below 200MA) | 距 20MA -34.6% / 50MA -33.1% / 200MA -32.1%）；最大多方理由：Call/Put 成交量比 (今日)（1.21x (Call 118,412 / Put 97,811)）。（3）要盯的價位：停損 n/a、T1 n/a、Gamma 翻正 $106.8。48 小時內：無。
+> （1）今天 **減碼 / 觀望**：✅ 今日有驗證過的買進訊號成立：次日開盤進場，照計畫執行。（2）最重要的理由：最大空方理由：均線結構 (20 / 50 / 200MA)（跌破年線 (Below 200MA) | 距 20MA -27.8% / 50MA -26.9% / 200MA -26.7%）；最大多方理由：Call/Put 成交量比 (今日)（1.28x (Call 155,960 / Put 121,781)）；今天最大的事：Russia committed war crimes in Ukraine by attacking its energy grid, UN-backed inquiry says（AP News，10/27 06:48 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。（3）要盯的價位：停損 $75.49、T1 $107.50、Gamma 翻正 $104.1。48 小時內：10/28（三） FOMC 利率決議 10/27–28；10/28（三） KLAC 財報（盤後）；10/29（四） INTC 財報（盤後）。
 
 ## 好句子與壞句子（數字取自今天的資料）
 
-- 壞：「連3黑收5MA下 勝率 75%，很準。」 好：「連3黑收5MA下 用 5 日線出場的勝率 75%，但那種出場規則的基準就是 64%，N=60，p=0.0417，等級 B。」
-- 壞：「跌破 20 日線就該賣。」 好：「首破 20 日線後 10 日內收更低的比例 40%，基準 43%（N=47）；它不是賣出預測，停損 n/a 才是出場依據。」
-- 壞：「Call 牆在 $120，上不去。」 好：「Call 牆 $120（OI 84,932）是用未平倉推算的壓力參考，會隨每天 OI 變動；它只是階梯上的一格，不是天花板。」
-- 壞：「訊號出現，全部押進去。」 好：「None；倉位 None%（每筆風險 None%），守 n/a，T1 n/a。」
+- 壞：「連3黑收5MA下 勝率 75%，很準。」 好：「連3黑收5MA下 用 5 日線出場的勝率 75%，但那種出場規則的基準就是 64%，N=60，p=0.0431，等級 B。」
+- 壞：「跌破 20 日線就該賣。」 好：「首破 20 日線後 10 日內收更低的比例 40%，基準 43%（N=47）；它不是賣出預測，停損 $75.49 才是出場依據。」
+- 壞：「Call 牆在 $120，上不去。」 好：「Call 牆 $120（OI 75,566）是用未平倉推算的壓力參考，會隨每天 OI 變動；它只是階梯上的一格，不是天花板。」
+- 壞：「訊號出現，全部押進去。」 好：「KD低檔金叉 今日觸發（勝率 69.7% vs 基準 57.4%，N=33，p=0.1039）→ 次日開盤進場；倉位 6.0%（每筆風險 1.0%），守 $75.49，T1 $107.50。」
 
 ## 哪個檔案回答哪個問題
 
@@ -42,6 +43,9 @@
 | 數字怎麼算 / 可信度 | 04_methodology.md、`validation` |
 | 看不懂的名詞 | 05_glossary.md |
 | 過去幾天說對了嗎 | 07_history.md、`history[]` |
+| 今天發生了什麼大事、對 SOXL 有什麼影響 | 08_today_news.md（或 `flash`、`beginner.biggest_thing`） |
+| 新手只想要一個答案 | 01_brief_today.md 的「新手一眼看懂」（或 `beginner.buy`） |
+| 能不能加碼、費半走向、大戶怎麼走、Put/Call、崩跌指數 | 09_market_dashboard.md（或 `dashboard.gauges[]`，每格有 `fields` 指出數字來源） |
 
 ---
 _本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。_
