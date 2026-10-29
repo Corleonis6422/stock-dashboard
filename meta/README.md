@@ -1,12 +1,12 @@
 # SOXL Quant → Meta AI（Muse）吸收包
 
 > 這個資料夾是給 AI agent 整包讀的。全部是純 Markdown 加一份 JSON，沒有程式碼、沒有圖片、沒有金鑰。
-> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-10-27**，產生 2026-10-27 23:49:56 台北。
+> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-10-28**，產生 2026-10-29 01:07:06 台北。
 
 ## 三十秒版
 
-今天：🟡 **觀望 / 持有不加碼** · 收盤 $101.09（+11.70%）· 綜合 -0.27 · 倉位上限 25%
-計畫：**⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫** · 停損 $88.38 · T1 $120.00 · T2 $135.60 · 加權風報比 1.64R
+今天：🟡 **觀望 / 持有不加碼** · 收盤 $107.35（+6.20%）· 綜合 -0.20 · 倉位上限 25%
+計畫：**⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫** · 停損 $94.28 · T1 $123.90 · T2 $172.63 · 加權風報比 2.72R
 
 ## 怎麼餵給 Muse（擇一）
 
@@ -54,15 +54,15 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 
 | 檔案 | 大小 |
 |---|---|
-| `01_brief_today.md` | 13.7 KB |
+| `01_brief_today.md` | 13.6 KB |
 | `02_trade_plan.md` | 3.8 KB |
 | `03_signals.md` | 10.8 KB |
 | `04_methodology.md` | 7.9 KB |
 | `05_glossary.md` | 4.5 KB |
-| `06_rules_for_agents.md` | 6.3 KB |
-| `07_history.md` | 1.8 KB |
-| `08_today_news.md` | 9.4 KB |
-| `09_market_dashboard.md` | 9.0 KB |
+| `06_rules_for_agents.md` | 6.2 KB |
+| `07_history.md` | 1.9 KB |
+| `08_today_news.md` | 9.3 KB |
+| `09_market_dashboard.md` | 8.9 KB |
 | `llms.txt` | 1.9 KB |
 | `prompts/first_time.md` | 7.5 KB |
 | `prompts/daily_briefing.md` | 0.9 KB |
