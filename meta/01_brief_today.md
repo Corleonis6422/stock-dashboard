@@ -1,47 +1,46 @@
 # 01 今日簡報
 
-> 資料日 data_as_of **2026-10-28**（美股交易日）· 產生 2026-10-29 01:07:06 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-10-29**（美股交易日）· 產生 2026-10-30 01:13:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 與 `feed/latest.md` 逐字相同；Muse 每天至少讀這一份。
 
-# SOXL 2026-10-28（三）收盤 · 🟡 觀望 / 持有不加碼 · $107.35（+6.20%）
-> 官方日線 · 產生 2026-10-29 01:07:06 台北 · 自動計算的研究參考，不是投資建議 · 三倍槓桿單日可 ±15%
+# SOXL 2026-10-29（四）收盤 · 🔴 減碼 / 觀望 · $102.39（-4.62%）
+> 官方日線 · 產生 2026-10-30 01:13:12 台北 · 自動計算的研究參考，不是投資建議 · 三倍槓桿單日可 ±15%
 
-**TL;DR** 多空訊號打平：不開新倉；已持有者續抱但設好停損。 綜合 **-0.20**（−2 ~ +2）· 多/中/空 30%/23%/48% · 信心 低 · 倉位上限 **25%** · 底部檢核 4/8
-與前一交易日：評級不變（連續 2 個交易日 🟡觀望 / 持有不加碼）；綜合分數 -0.27 → -0.20（+0.07）；崩跌前兆 27 → 25
+**TL;DR** 趨勢偏空但部分止跌條件出現：持有者減碼觀望，不加碼。 綜合 **-0.44**（−2 ~ +2）· 多/中/空 21%/27%/52% · 信心 低 · 倉位上限 **25%** · 底部檢核 3/8
+與前一交易日：評級改變：觀望 / 持有不加碼 → 減碼 / 觀望；綜合分數 -0.20 → -0.44（-0.24）；崩跌前兆 25 → 25
 
 ## 新手一眼看懂
-- **現在該不該買？** ⏸ **先別買，等確認**。評級「中立 / 觀望」：多空因子打平，沒有買訊。等 收盤站上 近 10 日最高 $108.80 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單） 再說。
-- **今天最大的事：** US warns allies to prepare for possible Iran strikes, retaliation after elections, AP sources say（AP News，10/29 08:21 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
-- **已持有的人：** 硬停損 $94.28（1.2×ATR 停損）；現價已在吊燈線 $131.12 之下（-18.1%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $108.80 / $113.35 先減碼
-- **明天只盯一個價：** $108.80（條件買點，收盤站上才算）
-- **48 小時內風險：** 10/30（五） 週選擇權到期；地緣風險升溫（AP News：US warns allies to prepare for possible Iran strikes, retaliation afte…）；關稅 / 出口管制收緊（Reuters：Trump says imported robotics pose national security risks but does not…）；龍頭資本支出轉弱（CNBC：Alphabet sinks 10% as it holds 2026 capex unchanged, expects significa…）；聯準會偏鷹（WSJ：Opinion | The Federal Reserve’s Hawkish Hold）
+- **現在該不該買？** ❌ **不該買**。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 VPVR POC 籌碼峰 $103.32 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 7.2% 試單）。
+- **今天最大的事：** Ukraine pauses strikes on Russian refineries after pressure from Trump, WSJ reports（Reuters，10/30 08:28 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
+- **已持有的人：** 硬停損 $89.03（1.2×ATR 停損）；現價已在吊燈線 $131.59 之下（-22.2%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $103.32 / $105.00 先減碼
+- **明天只盯一個價：** $103.32（條件買點，收盤站上才算）
+- **48 小時內風險：** 地緣風險升溫（Reuters：Ukraine pauses strikes on Russian refineries after pressure from Trump…）；龍頭資本支出轉弱（Reuters：Wall Street ends lower as Alphabet revenue miss revives AI capex jitters）
 
 ## 六個儀表（能不能加碼、宏觀、費半、大戶、Put/Call、崩跌）
 | 儀表 | 燈 | 讀數 | 一句話 |
 |---|---|---|---|
-| SOXL 能不能加碼？ | 🟡 | 先不加碼 | 評級「觀望」：多空打平，沒有買訊。 |
-| 現在的宏觀消息 | 🔴 | 偏空｜🌍 US warns allies to prepare for possible Iran strikes, retaliation after elections, AP sources say（AP News） | 地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。 |
-| 費半（SOXX）整體走向 | 🟡 | 修正中｜$521.94（+2.13%） | 費半在修正或反彈的半路：SOXL 的 3 倍槓桿會把這段震盪放大，只做有停損的單。 |
-| 大戶怎麼走 | 🟢 | 偏多 +0.47｜大單 Call $46.88M vs Put $20.36M（47 筆） | 大單權利金偏向 Call：大戶在買反彈或賣 Put 收權利金，和評級偏空時是分歧，值得盯但不是買點。 |
-| Put/Call | 🟢 | SOXL 成交 0.813（中性）｜全市場個股 0.59（1 年第 63 百分位） | 中性區：期權市場沒有極端恐慌，也沒有自滿。 |
+| SOXL 能不能加碼？ | 🔴 | 不能加碼 | 評級偏空、吊燈移動停損已觸發：加碼就是攤平三倍槓桿，SOXL 單日可 ±15%。 |
+| 現在的宏觀消息 | 🔴 | 偏空｜🌍 Ukraine pauses strikes on Russian refineries after pressure from Trump, WSJ reports（Reuters） | 地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。 |
+| 費半（SOXX）整體走向 | 🟡 | 修正中｜$513.86（-1.55%） | 費半在修正或反彈的半路：SOXL 的 3 倍槓桿會把這段震盪放大，只做有停損的單。 |
+| 大戶怎麼走 | 🟢 | 偏多 +0.95｜大單 Call $8.08M vs Put $90.89M（73 筆） | 大單權利金偏向 Call：大戶在買反彈或賣 Put 收權利金，和評級偏空時是分歧，值得盯但不是買點。 |
+| Put/Call | 🟡 | SOXL 成交 1.226（避險 / 恐慌）｜全市場個股 0.54（1 年第 29 百分位） | 恐慌區（SOXL 成交 P/C ≥ 1.2）：底部常出現在這裡，但這是恐慌的證據不是買點，配合站回 20 日線才算。 |
 | 崩跌指數 | 🟢 | 25 / 100（低） | 分數低不代表安全：價已在年線下，這個分數量的是「壓力持續度」，不是新頂部前兆。 |
-- 費半（SOXX）整體走向：5 日 +2.3%、20 日 -8.2%；距 20MA -2.0%、50MA -1.6%、200MA +9.9%；16 檔成分股站上 50MA 50.0%、200MA 56.2%；年線濾網：持有（出場線 $460.52）
-- 大戶怎麼走：最大單 2029-01-19 $220 Put $11.03M（偏多 (Put 價跌量增)）；大戶 C/P 2.3 vs 散戶 C/P 1.19；SOXL/SOXS 資金流 3.22x（20 日均 3.25x）
-- 因子等級（借 Seeking Alpha 的 A+ … F 寫法，分數來自 24 因子評分表）：期權籌碼 **B+** · 量能 **D-** · 技術趨勢 **D-** · 廣度 **D-** · 宏觀 **C-** · 情緒 **C+** · 消息 **A** → 總評 **C-**
-- 四個聲音：1 空 / 3 中性 / 0 多 → 沒有任何多方聲音：不加碼、不開新倉：量化評級 中立 / 觀望（綜合 -0.20）；訊號驗證 沒有驗證過的買點（不開新倉）；時事 / 宏觀 偏空（淨影響 -0.36）；費半趨勢 修正中
+- 費半（SOXX）整體走向：5 日 +8.0%、20 日 -10.8%；距 20MA -3.0%、50MA -3.1%、200MA +8.0%；16 檔成分股站上 50MA 37.5%、200MA 56.2%；年線濾網：持有（出場線 $461.40）
+- 大戶怎麼走：最大單 2026-10-30 $140 Put $8.56M（看多/收租 (賣 Put)）；大戶 C/P 0.09 vs 散戶 C/P 0.64；SOXL/SOXS 資金流 2.88x（20 日均 3.2x）
+- 因子等級（借 Seeking Alpha 的 A+ … F 寫法，分數來自 24 因子評分表）：期權籌碼 **C** · 量能 **D-** · 技術趨勢 **D-** · 廣度 **D-** · 宏觀 **C-** · 情緒 **C+** · 消息 **A** → 總評 **D**
+- 四個聲音：2 空 / 2 中性 / 0 多 → 沒有任何多方聲音：不加碼、不開新倉：量化評級 賣出 / 減碼（綜合 -0.44）；訊號驗證 沒有驗證過的買點（不開新倉）；時事 / 宏觀 偏空（淨影響 -0.48）；費半趨勢 修正中
 
 ## 今日時事（過去 36 小時，對 SOXL 的影響）
-- 新聞氣壓 **偏空**（淨影響 -0.36，678 則，抓取 2026-10-29 09:06 台北）：🏦聯準會與利率 39空/5多、🌍地緣政治 70空/24多、🔧半導體與 AI 10空/27多、🏛️政策與關稅 7空/4多
-- 🔴 🌍 地緣政治（10/29 08:21，AP News）US warns allies to prepare for possible Iran strikes, retaliation after elections, AP sources say → 地緣風險升溫
-- 🔴 🏛️ 政策與關稅（10/29 06:11，Reuters）Trump says imported robotics pose national security risks but does not impose tariffs → 關稅或出口管制收緊
-- 🔴 📉 市場波動（10/29 05:46，WSJ）U.S. Stocks Fall as Tech Selloff Deepens → 整體風險偏好惡化
-- 🔴 🌍 地緣政治（10/29 01:22，Reuters）Caretaker role could limit Netanyahu but not rule out war with Iran → 地緣風險升溫
-- 🔴 🏛️ 政策與關稅（10/29 03:05，The Washington Post）Trump sets new tariffs to punish use of ‘forced labor,’ replacing expiring import taxes → 關稅或出口管制收緊
-- 🟢 🔧 半導體與 AI（10/29 06:12，Barron's）Microsoft Earnings: Stock Jumps on Big Earnings Beat, Tighter AI Spending → 龍頭財報、訂單或資本支出轉強
-- Seeking Alpha（SOXL / SOXX / NVDA 近 72 小時；連結在 JSON `flash.seeking_alpha[].link`）：中性「Dept of Justice studying Nvidia's $12.9B acquisition of Hugging Face - Reuters」（新聞）；中性「Nvidia says RTX Spark Windows laptops add new models, AI tools, and more」（新聞）；中性「Nvidia May Actually Raise Its 70% Growth Guide In November」（分析）
+- 新聞氣壓 **偏空**（淨影響 -0.48，766 則，抓取 2026-10-30 09:12 台北）：🌍地緣政治 95空/15多、🔧半導體與 AI 36空/20多、🏦聯準會與利率 29空/5多、📊經濟數據 23空/2多
+- 🔴 🌍 地緣政治（10/30 08:28，Reuters）Ukraine pauses strikes on Russian refineries after pressure from Trump, WSJ reports → 地緣風險升溫
+- 🔴 🌍 地緣政治（10/30 07:57，WSJ）Exclusive | Ukraine Pauses Strikes on Russian Refineries After Pressure From U.S. → 地緣風險升溫
+- 🔴 📉 市場波動（10/30 02:26，Yahoo Finance）Alphabet Brutal Sell-Off Sends Nasdaq Tumbling as AI Fears Rattle Wall Street → 整體風險偏好惡化
+- 🔴 🔧 半導體與 AI（10/29 23:01，Yahoo Finance）Micron Shares Fall 2.6% as Samsung Earnings Miss Forecasts Despite Record Chip Profits → 龍頭財報、訂單或資本支出轉弱
+- 🔴 📉 市場波動（10/29 20:59，Yahoo Finance）Stock market today: Dow, S&P 500, Nasdaq futures fall as Alphabet stock sells off, AI jitters return → 整體風險偏好惡化
+- 🔴 🔧 半導體與 AI（10/30 08:20，Bloomberg.com）Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks → 龍頭財報、訂單或資本支出轉弱
+- Seeking Alpha（SOXL / SOXX / NVDA 近 72 小時；連結在 JSON `flash.seeking_alpha[].link`）：中性「Nvidia refutes NYT article claiming Chinese spy targeted CEO and US failed to act」（新聞）；中性「Nvidia-backed Cohere closes in on $5B funding round」（新聞）；中性「Dept of Justice studying Nvidia's $12.9B acquisition of Hugging Face - Reuters」（新聞）
 - ⚠️ 地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。
-- ⚠️ 關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。
 - ⚠️ 有龍頭下修或凍結資本支出：這是這輪半導體行情的核心假設鬆動，計畫的 T1 / T2 當作減碼點而非目標。
 
 ## 交易計畫
@@ -49,80 +48,81 @@
 
 | 欄位 | 值 |
 |---|---|
-| 進場 | 收盤站上 近 10 日最高 $108.80 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單） |
-| 停損 | **$94.28**（-13.3%；1.2×ATR；新倉與舊倉唯一的出場價） |
-| 目標 T1 | $123.90（200MA 年線 / 週選 1σ 上緣，1.04R） |
-| 目標 T2 | $172.63（價值區上緣 VAH，4.40R） |
-| 風報比 | 加權 2.72R（門檻 1.5R）✅ 達標 |
-| 倉位 | 觸發後 7.5% 帳戶（每筆風險 1.0% ÷ 停損距離；評級上限 25%）；連續 3 次停損 = -3.0% |
+| 進場 | 收盤站上 VPVR POC 籌碼峰 $103.32 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單） |
+| 停損 | **$89.03**（-13.8%；1.2×ATR；新倉與舊倉唯一的出場價） |
+| 目標 T1 | $118.37（20MA 月線 / 布林中軌，1.05R） |
+| 目標 T2 | $135.60（Fib 61.8% 反彈位，2.26R） |
+| 風報比 | 加權 1.65R（門檻 1.5R）✅ 達標 |
+| 倉位 | 觸發後 7.2% 帳戶（每筆風險 1.0% ÷ 停損距離；評級上限 25%）；連續 3 次停損 = -3.0% |
 | 時間停損 | 10 個交易日內未觸及 T1 即平倉（訊號的驗證期） |
-| 失效條件 | 收盤 < $94.28（停損，唯一的出場價）；VIX/VIX3M ≥ 1.0（目前 0.912）；崩跌前兆分數 ≥ 80（目前 25） |
+| 失效條件 | 收盤 < $89.03（停損，唯一的出場價）；VIX/VIX3M ≥ 1.0（目前 0.873）；崩跌前兆分數 ≥ 80（目前 25） |
+- 期權鏈的即時價 $88.30 與收盤差 13.8%，週/月選 1σ 區間以即時價為中心，暫不拿來當目標或停損；牆（履約價）照用。
 - 今天沒有任何 A/B 級買進訊號成立，也沒有觸發價在 8% 內的待觸發訊號：不開新倉。下面的計畫是『如果觸發才執行』的條件單。
-- 停損 $94.28（-13.3%）：1.2×ATR14（ATR $12.10）；結構支撐 月選 Max Pain $105.00 太近（< 0.8×ATR）不採用。這是唯一的出場價，新倉與舊倉都用它；勝利交易 75% 的最大逆向波動在 1.2×ATR 以內，比這更緊會砍掉贏家。
-- 目標：T1 200MA 年線 / 週選 1σ 上緣 $123.90（1.04R）、T2 價值區上緣 VAH $172.63（4.4R），加權 2.72R。
+- 停損 $89.03（-13.8%）：1.2×ATR14（ATR $11.91）；結構支撐 Fib 23.6% 反彈位 $101.36 太近（< 0.8×ATR）不採用。這是唯一的出場價，新倉與舊倉都用它；勝利交易 75% 的最大逆向波動在 1.2×ATR 以內，比這更緊會砍掉贏家。
 
 **已持有者**
-- ✋ 續抱但不加碼；停損設在 $105.00，站回 $108.80 之前不要有「回本就好」的期待。
-- 硬停損 $94.28（1.2×ATR 停損）；現價已在吊燈線 $131.12 之下（-18.1%）：移動停損早已觸發，剩餘部位以硬停損為準
-- 減碼點：$108.80（近 10 日最高）、$113.35（20D VWAP / Fib 38.2% 反彈位）
+- 📉 減碼至少一半，剩下的部位跌破 $101.36 全出；不要攤平 3 倍槓桿。反彈到 $103.32～$105.00 是減碼點，不是加碼點。
+- 硬停損 $89.03（1.2×ATR 停損）；現價已在吊燈線 $131.59 之下（-22.2%）：移動停損早已觸發，剩餘部位以硬停損為準
+- 減碼點：$103.32（VPVR POC 籌碼峰）、$105.00（月選 Max Pain）
 - 歷史上沒有任何賣出訊號的命中率顯著高於基準，停損是保險不是預測；賣出訊號只用來決定減碼節奏。 近 10 日觸發的賣出訊號：死亡交叉
 
 ## 關鍵價位（由上而下）
 | 價位 | 類型 | 來源 | 距現價 |
 |---|---|---|---|
-| $120.00 | 壓力 | Call 牆 (OI 41,047) / 20MA 月線 | +11.8% |
-| $113.35 | 壓力 | 20D VWAP / Fib 38.2% 反彈位 | +5.6% |
-| $108.80 | 壓力 | 近 10 日最高 | +1.4% |
-| **$107.35** | 現價 | 2026-10-28 收盤 | — |
-| $105.00 | 支撐 | 月選 Max Pain | -2.2% |
-| $103.32 | 支撐 | VPVR POC 籌碼峰 / EMA10 | -3.8% |
-| $101.36 | 支撐 | Fib 23.6% 反彈位 | -5.6% |
-- 期權牆：Put 牆 $60 / Call 牆 $120 / Gamma 翻正 $98.4；淨 GEX 11.3M、P/C 成交 0.81、IV30 119%（CBOE 延遲鏈 2026-10-29 00:34:03；牆是以未平倉推算的模型值，不是觀察到的造市商部位）
-- 期權定價波動：週選 ±16.4% → $90 到 $125（2026-11-06）；月選 ±27.5% → $78 到 $137
-- 均線：20MA $120.9（-11.2%）/ 50MA $122.3 / 200MA $123.9（-13.4%）→ 空頭排列 (Bearish Alignment)
-- 波動：ATR14 11.3%（一天正常波動的尺度，停損距離由它決定）、量能 RVOL 1.01x、20 日實現波動率 128%
+| $108.60 | 壓力 | 近 10 日最高 | +6.1% |
+| $105.00 | 壓力 | 月選 Max Pain ※ | +2.5% |
+| $103.32 | 壓力 | VPVR POC 籌碼峰 | +0.9% |
+| **$102.39** | 現價 | 2026-10-29 收盤 | — |
+| $101.36 | 支撐 | Fib 23.6% 反彈位 | -1.0% |
+| $100.13 | 支撐 | EMA5 | -2.2% |
+| $94.22 | 支撐 | Gamma 翻正位 ※ | -8.0% |
+※ 以 CBOE 即時價 $88.30 為中心推算（與收盤差 -13.8%）；1σ 區間與 Gamma 翻正位會在下次更新隨開盤價重算，履約價型的牆不受影響。
+- 期權牆：Put 牆 $55 / Call 牆 $120 / Gamma 翻正 $94.2；淨 GEX -7.3M、P/C 成交 1.23、IV30 118%（CBOE 延遲鏈 2026-10-30 00:04:38；牆是以未平倉推算的模型值，不是觀察到的造市商部位；期權區以 CBOE 即時價 $88.30 為中心，與收盤差 -13.8%）
+- 期權定價波動：週選 ±16.2% → $74 到 $103（2026-11-06）；月選 ±28.5% → $63 到 $113
+- 均線：20MA $118.4（-13.5%）/ 50MA $122.0 / 200MA $124.1（-17.5%）→ 空頭排列 (Bearish Alignment)
+- 波動：ATR14 11.6%（一天正常波動的尺度，停損距離由它決定）、量能 RVOL 1.10x、20 日實現波動率 127%
 
-## 訊號驗證（2017-08-31 ~ 2026-10-28，非重疊交易，勝率旁為同期基準）
+## 訊號驗證（2017-08-31 ~ 2026-10-29，非重疊交易，勝率旁為同期基準）
 | 訊號 | 勝率 vs 基準（N） | 平均報酬 | 狀態 |
 |---|---|---|---|
 | 買 帶量破20日高 [B*★] | 83% vs 57%（24） | +12.3% / 20 日 | ⚪ 未觸發 |
 | 買 連3黑收5MA下 [B] | 64% vs 55%（62）；動態出場 75% vs 64% | +2.5% / 5 日 | ⚪ 未觸發 |
 | 買 KD低檔金叉 [B] | 70% vs 57%（33）；動態出場 63% vs 64% | +6.9% / 10 日 | 🟠 10 日內觸發 |
 | 買 7日新低年線上 [B] | 57% vs 55%（94）；動態出場 66% vs 64% | +2.3% / 7 日 | ⚪ 未觸發 |
-| 買 20MA上穿50MA [B] | 58% vs 57%（24） | +6.2% / 20 日 | ⚪ 未觸發 |
-| 買 站回20MA [C] | 64% vs 57%（39） | +9.4% / 20 日 | ⏳ 待觸發 >$119.21 |
+| 買 20MA上穿50MA [B] | 56% vs 57%（25） | +4.4% / 20 日 | ⚪ 未觸發 |
+| 買 站回20MA [C] | 64% vs 57%（39） | +9.4% / 20 日 | ⏳ 待觸發 >$115.98 |
 | 賣 吊燈3ATR [C] | 46% vs 43%（74） | +3.7% / 10 日 | ⚪ 未觸發 |
 | 賣 KD高檔死叉 [C] | 42% vs 43%（66） | +2.5% / 10 日 | ⚪ 未觸發 |
 - 買進訊號的勝率 = 訊號後 h 日收高的比例，賣出訊號的勝率 = 收低的比例；等級 A 可靠、B 尚可、B* 顯著但樣本外薄、C 無優勢；★ = 顯著高於基準（p < 0.05）。18 個有樣本的訊號中 1 個顯著，經多重檢定校正（BH q < 0.10）剩 0 個。
 - 賣出訊號：歷史上沒有一個的命中率高於基準，也沒有一個能預測 20 日內 ≥15% 的回撤 → 停損是保險，不是預測。 反轉買點用「收盤站上 5 日線」出場時，勝率基準本身就是 64%，請以該基準比較。
-- 200 日線濾網（2017-08 起，無成本）：SOXL 自身 → 空手（距年線 -13.4%；年化 13.6%、切換 91 次）；SOXX 指數 ±3% 帶 2 日確認 → 持有（距年線 +9.9%；年化 36.9%、最大回撤 -78.0%、切換 14 次）；買進抱牢 年化 36.0%、最大回撤 -90.5%。兩種讀法今天不一致。
+- 200 日線濾網（2017-08 起，無成本）：SOXL 自身 → 空手（距年線 -17.5%；年化 13.6%、切換 91 次）；SOXX 指數 ±3% 帶 2 日確認 → 持有（距年線 +8.0%；年化 36.2%、最大回撤 -78.0%、切換 14 次）；買進抱牢 年化 35.3%、最大回撤 -90.5%。兩種讀法今天不一致。
 
 ## 崩跌前兆
 - 分數 **25/100**（低風險 (症狀負荷低於歷史 60%)；≥60 注意、≥80 警戒）；完全成立 2 項；主要壓力來源：15 日內出現 3~6 個放量下跌『派發日』、布林通道寬度處 1 年高檔 (波動擴張)、VVIX >95 (波動率的波動升溫)
 - 分數 ≥80 的歷史命中率 12%（基準 9%，提升 1.4x）；歷史同類情境：跌破 200 日均線 >10% (趨勢受損)
 
 ## 48 小時內事件
-- 10/30（五） 週選擇權到期：到期後造市商 Gamma 部位重置，隔週波動常改變
-- 14 天內：10/29（四） INTC 財報（盤後）；11/3（二） AMD 財報（盤後）；11/4（三） ARM 財報（盤後）；11/4（三） QCOM 財報（盤後）；11/6（五） 週選擇權到期
+- 無。
+- 14 天內：10/30（五） 週選擇權到期；11/3（二） AMD 財報（盤後）；11/4（三） ARM 財報（盤後）；11/4（三） QCOM 財報（盤後）；11/6（五） 週選擇權到期
 
 ## 什麼會改變結論
-- 轉多：收盤站回 20MA $120.93；再加上 成分股站上 20MA 比例 > 40%（目前 38%）；MACD 柱體連續 2 日收斂 / 翻正（目前 Hist -1.97）
-- 轉更空：收盤 < $94.28；VIX/VIX3M ≥ 1.0（目前 0.912）；崩跌前兆分數 ≥ 80（目前 25）
+- 轉多：收盤站回 20MA $118.37；再加上 成分股站上 20MA 比例 > 40%（目前 25%）；MACD 柱體連續 2 日收斂 / 翻正（目前 Hist -1.05）
+- 轉更空：收盤 < $89.03；VIX/VIX3M ≥ 1.0（目前 0.873）；崩跌前兆分數 ≥ 80（目前 25）
 - 資料風險：無；期權牆與 GEX 為模型推算、每日 OI 結算後重算
 
 ## 情緒、廣度與籌碼
-- CNN Fear & Greed 35.9（恐懼 Fear；前值 33.6）｜VIX 17.52 / VIX3M 19.22 → 0.912（contango）｜SKEW 149.2｜VVIX 96.6
-- 16 檔成分股站上 20MA 38% / 50MA 50% / 200MA 56%；權值加權日漲跌 +1.72%；RSI14 46、MACD 柱 -1.97、KD 55/32
+- CNN Fear & Greed 34.6（恐懼 Fear；前值 35.9）｜VIX 16.91 / VIX3M 19.37 → 0.873（contango）｜SKEW 148.7｜VVIX 98.0
+- 16 檔成分股站上 20MA 25% / 50MA 38% / 200MA 56%；權值加權日漲跌 -1.05%；RSI14 43、MACD 柱 -1.05、KD 62/42
 
-## 消息面（近 7 日 利多 147 / 利空 99，比值 1.48）
-- 主題：獲利了結/基本面利空 ×20、個股動能/買盤利多 ×9、宏觀緩和利多 ×9、AI 估值/融資疑慮 ×9
-- 多 - SK hynix jumps another 5% as foreign investors scoop up shares, exciting retail investors（머니투데이）
-- 多 - KOSPI climbs above 6000 as US chip rally lifts Korea stocks（Chosunbiz）
-- 空 - Stock Market News, Oct. 28,2026: Alphabet Stock Drops Sharply After Revenue Miss（WSJ）
-- 空 - ServiceNow’s stock slides as earnings miss overshadows a raised AI outlook（MarketWatch）
+## 消息面（近 7 日 利多 131 / 利空 109，比值 1.20）
+- 主題：獲利了結/基本面利空 ×20、AI 估值/融資疑慮 ×9、個股動能/買盤利多 ×8、宏觀緩和利多 ×7
+- 多 - How Investors May Respond To AMD Stock Meta AI Infrastructure Deal（Simply Wall St）
+- 多 - Not Nvidia. Not AMD. This Custom AI Chip Designer Could Outperform Both by 2030.（The Motley Fool）
+- 空 - Stocks Close Lower as Alphabet Disappoints and Chip Stocks Fall（Nasdaq）
+- 空 - Intel stock plunges 21% as chipmaker blames PC slowdown for weak guidance（CNBC）
 
 ## 自我驗證
-- 最近 4 次有結果的評級，方向正確 2/4（50%）；連續同評級 2 個交易日
+- 最近 5 次有結果的評級，方向正確 2/5（40%）；連續同評級 1 個交易日；上次評級改變 2026-10-28
 - 完整報告 https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html ・ 新手版 https://corleonis6422.github.io/stock-dashboard/soxl_simple.html ・ JSON https://corleonis6422.github.io/stock-dashboard/feed/latest.json（新聞連結在 news.top_bull[].link）
 
 _本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。_
