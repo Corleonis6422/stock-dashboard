@@ -1,24 +1,26 @@
 {
- "data_as_of": "2026-11-04",
+ "data_as_of": "2026-11-05",
  "method": {
   "entry": "訊號日次一交易日開盤價",
   "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
   "declustered": true,
   "oos": "最近 40% 樣本（2023-03-07 起）",
   "ci": "Wilson 95%",
-  "sample": "2017-09-08 ~ 2026-11-04",
-  "bars": 2512,
-  "data_as_of": "2026-11-04",
+  "sample": "2017-09-08 ~ 2026-11-05",
+  "bars": 2513,
+  "data_as_of": "2026-11-05",
   "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
  },
  "summary": {
   "n_signals": 23,
   "n_graded_a": 0,
   "n_graded_b": 4,
-  "fired_today": [],
+  "fired_today": [
+   "rsi2_lt5_any"
+  ],
   "pending": [
-   "rsi2_lt5_any",
    "rsi14_lt25",
+   "bb_lower_reentry",
    "reclaim_sma20"
   ],
   "fired_long_ab": [],
@@ -69,13 +71,8 @@
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
-   "state": "pending",
-   "pending": {
-    "price": 45.19,
-    "op": "<=",
-    "dist_pct": -32.2,
-    "needs": null
-   }
+   "state": "fired",
+   "pending": null
   },
   {
    "key": "rsi14_lt25",
@@ -97,9 +94,9 @@
    "grade": "—",
    "state": "pending",
    "pending": {
-    "price": 34.51,
+    "price": 34.96,
     "op": "<=",
-    "dist_pct": -48.2,
+    "dist_pct": -14.2,
     "needs": null
    }
   },
@@ -121,8 +118,13 @@
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
-   "state": "off",
-   "pending": null
+   "state": "pending",
+   "pending": {
+    "price": 49.17,
+    "op": ">",
+    "dist_pct": 20.6,
+    "needs": "前提：今日收盤已在下軌之外"
+   }
   },
   {
    "key": "three_down_sma5",
@@ -152,14 +154,14 @@
    "horizon": 7,
    "n": 94,
    "win_pct": 57.4,
-   "base_win_pct": 54.7,
+   "base_win_pct": 54.6,
    "ci": [
     47.4,
     67.0
    ],
    "mean": 2.29,
    "pf": 1.47,
-   "p_value": 0.3342,
+   "p_value": 0.3271,
    "q_value": 0.9568,
    "significant": false,
    "grade": "B",
@@ -186,9 +188,9 @@
    "grade": "—",
    "state": "recent",
    "pending": {
-    "price": 67.49,
+    "price": 75.29,
     "op": ">",
-    "dist_pct": 1.2,
+    "dist_pct": 84.7,
     "needs": "2026-11-04 為投降日"
    }
   },
@@ -233,9 +235,9 @@
    "grade": "C",
    "state": "pending",
    "pending": {
-    "price": 97.83,
+    "price": 92.62,
     "op": ">",
-    "dist_pct": 46.7,
+    "dist_pct": 127.3,
     "needs": null
    }
   },
@@ -412,16 +414,16 @@
    "short_name": "派發日第4個",
    "side": "exit",
    "horizon": 20,
-   "n": 27,
-   "win_pct": 29.6,
+   "n": 28,
+   "win_pct": 32.1,
    "base_win_pct": 43.2,
    "ci": [
-    15.9,
-    48.5
+    17.9,
+    50.7
    ],
-   "mean": 12.82,
-   "pf": 5.05,
-   "p_value": 0.9497,
+   "mean": 9.77,
+   "pf": 2.73,
+   "p_value": 0.9168,
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
@@ -544,7 +546,7 @@
    "switches": 91,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -46.4
+   "dist_pct": -67.2
   },
   {
    "series": "SOXL",
@@ -555,7 +557,7 @@
    "switches": 45,
    "time_in_market_pct": 66.0,
    "in_market": false,
-   "dist_pct": -46.4
+   "dist_pct": -67.2
   },
   {
    "series": "SOXL",
@@ -566,7 +568,7 @@
    "switches": 29,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -46.4
+   "dist_pct": -67.2
   },
   {
    "series": "SOXX",
@@ -596,17 +598,17 @@
    "confirm_days": 1,
    "cagr_pct": 31.0,
    "max_dd_pct": -77.8,
-   "switches": 10,
+   "switches": 11,
    "time_in_market_pct": 78.0,
-   "in_market": true,
+   "in_market": false,
    "dist_pct": null
   },
   {
    "series": "SOXX",
    "band_pct": 3.0,
    "confirm_days": 2,
-   "cagr_pct": 29.8,
-   "max_dd_pct": -78.0,
+   "cagr_pct": 23.0,
+   "max_dd_pct": -86.4,
    "switches": 14,
    "time_in_market_pct": 78.0,
    "in_market": true,

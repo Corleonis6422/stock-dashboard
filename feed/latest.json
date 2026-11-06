@@ -1,14 +1,14 @@
 {
  "schema": "soxl-quant-brief/2",
- "generated_at": "2026-11-05 01:59:58",
+ "generated_at": "2026-11-06 01:42:58",
  "generated_at_tz": "Asia/Taipei",
- "data_as_of": "2026-11-04",
- "data_as_of_zh": "11/4（三）",
+ "data_as_of": "2026-11-05",
+ "data_as_of_zh": "11/5（四）",
  "data_status": {
   "label": "收盤即時報價補齊",
   "provisional": true,
   "final": true,
-  "note": "2026-11-04 的 K 線由 Nasdaq 即時報價補齊（官方日線通常收盤後數小時才公布），與官方收盤價可能有幾分錢差異，下次更新會自動換成官方數據。"
+  "note": "2026-11-05 的 K 線由 Nasdaq 即時報價補齊（官方日線通常收盤後數小時才公布），與官方收盤價可能有幾分錢差異，下次更新會自動換成官方數據。"
  },
  "warnings": [],
  "verdict": {
@@ -17,476 +17,476 @@
   "color": "bear",
   "rating_5": 2,
   "rating_label": "賣出 / 減碼",
-  "composite": -0.86,
-  "trend_score": -1.21,
-  "contrarian_score": 0.15,
-  "confidence": "中",
-  "agreement_pct": 57.0,
-  "regime": "空頭趨勢且情緒未到極端 → 保持觀望",
-  "one_liner": "趨勢偏空、底部條件還沒成立：現在不是買點。",
-  "headline": "趨勢已轉空、情緒尚未投降：保持觀望，等待底部確認",
+  "composite": -0.91,
+  "trend_score": -1.52,
+  "contrarian_score": 0.65,
+  "confidence": "高",
+  "agreement_pct": 71.0,
+  "regime": "空頭趨勢 + 情緒極端 → 『超賣反彈』格局：只做短線反彈、不做趨勢多單",
+  "one_liner": "趨勢偏空、底部條件還沒成立：現在不是買點。 情緒已到極端 → 反彈機率升高，但只適合小量短線，不是趨勢買點。",
+  "headline": "空頭趨勢 + 情緒極端 (極度恐懼 Extreme Fear)：現在是『超賣反彈區』而不是『趨勢買點』— 只做反彈、不重壓",
   "consensus": {
-   "buy_pct": 17.8,
-   "hold_pct": 18.8,
-   "sell_pct": 63.4,
-   "n_buy": 5,
-   "n_hold": 5,
-   "n_sell": 14
+   "buy_pct": 19.8,
+   "hold_pct": 20.8,
+   "sell_pct": 59.4,
+   "n_buy": 6,
+   "n_hold": 6,
+   "n_sell": 12
   },
   "size_pct": 10,
   "size_note": "條件不足：趨勢部位 0%；若要搶反彈，總額 ≤10% 且嚴守停損",
   "checklist": "2/8",
   "checklist_verdict": "⛔ 條件不足：持續觀望 / 只做極短線反彈",
   "tldr": [
-   "🔴 結論：賣出 / 減碼（綜合 -0.86，63% 權重偏空 / 19% 中性 / 18% 偏多，信心中）。",
-   "最大空方理由：均線結構 (20 / 50 / 200MA)（空頭排列 (Bearish Alignment) | 距 20MA -33.3% / 50MA -43.6% / 200MA -46.3%）；最大多方理由：Call/Put 成交量比 (今日)（1.48x (Call 294,695 / Put 199,659)）。",
-   "計畫：守 $63.86、看 $73.78 → $75.99；10 日內反彈 ≥10% 機率 48%、續跌 ≥10% 機率 22%（歷史同類情境）。"
+   "🔴 結論：賣出 / 減碼（綜合 -0.91，59% 權重偏空 / 21% 中性 / 20% 偏多，信心高）。",
+   "最大空方理由：均線結構 (20 / 50 / 200MA)（空頭排列 (Bearish Alignment) | 距 20MA -57.1% / 50MA -65.1% / 200MA -67.2%）；最大多方理由：Call/Put 成交量比 (今日)（2.05x (Call 676,300 / Put 329,440)）。",
+   "計畫：守 $38.85、看 $49.17 → $55.49；10 日內反彈 ≥10% 機率 48%、續跌 ≥10% 機率 22%（歷史同類情境）。"
   ],
-  "q_no_position": "❌ 現在不要買。 真的想搶反彈：最多用 ≤10% 的規劃部位，進場後跌破 $63.86（近 10 日最低）就出場，反彈到 $73.78（價值區下緣 VAL）先減一半。",
-  "q_holder": "📉 減碼至少一半，剩下的部位跌破 $63.86 全出；不要攤平 3 倍槓桿。反彈到 $73.78～$75.99 是減碼點，不是加碼點。",
-  "q_when": "最先要看到這幾件事：收盤站回 20 日均線（目前 現價 $66.76 vs 20MA $100.07）；VIX 期限結構回到正價差（目前 1.108）；成分股站上 20MA 比例 > 40%（目前 19%）。目前 2/8 項成立。"
+  "q_no_position": "❌ 現在不要買。 真的想搶反彈：最多用 ≤10% 的規劃部位，進場後跌破 $38.85（近 10 日最低）就出場，反彈到 $49.17（布林下軌）先減一半。",
+  "q_holder": "📉 減碼至少一半，剩下的部位跌破 $38.85 全出；不要攤平 3 倍槓桿。反彈到 $49.17～$55.49 是減碼點，不是加碼點。",
+  "q_when": "最先要看到這幾件事：收盤站回 20 日均線（目前 現價 $40.76 vs 20MA $94.97）；成分股站上 20MA 比例 > 40%（目前 6%）；大戶期權淨方向轉正（目前 -0.192）。目前 2/8 項成立。"
  },
  "price": {
-  "close": 66.76,
-  "open": 65.77,
-  "high": 67.49,
-  "low": 63.86,
+  "close": 40.76,
+  "open": 45.07,
+  "high": 48.23,
+  "low": 38.85,
   "volume": 247030255,
-  "ret_1d": -8.7,
-  "ret_5d": -37.81,
-  "ret_20d": -57.99,
-  "ret_60d": -49.8,
+  "ret_1d": -38.88,
+  "ret_5d": -60.2,
+  "ret_20d": -71.4,
+  "ret_60d": -71.33,
   "high_52w": 302.0,
   "low_52w": 28.12,
-  "drawdown_52w_pct": -77.9,
-  "rvol20": 2.11,
-  "atr_pct": 19.11,
-  "realized_vol_20d_pct": 154.0,
-  "consec_down_days": 1
+  "drawdown_52w_pct": -86.5,
+  "rvol20": 1.99,
+  "atr_pct": 34.56,
+  "realized_vol_20d_pct": 195.0,
+  "consec_down_days": 2
  },
  "levels": {
-  "sma20": 100.07,
-  "sma50": 118.28,
-  "sma200": 124.4,
-  "ema5": 75.99,
-  "ema10": 84.79,
-  "dist_sma20_pct": -33.3,
-  "dist_sma50_pct": -43.6,
-  "dist_sma200_pct": -46.3,
+  "sma20": 94.97,
+  "sma50": 116.76,
+  "sma200": 124.28,
+  "ema5": 64.23,
+  "ema10": 76.77,
+  "dist_sma20_pct": -57.1,
+  "dist_sma50_pct": -65.1,
+  "dist_sma200_pct": -67.2,
   "ma_structure": "空頭排列 (Bearish Alignment)",
   "pivot": {
-   "p": 66.04,
-   "r1": 68.21,
-   "s1": 64.58,
-   "r2": 69.67,
-   "s2": 62.41
+   "p": 42.61,
+   "r1": 46.37,
+   "s1": 37.0,
+   "r2": 51.98,
+   "s2": 33.24
   },
   "fib": {
-   "fib_236": 88.87,
-   "fib_382": 104.34,
-   "fib_500": 116.84,
-   "fib_618": 129.35,
-   "fib_786": 147.15
+   "fib_236": 69.76,
+   "fib_382": 88.89,
+   "fib_500": 104.34,
+   "fib_618": 119.8,
+   "fib_786": 141.8
   },
   "swing": {
    "kind": "down",
-   "low_price": 63.86,
-   "low_date": "2026-11-04",
+   "low_price": 38.8546,
+   "low_date": "2026-11-05",
    "high_price": 169.83,
    "high_date": "2026-10-06"
   },
   "bollinger": {
-   "upper": 143.17,
-   "mid": 100.07,
-   "lower": 56.97,
-   "pct_b": 0.11
+   "upper": 140.78,
+   "mid": 94.97,
+   "lower": 49.17,
+   "pct_b": -0.09
   },
   "volume_profile": {
-   "poc": 98.59,
-   "vah": 173.01,
-   "val": 73.78
+   "poc": 99.16,
+   "vah": 170.43,
+   "val": 71.75
   },
   "ladder": [
    {
-    "price": 84.79,
-    "label": "EMA10 / 月選 1σ 上緣",
-    "kind": "res",
-    "note": "短線均線（10 日）"
-   },
-   {
-    "price": 81.23,
-    "label": "Gamma 翻正位",
-    "kind": "res",
-    "note": "站上後造市商改為壓抑波動"
-   },
-   {
-    "price": 80.0,
-    "label": "Call 牆 (OI 24,891)",
-    "kind": "res",
-    "note": "大量買權未平倉 → 反壓"
-   },
-   {
-    "price": 77.25,
-    "label": "週選 1σ 上緣",
-    "kind": "res",
-    "note": "期權定價的一週常態波動上限"
-   },
-   {
-    "price": 75.99,
-    "label": "EMA5",
-    "kind": "res",
-    "note": "極短線均線（5 日）"
-   },
-   {
-    "price": 73.78,
+    "price": 71.75,
     "label": "價值區下緣 VAL",
     "kind": "res",
     "note": "半年成交密集區的下緣"
    },
    {
-    "price": 66.76,
-    "label": "現價",
-    "kind": "cur",
-    "note": "2026-11-04 收盤"
+    "price": 69.76,
+    "label": "Fib 23.6% 反彈位",
+    "kind": "res",
+    "note": "反彈第一道技術關卡"
    },
    {
-    "price": 63.86,
+    "price": 64.23,
+    "label": "EMA5",
+    "kind": "res",
+    "note": "極短線均線（5 日）"
+   },
+   {
+    "price": 60.0,
+    "label": "Call 牆 (OI 12,188) / 月選 1σ 上緣",
+    "kind": "res",
+    "note": "大量買權未平倉 → 反壓"
+   },
+   {
+    "price": 55.49,
+    "label": "週選 1σ 上緣",
+    "kind": "res",
+    "note": "期權定價的一週常態波動上限"
+   },
+   {
+    "price": 49.17,
+    "label": "布林下軌",
+    "kind": "res",
+    "note": "統計上的超跌邊界（2σ）"
+   },
+   {
+    "price": 40.76,
+    "label": "現價",
+    "kind": "cur",
+    "note": "2026-11-05 收盤"
+   },
+   {
+    "price": 38.8546,
     "label": "近 10 日最低",
     "kind": "sup",
     "note": "跌破 = 續跌確認"
    },
    {
-    "price": 56.97,
-    "label": "布林下軌",
-    "kind": "sup",
-    "note": "統計上的超跌邊界（2σ）"
-   },
-   {
-    "price": 52.35,
+    "price": 31.15,
     "label": "週選 1σ 下緣",
     "kind": "sup",
     "note": "期權定價的一週常態波動下限"
    },
    {
-    "price": 50.0,
-    "label": "Put 牆 (OI 50,624)",
+    "price": 28.12,
+    "label": "52 週最低",
     "kind": "sup",
-    "note": "大量賣權未平倉 → 支撐"
+    "note": "一年來最低價"
    },
    {
-    "price": 44.15,
+    "price": 26.62,
     "label": "月選 1σ 下緣",
     "kind": "sup",
     "note": "期權定價的一個月常態波動下限"
+   },
+   {
+    "price": 25.0,
+    "label": "Put 牆 (OI 29,497)",
+    "kind": "sup",
+    "note": "大量賣權未平倉 → 支撐"
    }
   ]
  },
  "technicals": {
-  "rsi14": 32.6,
-  "rsi6": 27.6,
-  "macd": -15.1,
-  "macd_signal": -12.02,
-  "macd_hist": -3.08,
-  "k9": 19.5,
-  "d9": 30.0,
-  "j9": -1.5,
-  "adx14": 30.1,
-  "pdi14": 15.9,
-  "ndi14": 42.3,
-  "cci20": -140.2,
-  "will_r14": -93.5,
+  "rsi14": 26.2,
+  "rsi6": 17.3,
+  "macd": -17.74,
+  "macd_signal": -13.16,
+  "macd_hist": -4.58,
+  "k9": 14.6,
+  "d9": 25.1,
+  "j9": -6.4,
+  "adx14": 32.0,
+  "pdi14": 13.4,
+  "ndi14": 48.2,
+  "cci20": -205.6,
+  "will_r14": -97.3,
   "mfi14": 36.5,
-  "cmf20": -0.082,
+  "cmf20": -0.213,
   "obv_bullish": false,
-  "supertrend": 105.14,
+  "supertrend": 85.58,
   "supertrend_bull": false,
-  "sar": 104.67,
+  "sar": 102.12,
   "ichimoku": {
-   "tenkan": 86.23,
-   "kijun": 116.84,
-   "cloud_top": 129.61,
+   "tenkan": 73.73,
+   "kijun": 104.34,
+   "cloud_top": 130.78,
    "cloud_bot": 128.62
   },
-  "up_down_vol_ratio_20d": 0.42,
-  "tech_avg_score": -1.0,
+  "up_down_vol_ratio_20d": 0.39,
+  "tech_avg_score": -0.82,
   "table": [
    {
     "group": "均線系統",
     "name": "均線結構 (SMA 20/50/200, EMA 5/10)",
-    "reading": "20MA $100.07 | 50MA $118.28 | 200MA $124.40",
+    "reading": "20MA $94.97 | 50MA $116.76 | 200MA $124.28",
     "score": -2,
     "signal": "空頭排列 (Bearish Alignment)"
    },
    {
     "group": "趨勢指標",
     "name": "MACD (12, 26, 9)",
-    "reading": "DIF -15.10 | DEA -12.02 | Hist -3.08",
+    "reading": "DIF -17.74 | DEA -13.16 | Hist -4.58",
     "score": -2,
     "signal": "零軸下空頭擴張"
    },
    {
     "group": "擺盪指標",
     "name": "KD / KDJ (9, 3, 3)",
-    "reading": "K=19.5 | D=30.0 | J=-1.5 (RSV 6.5)",
+    "reading": "K=14.6 | D=25.1 | J=-6.4 (RSV 2.7)",
     "score": 0,
     "signal": "低檔鈍化 (超賣)"
    },
    {
     "group": "擺盪指標",
     "name": "慢速 KD (14, 3, 3)",
-    "reading": "Slow K=12.3 | Slow D=16.2",
+    "reading": "Slow K=9.8 | Slow D=14.3",
     "score": 0,
     "signal": "低檔區"
    },
    {
     "group": "動能指標",
     "name": "多週期 RSI (6/14/24) & StochRSI",
-    "reading": "RSI6=27.5 | RSI14=32.6 | RSI24=37.4 | StochRSI=17",
-    "score": -1,
-    "signal": "中空偏弱 (<50)"
+    "reading": "RSI6=17.3 | RSI14=26.2 | RSI24=32.9 | StochRSI=0",
+    "score": 1,
+    "signal": "超賣區 (Oversold)"
    },
    {
     "group": "趨向指標",
     "name": "ADX / DMI (14)",
-    "reading": "ADX=30.1 | +DI=15.9 | -DI=42.3",
+    "reading": "ADX=32.0 | +DI=13.4 | -DI=48.2",
     "score": -1,
     "signal": "強勢空頭趨勢"
    },
    {
     "group": "趨勢追蹤",
     "name": "Supertrend (10, 3) & Parabolic SAR",
-    "reading": "ST $105.14 (空) | SAR $104.67",
+    "reading": "ST $85.58 (空) | SAR $102.12",
     "score": -1,
     "signal": "空頭壓制 (價在線下)"
    },
    {
     "group": "雲圖指標",
     "name": "一目均衡表 (9, 26, 52)",
-    "reading": "轉換線 $86.23 | 基準線 $116.84 | 雲帶 $128.62~$129.61",
+    "reading": "轉換線 $73.73 | 基準線 $104.34 | 雲帶 $128.62~$130.78",
     "score": -2,
     "signal": "雲下空頭"
    },
    {
     "group": "通道指標",
     "name": "布林通道 (20, 2)",
-    "reading": "上軌 $143.17 | 中軌 $100.07 | 下軌 $56.97 | %B=0.11",
+    "reading": "上軌 $140.78 | 中軌 $94.97 | 下軌 $49.17 | %B=-0.09",
     "score": 0,
-    "signal": "貼近下軌"
+    "signal": "跌破下軌 (極端超賣)"
    },
    {
     "group": "黃金分割",
-    "name": "斐波那契反彈 ($169.83 2026-10-06 → $63.86 2026-11-04)",
-    "reading": "382%=$104.34 | 500%=$116.84 | 618%=$129.35",
+    "name": "斐波那契反彈 ($169.83 2026-10-06 → $38.85 2026-11-05)",
+    "reading": "382%=$88.89 | 500%=$104.34 | 618%=$119.80",
     "score": -2,
     "signal": "弱勢反彈 (<23.6%)"
    },
    {
     "group": "擺盪指標",
     "name": "Williams %R (14) / CCI (20) / ROC (12)",
-    "reading": "%R=-93.5 | CCI=-140.2 | ROC12=-32.3%",
+    "reading": "%R=-97.3 | CCI=-205.6 | ROC12=-58.2%",
     "score": 0,
     "signal": "極度超賣"
    }
   ]
  },
  "options": {
-  "chain_timestamp": "2026-11-05 01:04:37",
-  "cboe_spot": 64.8,
-  "total_contracts": 3134,
-  "pc_vol_ratio": 0.678,
-  "pc_oi_ratio": 1.356,
-  "cp_prem_ratio": 0.69,
-  "net_gex_m": -15.7,
-  "gamma_flip": 81.2,
-  "call_wall": 80.0,
-  "call_wall_oi": 24891,
-  "put_wall": 50.0,
-  "put_wall_oi": 50624,
-  "near_max_pain": 93.0,
-  "monthly_max_pain": 90.0,
+  "chain_timestamp": "2026-11-06 01:04:33",
+  "cboe_spot": 43.32,
+  "total_contracts": 3252,
+  "pc_vol_ratio": 0.487,
+  "pc_oi_ratio": 1.254,
+  "cp_prem_ratio": 0.26,
+  "net_gex_m": -12.1,
+  "gamma_flip": null,
+  "call_wall": 60.0,
+  "call_wall_oi": 12188,
+  "put_wall": 25.0,
+  "put_wall_oi": 29497,
+  "near_max_pain": 85.0,
+  "monthly_max_pain": 85.0,
   "monthly_expiration": "2026-12-04",
-  "iv30_pct": 137.9,
-  "iv30_change": -6.5,
-  "iv_skew_25d": 20.0,
+  "iv30_pct": 187.5,
+  "iv30_change": 49.5,
+  "iv_skew_25d": 26.3,
   "expected_move": {
    "weekly": {
     "expiration": "2026-11-13",
-    "dte": 8,
-    "expected_move_pct": 19.2,
-    "low": 52.35,
-    "high": 77.25,
-    "atm_iv_pct": 150.1
+    "dte": 7,
+    "expected_move_pct": 28.1,
+    "low": 31.15,
+    "high": 55.49,
+    "atm_iv_pct": 243.5
    },
    "monthly": {
     "expiration": "2026-12-04",
-    "dte": 29,
-    "expected_move_pct": 31.9,
-    "low": 44.15,
-    "high": 85.45,
-    "atm_iv_pct": 137.8
+    "dte": 28,
+    "expected_move_pct": 38.6,
+    "low": 26.62,
+    "high": 60.02,
+    "atm_iv_pct": 176.8
    },
    "quarterly": {
     "expiration": "2027-02-19",
-    "dte": 106,
-    "expected_move_pct": 55.3,
-    "low": 28.97,
-    "high": 100.62,
-    "atm_iv_pct": 129.7
+    "dte": 105,
+    "expected_move_pct": 64.1,
+    "low": 15.55,
+    "high": 71.09,
+    "atm_iv_pct": 153.8
    }
   },
   "whale": {
-   "whale_count": 97,
-   "whale_call_prem_m": 56.49,
-   "whale_put_prem_m": 61.15,
-   "whale_net_score": -0.381,
-   "whale_bull_prem_m": 36.39,
-   "whale_bear_prem_m": 81.25,
-   "retail_cp_ratio": 0.31
+   "whale_count": 231,
+   "whale_call_prem_m": 108.13,
+   "whale_put_prem_m": 270.84,
+   "whale_net_score": -0.192,
+   "whale_bull_prem_m": 153.18,
+   "whale_bear_prem_m": 225.78,
+   "retail_cp_ratio": 0.11
   },
   "nearest_expirations": [
    {
     "expiration": "2026-11-06",
-    "dte": 1,
-    "pc_vol": 0.64,
-    "pc_oi": 0.86,
-    "max_pain": 85.0,
-    "net_gex_m": -4.88,
-    "atm_iv_pct": 173.9
+    "dte": 0,
+    "pc_vol": 0.31,
+    "pc_oi": 0.7,
+    "max_pain": 75.0,
+    "net_gex_m": -3.08,
+    "atm_iv_pct": 351.2
    },
    {
     "expiration": "2026-11-13",
-    "dte": 8,
-    "pc_vol": 0.61,
-    "pc_oi": 0.92,
-    "max_pain": 95.0,
-    "net_gex_m": -0.88,
-    "atm_iv_pct": 157.3
+    "dte": 7,
+    "pc_vol": 0.44,
+    "pc_oi": 0.88,
+    "max_pain": 85.0,
+    "net_gex_m": -0.73,
+    "atm_iv_pct": 234.5
    },
    {
     "expiration": "2026-11-20",
-    "dte": 15,
-    "pc_vol": 0.67,
-    "pc_oi": 1.38,
-    "max_pain": 104.0,
-    "net_gex_m": -4.32,
-    "atm_iv_pct": 151.0
+    "dte": 14,
+    "pc_vol": 0.77,
+    "pc_oi": 1.22,
+    "max_pain": 100.0,
+    "net_gex_m": -3.21,
+    "atm_iv_pct": 214.1
    }
   ]
  },
  "sentiment": {
   "fear_greed": {
-   "score": 27.3,
-   "rating": "fear",
-   "rating_zh": "恐懼 Fear",
-   "previous_close": 19.1,
-   "week_ago": 34.4,
-   "month_ago": 38.2
+   "score": 19.9,
+   "rating": "extreme fear",
+   "rating_zh": "極度恐懼 Extreme Fear",
+   "previous_close": 27.3,
+   "week_ago": 30.8,
+   "month_ago": 43.1
   },
   "vix": {
-   "date": "2026-11-03",
-   "vix": 20.83,
-   "vix9d": 15.19,
-   "vix3m": 18.8,
-   "vix6m": 20.68,
-   "vvix": 90.41,
-   "skew": 150.01,
-   "ratio_vix_3m": 1.108,
-   "term_state": "backwardation",
-   "term_zh": "倒掛 (近月恐慌 > 遠月)：恐慌高峰常伴隨短線底部，但趨勢仍脆弱",
-   "vix_regime": "恐慌升溫 (20-25)",
-   "vvix_regime": "平穩 (<95)",
+   "date": "2026-11-04",
+   "vix": 16.61,
+   "vix9d": 32.66,
+   "vix3m": 25.55,
+   "vix6m": 25.29,
+   "vvix": 134.99,
+   "skew": 150.9,
+   "ratio_vix_3m": 0.65,
+   "term_state": "contango",
+   "term_zh": "正價差 (遠月 > 近月)：常態、風險偏好穩定",
+   "vix_regime": "溫和警戒 (16-20)",
+   "vvix_regime": "壓力 (>110)",
    "skew_regime": "極高尾部風險定價 (>150)",
-   "vix_percentile_1y": 85.0,
-   "vix_5d_chg_pct": 18.9
+   "vix_percentile_1y": 42.0,
+   "vix_5d_chg_pct": -1.8
   },
   "market_put_call": {
-   "date": "2026-11-03",
-   "total_pc": 0.86,
-   "equity_pc": 0.6,
-   "index_pc": 1.02,
-   "equity_pc_percentile": 68.0,
-   "equity_read": "中性 (0.55-0.70)",
+   "date": "2026-11-04",
+   "total_pc": 0.8,
+   "equity_pc": 0.44,
+   "index_pc": 0.97,
+   "equity_pc_percentile": 5.0,
+   "equity_read": "自滿/追多 (<0.55)",
    "total_read": "中性 (0.75-0.9)"
   },
   "flows": {
-   "date": "2026-11-04",
-   "soxl_dollar_vol_m": 16491.7,
-   "soxs_dollar_vol_m": 4632.4,
-   "ratio": 3.56
+   "date": "2026-11-05",
+   "soxl_dollar_vol_m": 10067.7,
+   "soxs_dollar_vol_m": 9354.7,
+   "ratio": 1.08
   },
   "pulse": {
-   "score": 38.0,
+   "score": 43.0,
    "rating_zh": "恐懼 Fear"
   },
   "cross_asset": [
    {
     "symbol": "HYG",
     "label": "HYG 高收益債 (風險偏好)",
-    "last": 77.52,
-    "chg_5d_pct": -0.1,
-    "chg_20d_pct": 0.43,
-    "percentile_1y": 10.0
+    "last": 77.34,
+    "chg_5d_pct": -0.31,
+    "chg_20d_pct": 0.26,
+    "percentile_1y": 9.0
    },
    {
     "symbol": "TLT",
     "label": "TLT 20年期美債 (避險)",
-    "last": 81.76,
-    "chg_5d_pct": 0.95,
-    "chg_20d_pct": 5.98,
-    "percentile_1y": 16.0
+    "last": 81.97,
+    "chg_5d_pct": 0.59,
+    "chg_20d_pct": 5.26,
+    "percentile_1y": 18.0
    },
    {
     "symbol": "DX-Y.NYB",
     "label": "美元指數 (UUP ETF 代理)",
-    "last": 28.91,
-    "chg_5d_pct": -0.53,
-    "chg_20d_pct": -0.46,
-    "percentile_1y": 92.0
+    "last": 28.93,
+    "chg_5d_pct": -0.38,
+    "chg_20d_pct": -0.17,
+    "percentile_1y": 93.0
    },
    {
     "symbol": "HG=F",
     "label": "銅 (CPER ETF 代理)",
-    "last": 38.59,
-    "chg_5d_pct": -4.33,
-    "chg_20d_pct": -3.08,
-    "percentile_1y": 64.0
+    "last": 37.35,
+    "chg_5d_pct": -5.98,
+    "chg_20d_pct": -5.33,
+    "percentile_1y": 51.0
    },
    {
     "symbol": "GC=F",
     "label": "黃金 (GLD ETF 代理)",
-    "last": 372.45,
-    "chg_5d_pct": -0.28,
-    "chg_20d_pct": -0.91,
-    "percentile_1y": 12.0
+    "last": 375.48,
+    "chg_5d_pct": 1.87,
+    "chg_20d_pct": -0.83,
+    "percentile_1y": 16.0
    },
    {
     "symbol": "BTC-USD",
     "label": "比特幣 (IBIT ETF 代理)",
-    "last": 45.33,
-    "chg_5d_pct": -1.76,
-    "chg_20d_pct": -3.98,
-    "percentile_1y": 61.0
+    "last": 43.03,
+    "chg_5d_pct": -5.85,
+    "chg_20d_pct": -6.97,
+    "percentile_1y": 46.0
    }
   ]
  },
  "breadth": {
-  "above_sma20_pct": 18.8,
-  "above_sma50_pct": 18.8,
-  "above_sma200_pct": 37.5,
-  "oversold_pct": 25.0,
-  "weighted_ret_1d": -2.48,
-  "weighted_ret_5d": -11.01,
-  "weighted_ret_20d": -18.46,
-  "avg_rsi14": 40.6,
+  "above_sma20_pct": 6.2,
+  "above_sma50_pct": 12.5,
+  "above_sma200_pct": 6.2,
+  "oversold_pct": 56.2,
+  "weighted_ret_1d": -12.54,
+  "weighted_ret_5d": -21.38,
+  "weighted_ret_20d": -26.38,
+  "avg_rsi14": 31.0,
   "constituents": [
    {
     "ticker": "NVDA",
     "weight": 10.2,
-    "close": 200.13,
-    "ret_1d": -3.17,
-    "ret_5d": -7.08,
-    "ret_20d": -15.72,
-    "rsi14": 34.5,
+    "close": 182.29,
+    "ret_1d": -8.91,
+    "ret_5d": -14.68,
+    "ret_20d": -20.91,
+    "rsi14": 25.6,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -494,11 +494,11 @@
    {
     "ticker": "AVGO",
     "weight": 9.8,
-    "close": 325.48,
-    "ret_1d": -2.0,
-    "ret_5d": -7.48,
-    "ret_20d": -13.55,
-    "rsi14": 42.0,
+    "close": 292.43,
+    "ret_1d": -10.15,
+    "ret_5d": -15.24,
+    "ret_20d": -18.8,
+    "rsi14": 31.7,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -506,59 +506,59 @@
    {
     "ticker": "AMD",
     "weight": 8.4,
-    "close": 488.78,
-    "ret_1d": 1.01,
-    "ret_5d": -15.5,
-    "ret_20d": -24.32,
-    "rsi14": 39.5,
+    "close": 403.8,
+    "ret_1d": -17.39,
+    "ret_5d": -28.71,
+    "ret_20d": -34.94,
+    "rsi14": 29.7,
     "above_sma20": false,
     "above_sma50": false,
-    "above_sma200": true
+    "above_sma200": false
    },
    {
     "ticker": "MU",
     "weight": 7.6,
-    "close": 795.23,
-    "ret_1d": -7.0,
-    "ret_5d": -19.12,
-    "ret_20d": -26.91,
-    "rsi14": 35.4,
+    "close": 653.9,
+    "ret_1d": -17.77,
+    "ret_5d": -30.01,
+    "ret_20d": -36.87,
+    "rsi14": 26.9,
     "above_sma20": false,
     "above_sma50": false,
-    "above_sma200": true
+    "above_sma200": false
    },
    {
     "ticker": "QCOM",
     "weight": 6.8,
-    "close": 173.19,
-    "ret_1d": 5.33,
-    "ret_5d": -5.35,
-    "ret_20d": -2.22,
-    "rsi14": 47.8,
+    "close": 156.58,
+    "ret_1d": -9.59,
+    "ret_5d": -15.55,
+    "ret_20d": -11.04,
+    "rsi14": 37.4,
     "above_sma20": false,
     "above_sma50": false,
-    "above_sma200": true
+    "above_sma200": false
    },
    {
     "ticker": "TXN",
     "weight": 6.5,
-    "close": 311.49,
-    "ret_1d": -0.32,
-    "ret_5d": 0.54,
-    "ret_20d": 7.79,
-    "rsi14": 65.1,
-    "above_sma20": true,
+    "close": 279.79,
+    "ret_1d": -10.18,
+    "ret_5d": -10.59,
+    "ret_20d": -2.92,
+    "rsi14": 43.6,
+    "above_sma20": false,
     "above_sma50": true,
     "above_sma200": true
    },
    {
     "ticker": "AMAT",
     "weight": 6.1,
-    "close": 369.4,
-    "ret_1d": -3.28,
-    "ret_5d": -11.2,
-    "ret_20d": -29.05,
-    "rsi14": 33.5,
+    "close": 317.6,
+    "ret_1d": -14.02,
+    "ret_5d": -24.68,
+    "ret_20d": -37.67,
+    "rsi14": 25.7,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -566,11 +566,11 @@
    {
     "ticker": "LRCX",
     "weight": 5.6,
-    "close": 221.43,
-    "ret_1d": -4.03,
-    "ret_5d": -12.76,
-    "ret_20d": -32.8,
-    "rsi14": 30.0,
+    "close": 184.88,
+    "ret_1d": -16.51,
+    "ret_5d": -27.33,
+    "ret_20d": -42.33,
+    "rsi14": 22.6,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -578,11 +578,11 @@
    {
     "ticker": "KLAC",
     "weight": 5.2,
-    "close": 149.76,
-    "ret_1d": -4.13,
-    "ret_5d": -5.68,
-    "ret_20d": -23.92,
-    "rsi14": 36.5,
+    "close": 128.32,
+    "ret_1d": -14.33,
+    "ret_5d": -23.36,
+    "ret_20d": -34.77,
+    "rsi14": 27.6,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -590,11 +590,11 @@
    {
     "ticker": "INTC",
     "weight": 4.8,
-    "close": 58.27,
-    "ret_1d": -3.77,
-    "ret_5d": -39.0,
-    "ret_20d": -48.49,
-    "rsi14": 22.8,
+    "close": 52.22,
+    "ret_1d": -10.39,
+    "ret_5d": -43.29,
+    "ret_20d": -51.24,
+    "rsi14": 20.6,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -602,23 +602,23 @@
    {
     "ticker": "ADI",
     "weight": 4.6,
-    "close": 406.24,
-    "ret_1d": -3.23,
-    "ret_5d": -5.14,
-    "ret_20d": -0.94,
-    "rsi14": 50.3,
+    "close": 361.7,
+    "ret_1d": -10.96,
+    "ret_5d": -16.52,
+    "ret_20d": -10.9,
+    "rsi14": 35.1,
     "above_sma20": false,
-    "above_sma50": true,
-    "above_sma200": true
+    "above_sma50": false,
+    "above_sma200": false
    },
    {
     "ticker": "MRVL",
     "weight": 4.4,
-    "close": 159.8,
-    "ret_1d": -7.08,
-    "ret_5d": -36.5,
-    "ret_20d": -43.87,
-    "rsi14": 26.8,
+    "close": 133.22,
+    "ret_1d": -16.63,
+    "ret_5d": -38.99,
+    "ret_20d": -51.5,
+    "rsi14": 22.6,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -626,35 +626,35 @@
    {
     "ticker": "NXPI",
     "weight": 4.1,
-    "close": 265.01,
-    "ret_1d": 0.84,
-    "ret_5d": 5.29,
-    "ret_20d": 12.66,
-    "rsi14": 65.7,
+    "close": 246.75,
+    "ret_1d": -6.89,
+    "ret_5d": -7.24,
+    "ret_20d": 6.79,
+    "rsi14": 51.2,
     "above_sma20": true,
     "above_sma50": true,
-    "above_sma200": true
+    "above_sma200": false
    },
    {
     "ticker": "MPWR",
     "weight": 3.8,
-    "close": 1261.08,
-    "ret_1d": -5.06,
-    "ret_5d": 4.12,
-    "ret_20d": -11.56,
-    "rsi14": 49.8,
-    "above_sma20": true,
+    "close": 1128.6,
+    "ret_1d": -10.51,
+    "ret_5d": -5.86,
+    "ret_20d": -17.61,
+    "rsi14": 39.2,
+    "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
    },
    {
     "ticker": "ON",
     "weight": 3.5,
-    "close": 71.24,
-    "ret_1d": -1.87,
-    "ret_5d": -5.8,
-    "ret_20d": -13.66,
-    "rsi14": 43.6,
+    "close": 63.23,
+    "ret_1d": -11.25,
+    "ret_5d": -15.97,
+    "ret_20d": -20.38,
+    "rsi14": 33.8,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -662,11 +662,11 @@
    {
     "ticker": "TER",
     "weight": 3.2,
-    "close": 250.99,
-    "ret_1d": -6.82,
-    "ret_5d": -19.87,
-    "ret_20d": -39.05,
-    "rsi14": 27.1,
+    "close": 212.01,
+    "ret_1d": -15.53,
+    "ret_5d": -28.43,
+    "ret_20d": -46.83,
+    "rsi14": 22.1,
     "above_sma20": false,
     "above_sma50": false,
     "above_sma200": false
@@ -674,109 +674,109 @@
   ]
  },
  "macro": {
-  "latest_date": "2026-11-03",
+  "latest_date": "2026-11-04",
   "kpis": [
    {
     "key": "TNX_10Y",
     "name": "美國 10 年期公債殖利率 (^TNX)",
-    "latest": "4.950%",
-    "chg_1d": "+4.0 bps",
-    "chg_20d": "-36.0 bps",
-    "corr_20d": 0.627,
-    "corr_60d": 0.174,
+    "latest": "4.900%",
+    "chg_1d": "-5.0 bps",
+    "chg_20d": "-37.0 bps",
+    "corr_20d": 0.645,
+    "corr_60d": 0.212,
     "regime": "高檔 (4.6-5.2%)"
    },
    {
     "key": "TYX_30Y",
     "name": "美國 30 年期公債殖利率 (^TYX)",
-    "latest": "5.320%",
-    "chg_1d": "+4.0 bps",
-    "chg_20d": "-34.0 bps",
-    "corr_20d": 0.53,
-    "corr_60d": 0.199,
+    "latest": "5.280%",
+    "chg_1d": "-4.0 bps",
+    "chg_20d": "-36.0 bps",
+    "corr_20d": 0.538,
+    "corr_60d": 0.233,
     "regime": "高檔 (4.9-5.5%)"
    },
    {
     "key": "BRENT",
     "name": "Brent 原油 (BNO ETF 代理)",
-    "latest": "$66.11",
-    "chg_1d": "+0.24%",
-    "chg_20d": "+7.58%",
-    "corr_20d": -0.143,
-    "corr_60d": -0.233,
-    "regime": "20 日 +7.6%"
+    "latest": "$60.40",
+    "chg_1d": "-8.64%",
+    "chg_20d": "-2.47%",
+    "corr_20d": -0.033,
+    "corr_60d": -0.131,
+    "regime": "20 日 -2.5%"
    },
    {
     "key": "VIX",
     "name": "CBOE 恐慌指數 (VIX)",
-    "latest": "20.83",
-    "chg_1d": "-1.51%",
-    "chg_20d": "+34.21%",
-    "corr_20d": -0.831,
-    "corr_60d": -0.659,
-    "regime": "警戒 (20-25)"
+    "latest": "16.61",
+    "chg_1d": "-20.26%",
+    "chg_20d": "+10.66%",
+    "corr_20d": -0.632,
+    "corr_60d": -0.549,
+    "regime": "溫和 (16-20)"
    },
    {
     "key": "DXY",
     "name": "美元指數 (UUP ETF 代理)",
-    "latest": "29.01",
-    "chg_1d": "+0.17%",
-    "chg_20d": "+0.07%",
-    "corr_20d": 0.324,
-    "corr_60d": 0.059,
+    "latest": "28.90",
+    "chg_1d": "-0.38%",
+    "chg_20d": "+0.00%",
+    "corr_20d": 0.379,
+    "corr_60d": 0.092,
     "regime": ""
    },
    {
     "key": "HYG",
     "name": "高收益債 HYG",
-    "latest": "76.98",
-    "chg_1d": "+0.12%",
-    "chg_20d": "+0.00%",
-    "corr_20d": 0.548,
-    "corr_60d": 0.379,
+    "latest": "77.52",
+    "chg_1d": "+0.70%",
+    "chg_20d": "+0.32%",
+    "corr_20d": 0.412,
+    "corr_60d": 0.303,
     "regime": ""
    },
    {
     "key": "GOLD",
     "name": "黃金 (GLD ETF 代理)",
-    "latest": "359.26",
-    "chg_1d": "-0.66%",
-    "chg_20d": "-5.35%",
-    "corr_20d": 0.527,
-    "corr_60d": 0.386,
+    "latest": "372.49",
+    "chg_1d": "+3.68%",
+    "chg_20d": "-2.56%",
+    "corr_20d": 0.373,
+    "corr_60d": 0.335,
     "regime": ""
    },
    {
     "key": "COPPER",
     "name": "銅 (CPER ETF 代理)",
-    "latest": "38.51",
-    "chg_1d": "-2.18%",
-    "chg_20d": "-3.39%",
-    "corr_20d": 0.511,
-    "corr_60d": 0.55,
+    "latest": "38.59",
+    "chg_1d": "+0.21%",
+    "chg_20d": "-3.60%",
+    "corr_20d": 0.495,
+    "corr_60d": 0.554,
     "regime": ""
    },
    {
     "key": "BTC",
     "name": "比特幣 (IBIT ETF 代理)",
-    "latest": "44.05",
-    "chg_1d": "+1.61%",
-    "chg_20d": "-9.29%",
-    "corr_20d": 0.725,
-    "corr_60d": 0.353,
+    "latest": "45.33",
+    "chg_1d": "+2.91%",
+    "chg_20d": "-6.52%",
+    "corr_20d": 0.626,
+    "corr_60d": 0.323,
     "regime": ""
    }
   ],
-  "beta_tnx_10bps": -2.33,
-  "beta_vix_20d": -1.04,
-  "beta_brent_20d": -0.61,
+  "beta_tnx_10bps": -2.13,
+  "beta_vix_20d": -0.68,
+  "beta_brent_20d": -0.11,
   "missing": []
  },
  "crash_risk": {
-  "score": 21.0,
-  "raw": 8.9,
+  "score": 41.0,
+  "raw": 14.0,
   "zone": "低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆",
-  "n_active": 1,
+  "n_active": 3,
   "above_200ma": false,
   "active_signals": [
    {
@@ -787,23 +787,23 @@
    {
     "label": "布林通道寬度處 1 年高檔 (波動擴張)",
     "family": "A 過熱",
-    "points": 1.5
+    "points": 3.2
    },
    {
-    "label": "SOXL/SOXS 資金比暴增且價格下跌 (散戶接刀狂潮)",
-    "family": "E 情緒",
-    "points": 0.7
+    "label": "VVIX >95 (波動率的波動升溫)",
+    "family": "C 波動",
+    "points": 3.0
    }
   ],
   "event_study": {
    "n_episodes": 24,
    "stats_top_80": {
     "threshold": 80.0,
-    "flag_days": 179,
-    "precision_pct": 12.3,
+    "flag_days": 180,
+    "precision_pct": 12.2,
     "recall_pct": 36.7,
     "base_rate_pct": 9.0,
-    "lift": 1.36
+    "lift": 1.35
    }
   },
   "analog_h10": {
@@ -823,17 +823,17 @@
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "weight": 20,
-    "avg_score": -0.8
+    "avg_score": -0.6
    },
    {
     "category": "2. 量能結構 (Volume)",
     "weight": 14,
-    "avg_score": -1.36
+    "avg_score": -2.0
    },
    {
     "category": "3. 技術趨勢 (Technicals)",
     "weight": 26,
-    "avg_score": -1.54
+    "avg_score": -1.23
    },
    {
     "category": "4. 板塊廣度 (Heat Map Breadth)",
@@ -843,32 +843,32 @@
    {
     "category": "5. 宏觀跨資產 (Macro)",
     "weight": 10,
-    "avg_score": -0.2
+    "avg_score": 0.0
    },
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "weight": 15,
-    "avg_score": 0.67
+    "avg_score": 0.8
    },
    {
     "category": "7. 消息面 (News Sentiment)",
     "weight": 6,
-    "avg_score": 0.0
+    "avg_score": -2.0
    }
   ],
   "factors": [
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "metric": "Call/Put 成交量比 (今日)",
-    "value": "1.48x (Call 294,695 / Put 199,659)",
-    "score": 1,
+    "value": "2.05x (Call 676,300 / Put 329,440)",
+    "score": 2,
     "weight": 4,
     "kind": "flow"
    },
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "metric": "淨 Gamma 曝險 & Gamma 翻正位",
-    "value": "GEX -15.7M | Gamma 翻正位 $81.23（現價上方）",
+    "value": "GEX -12.1M | 無明確 Gamma 翻正位",
     "score": -2,
     "weight": 5,
     "kind": "flow"
@@ -876,7 +876,7 @@
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "metric": "25Δ IV 偏度 (Put IV − Call IV)",
-    "value": "+20.0% (Put 151% / Call 131%)",
+    "value": "+26.3% (Put 209% / Call 183%)",
     "score": -2,
     "weight": 3,
     "kind": "flow"
@@ -884,7 +884,7 @@
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "metric": "大戶 (Whale) 期權淨方向",
-    "value": "淨分數 -0.381 | 大單 Call $56.5M vs Put $61.1M (C/P 0.92)",
+    "value": "淨分數 -0.192 | 大單 Call $108.1M vs Put $270.8M (C/P 0.4)",
     "score": -1,
     "weight": 4,
     "kind": "flow"
@@ -892,7 +892,7 @@
    {
     "category": "1. 期權籌碼 (Options Flow)",
     "metric": "Max Pain 與 Call/Put 牆位置",
-    "value": "近月 Max Pain $93 (+39.3%) | Call 牆 $80.0 | Put 牆 $50.0",
+    "value": "近月 Max Pain $85 (+108.5%) | Call 牆 $60.0 | Put 牆 $25.0",
     "score": 0,
     "weight": 4,
     "kind": "flow"
@@ -900,7 +900,7 @@
    {
     "category": "2. 量能結構 (Volume)",
     "metric": "20 日上漲/下跌量能比",
-    "value": "0.42x (漲 7 天 / 跌 13 天；RVOL 2.11x)",
+    "value": "0.39x (漲 7 天 / 跌 13 天；RVOL 1.99x)",
     "score": -2,
     "weight": 5,
     "kind": "trend"
@@ -908,23 +908,23 @@
    {
     "category": "2. 量能結構 (Volume)",
     "metric": "資金流 CMF(20) / OBV / MFI(14)",
-    "value": "CMF -0.082 | OBV 空 | MFI 36",
-    "score": -1,
+    "value": "CMF -0.213 | OBV 空 | MFI 36",
+    "score": -2,
     "weight": 4,
     "kind": "trend"
    },
    {
     "category": "2. 量能結構 (Volume)",
     "metric": "籌碼位階：20D VWAP / VPVR POC / 價值區",
-    "value": "現價 $66.76 | VWAP $94.29 | POC $98.59 | 價值區 $73.78~$173.01",
-    "score": -1,
+    "value": "現價 $40.76 | VWAP $87.30 | POC $99.16 | 價值區 $71.75~$170.43",
+    "score": -2,
     "weight": 5,
     "kind": "trend"
    },
    {
     "category": "3. 技術趨勢 (Technicals)",
     "metric": "均線結構 (20 / 50 / 200MA)",
-    "value": "空頭排列 (Bearish Alignment) | 距 20MA -33.3% / 50MA -43.6% / 200MA -46.3%",
+    "value": "空頭排列 (Bearish Alignment) | 距 20MA -57.1% / 50MA -65.1% / 200MA -67.2%",
     "score": -2,
     "weight": 8,
     "kind": "trend"
@@ -932,7 +932,7 @@
    {
     "category": "3. 技術趨勢 (Technicals)",
     "metric": "MACD (12, 26, 9)",
-    "value": "DIF -15.10 | DEA -12.02 | Hist -3.08",
+    "value": "DIF -17.74 | DEA -13.16 | Hist -4.58",
     "score": -2,
     "weight": 5,
     "kind": "trend"
@@ -940,7 +940,7 @@
    {
     "category": "3. 技術趨勢 (Technicals)",
     "metric": "KD / KDJ (9, 3, 3)",
-    "value": "K=19.5 | D=30.0 | J=-1.5 (RSV 6.5)",
+    "value": "K=14.6 | D=25.1 | J=-6.4 (RSV 2.7)",
     "score": 0,
     "weight": 4,
     "kind": "contrarian"
@@ -948,8 +948,8 @@
    {
     "category": "3. 技術趨勢 (Technicals)",
     "metric": "多週期 RSI (6/14/24) & StochRSI",
-    "value": "RSI6=27.5 | RSI14=32.6 | RSI24=37.4 | StochRSI=17",
-    "score": -1,
+    "value": "RSI6=17.3 | RSI14=26.2 | RSI24=32.9 | StochRSI=0",
+    "score": 1,
     "weight": 4,
     "kind": "contrarian"
    },
@@ -964,7 +964,7 @@
    {
     "category": "4. 板塊廣度 (Heat Map Breadth)",
     "metric": "成分股站上 20 / 50 / 200MA 比例",
-    "value": "19% / 19% / 38% | RSI<30 佔 25%",
+    "value": "6% / 12% / 6% | RSI<30 佔 56%",
     "score": -2,
     "weight": 6,
     "kind": "trend"
@@ -972,7 +972,7 @@
    {
     "category": "4. 板塊廣度 (Heat Map Breadth)",
     "metric": "權值股加權動能 (1D / 5D / 20D)",
-    "value": "-2.48% / -11.01% / -18.46%",
+    "value": "-12.54% / -21.38% / -26.38%",
     "score": -2,
     "weight": 4,
     "kind": "trend"
@@ -980,31 +980,31 @@
    {
     "category": "5. 宏觀跨資產 (Macro)",
     "metric": "10Y / 30Y 美債殖利率",
-    "value": "10Y 4.95% | 30Y 5.32% | 10Y 20 日 -36.0 bps",
-    "score": 1,
+    "value": "10Y 4.90% | 30Y 5.28% | 10Y 20 日 -37.0 bps",
+    "score": 0,
     "weight": 4,
     "kind": "trend"
    },
    {
     "category": "5. 宏觀跨資產 (Macro)",
     "metric": "原油走勢 (通膨/利率傳導，ETF 代理)",
-    "value": "Brent 原油 (BNO ETF 代理) 20 日 +7.58% | 20D 相關 -0.14",
-    "score": -1,
+    "value": "Brent 原油 (BNO ETF 代理) 20 日 -2.47% | 20D 相關 -0.03",
+    "score": 0,
     "weight": 3,
     "kind": "trend"
    },
    {
     "category": "5. 宏觀跨資產 (Macro)",
     "metric": "VIX 水位 (趨勢面)",
-    "value": "VIX 20.83 | 恐慌升溫 (20-25) | 1 年百分位 85% | 5 日 +19%",
-    "score": -1,
+    "value": "VIX 16.61 | 溫和警戒 (16-20) | 1 年百分位 42% | 5 日 -2%",
+    "score": 0,
     "weight": 3,
     "kind": "trend"
    },
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "metric": "CNN Fear & Greed (逆勢)",
-    "value": "27 恐懼 Fear | 一週前 34 | 一月前 38",
+    "value": "20 極度恐懼 Extreme Fear | 一週前 31 | 一月前 43",
     "score": 1,
     "weight": 4,
     "kind": "contrarian"
@@ -1012,7 +1012,7 @@
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "metric": "VIX 期限結構 (VIX / VIX3M)",
-    "value": "1.11 → backwardation | VIX9D 15.19 / VIX 20.83 / VIX3M 18.8",
+    "value": "0.65 → contango | VIX9D 32.66 / VIX 16.61 / VIX3M 25.55",
     "score": 1,
     "weight": 3,
     "kind": "contrarian"
@@ -1020,7 +1020,7 @@
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "metric": "CBOE 個股 Put/Call (5 日均, 逆勢)",
-    "value": "0.61 (單日 0.60) | 全市場 0.86 | SPX 1.13",
+    "value": "0.59 (單日 0.44) | 全市場 0.80 | SPX 1.2",
     "score": 0,
     "weight": 3,
     "kind": "contrarian"
@@ -1028,15 +1028,15 @@
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "metric": "SOXL / SOXS 資金流 (散戶行為)",
-    "value": "成交金額比 3.56 (20 日均 2.98)",
-    "score": 0,
+    "value": "成交金額比 1.08 (20 日均 2.79)",
+    "score": 1,
     "weight": 2,
     "kind": "contrarian"
    },
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "metric": "崩跌前兆分數 (Crash Risk Score, 歷史百分位)",
-    "value": "21 / 100 → 低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆 | 觸發訊號 1 項",
+    "value": "41 / 100 → 低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆 | 觸發訊號 3 項",
     "score": 1,
     "weight": 3,
     "kind": "trend"
@@ -1044,8 +1044,8 @@
    {
     "category": "7. 消息面 (News Sentiment)",
     "metric": "近 7 日利多 / 利空新聞比",
-    "value": "利多 29 則 vs 利空 26 則 (1.12x)",
-    "score": 0,
+    "value": "利多 87 則 vs 利空 233 則 (0.37x)",
+    "score": -2,
     "weight": 6,
     "kind": "trend"
    }
@@ -1053,71 +1053,71 @@
   "bull_case": [
    {
     "metric": "Call/Put 成交量比 (今日)",
-    "value": "1.48x (Call 294,695 / Put 199,659)",
-    "pts": 4,
-    "why": "今日 Put 成交 199,659 口 vs Call 294,695 口；Put/Call = 0.68。"
+    "value": "2.05x (Call 676,300 / Put 329,440)",
+    "pts": 8,
+    "why": "今日 Put 成交 329,440 口 vs Call 676,300 口；Put/Call = 0.49。"
    },
    {
-    "metric": "10Y / 30Y 美債殖利率",
-    "value": "10Y 4.95% | 30Y 5.32% | 10Y 20 日 -36.0 bps",
+    "metric": "多週期 RSI (6/14/24) & StochRSI",
+    "value": "RSI6=17.3 | RSI14=26.2 | RSI24=32.9 | StochRSI=0",
     "pts": 4,
-    "why": "10Y 每升 10bps，SOXL 平均 -2.33%；殖利率自高檔回落 (資金避險湧入債市) 對估值是緩解，但也反映風險偏好惡化。"
+    "why": "RSI(14)=26.2 跌入 30 以下超賣區，RSI(6)=17.3，歷史上此區間常出現技術性反彈，但超賣可持續。"
    },
    {
     "metric": "CNN Fear & Greed (逆勢)",
-    "value": "27 恐懼 Fear | 一週前 34 | 一月前 38",
+    "value": "20 極度恐懼 Extreme Fear | 一週前 31 | 一月前 43",
     "pts": 4,
-    "why": "七項子指標：S&P 500 動能 26；創 52 週新高 vs 新低家數 39；上漲 vs 下跌成交量 45；5 日 Put/Call 比率 18；VIX 波動率 50；垃圾債需求 3；避險需求 10"
+    "why": "七項子指標：S&P 500 動能 6；創 52 週新高 vs 新低家數 42；上漲 vs 下跌成交量 45；5 日 Put/Call 比率 8；VIX 波動率 2；垃圾債需求 34；避險需求 1"
    },
    {
     "metric": "VIX 期限結構 (VIX / VIX3M)",
-    "value": "1.11 → backwardation | VIX9D 15.19 / VIX 20.83 / VIX3M 18.8",
+    "value": "0.65 → contango | VIX9D 32.66 / VIX 16.61 / VIX3M 25.55",
     "pts": 3,
-    "why": "倒掛 (近月恐慌 > 遠月)：恐慌高峰常伴隨短線底部，但趨勢仍脆弱"
+    "why": "正價差 (遠月 > 近月)：常態、風險偏好穩定"
    }
   ],
   "bear_case": [
    {
     "metric": "均線結構 (20 / 50 / 200MA)",
-    "value": "空頭排列 (Bearish Alignment) | 距 20MA -33.3% / 50MA -43.6% / 200MA -46.3%",
+    "value": "空頭排列 (Bearish Alignment) | 距 20MA -57.1% / 50MA -65.1% / 200MA -67.2%",
     "pts": -16,
-    "why": "50MA($118.28) 已下穿 200MA($124.40) 形成死亡交叉，現價位於所有均線之下，為標準空頭排列。"
+    "why": "50MA($116.76) 已下穿 200MA($124.28) 形成死亡交叉，現價位於所有均線之下，為標準空頭排列。"
    },
    {
     "metric": "成分股站上 20 / 50 / 200MA 比例",
-    "value": "19% / 19% / 38% | RSI<30 佔 25%",
+    "value": "6% / 12% / 6% | RSI<30 佔 56%",
     "pts": -12,
-    "why": "16 檔核心半導體僅 19% 站在月線上，25% 已進入 RSI 超賣；廣度洗到極端通常離短線底部不遠，但需等待首批個股站回月線確認。"
+    "why": "16 檔核心半導體僅 6% 站在月線上，56% 已進入 RSI 超賣；廣度洗到極端通常離短線底部不遠，但需等待首批個股站回月線確認。"
+   },
+   {
+    "metric": "近 7 日利多 / 利空新聞比",
+    "value": "利多 87 則 vs 利空 233 則 (0.37x)",
+    "pts": -12,
+    "why": "主題：獲利了結/基本面利空×24、個股動能/買盤利多×20、分析師升評利多×3、宏觀緩和利多×3、AI 估值/融資疑慮×3"
    },
    {
     "metric": "淨 Gamma 曝險 & Gamma 翻正位",
-    "value": "GEX -15.7M | Gamma 翻正位 $81.23（現價上方）",
+    "value": "GEX -12.1M | 無明確 Gamma 翻正位",
     "pts": -10,
-    "why": "負 Gamma：造市商順勢對沖，漲跌皆被放大，日內波動劇烈。 站回 $81 以上波動才會收斂。"
-   },
-   {
-    "metric": "20 日上漲/下跌量能比",
-    "value": "0.42x (漲 7 天 / 跌 13 天；RVOL 2.11x)",
-    "pts": -10,
-    "why": "放量吸籌日 7 天 vs 放量派發日 11 天。"
+    "why": "負 Gamma：造市商順勢對沖，漲跌皆被放大，日內波動劇烈。"
    }
   ]
  },
  "plan": {
-  "entry": "站回 $73.78 且量能比 >1 時第一批；或在 $63.86 上方分批試單（僅限反彈單）",
-  "stop": "收盤跌破 $63.86（近 10 日最低）",
-  "target": "$73.78（價值區下緣 VAL） → $75.99（EMA5）",
-  "risk_reward": 2.4,
+  "entry": "站回 $49.17 且量能比 >1 時第一批；或在 $38.85 上方分批試單（僅限反彈單）",
+  "stop": "收盤跌破 $38.85（近 10 日最低）",
+  "target": "$49.17（布林下軌） → $55.49（週選 1σ 上緣）",
+  "risk_reward": 4.4,
   "max_size_pct": 10,
-  "stop_price": 63.86,
+  "stop_price": 38.85,
   "stop_label": "近 10 日最低",
-  "stop_dist_pct": -4.3,
-  "target1_price": 73.78,
-  "target1_label": "價值區下緣 VAL",
-  "target1_dist_pct": 10.5,
-  "target2_price": 75.99,
-  "target2_label": "EMA5",
-  "target2_dist_pct": 13.8
+  "stop_dist_pct": -4.7,
+  "target1_price": 49.17,
+  "target1_label": "布林下軌",
+  "target1_dist_pct": 20.6,
+  "target2_price": 55.49,
+  "target2_label": "週選 1σ 上緣",
+  "target2_dist_pct": 36.1
  },
  "trade_plan": {
   "side": "no_trade",
@@ -1126,39 +1126,39 @@
   "headline": "⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫",
   "entry": {
    "type": "conditional",
-   "price": 73.78,
-   "rule": "收盤站上 價值區下緣 VAL $73.78 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）",
+   "price": 49.17,
+   "rule": "收盤站上 布林下軌 $49.17 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）",
    "signal": null
   },
   "stop": {
-   "price": 58.47,
-   "dist_pct": -20.8,
+   "price": 32.27,
+   "dist_pct": -34.4,
    "k_atr": 1.2,
-   "atr14": 12.76,
+   "atr14": 14.08,
    "kind": "atr",
-   "basis": "1.2×ATR14（ATR $12.76）；結構支撐 近 10 日最低 $63.86 太近（< 0.8×ATR）不採用"
+   "basis": "1.2×ATR14（ATR $14.08）；結構支撐 近 10 日最低 $38.85 太近（< 0.8×ATR）不採用"
   },
   "t1": {
-   "price": 98.59,
-   "label": "VPVR POC",
-   "rr": 1.62,
+   "price": 69.76,
+   "label": "Fib 23.6% 反彈位",
+   "rr": 1.22,
    "synthetic": false
   },
   "t2": {
-   "price": 116.84,
-   "label": "Fib 50% 反彈位",
-   "rr": 2.81,
+   "price": 88.89,
+   "label": "Fib 38.2% 反彈位",
+   "rr": 2.35,
    "synthetic": false
   },
-  "rr_t1": 1.62,
-  "rr_t2": 2.81,
-  "rr_blend": 2.21,
+  "rr_t1": 1.22,
+  "rr_t2": 2.35,
+  "rr_blend": 1.79,
   "min_rr": 1.5,
   "trade_if_entry": null,
   "size": {
    "pct": 0.0,
-   "if_triggered_pct": 4.8,
-   "risk_based_pct": 4.8,
+   "if_triggered_pct": 2.9,
+   "risk_based_pct": 2.9,
    "verdict_cap_pct": 10.0,
    "risk_per_trade_pct": 1.0,
    "three_stops_pct": -3.0
@@ -1169,27 +1169,27 @@
    "kind": "fixed"
   },
   "invalidation": [
-   "收盤 < $58.47（停損，唯一的出場價）",
-   "VIX/VIX3M ≥ 1.0（目前 1.108）",
-   "崩跌前兆分數 ≥ 80（目前 21）"
+   "收盤 < $32.27（停損，唯一的出場價）",
+   "VIX/VIX3M ≥ 1.0（目前 0.650）",
+   "崩跌前兆分數 ≥ 80（目前 41）"
   ],
   "signals_fired": [],
   "signals_pending": [],
   "holder": {
-   "hard_stop": 58.47,
+   "hard_stop": 32.27,
    "hard_stop_label": "1.2×ATR 停損",
-   "trail_stop": 130.21,
-   "trail_rule": "吊燈出場：22 日高 $169.83 − 3×ATR22 $13.21",
+   "trail_stop": 117.38,
+   "trail_rule": "吊燈出場：22 日高 $159.49 − 3×ATR22 $14.04",
    "trail_breached": true,
-   "trail_note": "現價已在吊燈線 $130.21 之下（-48.7%）：移動停損早已觸發，剩餘部位以硬停損為準",
+   "trail_note": "現價已在吊燈線 $117.38 之下（-65.3%）：移動停損早已觸發，剩餘部位以硬停損為準",
    "reduce_into": [
     {
-     "price": 73.78,
-     "label": "價值區下緣 VAL"
+     "price": 49.17,
+     "label": "布林下軌"
     },
     {
-     "price": 75.99,
-     "label": "EMA5"
+     "price": 60.0,
+     "label": "Call 牆"
     }
    ],
    "exit_signals_fired": [],
@@ -1197,13 +1197,13 @@
     "死亡交叉"
    ],
    "edge_note": "歷史上沒有任何賣出訊號的命中率顯著高於基準，停損是保險不是預測；賣出訊號只用來決定減碼節奏。",
-   "verdict_action": "📉 減碼至少一半，剩下的部位跌破 $63.86 全出；不要攤平 3 倍槓桿。反彈到 $73.78～$75.99 是減碼點，不是加碼點。"
+   "verdict_action": "📉 減碼至少一半，剩下的部位跌破 $38.85 全出；不要攤平 3 倍槓桿。反彈到 $49.17～$55.49 是減碼點，不是加碼點。"
   },
   "regime": {
    "soxl_own": {
     "in_market": false,
-    "sma200": 124.4,
-    "dist_pct": -46.4,
+    "sma200": 124.28,
+    "dist_pct": -67.2,
     "cagr_pct": 13.5,
     "switches": 91
    },
@@ -1215,20 +1215,20 @@
     "dist_pct": null,
     "exit_below": null,
     "enter_above": null,
-    "cagr_pct": 29.8,
-    "max_dd_pct": -78.0,
+    "cagr_pct": 23.0,
+    "max_dd_pct": -86.4,
     "switches": 14,
     "rule": "SOXX 收盤連續 2 日在 200 日線 ±3% 帶外才切換"
    },
    "agree": false
   },
   "explain": [
-   "期權鏈的即時價 $64.80 與收盤差 2.9%，週/月選 1σ 區間以即時價為中心，暫不拿來當目標或停損；牆（履約價）照用。",
+   "期權鏈的即時價 $43.32 與收盤差 6.3%，週/月選 1σ 區間以即時價為中心，暫不拿來當目標或停損；牆（履約價）照用。",
    "今天沒有任何 A/B 級買進訊號成立，也沒有觸發價在 8% 內的待觸發訊號：不開新倉。下面的計畫是『如果觸發才執行』的條件單。",
-   "停損 $58.47（-20.8%）：1.2×ATR14（ATR $12.76）；結構支撐 近 10 日最低 $63.86 太近（< 0.8×ATR）不採用。這是唯一的出場價，新倉與舊倉都用它；勝利交易 75% 的最大逆向波動在 1.2×ATR 以內，比這更緊會砍掉贏家。",
-   "目標：T1 VPVR POC $98.59（1.62R）、T2 Fib 50% 反彈位 $116.84（2.81R），加權 2.21R。",
-   "倉位：每筆只冒 1.0% 帳戶風險 ÷ 停損距離 20.8% = 4.8% 帳戶；評級上限 10% → 觸發後採 4.8%。連續 3 次停損 = −3% 帳戶。",
-   "兩種 200 日線讀法今天不一致：SOXL 自身在年線下（-46.4%），SOXX 指數在年線上（未知）。長期持有者看指數那條（切換少、回測較佳），短線反彈單看 SOXL 自身。"
+   "停損 $32.27（-34.4%）：1.2×ATR14（ATR $14.08）；結構支撐 近 10 日最低 $38.85 太近（< 0.8×ATR）不採用。這是唯一的出場價，新倉與舊倉都用它；勝利交易 75% 的最大逆向波動在 1.2×ATR 以內，比這更緊會砍掉贏家。",
+   "目標：T1 Fib 23.6% 反彈位 $69.76（1.22R）、T2 Fib 38.2% 反彈位 $88.89（2.35R），加權 1.79R。",
+   "倉位：每筆只冒 1.0% 帳戶風險 ÷ 停損距離 34.4% = 2.9% 帳戶；評級上限 10% → 觸發後採 2.9%。連續 3 次停損 = −3% 帳戶。",
+   "兩種 200 日線讀法今天不一致：SOXL 自身在年線下（-67.2%），SOXX 指數在年線上（未知）。長期持有者看指數那條（切換少、回測較佳），短線反彈單看 SOXL 自身。"
   ],
   "method": "停損 = 進場下方最近的結構支撐（需 ≥ 0.8×ATR），太近則用 1.2×ATR（或訊號校準 k）；同一價位也是持有者的硬停損。T1/T2 = 進場上方首個 ≥1R / ≥2R 的壓力；加權風報比 ≥ 1.5 才算可交易；倉位 = 1.0% 帳戶風險 ÷ 停損距離，受評級上限約束。"
  },
@@ -1326,15 +1326,12 @@
     "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
    },
    "dd15": null,
-   "state": "pending",
-   "fired": false,
-   "recent_dates": [],
-   "pending": {
-    "price": 45.19,
-    "op": "<=",
-    "dist_pct": -32.2,
-    "needs": null
-   },
+   "state": "fired",
+   "fired": true,
+   "recent_dates": [
+    "2026-11-05"
+   ],
+   "pending": null,
    "last_signal": {
     "date": "2026-10-15",
     "ret": -18.9
@@ -1386,9 +1383,9 @@
    "fired": false,
    "recent_dates": [],
    "pending": {
-    "price": 34.51,
+    "price": 34.96,
     "op": "<=",
-    "dist_pct": -48.2,
+    "dist_pct": -14.2,
     "needs": null
    },
    "last_signal": {
@@ -1438,10 +1435,15 @@
     "exit_rule": "首次收盤站上 5 日線出場（最多 10 日）"
    },
    "dd15": null,
-   "state": "off",
+   "state": "pending",
    "fired": false,
    "recent_dates": [],
-   "pending": null,
+   "pending": {
+    "price": 49.17,
+    "op": ">",
+    "dist_pct": 20.6,
+    "needs": "前提：今日收盤已在下軌之外"
+   },
    "last_signal": {
     "date": "2026-10-19",
     "ret": -27.9
@@ -1512,11 +1514,11 @@
     47.4,
     67.0
    ],
-   "base_win_pct": 54.7,
-   "edge_pts": 2.7,
+   "base_win_pct": 54.6,
+   "edge_pts": 2.8,
    "mean": 2.29,
    "pf": 1.47,
-   "p_value": 0.3342,
+   "p_value": 0.3271,
    "q_value": 0.9568,
    "significant": false,
    "is_win_pct": 54.5,
@@ -1597,9 +1599,9 @@
     "2026-10-27"
    ],
    "pending": {
-    "price": 67.49,
+    "price": 75.29,
     "op": ">",
-    "dist_pct": 1.2,
+    "dist_pct": 84.7,
     "needs": "2026-11-04 為投降日"
    },
    "last_signal": {
@@ -1688,9 +1690,9 @@
    "fired": false,
    "recent_dates": [],
    "pending": {
-    "price": 97.83,
+    "price": 92.62,
     "op": ">",
-    "dist_pct": 46.7,
+    "dist_pct": 127.3,
     "needs": null
    },
    "last_signal": {
@@ -2005,8 +2007,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 44.7,
-    "base_pct": 50.4,
-    "p_value": 0.8238,
+    "base_pct": 50.5,
+    "p_value": 0.8273,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2049,8 +2051,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 51.4,
-    "base_pct": 50.4,
-    "p_value": 0.4812,
+    "base_pct": 50.5,
+    "p_value": 0.4881,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2070,31 +2072,31 @@
    "side": "exit",
    "horizon": 20,
    "rule": "25 個交易日內放量下跌日累計達 4 個且收盤仍在 50MA 之上（O'Neil）；看 20 個交易日後",
-   "n": 27,
-   "win_pct": 29.6,
+   "n": 28,
+   "win_pct": 32.1,
    "ci": [
-    15.9,
-    48.5
+    17.9,
+    50.7
    ],
    "base_win_pct": 43.2,
-   "edge_pts": -13.6,
-   "mean": 12.82,
-   "pf": 5.05,
-   "p_value": 0.9497,
+   "edge_pts": -11.1,
+   "mean": 9.77,
+   "pf": 2.73,
+   "p_value": 0.9168,
    "q_value": 0.9568,
    "significant": false,
    "is_win_pct": 31.2,
-   "oos_win_pct": 27.3,
-   "oos_n": 11,
+   "oos_win_pct": 33.3,
+   "oos_n": 12,
    "grade": "C",
    "grade_zh": "無優勢",
    "stop_k_atr": null,
    "sim_oos": null,
    "dyn": null,
    "dd15": {
-    "rate_pct": 29.6,
-    "base_pct": 50.4,
-    "p_value": 0.9914,
+    "rate_pct": 32.1,
+    "base_pct": 50.5,
+    "p_value": 0.9843,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2102,8 +2104,8 @@
    "recent_dates": [],
    "pending": null,
    "last_signal": {
-    "date": "2026-04-28",
-    "ret": 89.9
+    "date": "2026-10-08",
+    "ret": -72.5
    }
   },
   {
@@ -2137,8 +2139,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 47.4,
-    "base_pct": 50.4,
-    "p_value": 0.7038,
+    "base_pct": 50.5,
+    "p_value": 0.7081,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2181,8 +2183,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 62.5,
-    "base_pct": 50.4,
-    "p_value": 0.3721,
+    "base_pct": 50.5,
+    "p_value": 0.3743,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2225,8 +2227,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 51.5,
-    "base_pct": 50.4,
-    "p_value": 0.477,
+    "base_pct": 50.5,
+    "p_value": 0.4835,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2269,8 +2271,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 60.0,
-    "base_pct": 50.4,
-    "p_value": 0.1926,
+    "base_pct": 50.5,
+    "p_value": 0.1957,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "off",
@@ -2313,8 +2315,8 @@
    "dyn": null,
    "dd15": {
     "rate_pct": 33.3,
-    "base_pct": 50.4,
-    "p_value": 0.8943,
+    "base_pct": 50.5,
+    "p_value": 0.8952,
     "definition": "訊號後 20 個交易日內自次日開盤回撤 ≥ 15% 的比例"
    },
    "state": "recent",
@@ -2336,19 +2338,21 @@
    "declustered": true,
    "oos": "最近 40% 樣本（2023-03-07 起）",
    "ci": "Wilson 95%",
-   "sample": "2017-09-08 ~ 2026-11-04",
-   "bars": 2512,
-   "data_as_of": "2026-11-04",
+   "sample": "2017-09-08 ~ 2026-11-05",
+   "bars": 2513,
+   "data_as_of": "2026-11-05",
    "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
   },
   "summary": {
    "n_signals": 23,
    "n_graded_a": 0,
    "n_graded_b": 4,
-   "fired_today": [],
+   "fired_today": [
+    "rsi2_lt5_any"
+   ],
    "pending": [
-    "rsi2_lt5_any",
     "rsi14_lt25",
+    "bb_lower_reentry",
     "reclaim_sma20"
    ],
    "fired_long_ab": [],
@@ -2375,7 +2379,7 @@
     "switches": 91,
     "time_in_market_pct": 65.0,
     "in_market": false,
-    "dist_pct": -46.4
+    "dist_pct": -67.2
    },
    {
     "series": "SOXL",
@@ -2386,7 +2390,7 @@
     "switches": 45,
     "time_in_market_pct": 66.0,
     "in_market": false,
-    "dist_pct": -46.4
+    "dist_pct": -67.2
    },
    {
     "series": "SOXL",
@@ -2397,7 +2401,7 @@
     "switches": 29,
     "time_in_market_pct": 65.0,
     "in_market": false,
-    "dist_pct": -46.4
+    "dist_pct": -67.2
    },
    {
     "series": "SOXX",
@@ -2427,17 +2431,17 @@
     "confirm_days": 1,
     "cagr_pct": 31.0,
     "max_dd_pct": -77.8,
-    "switches": 10,
+    "switches": 11,
     "time_in_market_pct": 78.0,
-    "in_market": true,
+    "in_market": false,
     "dist_pct": null
    },
    {
     "series": "SOXX",
     "band_pct": 3.0,
     "confirm_days": 2,
-    "cagr_pct": 29.8,
-    "max_dd_pct": -78.0,
+    "cagr_pct": 23.0,
+    "max_dd_pct": -86.4,
     "switches": 14,
     "time_in_market_pct": 78.0,
     "in_market": true,
@@ -2445,351 +2449,464 @@
    }
   ],
   "buy_hold": {
-   "cagr_pct": 28.9,
+   "cagr_pct": 22.2,
    "max_dd_pct": -90.5,
-   "final_multiple": 10.2
+   "final_multiple": 6.23
   },
   "regime_note": "同一套 200 日線濾網，分別用 SOXL 自身與標的指數當訊號；無交易成本，帶寬敏感度高，請看整張表而非單一數字",
-  "atr14": 12.76,
-  "atr_pct": 19.13
+  "atr14": 14.08,
+  "atr_pct": 34.56
  },
  "beginner": {
   "buy": {
    "answer": "不該買",
    "emoji": "❌",
-   "text": "評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 價值區下緣 VAL $73.78 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 4.8% 試單）。",
-   "basis": "trade_plan.side=no_trade, rating_5=2, rr_blend=2.21"
+   "text": "評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 布林下軌 $49.17 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 2.9% 試單）。",
+   "basis": "trade_plan.side=no_trade, rating_5=2, rr_blend=1.79"
   },
-  "biggest_thing": "今天最大的事：Qualcomm’s stock falls as twin forces pressure sales（MarketWatch，11/05 09:06 台北）→ 🔧 半導體與 AI，對 SOXL 利空：龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。",
-  "flash_label": "中性",
-  "holder": "硬停損 $58.47（1.2×ATR 停損）；現價已在吊燈線 $130.21 之下（-48.7%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $73.78 / $75.99 先減碼",
+  "biggest_thing": "今天最大的事：Dow drops 1,800 points; Nasdaq tumbles into correction territory on AI tech wreck: Live updates（CNBC，11/06 09:32 台北）→ 📉 市場波動，對 SOXL 利空：整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。",
+  "flash_label": "偏空",
+  "holder": "硬停損 $32.27（1.2×ATR 停損）；現價已在吊燈線 $117.38 之下（-65.3%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $49.17 / $60.00 先減碼",
   "watch": {
    "label": "條件買點，收盤站上才算",
-   "price": 73.78
+   "price": 49.17
   },
   "risk_48h": [
-   "11/6（五） 週選擇權到期",
-   "聯準會偏鷹（CNBC：Euro zone inflation hits 4% for first time in three years as interest…）"
+   "地緣風險升溫（The New York Times：Iran is Reviewing ‘Concrete Proposals’ on Nuclear Program, Officials Say）",
+   "關稅 / 出口管制收緊（Reuters：EU to impose duties on US imports Friday after Trump tariffs）",
+   "聯準會偏鷹（CNBC：Bank of England hikes interest rate for the first time since Iran war,…）"
   ],
   "lines": [
-   "現在該不該買？❌ 不該買。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 價值區下緣 VAL $73.78 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 4.8% 試單）。",
-   "今天最大的事：Qualcomm’s stock falls as twin forces pressure sales（MarketWatch，11/05 09:06 台北）→ 🔧 半導體與 AI，對 SOXL 利空：龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。",
-   "已持有的人：硬停損 $58.47（1.2×ATR 停損）；現價已在吊燈線 $130.21 之下（-48.7%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $73.78 / $75.99 先減碼。",
-   "明天只盯一個價：$73.78（條件買點，收盤站上才算）。",
-   "48 小時內風險：11/6（五） 週選擇權到期；聯準會偏鷹（CNBC：Euro zone inflation hits 4% for first time in three years as interest…）。"
+   "現在該不該買？❌ 不該買。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 布林下軌 $49.17 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 2.9% 試單）。",
+   "今天最大的事：Dow drops 1,800 points; Nasdaq tumbles into correction territory on AI tech wreck: Live updates（CNBC，11/06 09:32 台北）→ 📉 市場波動，對 SOXL 利空：整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。",
+   "已持有的人：硬停損 $32.27（1.2×ATR 停損）；現價已在吊燈線 $117.38 之下（-65.3%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $49.17 / $60.00 先減碼。",
+   "明天只盯一個價：$49.17（條件買點，收盤站上才算）。",
+   "48 小時內風險：地緣風險升溫（The New York Times：Iran is Reviewing ‘Concrete Proposals’ on Nuclear Program, Officials Say）；關稅 / 出口管制收緊（Reuters：EU to impose duties on US imports Friday after Trump tariffs）；聯準會偏鷹（CNBC：Bank of England hikes interest rate for the first time since Iran war,…）。"
   ]
  },
  "flash": {
-  "as_of_tpe": "2026-11-05 09:41",
+  "as_of_tpe": "2026-11-06 09:42",
   "window_h": 36,
-  "label": "中性",
-  "net": -0.16,
-  "n_relevant": 28,
-  "beginner_line": "今天最大的事：Qualcomm’s stock falls as twin forces pressure sales（MarketWatch，11/05 09:06 台北）→ 🔧 半導體與 AI，對 SOXL 利空：龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。",
+  "label": "偏空",
+  "net": -0.45,
+  "n_relevant": 676,
+  "beginner_line": "今天最大的事：Dow drops 1,800 points; Nasdaq tumbles into correction territory on AI tech wreck: Live updates（CNBC，11/06 09:32 台北）→ 📉 市場波動，對 SOXL 利空：整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。",
   "top": [
    {
-    "title": "Qualcomm’s stock falls as twin forces pressure sales",
-    "publisher": "MarketWatch",
-    "link": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories",
-    "time_tpe": "11/05 09:06",
-    "age_h": 0.6,
-    "category": "半導體與 AI",
-    "emoji": "🔧",
-    "impact": -1,
-    "why_zh": "龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。"
-   },
-   {
-    "title": "As Vistra and other energy stocks slide, some analysts warn of an ‘excessive knee-jerk’ reaction",
-    "publisher": "MarketWatch",
-    "link": "https://www.marketwatch.com/story/as-vistra-and-other-energy-stocks-slide-some-analysts-warn-of-an-excessive-knee-jerk-reaction-aece0737?mod=mw_rss_topstories",
-    "time_tpe": "11/05 08:38",
-    "age_h": 1.1,
+    "title": "Dow drops 1,800 points; Nasdaq tumbles into correction territory on AI tech wreck: Live updates",
+    "publisher": "CNBC",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5sdjFuSm1kNThIRUluMXJ1c3ZyVS1icmJDN1pVNVVOdlVVa1JwWFE3VGw0UkRfeTJqUlg3ZUotVzZPVFdCZ0tIOERPekZYbHRXSER6ZWpka2ZYV0ZQMXNuXzZ0VnBIREVTVVZtTXdZLXM4aGJOc0c40gF8QVVfeXFMTWdkU3RqWXdESzExbWxNemxOYmJQSjh1UEV5aWxqazFGaGRxazE0RUtHc3FfejNiZVFwQWlXMWRjNzlRYkdIRnB4Vjd2S3Z3Qmpia2EzNlhQRW84Q3c1NklFNUlib19EXzJpbUNieEluVnFKNkRHVDFaaDZpVQ?oc=5",
+    "time_tpe": "11/06 09:32",
+    "age_h": 0.2,
     "category": "市場波動",
     "emoji": "📉",
-    "impact": -1,
+    "impact": -2,
     "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
    },
    {
-    "title": "These stocks soared the most today after the Democrats trounced Trump",
-    "publisher": "MarketWatch",
-    "link": "https://www.marketwatch.com/story/these-stocks-have-soared-the-most-today-after-the-democrats-trounced-trump-9d785314?mod=mw_rss_topstories",
-    "time_tpe": "11/05 05:55",
-    "age_h": 3.8,
+    "title": "South Korea stocks plunge 8%, circuit breaker triggered as chip shares tumble",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQUXFPZWJ0ekg2Mnl6b3ZEMDRpRzJON3M1b3FnWlpsbVZSSlpnMDR1YXJFWG0zMmROd0NybFRLWXdtcjdQWm1hckFsTE15d2FoY0hnMGZsMjctbnc1VjFCZ09uUWhDbVpGOUtmQmU4UEhLNmtINHZjbTA4cXZPSmpqTFM3TEptUUU4clROU0xCc3QtM3NNbThZOHMxU1lqU1I4Y3EzRnRnY1hqUFpwUTJWcWcxQWhJNVh2VER2dGtzZUxxSmJSeXc?oc=5",
+    "time_tpe": "11/06 09:01",
+    "age_h": 0.7,
     "category": "市場波動",
     "emoji": "📉",
-    "impact": 1,
-    "why_zh": "整體風險偏好改善：大盤反彈時 SOXL 的彈幅也放大。"
+    "impact": -2,
+    "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
    },
    {
-    "title": "AI infrastructure stocks drop, hyperscalers gain as Democrats win Congress",
-    "publisher": "Seeking Alpha",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "time_tpe": "11/04 23:43",
-    "age_h": 10.0,
+    "title": "Nasdaq sell-off batters Asian chip stocks as SK Hynix, Samsung, Softbank, TSMC tumble",
+    "publisher": "CNBC",
+    "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFAwSklwR0ROYnpSbTk3dUZ4WUpNWDRfRjRzYjVGcE90U3VuNmFJRXdwXzFlTVplcEJzT3R5dUV5S21vY1JjRWZYVERSTlg4WHdGMW1hRjdvODg5R3I0MmRLQ2ZOYzFKNnJNRHZLc3dON19tUURZWGF4cUkwQUoybjjSAYQBQVVfeXFMTzQzR01kNVNEV0xUOFlPVEF6djcwZkRNU2xDZTAyRHlJcVZtNDNhd1R6b0hBc0c3ZTVwcEE3aW03N0dGXzg1bmZiSE1pVi1RXzExam5xVVE5NE50cmZkZ0F4ZzlRdXZTZmVLeWpWM3M1cm85aE9hZnloQUwtZ2hWRHNybml1?oc=5",
+    "time_tpe": "11/06 08:59",
+    "age_h": 0.7,
     "category": "半導體與 AI",
     "emoji": "🔧",
-    "impact": -1,
+    "impact": -2,
     "why_zh": "龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。"
    },
    {
-    "title": "Euro zone inflation hits 4% for first time in three years as interest rate hike looms",
+    "title": "Watch Nvidia Plunges 9% as AI Selloff Wipes Out $2.3 Trillion | Closing Bell",
+    "publisher": "Bloomberg.com",
+    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNVFhKWmtDdWlUQW1PLWxBbFhUUFN1ZDV3azVnbkZIMmJGWUxEY3VMWWozTHNOS2ZVSGMyeVpYTUdkY1pZYnpuekZwQ1hJV0pFSW92YnhIZmUwLXBQUUxmN3kzejhXZGo5WkRORlpneTdJMVFDUk5VYjN4MEhCeVdMT1JhQWtWcFJHNDdvWkplRUpKRHpJcU1paGpfS2kxQm8?oc=5",
+    "time_tpe": "11/06 05:36",
+    "age_h": 4.1,
+    "category": "半導體與 AI",
+    "emoji": "🔧",
+    "impact": -2,
+    "why_zh": "龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。"
+   },
+   {
+    "title": "Bank of England hikes interest rate for the first time since Iran war, warns inflation will near 5%",
     "publisher": "CNBC",
-    "link": "https://www.cnbc.com/2026/11/04/euro-zone-cpi-inflation-october-ecb-rate-hike.html",
-    "time_tpe": "11/04 18:47",
-    "age_h": 14.9,
+    "link": "https://www.cnbc.com/2026/11/05/interest-rates-inflation-uk.html",
+    "time_tpe": "11/06 00:01",
+    "age_h": 9.7,
     "category": "聯準會與利率",
     "emoji": "🏦",
-    "impact": -1,
+    "impact": -2,
     "why_zh": "聯準會偏鷹（升息、延後降息、利率維持高檔）：殖利率上升壓縮高估值成長股，半導體首當其衝。"
    },
    {
-    "title": "McDonald’s tests new value menu as fast-food discount wars heat up",
-    "publisher": "MarketWatch",
-    "link": "https://www.marketwatch.com/story/mcdonalds-tests-new-value-menu-as-fast-food-discount-wars-heat-up-bfc57caf?mod=mw_rss_topstories",
-    "time_tpe": "11/05 09:01",
-    "age_h": 0.7,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": 0,
-    "why_zh": "地緣新聞，尚未升級為市場事件：盯油價與 VIX 就夠。"
+    "title": "EU to impose duties on US imports Friday after Trump tariffs",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBtUkt6ektMbmdRX2xlQWxZd3JXWFlpSDRmZmNka0VsS1NSUFBnREx5Q2E3NXNYX2FFYVRjNU11WkVCdXpFcURNelk1NTd6T0tWUDNSazJiVUIyUUZt?oc=5",
+    "time_tpe": "11/05 22:30",
+    "age_h": 11.2,
+    "category": "政策與關稅",
+    "emoji": "🏛️",
+    "impact": -2,
+    "why_zh": "關稅或出口管制收緊：半導體供應鏈首當其衝（NVDA、AMAT、LRCX 的中國營收），SOXL 的跌幅通常是 SOXX 的 3 倍。"
    },
    {
-    "title": "Job openings posted big September gain in positive sign for labor market ahead of payrolls report",
-    "publisher": "CNBC",
-    "link": "https://www.cnbc.com/2026/11/03/job-openings-posted-big-september-gain-in-positive-sign-for-labor-market-ahead-of-payrolls-report.html",
-    "time_tpe": "11/04 03:15",
-    "age_h": 30.4,
-    "category": "經濟數據",
-    "emoji": "📊",
-    "impact": 0,
-    "why_zh": "經濟數據公布，方向中性：看殖利率怎麼反應。"
+    "title": "Iran is Reviewing ‘Concrete Proposals’ on Nuclear Program, Officials Say",
+    "publisher": "The New York Times",
+    "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNZXdqWVZaS0doMXFBRXRjYndqaGZUT0pBTVM1WlB0TlJNMHdTX1JlX0hOT1MyZUFrMTdMTThJczBJUUNyN3JTcllEZjlqN3E2b2VVRTFVbjRiaFJ3TW0ycFZsRlhVMjRaZkR5Rmw5VHp5YmVvdVI1TnNnb09aN0JpeTdubEptZWV1aGd3eDczYkxCdlBFV2tmdVQxUE95YmdOMFVDZXMzRVdDdW05OXc?oc=5",
+    "time_tpe": "11/06 02:27",
+    "age_h": 7.2,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Gulf states brace for war with Iran—again",
+    "publisher": "The Economist",
+    "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNQ2I0Y0VRNU82dHV3WVZxZnN2Zmt3dHZFWXFJRjVJbHBickRIcFFqdEROQTdnMDk3SnRBMFo2TEFESWx0YVBLaHVHUVlPcmRGS3dSTkJDRU4tc0ZuV3diVUpsVE8xdVFCVmVTbFFqWldVWEU1bFVXLWowZ1lfS09ySFBESlE0VTBsWTlib2xlVjJCc2x1Z2FtYWhJeDM4cGFtZXlB?oc=5",
+    "time_tpe": "11/05 21:58",
+    "age_h": 11.7,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
    }
   ],
   "more": [
    {
-    "title": "Congress Flips And Stocks Rise",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4962433-congress-flips-stocks-rise?source=feed_tag_market_outlook",
-    "time_tpe": "11/05 03:10",
-    "age_h": 6.5,
+    "title": "Nasdaq posts biggest daily drop in 19 months on fears of AI regulations",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxObTdYYmZaZmRqRUt0TDhBbERraDF2VlpSTDJ4M1NyZ2dRRkNUUVJ0OVFHdzJyc01uNDZOV2YzZFprbU90aUNzTEtYTEdNWU5Jc19VVVlHc24tNkZ2VFhqOWg3b0swVDFnY2hHaGxuNVZXVkE5S09xZXV2eGRQb1kwdWFEZWxpeGMybDZRcGtyWW52Q1JfaHY4MVo1YmJfRW9KZmNsdVJqS24zeGRZVUpaV3VB?oc=5",
+    "time_tpe": "11/06 07:47",
+    "age_h": 1.9,
     "category": "市場波動",
     "emoji": "📉",
-    "impact": 1,
-    "why_zh": "整體風險偏好改善：大盤反彈時 SOXL 的彈幅也放大。"
-   },
-   {
-    "title": "U.S. Midterms: Blue Tsunami, Trump Loses Congress, Wall Street Picks New Winners",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4962368-us-midterms-blue-tsunami-trump-loses-congress-wall-street-picks-new-winners?source=feed_tag_market_outlook",
-    "time_tpe": "11/05 02:52",
-    "age_h": 6.8,
-    "category": "市場波動",
-    "emoji": "📉",
-    "impact": -1,
+    "impact": -2,
     "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
    },
    {
-    "title": "AI Data Centers Just Lost The Election",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4962221-ai-data-centers-just-lost-the-election?source=feed_tag_market_outlook",
-    "time_tpe": "11/05 00:00",
-    "age_h": 9.7,
+    "title": "Stock futures fall after Nasdaq slips into correction; South Korea's Kospi plunges 8%: Live updates",
+    "publisher": "CNBC",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBGUGtVSmh2dDhaUDJWN2x5SWlLSW93SDgyMm5ybTd4TFo5R3NmZ3I0aDdHSHRNT2VxRVdVLS00NjZXeUE2ZDFSTExOaGtIaFY3MEFWYndKUENSWmMwVml3cVlMb1lnUk83RThmTDNvZGlCaVV0YkJn0gF8QVVfeXFMTmQ2ZmxnbU5Md3JkdGNYVG9TUVhLRDhETG9vY0lFaTZ0elZnYXBfN0hrRGU1S3pXN0kyazlXMHBxUkZ1cnNmOW1OVmxEX25VeHVJMzZ2V1dCczBhUHZaVGV1R0lvVUtkZmVBbk9KakpzUWc4QWlwX0UzSngyWQ?oc=5",
+    "time_tpe": "11/06 07:05",
+    "age_h": 2.6,
+    "category": "市場波動",
+    "emoji": "📉",
+    "impact": -2,
+    "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
+   },
+   {
+    "title": "A brutal sell-off for AI stocks sends Wall Street reeling, and the S&P 500 tumbles 4.4%",
+    "publisher": "AP News",
+    "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPcE43QWpUdHk2WE5qUmd4Z0hjYlBqQ3FGLUVoRlBTbmN4c1JJbWZpeUJmTXhpalZzaTNGMzVweE5wNDRJdnRSMzRENURHaGRIejdqbnVObV9KNEp6R0p0ZnAzT3Y5WGVYejV6VWc0dGZheFVWdG9IVDljNjMxVmVDVGpYZlpwN19nVzBibDdqVmRJOXV3Vk9YdFRiSQ?oc=5",
+    "time_tpe": "11/06 06:04",
+    "age_h": 3.6,
+    "category": "市場波動",
+    "emoji": "📉",
+    "impact": -2,
+    "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
+   },
+   {
+    "title": "S&P 500 Tumbles Most Since April 2025 on AI Fears: Markets Wrap",
+    "publisher": "Bloomberg.com",
+    "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPaHBnOEludEdwalhTMXRiLWFQbk9RRVVIVGYzY3cwZUk4TmxLY1hnZExZQTZBTExfR2l2TmpJNXUwRWUwc21Jd0EzZklqc2hCbnRta19OU1lQV2NTdjhuNUZxaGQwaHlBZG51eG44WXFxNTNuX1FRYVluOGdaTFptSWRFY3J1ZTdMTlFzY3VmYVhkbDJH?oc=5",
+    "time_tpe": "11/06 05:53",
+    "age_h": 3.8,
+    "category": "市場波動",
+    "emoji": "📉",
+    "impact": -2,
+    "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
+   },
+   {
+    "title": "Box expands Nvidia partnership, unveils AI workflow builder",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNQ2lEWV9lOTI0YTVOWDFYeGtCeEkzUThubC1qdlY3Qmdpc1NsVVZUSnNBdlR2WGdKSm1pcWprVnVQN0Y4d1N1OXRnU0h4a05wYlZyNEtLRDBDUkJ4M19qTmxQbkQ4dkVSOU9heVdIY2NPTVRHZ1pvTFYySlN4MkpoSGhNNm5KR3JBZmRXMmVjNFN4SGdBNm5kT3RuS0JiZnRHSlhnZnpB?oc=5",
+    "time_tpe": "11/05 22:06",
+    "age_h": 11.6,
     "category": "半導體與 AI",
     "emoji": "🔧",
-    "impact": -1,
+    "impact": 2,
+    "why_zh": "龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。"
+   },
+   {
+    "title": "Wall Street's tech selloff intensifies as Nasdaq drops more than 5% (DJI:)",
+    "publisher": "Seeking Alpha",
+    "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOMVdqcEl2S3YxWjRhT1phS21fQnNfNmJKYkVWNGlhY0sxMEM0Y0l2azNBbFJKcGtOc2xLZ1Y0TlJTTks0dzNXZUhSYXFYNHAtUEU1RGhYTkJEVVFsTDNYX05LTng1eEtrUXJBMUh5aVdkQmQ4WlQ4bXVNTnkxT1o5OE1TSzhBLXFvSkE?oc=5",
+    "time_tpe": "11/05 23:56",
+    "age_h": 9.8,
+    "category": "市場波動",
+    "emoji": "📉",
+    "impact": -2,
+    "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
+   },
+   {
+    "title": "AI and chip stocks plunge in broad selloff on data center outlook (SITM:NASDAQ)",
+    "publisher": "Seeking Alpha",
+    "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQS3VBcFJFMDZXS0pFSGVIcEtsQnpuY1pzZ2pXQ0lqc0YxQVVUYjFtUm5PQ1pNNkw4bGVrWXhZdml0a3FJYlZraGprWXQwdXFmejZYa3pxVFlwY011Qk52SUplOWFYQXVESHFtMnpLZkVQYU5kWUhwN1gyLXBYNXZ3djMyTDU0cnBCbFp1SWhjUXVjdG5YRDlQM3Fkdmc4ckczdnJEWjNfTQ?oc=5",
+    "time_tpe": "11/05 23:20",
+    "age_h": 10.4,
+    "category": "半導體與 AI",
+    "emoji": "🔧",
+    "impact": -2,
     "why_zh": "龍頭財報、訂單或資本支出轉弱：AI 資本支出是這輪半導體行情的核心，轉弱會壓低整個 SOXX。"
    },
    {
-    "title": "Stocks Have Always Risen After Midterm Elections",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4962117-stocks-have-always-risen-after-midterm-elections?source=feed_tag_market_outlook",
-    "time_tpe": "11/04 21:53",
-    "age_h": 11.8,
-    "category": "市場波動",
-    "emoji": "📉",
-    "impact": 1,
-    "why_zh": "整體風險偏好改善：大盤反彈時 SOXL 的彈幅也放大。"
+    "title": "Turkey's Erdogan says he wants to discuss ending Russia-Ukraine war with Putin after talks with Zelenskiy",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQdjZURmhQRHFISDloNWJlU3RNLU9BaXlZT3VBWFZxdnhsLVBXcFhCZGJKeURqcFJaX1o0eGRZR25nWkFPT1ExbXRyelhjckE5d21wZG55SWZhckNFNmp0S2JmdTA0OS16eENHX1BDOThpX3ZldkF1RTFNSjhDS1NBOGtzTTBkbjBPenEwVTF0Z2JLeEEtd1hSS2gtUmFLMzhCLUQ5bVd1VVFnNFlvQ19oWERCU3ZzR2xiS3RiRVdPTQ?oc=5",
+    "time_tpe": "11/05 18:17",
+    "age_h": 15.4,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
    },
    {
-    "title": "S&P 500 Retreats Below Its Mean Trendline In October 2026",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4962088-sp-500-retreats-below-mean-trendline-october-2026?source=feed_tag_market_outlook",
-    "time_tpe": "11/04 20:00",
-    "age_h": 13.7,
+    "title": "Oil jumps as investors assess Iran war future, tanker attacks",
+    "publisher": "CNBC",
+    "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNdWI5VVd5QjQ2czk5cjBSOHBvSjhKRmtSMnFUSlZPNmRpWFQzTmhBZl94ZnpibGtUdGRDWFNuZTU0MTdIZktfNlVJMUhpM1M1S05xN21wcUtvelhxN3RVbW01T0JyQnFucVVkTEp1bU5NZmp4azFkT0l2b0FVb2FtUkFTTHRrd2FoZUx6YlY0ejVJbVV2TkNWZ3B0dnpqdjVKME1OWmtZZWRXSlQ3ZWZ3OVMxTEx1OHBF0gG-AUFVX3lxTE9jRFNha0MwNFU1d3lTeVRhWGZONFRuV29Gb3FJQ3ZkeV9RUnZnWlRmc05hV0dTSWhnUDBoTzlWNHZJbWp0Rm1QY1d3Nmo2ckJIOXRVd0phYkczYlRsdndvdmhRbWJOMDhFZGUtQk8xZGlEa0JmT0phYkxYbVdsWC1rbFRrWUl0eldCWDNIakFRSHZyUnEtYlh2R1RLLU9ubkVIM0FEbUJpR3FlWWswVGx3TXBKRDZkMzhXcUptMUE?oc=5",
+    "time_tpe": "11/05 13:02",
+    "age_h": 20.7,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Brent crude jumps, settles up over $3 after tanker attacks",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQdzM2c3YzcktwU285aS1QaVVzTk51WFR0UnpxMXlnaFdEd2RtZWYzMm81TDZQUTJZS0ZlLXFVV3ZhcGFibkdLZm9Remo3YjlhNHJTd1lxSXNMUFNzejhIMkt0TlFRXy1RZl9TdTkxbDhfdjQxUEIzcUhaYlpOMjZJSVViNmVPV0dRV0RmaTJ3dDJ3QUs4TTFleFlnZnNyUHhVYlQ5NldaZVRZRFd5dU5nVnRKVUQ0UFE?oc=5",
+    "time_tpe": "11/05 10:20",
+    "age_h": 23.4,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Military action needed to achieve Trump's goal of ending Iran's nuclear program, expert says",
+    "publisher": "Fox Business",
+    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1GZE4wWlgweVB6TjJiaWRiVzBxNHN3TGVpRnQxTVMzU0Vta3loZS1QZlhVSU5yMy1MamxPcUU1cEoybExJT3NYSXVmSGJpQm5zeTBKM0RLTW5VdVU?oc=5",
+    "time_tpe": "11/06 08:50",
+    "age_h": 0.9,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Stock market today: Dow plunges 1,800 points, Nasdaq enters correction in AI trade meltdown",
+    "publisher": "Yahoo Finance",
+    "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOZTZIZ0tKbklnYWJvNVFoSXUtcEFER2lUNXBpaUpWeW0zMVgxakZfODVnb0NwdG0tUDFVcGFoakZPbWhNRUlBcHFSM2dlN2RmQ256c19feE1PNjFNclZwQl9aSXFSRi10eGNoc1JjQUxpRGhEa05JT0dJdzBXLXI1LXNoa3pQZEJ4ZjAyNjBLSkF3VGhMckwzVFl4SnJLSlBtTEJXLUc4S2x4NFk3S1lsUGxDc3BKZ3dkeEZ5TmRNbVptdjFxOGFXMUFsQy1UR2l1UklaMUd3?oc=5",
+    "time_tpe": "11/06 08:34",
+    "age_h": 1.1,
     "category": "市場波動",
     "emoji": "📉",
-    "impact": -1,
+    "impact": -2,
     "why_zh": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。"
-   },
-   {
-    "title": "Tech Stocks Rebound To Take Center Stage - Again",
-    "publisher": "Seeking Alpha 分析",
-    "link": "https://seekingalpha.com/article/4961937-tech-stocks-rebound-take-center-stage-again?source=feed_tag_market_outlook",
-    "time_tpe": "11/04 11:55",
-    "age_h": 21.8,
-    "category": "市場波動",
-    "emoji": "📉",
-    "impact": 1,
-    "why_zh": "整體風險偏好改善：大盤反彈時 SOXL 的彈幅也放大。"
    }
   ],
   "flags": {
    "fed_statement_24h": false,
-   "geo_escalation_24h": false,
-   "tariff_shock_24h": false,
+   "geo_escalation_24h": true,
+   "tariff_shock_24h": true,
    "capex_warning_24h": false,
    "fed_hawkish_24h": true
   },
   "flag_evidence": {
+   "geo_escalation_24h": {
+    "title": "Iran is Reviewing ‘Concrete Proposals’ on Nuclear Program, Officials Say",
+    "publisher": "The New York Times",
+    "time_tpe": "11/06 02:27"
+   },
+   "tariff_shock_24h": {
+    "title": "EU to impose duties on US imports Friday after Trump tariffs",
+    "publisher": "Reuters",
+    "time_tpe": "11/05 22:30"
+   },
    "fed_hawkish_24h": {
-    "title": "Euro zone inflation hits 4% for first time in three years as interest rate hike looms",
+    "title": "Bank of England hikes interest rate for the first time since Iran war, warns inflation will near 5%",
     "publisher": "CNBC",
-    "time_tpe": "11/04 18:47"
+    "time_tpe": "11/06 00:01"
    }
   },
   "cautions": [
    {
+    "flag": "geo_escalation_24h",
+    "text": "地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。",
+    "evidence": {
+     "title": "Iran is Reviewing ‘Concrete Proposals’ on Nuclear Program, Officials Say",
+     "publisher": "The New York Times",
+     "time_tpe": "11/06 02:27"
+    }
+   },
+   {
+    "flag": "tariff_shock_24h",
+    "text": "關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。",
+    "evidence": {
+     "title": "EU to impose duties on US imports Friday after Trump tariffs",
+     "publisher": "Reuters",
+     "time_tpe": "11/05 22:30"
+    }
+   },
+   {
     "flag": "fed_hawkish_24h",
     "text": "聯準會偏鷹的消息在 24 小時內：殖利率若續升，成長股反彈空間受限。",
     "evidence": {
-     "title": "Euro zone inflation hits 4% for first time in three years as interest rate hike looms",
+     "title": "Bank of England hikes interest rate for the first time since Iran war, warns inflation will near 5%",
      "publisher": "CNBC",
-     "time_tpe": "11/04 18:47"
+     "time_tpe": "11/06 00:01"
     }
    }
   ],
   "by_category": [
    {
-    "category": "市場波動",
-    "emoji": "📉",
-    "n": 12,
-    "neg": 3,
-    "pos": 4
-   },
-   {
     "category": "半導體與 AI",
     "emoji": "🔧",
-    "n": 9,
-    "neg": 3,
-    "pos": 0
+    "n": 204,
+    "neg": 63,
+    "pos": 15
    },
    {
     "category": "地緣政治",
     "emoji": "🌍",
-    "n": 3,
-    "neg": 0,
-    "pos": 0
+    "n": 183,
+    "neg": 41,
+    "pos": 18
    },
    {
-    "category": "經濟數據",
-    "emoji": "📊",
-    "n": 3,
-    "neg": 0,
-    "pos": 0
+    "category": "市場波動",
+    "emoji": "📉",
+    "n": 132,
+    "neg": 61,
+    "pos": 23
+   },
+   {
+    "category": "政策與關稅",
+    "emoji": "🏛️",
+    "n": 70,
+    "neg": 8,
+    "pos": 5
    },
    {
     "category": "聯準會與利率",
     "emoji": "🏦",
-    "n": 1,
-    "neg": 1,
-    "pos": 0
+    "n": 55,
+    "neg": 6,
+    "pos": 1
+   },
+   {
+    "category": "經濟數據",
+    "emoji": "📊",
+    "n": 32,
+    "neg": 2,
+    "pos": 4
    }
   ],
   "seeking_alpha": [
    {
-    "title": "The Semiconductor Sector May Be Nearing A Meltdown",
-    "link": "https://seekingalpha.com/article/4962492-the-semiconductor-sector-may-be-nearing-a-meltdown?source=feed_symbol_SOXX",
+    "title": "Don't Buy The Dip: Semiconductors Have Much Further To Fall",
+    "link": "https://seekingalpha.com/article/4963487-dont-buy-the-dip-semiconductors-have-much-further-to-fall?source=feed_symbol_SOXX",
     "symbol": "SOXX",
     "kind": "分析",
-    "time_tpe": "11/05 05:25",
-    "age_h": 4.3,
-    "category": "半導體與 AI",
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "AI Data Centers Just Lost The Election",
-    "link": "https://seekingalpha.com/article/4962221-ai-data-centers-just-lost-the-election?source=feed_symbol_SOXX",
-    "symbol": "SOXX",
-    "kind": "分析",
-    "time_tpe": "11/05 00:00",
-    "age_h": 9.7,
+    "time_tpe": "11/06 06:17",
+    "age_h": 3.4,
     "category": "半導體與 AI",
     "impact": -1,
     "tone": "利空"
    },
    {
-    "title": "AI infrastructure stocks drop, hyperscalers gain as Democrats win Congress",
+    "title": "NVIDIA drops 9%, now down for 2026",
     "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
     "symbol": "NVDA",
     "kind": "新聞",
-    "time_tpe": "11/04 23:43",
-    "age_h": 10.0,
+    "time_tpe": "11/06 05:15",
+    "age_h": 4.5,
     "category": "半導體與 AI",
     "impact": -1,
     "tone": "利空"
    },
    {
-    "title": "Nvidia to ship 1% of $70B RTX chips ordered by Alibaba, Tencent: report",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
-    "kind": "新聞",
-    "time_tpe": "11/04 18:39",
-    "age_h": 15.0,
-    "category": "半導體與 AI",
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "Nvidia CEO gave go-ahead on Marvell's mega-acquisition of Lumentum",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
-    "kind": "新聞",
-    "time_tpe": "11/04 00:49",
-    "age_h": 32.9,
-    "category": "半導體與 AI",
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "Samsung to make chip parts for AMD, Nvidia at Texas plant: report",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
-    "kind": "新聞",
-    "time_tpe": "11/03 21:21",
-    "age_h": 36.3,
-    "category": "半導體與 AI",
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "Nvidia: Trade The Fear With NVDL",
-    "link": "https://seekingalpha.com/article/4961354-nvidia-trade-the-fear-with-nvdl?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
+    "title": "Maybe It's Time To Rush Outdoors Carrying Washtubs",
+    "link": "https://seekingalpha.com/article/4963420-maybe-its-time-to-rush-outdoors-carrying-washtubs?source=feed_symbol_SOXX",
+    "symbol": "SOXX",
     "kind": "分析",
-    "time_tpe": "11/03 18:13",
-    "age_h": 39.5,
+    "time_tpe": "11/06 04:50",
+    "age_h": 4.9,
+    "category": null,
+    "impact": 0,
+    "tone": "中性"
+   },
+   {
+    "title": "AI Stocks Are Having The Sale Of The Year, But Avoid These",
+    "link": "https://seekingalpha.com/article/4963381-ai-stocks-are-having-the-sale-of-the-year-but-avoid-these?source=feed_symbol_SOXX",
+    "symbol": "SOXX",
+    "kind": "分析",
+    "time_tpe": "11/06 04:02",
+    "age_h": 5.7,
+    "category": "市場波動",
+    "impact": 0,
+    "tone": "中性"
+   },
+   {
+    "title": "Nvidia chips lie stockpiled in Hong Kong amid China's import restrictions: Report",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+    "symbol": "NVDA",
+    "kind": "新聞",
+    "time_tpe": "11/06 03:38",
+    "age_h": 6.1,
+    "category": "半導體與 AI",
+    "impact": -1,
+    "tone": "利空"
+   },
+   {
+    "title": "Nvidia repeating Cisco’s fatal dot-com playbook, George Noble warns",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+    "symbol": "NVDA",
+    "kind": "新聞",
+    "time_tpe": "11/06 02:50",
+    "age_h": 6.9,
+    "category": "半導體與 AI",
+    "impact": -1,
+    "tone": "利空"
+   },
+   {
+    "title": "Chip stocks under pressure: Twelve semiconductor names with oversold signals",
+    "link": "https://seekingalpha.com/symbol/SOXL/news?source=feed_symbol_SOXL",
+    "symbol": "SOXL",
+    "kind": "新聞",
+    "time_tpe": "11/06 01:30",
+    "age_h": 8.2,
     "category": "半導體與 AI",
     "impact": 0,
     "tone": "中性"
    },
    {
-    "title": "Nvidia tells cloud clients to sell at least 51% of services to non-Chinese firms - FT",
+    "title": "AI and chip stocks plunge in broad selloff on data center outlook",
     "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
     "symbol": "NVDA",
     "kind": "新聞",
-    "time_tpe": "11/03 14:04",
-    "age_h": 43.6,
+    "time_tpe": "11/05 23:20",
+    "age_h": 10.4,
     "category": "半導體與 AI",
-    "impact": 0,
-    "tone": "中性"
+    "impact": -2,
+    "tone": "利空"
    }
   ],
   "method": "Google News RSS 搜尋 + Fed 新聞稿 + CNBC / MarketWatch + Seeking Alpha（Wall Street Breakfast、Market Outlook、Macro View、SOXL / SOXX / NVDA 個股）；關鍵字分類（整字比對，非 LLM）；影響分 −2…+2；排序 = |影響| × 新鮮度 × 來源權重；每類最多 2 則；旗標需 24 小時內且來源權重 ≥ 0.7。",
   "errors": []
  },
  "dashboard": {
-  "as_of": "2026-11-04",
+  "as_of": "2026-11-05",
   "gauges": [
    {
     "key": "add_on",
@@ -2798,8 +2915,8 @@
     "short": "不能加碼",
     "light": "red",
     "emoji": "🔴",
-    "meaning": "VIX/VIX3M 1.11 倒掛：歷史上這種狀態加碼的賠率最差，只能減碼或空手。",
-    "detail": "跌破 $58.47 全出；反彈到 $73.78 / $75.99 先減",
+    "meaning": "評級偏空、吊燈移動停損已觸發：加碼就是攤平三倍槓桿，SOXL 單日可 ±15%。只能減碼或等買訊。",
+    "detail": "反彈到 $49.17 / $60.00 先減碼；跌破 $32.27 全出",
     "fields": [
      "trade_plan.side",
      "trade_plan.tradeable",
@@ -2814,12 +2931,12 @@
    {
     "key": "macro",
     "title": "現在的宏觀消息",
-    "value": "中性｜📉 As Vistra and other energy stocks slide, some analysts warn of an ‘excessive knee-jerk’ reaction（MarketWatch）",
-    "short": "中性，有旗標",
+    "value": "偏空｜📉 Dow drops 1,800 points; Nasdaq tumbles into correction territory on AI tech wreck: Live updates（CNBC）",
+    "short": "偏空，有旗標",
     "light": "red",
     "emoji": "🔴",
     "meaning": "整體風險偏好惡化：SOXL 的 Beta 約是大盤的 3 到 4 倍，大盤跌 1% 它常跌 3% 以上。",
-    "detail": "10Y 4.950%（+4.0 bps）；油 $66.11（+0.24%）；VIX 20.83（-1.51%）；美元 29.01（+0.17%）",
+    "detail": "10Y 4.900%（-5.0 bps）；油 $60.40（-8.64%）；VIX 16.61（-20.26%）；美元 28.90（-0.38%）",
     "fields": [
      "flash.label",
      "flash.top[0]",
@@ -2832,12 +2949,12 @@
    {
     "key": "soxx",
     "title": "費半（SOXX）整體走向",
-    "value": "空頭｜$450.41（-3.14%）",
-    "short": "空頭 -23%/20日",
+    "value": "空頭｜$130.97（-70.92%）",
+    "short": "空頭 -77%/20日",
     "light": "red",
     "emoji": "🔴",
     "meaning": "費半空頭：SOXL 的反彈多半是空頭回補，T1 / T2 當減碼點。",
-    "detail": "5 日 -13.7%、20 日 -22.7%；距 20MA -10.7%、50MA -14.3%、200MA -5.8%；16 檔成分股站上 50MA 18.8%、200MA 37.5%；年線濾網：持有（出場線 n/a）",
+    "detail": "5 日 -74.5%、20 日 -76.8%；距 20MA -72.9%、50MA -74.7%、200MA -72.5%；16 檔成分股站上 50MA 12.5%、200MA 6.2%；年線濾網：持有（出場線 n/a）",
     "fields": [
      "soxx_stats",
      "breadth.above_sma50_pct",
@@ -2849,12 +2966,12 @@
    {
     "key": "whales",
     "title": "大戶怎麼走",
-    "value": "偏空 -0.38｜大單 Call $56.49M vs Put $61.15M（97 筆）",
-    "short": "偏空 -0.38",
-    "light": "red",
-    "emoji": "🔴",
-    "meaning": "大單權利金偏向 Put：大戶在避險或押跌，和空頭評級同向。",
-    "detail": "最大單 2029-01-19 $45 Put $12.26M（偏空 (Put 價升量增)）；大戶 C/P 0.92 vs 散戶 C/P 0.31；SOXL/SOXS 資金流 3.56x（20 日均 2.98x）",
+    "value": "中性 -0.19｜大單 Call $108.13M vs Put $270.84M（231 筆）",
+    "short": "中性 -0.19",
+    "light": "yellow",
+    "emoji": "🟡",
+    "meaning": "大單方向不明顯：沒有誰在明顯站隊。",
+    "detail": "最大單 2026-11-06 $45 Put $21.95M（避險/看空 (買 Put)）；大戶 C/P 0.4 vs 散戶 C/P 0.11；SOXL/SOXS 資金流 1.08x（20 日均 2.79x）",
     "fields": [
      "options.whale.whale_net_score",
      "options.whale.whale_call_prem_m",
@@ -2867,12 +2984,12 @@
    {
     "key": "put_call",
     "title": "Put/Call",
-    "value": "SOXL 成交 0.678（偏樂觀）｜全市場個股 0.6（1 年第 68 百分位）",
-    "short": "SOXL 0.678，個股第 68 百分位",
-    "light": "green",
-    "emoji": "🟢",
-    "meaning": "中性區：期權市場沒有極端恐慌，也沒有自滿。P/C 越高代表買 Put 避險越多。",
-    "detail": "SOXL 未平倉 P/C 1.356；全市場總 P/C 0.86（中性 (0.75-0.9)）；個股 P/C 讀法 中性 (0.55-0.70)",
+    "value": "SOXL 成交 0.487（偏樂觀）｜全市場個股 0.44（1 年第 5 百分位）",
+    "short": "SOXL 0.487，個股第 5 百分位（自滿）",
+    "light": "yellow",
+    "emoji": "🟡",
+    "meaning": "自滿區：期權市場偏樂觀，對 3 倍槓桿不是好事。P/C 越低代表買 Put 避險越少。",
+    "detail": "SOXL 未平倉 P/C 1.254；全市場總 P/C 0.8（中性 (0.75-0.9)）；個股 P/C 讀法 自滿/追多 (<0.55)",
     "fields": [
      "options.pc_vol_ratio",
      "options.pc_oi_ratio",
@@ -2885,12 +3002,12 @@
    {
     "key": "crash",
     "title": "崩跌指數",
-    "value": "21 / 100（低）",
-    "short": "21/100 低",
+    "value": "41 / 100（低）",
+    "short": "41/100 低",
     "light": "green",
     "emoji": "🟢",
     "meaning": "分數低不代表安全：價已在年線下，這個分數量的是「壓力持續度」，不是新頂部前兆。",
-    "detail": "成立中的症狀：15 日內出現 3~6 個放量下跌『派發日』；分數 ≥ 80 的歷史命中率 12.3%（基準 9.0%）；低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆",
+    "detail": "成立中的症狀：15 日內出現 3~6 個放量下跌『派發日』、布林通道寬度處 1 年高檔 (波動擴張)、VVIX >95 (波動率的波動升溫)；分數 ≥ 80 的歷史命中率 12.2%（基準 9.0%）；低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆",
     "fields": [
      "crash_risk.score",
      "crash_risk.zone",
@@ -2904,8 +3021,8 @@
    "add_on": "red",
    "macro": "red",
    "soxx": "red",
-   "whales": "red",
-   "put_call": "green",
+   "whales": "yellow",
+   "put_call": "yellow",
    "crash": "green"
   },
   "factor_grades": [
@@ -2913,21 +3030,21 @@
     "category": "1. 期權籌碼 (Options Flow)",
     "short": "期權籌碼",
     "weight": 20,
-    "score": -0.8,
-    "grade": "D-"
+    "score": -0.6,
+    "grade": "D"
    },
    {
     "category": "2. 量能結構 (Volume)",
     "short": "量能",
     "weight": 14,
-    "score": -1.36,
+    "score": -2.0,
     "grade": "F"
    },
    {
     "category": "3. 技術趨勢 (Technicals)",
     "short": "技術趨勢",
     "weight": 26,
-    "score": -1.54,
+    "score": -1.23,
     "grade": "F"
    },
    {
@@ -2941,22 +3058,22 @@
     "category": "5. 宏觀跨資產 (Macro)",
     "short": "宏觀",
     "weight": 10,
-    "score": -0.2,
-    "grade": "C-"
+    "score": 0.0,
+    "grade": "C"
    },
    {
     "category": "6. 市場情緒 (Sentiment, 逆勢指標)",
     "short": "情緒",
     "weight": 15,
-    "score": 0.67,
+    "score": 0.8,
     "grade": "B+"
    },
    {
     "category": "7. 消息面 (News Sentiment)",
     "short": "消息",
     "weight": 6,
-    "score": 0.0,
-    "grade": "C"
+    "score": -2.0,
+    "grade": "F"
    }
   ],
   "overall_grade": "D-",
@@ -2964,7 +3081,7 @@
    "rows": [
     {
      "voice": "量化評級（24 因子）",
-     "reading": "賣出 / 減碼（綜合 -0.86）",
+     "reading": "賣出 / 減碼（綜合 -0.91）",
      "tone": "bear",
      "field": "verdict"
     },
@@ -2976,8 +3093,8 @@
     },
     {
      "voice": "時事 / 宏觀（36 小時）",
-     "reading": "中性（淨影響 -0.16）",
-     "tone": "neutral",
+     "reading": "偏空（淨影響 -0.45）",
+     "tone": "bear",
      "field": "flash.label"
     },
     {
@@ -2987,35 +3104,35 @@
      "field": "dashboard.soxx_stats.trend"
     }
    ],
-   "n_bear": 2,
-   "n_neutral": 2,
+   "n_bear": 3,
+   "n_neutral": 1,
    "n_bull": 0,
-   "summary": "四個聲音：2 空 / 2 中性 / 0 多 → 沒有任何多方聲音：不加碼、不開新倉"
+   "summary": "四個聲音：3 空 / 1 中性 / 0 多 → 一致偏空，不加碼"
   },
   "soxx_stats": {
    "available": true,
    "source": "nasdaq_10y",
-   "date": "2026-11-04",
-   "close": 450.41,
-   "ret_1d": -3.14,
-   "ret_5d": -13.7,
-   "ret_20d": -22.72,
-   "sma20": 504.22,
-   "sma50": 525.69,
-   "sma200": 478.13,
-   "dist_sma20_pct": -10.7,
-   "dist_sma50_pct": -14.3,
-   "dist_sma200_pct": -5.8,
+   "date": "2026-11-05",
+   "close": 130.97,
+   "ret_1d": -70.92,
+   "ret_5d": -74.51,
+   "ret_20d": -76.75,
+   "sma20": 482.6,
+   "sma50": 518.0,
+   "sma200": 477.04,
+   "dist_sma20_pct": -72.9,
+   "dist_sma50_pct": -74.7,
+   "dist_sma200_pct": -72.5,
    "above_sma20": false,
    "above_sma50": false,
    "above_sma200": false,
-   "high_20d": 563.28,
-   "low_20d": 450.41,
-   "drawdown_52w_pct": -31.2,
+   "high_20d": 559.4,
+   "low_20d": 130.97,
+   "drawdown_52w_pct": -80.0,
    "trend": "空頭（年線與短均線都在頭上）",
    "light": "red"
   },
-  "one_liner": "加碼：🔴 不能加碼｜宏觀：🔴 中性，有旗標｜費半：🔴 空頭 -23%/20日｜大戶：🔴 偏空 -0.38｜P/C：🟢 SOXL 0.678，個股第 68 百分位｜崩跌：🟢 21/100 低",
+  "one_liner": "加碼：🔴 不能加碼｜宏觀：🔴 偏空，有旗標｜費半：🔴 空頭 -77%/20日｜大戶：🟡 中性 -0.19｜P/C：🟡 SOXL 0.487，個股第 5 百分位（自滿）｜崩跌：🟢 41/100 低",
   "method": "六個儀表全部由既有欄位推導（欄位名在每個儀表的 fields）；燈號規則寫在 soxl_quant/dashboard.py；因子等級 = 24 因子評分表的 7 個類別平均分對應 A+（≥1.5）… F（<−1.0），借用 Seeking Alpha 因子等級的呈現方式，不是 Seeking Alpha 的評級。"
  },
  "scenarios": [
@@ -3024,8 +3141,8 @@
    "tone": "bull",
    "title": "劇本 A：超跌反彈 (10 日內 ≥ +10%)",
    "prob": 48,
-   "trigger": "收盤站回 價值區下緣 VAL $73.78，並帶量突破 EMA5 $75.99",
-   "target": "反彈目標 EMA5 $75.99 → 月選 1σ 上緣 $85.45",
+   "trigger": "收盤站回 布林下軌 $49.17，並帶量突破 週選 1σ 上緣 $55.49",
+   "target": "反彈目標 週選 1σ 上緣 $55.49 → 月選 1σ 上緣 $60.02",
    "action": "只做反彈、不做趨勢多單：分批小量 (≤1/3 部位)，反彈至第一道反壓減碼；守住進場日低點為停損。"
   },
   {
@@ -3033,8 +3150,8 @@
    "tone": "neutral",
    "title": "劇本 B：區間築底 / 弱勢盤整 (±10% 以內)",
    "prob": 30,
-   "trigger": "在 近 10 日最低 $63.86 ~ 價值區下緣 VAL $73.78 之間來回",
-   "target": "等待 20MA $100.07 走平、崩跌前兆分數回落 <60、成分股站回月線比例 >40%",
+   "trigger": "在 近 10 日最低 $38.85 ~ 布林下軌 $49.17 之間來回",
+   "target": "等待 20MA $94.97 走平、崩跌前兆分數回落 <60、成分股站回月線比例 >40%",
    "action": "觀望為主；可用賣出價外 Put (Put 牆附近) 收高 IV 權利金，或等底部型態 (W 底 / 突破下降趨勢線) 再進場。"
   },
   {
@@ -3042,8 +3159,8 @@
    "tone": "bear",
    "title": "劇本 C：續跌 (10 日內 ≤ -10%)",
    "prob": 22,
-   "trigger": "收盤跌破 近 10 日最低 $63.86 → 下探 布林下軌 $56.97",
-   "target": "月選 1σ 下緣 $44.15；2σ 極端 $29.24",
+   "trigger": "收盤跌破 近 10 日最低 $38.85 → 下探 週選 1σ 下緣 $31.15",
+   "target": "月選 1σ 下緣 $26.62；2σ 極端 $15.61",
    "action": "嚴守停損、不攤平 3x 槓桿；留意 SOXS/避險 Put 成本已高 (IV 極高)，避免在恐慌高點追買避險。"
   }
  ],
@@ -3051,242 +3168,242 @@
   {
    "item": "收盤站回 20 日均線 (多頭停損線)",
    "ok": false,
-   "now": "現價 $66.76 vs 20MA $100.07"
+   "now": "現價 $40.76 vs 20MA $94.97"
   },
   {
    "item": "崩跌前兆分數 < 60 (症狀負荷回到歷史中位數以下)",
    "ok": true,
-   "now": "21/100"
+   "now": "41/100"
   },
   {
    "item": "VIX 期限結構回到正價差 (VIX/VIX3M < 0.92)",
-   "ok": false,
-   "now": "1.108"
+   "ok": true,
+   "now": "0.65"
   },
   {
    "item": "成分股站上 20MA 比例 > 40%",
    "ok": false,
-   "now": "19%"
+   "now": "6%"
   },
   {
    "item": "大戶期權淨方向轉正 (≥ 0)",
    "ok": false,
-   "now": "-0.381"
+   "now": "-0.192"
   },
   {
    "item": "MACD 柱體連續 2 日收斂 / 翻正 (動能止跌)",
    "ok": false,
-   "now": "Hist -3.08"
+   "now": "Hist -4.58"
   },
   {
    "item": "Fear & Greed 從極度恐懼區回升 (> 25 且上升)",
-   "ok": true,
-   "now": "27.3 (前值 19.1)"
+   "ok": false,
+   "now": "19.9 (前值 27.3)"
   },
   {
    "item": "5 日上漲/下跌量能比 > 1 (買盤回流)",
    "ok": false,
-   "now": "20D U/D 0.42x"
+   "now": "20D U/D 0.39x"
   }
  ],
  "watch": [
-  "價格：守 $63.86（近 10 日最低）、攻 $73.78（價值區下緣 VAL）",
-  "期權：2026-11-06 到期（Max Pain $85.0（離現價遠、磁吸效果弱），P/C 0.64）；Gamma 翻正位 $81.23",
-  "情緒：Fear & Greed 27.3 是否回升 >25；VIX 20.83 與期限結構 1.108（<0.92 才算回穩）",
-  "板塊：16 檔成分股站上 20MA 比例 19% → 目標 >40%；大戶期權淨方向 -0.381 → 轉正",
-  "崩跌前兆分數 21 → 回落 <60"
+  "價格：守 $38.85（近 10 日最低）、攻 $49.17（布林下軌）",
+  "期權：2026-11-06 到期（Max Pain $75.0（離現價遠、磁吸效果弱），P/C 0.31）；Gamma 翻正位 $None",
+  "情緒：Fear & Greed 19.9 是否回升 >25；VIX 16.61 與期限結構 0.65（<0.92 才算回穩）",
+  "板塊：16 檔成分股站上 20MA 比例 6% → 目標 >40%；大戶期權淨方向 -0.192 → 轉正",
+  "崩跌前兆分數 41 → 回落 <60"
  ],
  "news": {
-  "articles_total": 292,
+  "articles_total": 1055,
   "sources": {
    "yahoo": 0,
-   "google": 0,
-   "rss": 292
+   "google": 808,
+   "rss": 247
   },
-  "bull_7d": 29,
-  "bear_7d": 26,
-  "bull_bear_ratio": 1.12,
+  "bull_7d": 87,
+  "bear_7d": 233,
+  "bull_bear_ratio": 0.37,
   "themes_7d": [
    {
     "tag": "獲利了結/基本面利空",
-    "count": 18
+    "count": 24
    },
    {
     "tag": "個股動能/買盤利多",
-    "count": 11
+    "count": 20
    },
    {
     "tag": "分析師升評利多",
     "count": 3
    },
    {
-    "tag": "訂單/資本支出利多",
-    "count": 2
-   },
-   {
     "tag": "宏觀緩和利多",
-    "count": 2
+    "count": 3
    },
    {
-    "tag": "監管/地緣政治",
-    "count": 1
+    "tag": "AI 估值/融資疑慮",
+    "count": 3
+   },
+   {
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "count": 3
    }
   ],
   "by_day": [
    {
-    "date": "2026-11-05",
+    "date": "2026-11-06",
     "bull_count": 0,
-    "bear_count": 2,
-    "neutral_count": 4,
+    "bear_count": 16,
+    "neutral_count": 8,
     "net_sentiment_ratio": -1.0,
     "soxl_perf": "非交易日 / 尚未收盤"
    },
    {
+    "date": "2026-11-05",
+    "bull_count": 24,
+    "bear_count": 165,
+    "neutral_count": 162,
+    "net_sentiment_ratio": -0.75,
+    "soxl_perf": "$40.76 (-38.88%)"
+   },
+   {
     "date": "2026-11-04",
-    "bull_count": 17,
-    "bear_count": 12,
-    "neutral_count": 41,
-    "net_sentiment_ratio": 0.17,
-    "soxl_perf": "$66.76 (-8.70%)"
+    "bull_count": 25,
+    "bear_count": 23,
+    "neutral_count": 72,
+    "net_sentiment_ratio": 0.04,
+    "soxl_perf": "$66.68 (-8.81%)"
    },
    {
     "date": "2026-11-03",
-    "bull_count": 4,
-    "bear_count": 6,
-    "neutral_count": 31,
-    "net_sentiment_ratio": -0.2,
+    "bull_count": 24,
+    "bear_count": 17,
+    "neutral_count": 50,
+    "net_sentiment_ratio": 0.17,
     "soxl_perf": "$73.12 (+7.26%)"
    },
    {
     "date": "2026-11-02",
-    "bull_count": 4,
-    "bear_count": 2,
-    "neutral_count": 13,
-    "net_sentiment_ratio": 0.33,
+    "bull_count": 10,
+    "bear_count": 9,
+    "neutral_count": 29,
+    "net_sentiment_ratio": 0.05,
     "soxl_perf": "$68.17 (-11.52%)"
    },
    {
     "date": "2026-11-01",
-    "bull_count": 2,
+    "bull_count": 3,
     "bear_count": 1,
     "neutral_count": 3,
-    "net_sentiment_ratio": 0.33,
+    "net_sentiment_ratio": 0.5,
     "soxl_perf": "非交易日 / 尚未收盤"
    },
    {
     "date": "2026-10-31",
-    "bull_count": 2,
-    "bear_count": 1,
-    "neutral_count": 3,
-    "net_sentiment_ratio": 0.33,
-    "soxl_perf": "非交易日 / 尚未收盤"
-   },
-   {
-    "date": "2026-10-30",
-    "bull_count": 0,
+    "bull_count": 1,
     "bear_count": 2,
-    "neutral_count": 11,
-    "net_sentiment_ratio": -1.0,
-    "soxl_perf": "$77.05 (-24.75%)"
+    "neutral_count": 2,
+    "net_sentiment_ratio": -0.33,
+    "soxl_perf": "非交易日 / 尚未收盤"
    }
   ],
   "top_bull": [
    {
-    "title": "These stocks soared the most today after the Democrats trounced Trump",
-    "publisher": "MarketWatch",
+    "title": "Don't Buy The Dip: Semiconductors Have Much Further To Fall (SOX)",
+    "publisher": "Seeking Alpha",
     "tag": "個股動能/買盤利多",
-    "time_utc": "21:55",
-    "link": "https://www.marketwatch.com/story/these-stocks-have-soared-the-most-today-after-the-democrats-trounced-trump-9d785314?mod=mw_rss_topstories"
+    "time_utc": "22:17",
+    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQaDZzaWVBSG1YM0U1bDNTUGFzMjV5eWVxS0JjV3B2cEl6NmJHcDJzZnptM2s3VkV0QVJiM1BZV3BIazk2OGI3akVrRVl2azhIME5mcGVFTGJLUDY3bUVoUTNqS01uUkxyWDhrUEJ1dHRXeERzdkUzVlZfVUp3OVllbGRseXoyNVFhWEl4RzZab1dsOVQ1Ykl1ZHNTSDBqTFk?oc=5"
    },
    {
-    "title": "Here's What a $1,000 Investment in AMD Could Be Worth by 2030",
-    "publisher": "Nasdaq",
-    "tag": "訂單/資本支出利多",
-    "time_utc": "21:20",
-    "link": "https://www.nasdaq.com/articles/heres-what-1000-investment-amd-could-be-worth-2030"
-   },
-   {
-    "title": "The Nasdaq-100 Is Outperforming Nvidia, Microsoft, Amazon, Meta Platforms, Alphabet, and Tesla This Year. Here's My Favorite Low-Cost ETF to Buy the Dip.",
-    "publisher": "Nasdaq",
-    "tag": "分析師升評利多",
-    "time_utc": "21:05",
-    "link": "https://www.nasdaq.com/articles/nasdaq-100-outperforming-nvidia-microsoft-amazon-meta-platforms-alphabet-and-tesla-year"
-   },
-   {
-    "title": "Stocks Finished Mostly Higher on Chipmaker Strength",
-    "publisher": "Nasdaq",
+    "title": "Don't Buy The Dip: Semiconductors Have Much Further To Fall",
+    "publisher": "Seeking Alpha",
     "tag": "個股動能/買盤利多",
-    "time_utc": "19:50",
-    "link": "https://www.nasdaq.com/articles/stocks-finished-mostly-higher-chipmaker-strength"
+    "time_utc": "22:17",
+    "link": "https://seekingalpha.com/article/4963487-dont-buy-the-dip-semiconductors-have-much-further-to-fall?source=feed_symbol_SOXX"
    },
    {
-    "title": "AMD Stock Rebounds. Is Its AI Edge Built to Last?",
+    "title": "Is AMD Stock a Buy as AI Revenue Soars?",
+    "publisher": "AOL.com",
+    "tag": "個股動能/買盤利多",
+    "time_utc": "20:39",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1zblotTEVxa3JUVGtLX2NTMEJ5ZG5LWDVqcm1NbGRvc1BlOXJwUGZfakstOFdqZE9WWkE5eC13Tk1LeTR1X0s2ZlpZNmttaHJHVVlqdVlNVUZETHkwNUpwY2Y0Wlh2ZFFGd21TMHZSb0s0OW5XVzVz?oc=5"
+   },
+   {
+    "title": "Cognex Q3 Earnings Beat on Strong Demand and Margin Expansion",
     "publisher": "Nasdaq",
     "tag": "個股動能/買盤利多",
-    "time_utc": "18:46",
-    "link": "https://www.nasdaq.com/articles/amd-stock-rebounds-its-ai-edge-built-last"
+    "time_utc": "17:16",
+    "link": "https://www.nasdaq.com/articles/cognex-q3-earnings-beat-strong-demand-and-margin-expansion"
    },
    {
-    "title": "SHOP Q3 Earnings Beat Estimates, Revenues Rise on Strong GMV",
+    "title": "MKSI Q3 Earnings Beat Estimates on Strong Semiconductor Growth",
     "publisher": "Nasdaq",
     "tag": "個股動能/買盤利多",
-    "time_utc": "17:19",
-    "link": "https://www.nasdaq.com/articles/shop-q3-earnings-beat-estimates-revenues-rise-strong-gmv"
+    "time_utc": "17:13",
+    "link": "https://www.nasdaq.com/articles/mksi-q3-earnings-beat-estimates-strong-semiconductor-growth"
+   },
+   {
+    "title": "Snowflake Soars 32% Year to Date: Buy, Sell, or Hold the Stock?",
+    "publisher": "Nasdaq",
+    "tag": "個股動能/買盤利多",
+    "time_utc": "17:09",
+    "link": "https://www.nasdaq.com/articles/snowflake-soars-32-year-date-buy-sell-or-hold-stock"
    }
   ],
   "top_bear": [
    {
-    "title": "Qualcomm’s stock falls as twin forces pressure sales",
-    "publisher": "MarketWatch",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "01:06",
-    "link": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories"
-   },
-   {
-    "title": "As Vistra and other energy stocks slide, some analysts warn of an ‘excessive knee-jerk’ reaction",
-    "publisher": "MarketWatch",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "00:38",
-    "link": "https://www.marketwatch.com/story/as-vistra-and-other-energy-stocks-slide-some-analysts-warn-of-an-excessive-knee-jerk-reaction-aece0737?mod=mw_rss_topstories"
-   },
-   {
-    "title": "Qualcomm stock drops 7% on weak earnings forecast as memory shortage weighs on smartphone sales",
-    "publisher": "CNBC",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "23:38",
-    "link": "https://www.cnbc.com/2026/11/04/qualcomm-qcom-earnings-report-q4-2026.html"
-   },
-   {
-    "title": "Figma sinks after earnings beat as company prioritizes long-term growth with AI changes",
-    "publisher": "CNBC",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "23:02",
-    "link": "https://www.cnbc.com/2026/11/04/figma-fig-q3-earnings-report-2026.html"
-   },
-   {
-    "title": "Broadcom Inc. (AVGO) Stock Slides as Market Rises: Facts to Know Before You Trade",
+    "title": "Stock Indexes Routed on Capitulation out of Chipmakers and AI Stocks",
     "publisher": "Nasdaq",
     "tag": "獲利了結/基本面利空",
-    "time_utc": "21:45",
-    "link": "https://www.nasdaq.com/articles/broadcom-inc-avgo-stock-slides-market-rises-facts-know-you-trade"
+    "time_utc": "01:26",
+    "link": "https://www.nasdaq.com/articles/stock-indexes-routed-capitulation-out-chipmakers-and-ai-stocks"
    },
    {
-    "title": "Micron (MU) Stock Sinks As Market Gains: Here's Why",
-    "publisher": "Nasdaq",
+    "title": "Have AI Chip Stocks Bottomed Out After Wall Street’s Brutal Selloff?",
+    "publisher": "NAI500",
     "tag": "獲利了結/基本面利空",
-    "time_utc": "21:45",
-    "link": "https://www.nasdaq.com/articles/micron-mu-stock-sinks-market-gains-heres-why"
+    "time_utc": "01:13",
+    "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPNlZkWF82NVA1M0Fwc1pfUlRjeFhsdUpjX3lNbEUtcTczSHVJSDA1R2VhNmhPNUZTVDEyRk1TYnkybDdPQXBFMUxvVmc0M3JWaTNsWVNDLXJmVjVZQ1pnSHpMeTRSbWh2RkhSVktORy1DTzctYjA3d0tRNzVvYU5BLUFodW40eEpzYm9DdjFpeWd4djAwY0NpdDU5Nlp5QkxN?oc=5"
+   },
+   {
+    "title": "Cathie Wood’s ARK sells Broadcom stock, buys Nvidia and SpaceX",
+    "publisher": "Investing.com",
+    "tag": "內部人/機構減持",
+    "time_utc": "01:11",
+    "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPV2hnS0MyeG9uZHdkUE9NWksxOHpYeFlFQVZPZS1PcVF5c1ZUaExRdmd6Q1VUY2x2aGZydkUzOWlUbFlQN0VQb29VTEp5QzV4QmVyNVIxbWZ1ai1LNVRXXzlYU0xVQ3pPeTBlOXB0elMwXzYwcmtBMXdKbHFqdEJMMDdIQXhCdjFPcEExc2JlVjc5NWdHWkhMT0dUc2ZSZ1NZZWV4Zkh3bkU2aWt6UVFPQjd0TjNXR1Bt?oc=5"
+   },
+   {
+    "title": "Cathie Wood’s ARK sells Broadcom stock, buys Nvidia and SpaceX By Investing.com",
+    "publisher": "Investing.com Nigeria",
+    "tag": "內部人/機構減持",
+    "time_utc": "01:07",
+    "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQXzgyM1ZlQmZYaXJuV3FiRWo1MXBrN2VtZ3hXWmtRdUMwZmxPamhweGU4Y25TWFZpaFl1bkpTN0Z6dmg0Q1BndDU4bDl5cmVXcXpocWl1OUpLdjA5Z0xMQ1FMMXRKay1TeW12R2FULUJDODBib29YaWxpOUIzZTdSaHRSRFd4MS01dzFSNUljbWNnR1VpSVF3LUVRT3A3eXluUFMyZ2lkdy1jd1daT25HN3piYzEwQjdsVXB4ZTZB?oc=5"
+   },
+   {
+    "title": "Nasdaq sell-off batters Asian chip stocks as SK Hynix, Samsung, Softbank, TSMC tumble",
+    "publisher": "CNBC",
+    "tag": "監管/地緣政治",
+    "time_utc": "00:59",
+    "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFAwSklwR0ROYnpSbTk3dUZ4WUpNWDRfRjRzYjVGcE90U3VuNmFJRXdwXzFlTVplcEJzT3R5dUV5S21vY1JjRWZYVERSTlg4WHdGMW1hRjdvODg5R3I0MmRLQ2ZOYzFKNnJNRHZLc3dON19tUURZWGF4cUkwQUoybjjSAYQBQVVfeXFMTzQzR01kNVNEV0xUOFlPVEF6djcwZkRNU2xDZTAyRHlJcVZtNDNhd1R6b0hBc0c3ZTVwcEE3aW03N0dGXzg1bmZiSE1pVi1RXzExam5xVVE5NE50cmZkZ0F4ZzlRdXZTZmVLeWpWM3M1cm85aE9hZnloQUwtZ2hWRHNybml1?oc=5"
+   },
+   {
+    "title": "Global Market Today: Asian stocks join US selloff as AI slump deepens",
+    "publisher": "The Economic Times",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "00:54",
+    "link": "https://news.google.com/rss/articles/CBMixwJBVV95cUxQaFVrNXB6eTdFazFUcVNhRk1nZVloTUJ0ZXAwWlhMa0tIbXAzM1VDZW9JMHc4VDZURnkwaThnQlVVRktaMnpwemlKMUNXNlhwbnlkRTRjNzR0VnVIQ04waWxGdWgtREhsdTI1b0lPUG9vMURadVVyamxWX0s4UEotMVJGR1ZhUWE0UDdCVUZhcmFjUWlzUGFrRkRqcHpIcjFyWjFqM0NpMU5yX0RiTS00bHluVEJwYjJVU1Q3TkxaNGs3bUthNlBSUWYtSW5uOXdCZEh4NmlzdzczR3kwVFBxLWRaeHFlTmxteG5odXVPalFPdnVBOC1VekQyT1JRUEVkX1VoeHprNEZ5RVFfWjN0cG5yTW93aXRmLWNUT1VXQ0ZRTGZTQ2FzNXJ1TE5QSEFCYjUxT09VNklUa0IzdjRzcWtxTGdCUkXSAeMBQVVfeXFMTTNpZ1c0SkVkREVVcDZxajZJclN1bFVGSkNEWldHTnhoTDdpcS0zc3FlZVg0bTJ1VkhFaDVrTEx6aFpvZzdaaEo1RF9GSV9tc2RYSENXZTVRVTdsZHB4VC0yejBjbnNZdVdkcmEyczBTVGZwMVNYSDA0ZkdMMDlXQUVDXzM3OTYybUJoTTlmVHotQmJfWEN6ZG5RSEJ3THFOTHMyNGVROVkxY1A2MGZSMHRFeVVXcExqdW1Pc3RFN1ZUTG13XzIxcGQyeU80X0lyQjY1Y09YZEMyZVJud0tzSnIxZ00?oc=5"
    }
   ]
  },
  "events": {
-  "as_of": "2026-11-05",
-  "summary_zh": "11/6（五） 週選擇權到期；11/12（四） AMAT 財報（盤後）；11/13（五） 週選擇權到期",
+  "as_of": "2026-11-06",
+  "summary_zh": "11/6（五） 週選擇權到期；11/12（四） AMAT 財報（盤後）；11/13（五） 週選擇權到期；11/20（五） 月選擇權到期 (Monthly OPEX)",
   "next_fomc": {
    "date": "2026-12-09",
    "start": "2026-12-08",
    "type": "fomc",
-   "days_ahead": 34,
+   "days_ahead": 33,
    "label": "FOMC 利率決議 12/8–9（含點陣圖 SEP）",
    "detail": "決議 14:00 ET 公布、14:30 記者會；半導體與高 Beta 資產波動最大的時段，另附經濟預測與利率點陣圖",
    "when_zh": "12/9（三）"
@@ -3298,7 +3415,7 @@
     "type": "opex",
     "label": "週選擇權到期",
     "detail": "到期後造市商 Gamma 部位重置，隔週波動常改變",
-    "days_ahead": 1,
+    "days_ahead": 0,
     "symbol": null
    },
    {
@@ -3307,7 +3424,7 @@
     "type": "earnings",
     "label": "AMAT 財報（盤後）",
     "detail": "EPS 預估 $4.06｜Oct/2026",
-    "days_ahead": 7,
+    "days_ahead": 6,
     "symbol": "AMAT"
    },
    {
@@ -3316,7 +3433,16 @@
     "type": "opex",
     "label": "週選擇權到期",
     "detail": "到期後造市商 Gamma 部位重置，隔週波動常改變",
-    "days_ahead": 8,
+    "days_ahead": 7,
+    "symbol": null
+   },
+   {
+    "date": "2026-11-20",
+    "when_zh": "11/20（五）",
+    "type": "opex",
+    "label": "月選擇權到期 (Monthly OPEX)",
+    "detail": "Max Pain 磁吸與 Gamma 對沖解除最明顯的一天",
+    "days_ahead": 14,
     "symbol": null
    }
   ],
@@ -3326,137 +3452,137 @@
   }
  },
  "quotes": {
-  "fetched_at_tpe": "2026-11-05 09:59 台北",
-  "fetched_at_et": "2026-11-04 20:59 ET",
-  "market_status": "Closed",
-  "one_liner": "SOXL $66.68（-8.81%）；VIX 16.61（-25.4%），VIX/VIX3M 0.884（正常）｜市場狀態 Closed",
-  "vix_term_ratio": 0.884,
+  "fetched_at_tpe": "2026-11-06 09:42 台北",
+  "fetched_at_et": "2026-11-05 20:42 ET",
+  "market_status": "After-Hours",
+  "one_liner": "SOXL $40.76（-38.88%），盤後 $40.76（+0.01%）；VIX 28.18（+69.7%），VIX/VIX3M 1.103（倒掛，恐慌）｜市場狀態 After-Hours",
+  "vix_term_ratio": 1.103,
   "rows": [
    {
     "symbol": "SOXL",
     "label": "SOXL 三倍做多半導體",
-    "last": 66.68,
-    "change_pct": -8.81,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 40.755,
+    "change_pct": -38.88,
+    "ext_last": 40.7595,
+    "ext_change_pct": 0.01
    },
    {
     "symbol": "SOXS",
     "label": "SOXS 三倍做空半導體",
-    "last": 58.34,
-    "change_pct": 8.76,
-    "ext_last": null,
+    "last": 81.36,
+    "change_pct": 39.46,
+    "ext_last": 81.36,
     "ext_change_pct": null
    },
    {
     "symbol": "SOXX",
     "label": "SOXX 費半 ETF",
-    "last": 450.41,
-    "change_pct": -3.14,
-    "ext_last": null,
+    "last": 130.97,
+    "change_pct": -12.77,
+    "ext_last": 130.97,
     "ext_change_pct": null
    },
    {
     "symbol": "SPY",
     "label": "S&P 500",
-    "last": 766.81,
-    "change_pct": 1.65,
-    "ext_last": null,
+    "last": 734.06,
+    "change_pct": -4.27,
+    "ext_last": 734.06,
     "ext_change_pct": null
    },
    {
     "symbol": "QQQ",
     "label": "Nasdaq 100",
-    "last": 691.95,
-    "change_pct": 0.97,
-    "ext_last": null,
+    "last": 648.58,
+    "change_pct": -6.27,
+    "ext_last": 648.58,
     "ext_change_pct": null
    },
    {
     "symbol": "NVDA",
     "label": "Nvidia",
-    "last": 200.13,
-    "change_pct": -3.17,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 182.29,
+    "change_pct": -8.91,
+    "ext_last": 182.3,
+    "ext_change_pct": 0.01
    },
    {
     "symbol": "AVGO",
     "label": "Broadcom",
-    "last": 325.48,
-    "change_pct": -2.0,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 292.43,
+    "change_pct": -10.15,
+    "ext_last": 292.398,
+    "ext_change_pct": -0.01
    },
    {
     "symbol": "AMD",
     "label": "AMD",
-    "last": 488.78,
-    "change_pct": 1.01,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 403.8001,
+    "change_pct": -17.39,
+    "ext_last": 403.805,
+    "ext_change_pct": 0.0
    },
    {
     "symbol": "MU",
     "label": "Micron",
-    "last": 795.23,
-    "change_pct": -7.0,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 653.9,
+    "change_pct": -17.77,
+    "ext_last": 653.96,
+    "ext_change_pct": 0.01
    },
    {
     "symbol": "TSM",
     "label": "TSMC ADR",
-    "last": 395.75,
-    "change_pct": -2.24,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 351.595,
+    "change_pct": -11.16,
+    "ext_last": 351.57,
+    "ext_change_pct": -0.01
    },
    {
     "symbol": "AMAT",
     "label": "Applied Materials",
-    "last": 369.4,
-    "change_pct": -3.28,
-    "ext_last": null,
+    "last": 317.6,
+    "change_pct": -14.02,
+    "ext_last": 317.6,
     "ext_change_pct": null
    },
    {
     "symbol": "LRCX",
     "label": "Lam Research",
-    "last": 221.43,
-    "change_pct": -4.03,
-    "ext_last": null,
-    "ext_change_pct": null
+    "last": 184.875,
+    "change_pct": -16.51,
+    "ext_last": 184.87,
+    "ext_change_pct": -0.0
    },
    {
     "symbol": "VIX",
     "label": "VIX 恐慌指數",
-    "last": 16.61,
-    "change_pct": -25.4064,
+    "last": 28.18,
+    "change_pct": 69.6568,
     "ext_last": null,
     "ext_change_pct": null
    },
    {
     "symbol": "VIX3M",
     "label": "VIX 3 個月",
-    "last": 18.8,
-    "change_pct": -13.1383,
+    "last": 25.55,
+    "change_pct": 35.9043,
     "ext_last": null,
     "ext_change_pct": null
    },
    {
     "symbol": "VIX9D",
     "label": "VIX 9 天",
-    "last": 15.19,
-    "change_pct": -44.5688,
+    "last": 32.66,
+    "change_pct": 115.0099,
     "ext_last": null,
     "ext_change_pct": null
    },
    {
     "symbol": "SKEW",
     "label": "SKEW 尾部風險",
-    "last": 150.9,
-    "change_pct": 0.5898,
+    "last": 149.37,
+    "change_pct": -1.0139,
     "ext_last": null,
     "ext_change_pct": null
    }
@@ -3464,20 +3590,20 @@
  },
  "changes": {
   "has_previous": true,
-  "previous_date": "2026-11-03",
+  "previous_date": "2026-11-04",
   "previous_verdict": "賣出 / 減碼",
   "verdict_changed": false,
-  "composite_prev": -0.77,
-  "composite_delta": -0.09,
-  "crash_risk_delta": -8.0,
-  "fear_greed_delta": 8.2,
-  "vix_delta": -0.32,
+  "composite_prev": -0.86,
+  "composite_delta": -0.05,
+  "crash_risk_delta": 20.0,
+  "fear_greed_delta": -7.4,
+  "vix_delta": -4.22,
   "size_pct_prev": 10,
-  "same_verdict_streak_days": 5,
+  "same_verdict_streak_days": 6,
   "notes": [
-   "評級不變（連續 5 個交易日 🔴賣出 / 減碼）",
-   "綜合分數 -0.77 → -0.86（-0.09）",
-   "崩跌前兆 29 → 21"
+   "評級不變（連續 6 個交易日 🔴賣出 / 減碼）",
+   "綜合分數 -0.86 → -0.91（-0.05）",
+   "崩跌前兆 21 → 41"
   ]
  },
  "history": [
@@ -3554,7 +3680,7 @@
    "fear_greed": 19.8,
    "vix": 16.68,
    "fwd_ret_5d": 24.7,
-   "fwd_ret_10d": null
+   "fwd_ret_10d": -50.36
   },
   {
    "date": "2026-10-23",
@@ -3628,7 +3754,7 @@
    "crash_risk": 25.0,
    "fear_greed": 34.6,
    "vix": 16.91,
-   "fwd_ret_5d": null,
+   "fwd_ret_5d": -60.19,
    "fwd_ret_10d": null
   },
   {
@@ -3690,6 +3816,21 @@
    "vix": 20.83,
    "fwd_ret_5d": null,
    "fwd_ret_10d": null
+  },
+  {
+   "date": "2026-11-05",
+   "close": 40.76,
+   "ret_1d": -38.88,
+   "composite": -0.91,
+   "rating_5": 2,
+   "verdict": "賣出 / 減碼",
+   "emoji": "🔴",
+   "size_pct": 10,
+   "crash_risk": 41.0,
+   "fear_greed": 19.9,
+   "vix": 16.61,
+   "fwd_ret_5d": null,
+   "fwd_ret_10d": null
   }
  ],
  "schedule": {
@@ -3698,7 +3839,7 @@
    "07:30"
   ],
   "weekday_text": "週二、三、四、五、六",
-  "next_run": "2026-11-05 07:30"
+  "next_run": "2026-11-06 07:30"
  },
  "links": {
   "report_html": "https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html",
