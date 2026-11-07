@@ -1,14 +1,14 @@
 {
- "data_as_of": "2026-11-05",
+ "data_as_of": "2026-11-06",
  "method": {
   "entry": "訊號日次一交易日開盤價",
   "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
   "declustered": true,
-  "oos": "最近 40% 樣本（2023-03-07 起）",
+  "oos": "最近 40% 樣本（2023-03-08 起）",
   "ci": "Wilson 95%",
-  "sample": "2017-09-08 ~ 2026-11-05",
-  "bars": 2513,
-  "data_as_of": "2026-11-05",
+  "sample": "2017-09-08 ~ 2026-11-06",
+  "bars": 2514,
+  "data_as_of": "2026-11-06",
   "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
  },
  "summary": {
@@ -16,11 +16,10 @@
   "n_graded_a": 0,
   "n_graded_b": 4,
   "fired_today": [
-   "rsi2_lt5_any"
+   "bb_lower_reentry"
   ],
   "pending": [
    "rsi14_lt25",
-   "bb_lower_reentry",
    "reclaim_sma20"
   ],
   "fired_long_ab": [],
@@ -71,8 +70,13 @@
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
-   "state": "fired",
-   "pending": null
+   "state": "recent",
+   "pending": {
+    "price": -1.23,
+    "op": "<=",
+    "dist_pct": -102.7,
+    "needs": null
+   }
   },
   {
    "key": "rsi14_lt25",
@@ -94,9 +98,9 @@
    "grade": "—",
    "state": "pending",
    "pending": {
-    "price": 34.96,
+    "price": 26.32,
     "op": "<=",
-    "dist_pct": -14.2,
+    "dist_pct": -42.7,
     "needs": null
    }
   },
@@ -118,13 +122,8 @@
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
-   "state": "pending",
-   "pending": {
-    "price": 49.17,
-    "op": ">",
-    "dist_pct": 20.6,
-    "needs": "前提：今日收盤已在下軌之外"
-   }
+   "state": "fired",
+   "pending": null
   },
   {
    "key": "three_down_sma5",
@@ -190,7 +189,7 @@
    "pending": {
     "price": 75.29,
     "op": ">",
-    "dist_pct": 84.7,
+    "dist_pct": 63.9,
     "needs": "2026-11-04 為投降日"
    }
   },
@@ -235,9 +234,9 @@
    "grade": "C",
    "state": "pending",
    "pending": {
-    "price": 92.62,
+    "price": 88.28,
     "op": ">",
-    "dist_pct": 127.3,
+    "dist_pct": 92.1,
     "needs": null
    }
   },
@@ -421,7 +420,7 @@
     17.9,
     50.7
    ],
-   "mean": 9.77,
+   "mean": 9.78,
    "pf": 2.73,
    "p_value": 0.9168,
    "q_value": 0.9568,
@@ -511,7 +510,7 @@
    "q_value": 0.9568,
    "significant": false,
    "grade": "C",
-   "state": "off",
+   "state": "recent",
    "pending": null
   },
   {
@@ -541,12 +540,12 @@
    "series": "SOXL",
    "band_pct": 0.0,
    "confirm_days": 1,
-   "cagr_pct": 13.5,
+   "cagr_pct": 13.4,
    "max_dd_pct": -76.6,
    "switches": 91,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -67.2
+   "dist_pct": -63.0
   },
   {
    "series": "SOXL",
@@ -557,7 +556,7 @@
    "switches": 45,
    "time_in_market_pct": 66.0,
    "in_market": false,
-   "dist_pct": -67.2
+   "dist_pct": -63.0
   },
   {
    "series": "SOXL",
@@ -568,7 +567,7 @@
    "switches": 29,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -67.2
+   "dist_pct": -63.0
   },
   {
    "series": "SOXX",
@@ -609,9 +608,9 @@
    "confirm_days": 2,
    "cagr_pct": 23.0,
    "max_dd_pct": -86.4,
-   "switches": 14,
+   "switches": 15,
    "time_in_market_pct": 78.0,
-   "in_market": true,
+   "in_market": false,
    "dist_pct": null
   }
  ],
