@@ -1,21 +1,23 @@
 {
- "data_as_of": "2026-11-12",
+ "data_as_of": "2026-11-13",
  "method": {
   "entry": "訊號日次一交易日開盤價",
   "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
   "declustered": true,
-  "oos": "最近 40% 樣本（2023-03-14 起）",
+  "oos": "最近 40% 樣本（2023-03-15 起）",
   "ci": "Wilson 95%",
-  "sample": "2017-09-15 ~ 2026-11-12",
-  "bars": 2513,
-  "data_as_of": "2026-11-12",
+  "sample": "2017-09-15 ~ 2026-11-13",
+  "bars": 2514,
+  "data_as_of": "2026-11-13",
   "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
  },
  "summary": {
   "n_signals": 23,
   "n_graded_a": 0,
   "n_graded_b": 5,
-  "fired_today": [],
+  "fired_today": [
+   "macd_cross_up_below200"
+  ],
   "pending": [
    "rsi14_lt25",
    "reclaim_sma20"
@@ -24,7 +26,7 @@
   "fired_exit_ab": [],
   "n_significant": 1,
   "n_graded": 18,
-  "n_q_lt_10": 0,
+  "n_q_lt_10": 1,
   "exits_predictive": [],
   "dyn_base_win_pct": 63.4
  },
@@ -63,16 +65,16 @@
     58.3
    ],
    "mean": 1.21,
-   "pf": 1.23,
+   "pf": 1.24,
    "p_value": 0.9399,
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
    "state": "recent",
    "pending": {
-    "price": 3.33,
+    "price": 30.84,
     "op": "<=",
-    "dist_pct": -94.9,
+    "dist_pct": -47.1,
     "needs": null
    }
   },
@@ -96,9 +98,9 @@
    "grade": "—",
    "state": "pending",
    "pending": {
-    "price": 2.86,
+    "price": 6.82,
     "op": "<=",
-    "dist_pct": -95.6,
+    "dist_pct": -88.3,
     "needs": null
    }
   },
@@ -151,14 +153,14 @@
    "horizon": 7,
    "n": 93,
    "win_pct": 57.0,
-   "base_win_pct": 54.5,
+   "base_win_pct": 54.4,
    "ci": [
     46.8,
     66.6
    ],
    "mean": 2.13,
    "pf": 1.43,
-   "p_value": 0.3538,
+   "p_value": 0.3467,
    "q_value": 0.9399,
    "significant": false,
    "grade": "B",
@@ -193,23 +195,23 @@
    "horizon": 20,
    "n": 40,
    "win_pct": 47.5,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     32.9,
     62.5
    ],
    "mean": 4.62,
    "pf": 1.41,
-   "p_value": 0.9062,
+   "p_value": 0.904,
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
    "state": "recent",
    "pending": {
-    "price": 68.14,
+    "price": 60.67,
     "op": ">=",
     "dist_pct": 4.0,
-    "needs": "反彈嘗試第 6 日，量需 > 181M"
+    "needs": "反彈嘗試第 7 日，量需 > 208M"
    }
   },
   {
@@ -219,22 +221,22 @@
    "horizon": 20,
    "n": 39,
    "win_pct": 64.1,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     48.4,
     77.3
    ],
    "mean": 9.37,
    "pf": 2.35,
-   "p_value": 0.2176,
+   "p_value": 0.2139,
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
    "state": "pending",
    "pending": {
-    "price": 78.01,
+    "price": 75.88,
     "op": ">",
-    "dist_pct": 19.1,
+    "dist_pct": 30.1,
     "needs": null
    }
   },
@@ -245,14 +247,14 @@
    "horizon": 20,
    "n": 25,
    "win_pct": 48.0,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     30.0,
     66.5
    ],
    "mean": 5.79,
    "pf": 1.68,
-   "p_value": 0.8574,
+   "p_value": 0.8551,
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
@@ -266,14 +268,14 @@
    "horizon": 20,
    "n": 18,
    "win_pct": 55.6,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     33.7,
     75.4
    ],
    "mean": 10.68,
    "pf": 2.06,
-   "p_value": 0.6313,
+   "p_value": 0.628,
    "q_value": null,
    "significant": false,
    "grade": "—",
@@ -298,7 +300,7 @@
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
-   "state": "off",
+   "state": "fired",
    "pending": null
   },
   {
@@ -329,14 +331,14 @@
    "horizon": 20,
    "n": 24,
    "win_pct": 54.2,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     35.1,
     72.1
    ],
    "mean": 4.04,
    "pf": 1.49,
-   "p_value": 0.6746,
+   "p_value": 0.6709,
    "q_value": 0.9399,
    "significant": false,
    "grade": "B",
@@ -350,15 +352,15 @@
    "horizon": 20,
    "n": 24,
    "win_pct": 83.3,
-   "base_win_pct": 56.6,
+   "base_win_pct": 56.5,
    "ci": [
     64.1,
     93.3
    ],
    "mean": 12.33,
    "pf": 6.7,
-   "p_value": 0.0056,
-   "q_value": 0.1008,
+   "p_value": 0.0054,
+   "q_value": 0.0972,
    "significant": true,
    "grade": "B*",
    "state": "off",
@@ -413,14 +415,14 @@
    "horizon": 20,
    "n": 28,
    "win_pct": 32.1,
-   "base_win_pct": 43.4,
+   "base_win_pct": 43.5,
    "ci": [
     17.9,
     50.7
    ],
    "mean": 9.78,
    "pf": 2.73,
-   "p_value": 0.92,
+   "p_value": 0.9215,
    "q_value": 0.9399,
    "significant": false,
    "grade": "C",
@@ -518,14 +520,14 @@
    "horizon": 20,
    "n": 6,
    "win_pct": 33.3,
-   "base_win_pct": 43.4,
+   "base_win_pct": 43.5,
    "ci": [
     9.7,
     70.0
    ],
    "mean": -1.54,
    "pf": 0.83,
-   "p_value": 0.8159,
+   "p_value": 0.8172,
    "q_value": null,
    "significant": false,
    "grade": "—",
@@ -543,7 +545,7 @@
    "switches": 91,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -47.2
+   "dist_pct": -53.0
   },
   {
    "series": "SOXL",
@@ -554,7 +556,7 @@
    "switches": 45,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -47.2
+   "dist_pct": -53.0
   },
   {
    "series": "SOXL",
@@ -565,7 +567,7 @@
    "switches": 29,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -47.2
+   "dist_pct": -53.0
   },
   {
    "series": "SOXX",
@@ -604,7 +606,7 @@
    "series": "SOXX",
    "band_pct": 3.0,
    "confirm_days": 2,
-   "cagr_pct": 22.4,
+   "cagr_pct": 22.3,
    "max_dd_pct": -86.4,
    "switches": 15,
    "time_in_market_pct": 78.0,

@@ -1,12 +1,12 @@
 # SOXL Quant → Meta AI（Muse）吸收包
 
 > 這個資料夾是給 AI agent 整包讀的。全部是純 Markdown 加一份 JSON，沒有程式碼、沒有圖片、沒有金鑰。
-> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-11-12**，產生 2026-11-13 02:01:30 台北。
+> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-11-13**，產生 2026-11-14 01:33:50 台北。
 
 ## 三十秒版
 
-今天：🔴 **減碼 / 觀望** · 收盤 $65.52（-0.77%）· 綜合 -0.44 · 倉位上限 25%
-計畫：**⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫** · 停損 $51.12 · T1 $89.96 · T2 $100.50 · 加權風報比 1.96R
+今天：🔴 **減碼 / 觀望** · 收盤 $58.34（-10.97%）· 綜合 -0.40 · 倉位上限 25%
+計畫：**⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫** · 停損 $45.56 · T1 $77.02 · T2 $100.50 · 加權風報比 1.85R
 
 ## 怎麼餵給 Muse（擇一）
 
@@ -36,7 +36,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 ## 這包資料的誠實聲明
 
 - 數字全部由公開資料自動計算；任何一份檔案裡的數字都能在 `data/latest.json` 找到同一個值（`tools/qa_brief.py` 每天驗證）。
-- 回測結論目前是：18 條有樣本的規則只有 1 條勝率顯著高於基準，經多重檢定校正後 0 條；所有賣出規則都不優於基準。所以計畫裡的停損是風險控制，不是預測。
+- 回測結論目前是：18 條有樣本的規則只有 1 條勝率顯著高於基準，經多重檢定校正後 1 條；所有賣出規則都不優於基準。所以計畫裡的停損是風險控制，不是預測。
 - 三倍槓桿 ETF 單日可 ±15%；200 日線濾網的任何變體都沒有把最大回撤壓到 −74% 以內。
 - 這是研究參考，不是投資建議。
 
@@ -54,21 +54,21 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 
 | 檔案 | 大小 |
 |---|---|
-| `01_brief_today.md` | 13.4 KB |
+| `01_brief_today.md` | 13.8 KB |
 | `02_trade_plan.md` | 3.6 KB |
 | `03_signals.md` | 10.8 KB |
 | `04_methodology.md` | 7.9 KB |
 | `05_glossary.md` | 4.5 KB |
 | `06_rules_for_agents.md` | 6.1 KB |
 | `07_history.md` | 2.5 KB |
-| `08_today_news.md` | 9.4 KB |
-| `09_market_dashboard.md` | 8.9 KB |
+| `08_today_news.md` | 9.2 KB |
+| `09_market_dashboard.md` | 8.8 KB |
 | `llms.txt` | 1.9 KB |
 | `prompts/first_time.md` | 7.5 KB |
 | `prompts/daily_briefing.md` | 0.9 KB |
 | `prompts/holder_check.md` | 0.6 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
-| `data/latest.json` | 107.9 KB |
+| `data/latest.json` | 107.8 KB |
 | `data/schema.json` | 17.9 KB |
 | `data/signals.json` | 11.0 KB |
 

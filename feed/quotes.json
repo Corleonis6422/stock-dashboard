@@ -1,135 +1,135 @@
 {
- "fetched_at_tpe": "2026-11-13 10:01 台北",
- "fetched_at_et": "2026-11-12 21:01 ET",
- "market_status": "Closed",
- "one_liner": "SOXL $65.52（-0.77%）；VIX 18.70（+6.5%），VIX/VIX3M 0.932（偏緊）｜市場狀態 Closed",
- "vix_term_ratio": 0.932,
+ "fetched_at_tpe": "2026-11-14 09:33 台北",
+ "fetched_at_et": "2026-11-13 20:33 ET",
+ "market_status": "After-Hours",
+ "one_liner": "SOXL $58.34（-10.97%），盤後 $55.97（-4.06%）；VIX 19.30（+3.2%），VIX/VIX3M 0.936（偏緊）｜市場狀態 After-Hours",
+ "vix_term_ratio": 0.936,
  "rows": [
   {
    "symbol": "SOXL",
    "label": "SOXL 三倍做多半導體",
-   "last": 65.5183,
-   "change_pct": -0.77,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 58.34,
+   "change_pct": -10.97,
+   "ext_last": 55.97,
+   "ext_change_pct": -4.06
   },
   {
    "symbol": "SOXS",
    "label": "SOXS 三倍做空半導體",
-   "last": 45.71,
-   "change_pct": 0.86,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 50.78,
+   "change_pct": 11.07,
+   "ext_last": 52.9969,
+   "ext_change_pct": 4.37
   },
   {
    "symbol": "SOXX",
    "label": "SOXX 費半 ETF",
-   "last": 154.99,
-   "change_pct": -0.26,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 149.3,
+   "change_pct": -3.67,
+   "ext_last": 147.1,
+   "ext_change_pct": -1.47
   },
   {
    "symbol": "SPY",
    "label": "S&P 500",
-   "last": 757.25,
-   "change_pct": -0.34,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 754.21,
+   "change_pct": -0.38,
+   "ext_last": 749.41,
+   "ext_change_pct": -0.64
   },
   {
    "symbol": "QQQ",
    "label": "Nasdaq 100",
-   "last": 688.17,
-   "change_pct": -0.32,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 679.89,
+   "change_pct": -1.2,
+   "ext_last": 674.2165,
+   "ext_change_pct": -0.83
   },
   {
    "symbol": "NVDA",
    "label": "Nvidia",
-   "last": 166.19,
-   "change_pct": -4.34,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 162.85,
+   "change_pct": -2.01,
+   "ext_last": 161.01,
+   "ext_change_pct": -1.13
   },
   {
    "symbol": "AVGO",
    "label": "Broadcom",
-   "last": 364.36,
-   "change_pct": 5.54,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 347.01,
+   "change_pct": -4.76,
+   "ext_last": 340.2501,
+   "ext_change_pct": -1.95
   },
   {
    "symbol": "AMD",
    "label": "AMD",
-   "last": 585.3,
-   "change_pct": 5.86,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 534.06,
+   "change_pct": -8.75,
+   "ext_last": 521.2493,
+   "ext_change_pct": -2.4
   },
   {
    "symbol": "MU",
    "label": "Micron",
-   "last": 798.44,
-   "change_pct": -1.59,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 778.31,
+   "change_pct": -2.52,
+   "ext_last": 761.2,
+   "ext_change_pct": -2.2
   },
   {
    "symbol": "TSM",
    "label": "TSMC ADR",
-   "last": 405.65,
-   "change_pct": -1.86,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 398.87,
+   "change_pct": -1.63,
+   "ext_last": 394.8636,
+   "ext_change_pct": -1.0
   },
   {
    "symbol": "AMAT",
    "label": "Applied Materials",
-   "last": 380.95,
-   "change_pct": -3.58,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 370.5,
+   "change_pct": -2.74,
+   "ext_last": 363.93,
+   "ext_change_pct": -1.77
   },
   {
    "symbol": "LRCX",
    "label": "Lam Research",
-   "last": 233.78,
-   "change_pct": -0.89,
-   "ext_last": null,
-   "ext_change_pct": null
+   "last": 225.92,
+   "change_pct": -3.36,
+   "ext_last": 223.5,
+   "ext_change_pct": -1.07
   },
   {
    "symbol": "VIX",
    "label": "VIX 恐慌指數",
-   "last": 18.7,
-   "change_pct": 6.4706,
+   "last": 19.3,
+   "change_pct": 3.2086,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "VIX3M",
    "label": "VIX 3 個月",
-   "last": 20.06,
-   "change_pct": 4.0877,
+   "last": 20.62,
+   "change_pct": 2.7916,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "VIX9D",
    "label": "VIX 9 天",
-   "last": 17.51,
-   "change_pct": 8.3952,
+   "last": 17.82,
+   "change_pct": 1.7704,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "SKEW",
    "label": "SKEW 尾部風險",
-   "last": 150.16,
-   "change_pct": 0.7126,
+   "last": 147.14,
+   "change_pct": -2.0112,
    "ext_last": null,
    "ext_change_pct": null
   }
