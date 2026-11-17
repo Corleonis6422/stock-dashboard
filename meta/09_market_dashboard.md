@@ -1,12 +1,12 @@
 # 09 市場儀表板：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌指數
 
-> 資料日 data_as_of **2026-11-13**（美股交易日）· 產生 2026-11-14 01:33:50 台北 · 資料狀態 收盤即時報價補齊 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-16**（美股交易日）· 產生 2026-11-17 04:04:34 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 六個最常被問的問題，每個一格：讀數、燈號、一句話、細節、數字來源欄位。全部由 `data/latest.json` 既有欄位推導；燈號規則在 `soxl_quant/dashboard.py`。
 
 ## 一行版
 
-加碼：🔴 不能加碼｜宏觀：🔴 偏空，有旗標｜費半：🔴 空頭 -9%/20日｜大戶：🟡 中性 +0.13｜P/C：🟡 SOXL 0.942，個股第 95 百分位（恐慌）｜崩跌：🟢 33/100 低
+加碼：🔴 不能加碼｜宏觀：🔴 偏空，有旗標｜費半：🔴 空頭 -16%/20日｜大戶：🔴 偏空 -0.55｜P/C：🟡 SOXL 0.803，個股第 95 百分位（恐慌）｜崩跌：🟡 64/100 注意
 
 ## 六個儀表
 
@@ -14,68 +14,68 @@
 
 - 讀數：不能加碼
 - 一句話：評級偏空、吊燈移動停損已觸發：加碼就是攤平三倍槓桿，SOXL 單日可 ±15%。只能減碼或等買訊。
-- 細節：反彈到 $60.69 / $62.97 先減碼；跌破 $45.56 全出
+- 細節：反彈到 $51.48 / $56.71 先減碼；跌破 $36.32 全出
 - 來源欄位：`trade_plan.side`、`trade_plan.tradeable`、`verdict.rating_5`、`trade_plan.holder.trail_breached`、`crash_risk.score`、`sentiment.vix.ratio_vix_3m`、`levels.sma20`
 
 ### 🔴 現在的宏觀消息：偏空，有旗標
 
-- 讀數：偏空｜🌍 US military downs 2 Iranian attack drones as Iran claims a strike on a US radar in Bahrain（AP News）
-- 一句話：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
-- 細節：10Y 5.100%（+12.0 bps）；油 $61.01（+4.54%）；VIX 18.70（-3.91%）；美元 29.42（+0.93%）
+- 讀數：偏空｜🏛️ Asia’s Data Center Hotbed Hit by US Chip Curbs as Trump Visits（Bloomberg.com）
+- 一句話：關稅或出口管制收緊：半導體供應鏈首當其衝（NVDA、AMAT、LRCX 的中國營收），SOXL 的跌幅通常是 SOXX 的 3 倍。
+- 細節：10Y 5.120%（-3.0 bps）；油 $58.66（-3.93%）；VIX 22.91（+18.70%）；美元 29.56（+0.20%）
 - 注意：時事是關鍵字規則分類（非 LLM）；宏觀數字為前一交易日收盤
 - 來源欄位：`flash.label`、`flash.top[0]`、`flash.flags`、`macro.kpis[TNX_10Y|BRENT|VIX|DXY]`、`events.upcoming`
 
-### 🔴 費半（SOXX）整體走向：空頭 -9%/20日
+### 🔴 費半（SOXX）整體走向：空頭 -16%/20日
 
-- 讀數：空頭｜$149.30（-3.67%）
+- 讀數：空頭｜$141.22（-5.41%）
 - 一句話：費半空頭：SOXL 的反彈多半是空頭回補，T1 / T2 當減碼點。
-- 細節：5 日 +9.3%、20 日 -9.2%；距 20MA -4.8%、50MA -13.1%、200MA -6.9%；16 檔成分股站上 50MA 31.2%、200MA 43.8%；年線濾網：空手（出場線 n/a）
+- 細節：5 日 -3.8%、20 日 -15.6%；距 20MA -9.2%、50MA -17.5%、200MA -12.0%；16 檔成分股站上 50MA 18.8%、200MA 25.0%；年線濾網：空手（出場線 $155.70）
 - 來源欄位：`soxx_stats`、`breadth.above_sma50_pct`、`breadth.above_sma200_pct`、`trade_plan.regime.underlying`
 
-### 🟡 大戶怎麼走：中性 +0.13
+### 🔴 大戶怎麼走：偏空 -0.55
 
-- 讀數：中性 +0.13｜大單 Call $24.75M vs Put $35.67M（69 筆）
-- 一句話：大單方向不明顯：沒有誰在明顯站隊。
-- 細節：最大單 2026-11-20 $60 Call $5.11M（看多 (買 Call)）；大戶 C/P 0.69 vs 散戶 C/P 0.4；SOXL/SOXS 資金流 2.03x（20 日均 2.57x）
+- 讀數：偏空 -0.55｜大單 Call $40.91M vs Put $61.53M（76 筆）
+- 一句話：大單權利金偏向 Put：大戶在避險或押跌，和空頭評級同向。
+- 細節：最大單 2028-01-21 $15 Call $8.43M（偏空 (Call 價跌量增)）；大戶 C/P 0.66 vs 散戶 C/P 0.26；SOXL/SOXS 資金流 1.7x（20 日均 2.52x）
 - 注意：大單 = CBOE 延遲鏈上權利金最大的成交，買賣方向用價量推測（buy_lean / sell_lean），不是真實成交回報
 - 來源欄位：`options.whale.whale_net_score`、`options.whale.whale_call_prem_m`、`options.whale.whale_put_prem_m`、`options.whale.top_whale_trades`、`sentiment.flows.ratio`
 
-### 🟡 Put/Call：SOXL 0.942，個股第 95 百分位（恐慌）
+### 🟡 Put/Call：SOXL 0.803，個股第 95 百分位（恐慌）
 
-- 讀數：SOXL 成交 0.942（中性）｜全市場個股 0.72（1 年第 95 百分位）
+- 讀數：SOXL 成交 0.803（中性）｜全市場個股 0.73（1 年第 95 百分位）
 - 一句話：恐慌區（個股 P/C 第 95 百分位）：底部常出現在這裡，但這是恐慌的證據不是買點，配合站回 20 日線才算。P/C 越高代表買 Put 避險越多。
-- 細節：SOXL 未平倉 P/C 1.097；全市場總 P/C 0.89（中性 (0.75-0.9)）；個股 P/C 讀法 偏防禦 (0.70-0.85)
+- 細節：SOXL 未平倉 P/C 1.107；全市場總 P/C 0.95（偏避險 (0.9-1.1)）；個股 P/C 讀法 偏防禦 (0.70-0.85)
 - 來源欄位：`options.pc_vol_ratio`、`options.pc_oi_ratio`、`sentiment.market_put_call.equity_pc`、`sentiment.market_put_call.equity_pc_percentile`、`sentiment.market_put_call.total_pc`
 
-### 🟢 崩跌指數：33/100 低
+### 🟡 崩跌指數：64/100 注意
 
-- 讀數：33 / 100（低）
-- 一句話：分數低不代表安全：價已在年線下，這個分數量的是「壓力持續度」，不是新頂部前兆。
-- 細節：成立中的症狀：15 日內出現 3~6 個放量下跌『派發日』、布林通道寬度處 1 年高檔 (波動擴張)；分數 ≥ 80 的歷史命中率 12.2%（基準 9.0%）；低風險 (症狀負荷低於歷史 60%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆
+- 讀數：64 / 100（注意）
+- 一句話：分數進入注意區：盯 VIX 期限結構與派發日，不加碼。
+- 細節：成立中的症狀：VIX 期限結構走平/倒掛 (VIX/VIX3M 0.88→1.00)、15 日內出現 3~6 個放量下跌『派發日』、布林通道寬度處 1 年高檔 (波動擴張)；分數 ≥ 80 的歷史命中率 12.2%（基準 9.0%）；注意 (高於歷史 60~80%)；價已在 200MA 之下，此分數代表『壓力持續度』而非新頂部前兆
 - 來源欄位：`crash_risk.score`、`crash_risk.zone`、`crash_risk.active_signals`、`crash_risk.event_study`
 
 ## 因子等級（借 Seeking Alpha 的 A+ … F 寫法）
 
 | 類別 | 權重 | 平均分（−2…+2） | 等級 |
 |---|---|---|---|
-| 期權籌碼 | 20 | -0.20 | **C-** |
-| 量能 | 14 | -0.64 | **D-** |
-| 技術趨勢 | 26 | -0.81 | **D-** |
-| 廣度 | 10 | -1.00 | **D-** |
-| 宏觀 | 10 | +0.70 | **B+** |
-| 情緒 | 15 | +0.20 | **C+** |
-| 消息 | 6 | -1.00 | **D-** |
+| 期權籌碼 | 20 | -0.75 | **D-** |
+| 量能 | 14 | -1.64 | **F** |
+| 技術趨勢 | 26 | -1.19 | **F** |
+| 廣度 | 10 | -1.60 | **F** |
+| 宏觀 | 10 | -0.40 | **D** |
+| 情緒 | 15 | +0.13 | **C+** |
+| 消息 | 6 | -2.00 | **F** |
 
-- 總評 **D**（綜合分 -0.40）。對照表：A+ ≥ +1.5、A ≥ +1.0、B+ ≥ +0.6、B ≥ +0.3、C+ ≥ +0.1、C ≥ −0.1、C− ≥ −0.3、D ≥ −0.6、D− ≥ −1.0、F < −1.0。
+- 總評 **D-**（綜合分 -0.98）。對照表：A+ ≥ +1.5、A ≥ +1.0、B+ ≥ +0.6、B ≥ +0.3、C+ ≥ +0.1、C ≥ −0.1、C− ≥ −0.3、D ≥ −0.6、D− ≥ −1.0、F < −1.0。
 - 這不是 Seeking Alpha 的量化評級；只是用同樣的字母等級呈現本 repo 的 24 因子評分表，讓看慣 SA 的人一眼看懂。
 
 ## 四個聲音（借 Seeking Alpha 的 Ratings Summary 寫法）
 
 | 聲音 | 讀數 | 方向 |
 |---|---|---|
-| 量化評級（24 因子） | 賣出 / 減碼（綜合 -0.40） | 🔴 空 |
+| 量化評級（24 因子） | 賣出 / 減碼（綜合 -0.98） | 🔴 空 |
 | 訊號驗證（10 年回測） | 沒有驗證過的買點（不開新倉） | 🟡 中性 |
-| 時事 / 宏觀（36 小時） | 偏空（淨影響 -0.58） | 🔴 空 |
+| 時事 / 宏觀（36 小時） | 偏空（淨影響 -0.59） | 🔴 空 |
 | 費半趨勢（SOXX） | 空頭 | 🔴 空 |
 
 - **四個聲音：3 空 / 1 中性 / 0 多 → 一致偏空，不加碼**
@@ -84,11 +84,11 @@
 
 | 項目 | 值 |
 |---|---|
-| 收盤（2026-11-13） | $149.30（-3.67%） |
-| 5 日 / 20 日 | +9.35% / -9.22% |
-| 20MA / 50MA / 200MA | $156.83（-4.80%） / $171.90（-13.10%） / $160.39（-6.90%） |
+| 收盤（2026-11-16） | $141.22（-5.41%） |
+| 5 日 / 20 日 | -3.77% / -15.59% |
+| 20MA / 50MA / 200MA | $155.53（-9.20%） / $171.26（-17.50%） / $160.52（-12.00%） |
 | 20 日高 / 低 | $173.98 / $131.90 |
-| 距 52 週高 | -31.60% |
+| 距 52 週高 | -35.30% |
 | 走向 | 空頭（年線與短均線都在頭上） |
 
 - SOXL 追蹤 SOXX 單日報酬的 3 倍：費半 −1% ≈ SOXL −3%；費半在年線上方整理時，SOXL 因為複利損耗，距自己的年線可能遠得多（今天就是）。
@@ -97,14 +97,14 @@
 
 | 方向 | 標的・類型・時間 | 標題 |
 |---|---|---|
-| 中性 | NVDA・新聞・11/14 06:18 | [Whale Rock Capital takes new stake in Microsoft, exits Apple, among Q3 moves](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 利空 | NVDA・新聞・11/14 06:14 | [Nasdaq gains 2% in a bumpy week for Wall Street; Nvidia loses ~13%](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/14 05:16 | [Cohere announces acquisition of cubic, aimed at boosting AI cyber defense](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/14 05:05 | [RenTech takes new stake in Goldman Sachs, trims position in megacap tech stocks in Q3](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/14 04:57 | [SA Asks: How much will Jensen Huang's departure hurt Nvidia? (Update)](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/14 04:51 | [SA Asks: Is Nvidia a buy, sell or hold after Jensen Huang's departure?](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/14 04:08 | [Catalyst Watch: Anthropic IPO, Nvidia shockwaves, Nike event, and GTA 6 arrives](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・分析・11/14 03:31 | [Nvidia: One Of The Best Opportunities In The Market After Jensen's Resignation](https://seekingalpha.com/article/4967951-nvidia-one-of-best-opportunities-in-market-after-jensen-resignation?source=feed_symbol_NVDA) |
+| 中性 | NVDA・新聞・11/17 07:02 | [Apaloosa adds Oracle, exits Advanced Micro, raises stake in NVIDIA, cuts in Alphabet among Q3 moves](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 中性 | NVDA・新聞・11/17 06:56 | [Dan Loeb's Third Point adds Meta, exits WBD, boosts SpaceX among Q3 trades](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 中性 | SOXX・分析・11/17 06:40 | [2 Stocks I'm Buying As Wall Street Rotates Out Of AI](https://seekingalpha.com/article/4968778-2-stocks-im-buying-as-wall-street-rotates-out-of-ai?source=feed_symbol_SOXX) |
+| 利多 | NVDA・新聞・11/17 04:36 | [Tiger Global exits Chime, adds Ferrari, boosts Nvidia stake, among Q3 trades](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 中性 | NVDA・新聞・11/17 04:35 | [AI demand sufficient to survive Huang's fall from grace: Altman](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 利多 | NVDA・分析・11/17 03:03 | [Nvidia: Buying Before The Dust Settles And Selling After (Rating Upgrade)](https://seekingalpha.com/article/4968710-nvidia-buying-before-the-dust-settles-and-selling-after?source=feed_symbol_NVDA) |
+| 中性 | NVDA・分析・11/17 02:40 | [Nvidia: Founders Leave, Great Businesses Stay](https://seekingalpha.com/article/4968700-nvidia-founders-leave-great-businesses-stay?source=feed_symbol_NVDA) |
+| 中性 | NVDA・分析・11/17 02:26 | [Nvidia: The 10x Valuation Hides The Cost Of Securing Growth](https://seekingalpha.com/article/4968692-nvidia-the-10x-valuation-hides-the-cost-of-securing-growth?source=feed_symbol_NVDA) |
 
 - 「新聞」= Seeking Alpha 新聞台；「分析」= 投稿作者的意見文章，方向只依標題關鍵字判斷。來源：Seeking Alpha 公開 RSS（個股 combined feed、Wall Street Breakfast、Market Outlook、Macro View）。
 
