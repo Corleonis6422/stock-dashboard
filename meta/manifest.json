@@ -1,10 +1,10 @@
 {
  "pack": "soxl-quant-meta-pack/1",
  "schema": "soxl-quant-brief/2",
- "data_as_of": "2026-11-17",
- "generated_at": "2026-11-18 03:00:36",
+ "data_as_of": "2026-11-18",
+ "generated_at": "2026-11-19 02:42:30",
  "generated_at_tz": "Asia/Taipei",
- "built_at": "2026-11-18 03:00:48",
+ "built_at": "2026-11-19 02:42:42",
  "base_url": "https://corleonis6422.github.io/stock-dashboard/meta/",
  "read_order": [
   "06_rules_for_agents.md",
@@ -25,17 +25,17 @@
   },
   {
    "name": "01_brief_today.md",
-   "bytes": 13490,
+   "bytes": 13669,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/01_brief_today.md"
   },
   {
    "name": "02_trade_plan.md",
-   "bytes": 3574,
+   "bytes": 3736,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/02_trade_plan.md"
   },
   {
    "name": "03_signals.md",
-   "bytes": 11063,
+   "bytes": 11067,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/03_signals.md"
   },
   {
@@ -50,22 +50,22 @@
   },
   {
    "name": "06_rules_for_agents.md",
-   "bytes": 6281,
+   "bytes": 6266,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/06_rules_for_agents.md"
   },
   {
    "name": "07_history.md",
-   "bytes": 2549,
+   "bytes": 2552,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/07_history.md"
   },
   {
    "name": "08_today_news.md",
-   "bytes": 9507,
+   "bytes": 9516,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/08_today_news.md"
   },
   {
    "name": "09_market_dashboard.md",
-   "bytes": 9209,
+   "bytes": 9160,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/09_market_dashboard.md"
   },
   {
@@ -95,7 +95,7 @@
   },
   {
    "name": "data/latest.json",
-   "bytes": 110626,
+   "bytes": 109511,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/data/latest.json"
   },
   {
@@ -105,11 +105,11 @@
   },
   {
    "name": "data/signals.json",
-   "bytes": 11371,
+   "bytes": 11373,
    "url": "https://corleonis6422.github.io/stock-dashboard/meta/data/signals.json"
   }
  ],
- "total_bytes": 226795,
+ "total_bytes": 225975,
  "verdict": "賣出 / 減碼",
  "plan_side": "no_trade",
  "disclaimer": "本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。"

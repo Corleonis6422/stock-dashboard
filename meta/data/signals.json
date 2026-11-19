@@ -1,14 +1,14 @@
 {
- "data_as_of": "2026-11-17",
+ "data_as_of": "2026-11-18",
  "method": {
   "entry": "訊號日次一交易日開盤價",
   "exit": "訊號後第 h 個交易日收盤價（h = 各訊號 horizon）",
   "declustered": true,
-  "oos": "最近 40% 樣本（2023-03-20 起）",
+  "oos": "最近 40% 樣本（2023-03-21 起）",
   "ci": "Wilson 95%",
-  "sample": "2017-09-21 ~ 2026-11-17",
+  "sample": "2017-09-22 ~ 2026-11-18",
   "bars": 2512,
-  "data_as_of": "2026-11-17",
+  "data_as_of": "2026-11-18",
   "grades": "A 可靠：N≥30、OOS N≥10、OOS 勝率≥60% 且 ≥ 基準+5、PF≥1.5、IS/OOS 差≤12、鄰近參數皆優於基準；B 尚可：OOS ≥ 基準+3 且 PF≥1.2；C 無優勢；— 樣本不足（N<20 或 OOS<8）"
  },
  "summary": {
@@ -16,7 +16,7 @@
   "n_graded_a": 0,
   "n_graded_b": 5,
   "fired_today": [
-   "vix_term_invert_first"
+   "macd_cross_up_below200"
   ],
   "pending": [
    "rsi14_lt25",
@@ -72,9 +72,9 @@
    "grade": "C",
    "state": "recent",
    "pending": {
-    "price": 41.64,
+    "price": 43.74,
     "op": "<=",
-    "dist_pct": -15.1,
+    "dist_pct": -11.2,
     "needs": null
    }
   },
@@ -98,9 +98,9 @@
    "grade": "—",
    "state": "pending",
    "pending": {
-    "price": 12.05,
+    "price": 14.35,
     "op": "<=",
-    "dist_pct": -75.4,
+    "dist_pct": -70.9,
     "needs": null
    }
   },
@@ -208,10 +208,10 @@
    "grade": "C",
    "state": "recent",
    "pending": {
-    "price": 51.03,
+    "price": 51.23,
     "op": ">=",
     "dist_pct": 4.0,
-    "needs": "反彈嘗試第 9 日，量需 > 266M"
+    "needs": "反彈嘗試第 10 日，量需 > 211M"
    }
   },
   {
@@ -234,9 +234,9 @@
    "grade": "C",
    "state": "pending",
    "pending": {
-    "price": 70.46,
+    "price": 68.74,
     "op": ">",
-    "dist_pct": 43.6,
+    "dist_pct": 39.5,
     "needs": null
    }
   },
@@ -263,7 +263,7 @@
     "price": null,
     "op": "",
     "dist_pct": null,
-    "needs": "需 VIX/VIX3M < 0.95（目前 1.019）"
+    "needs": "需 VIX/VIX3M < 0.95（目前 1.011）"
    }
   },
   {
@@ -305,7 +305,7 @@
    "q_value": 0.9418,
    "significant": false,
    "grade": "C",
-   "state": "recent",
+   "state": "fired",
    "pending": null
   },
   {
@@ -515,7 +515,7 @@
    "q_value": 0.9418,
    "significant": false,
    "grade": "C",
-   "state": "fired",
+   "state": "recent",
    "pending": null
   },
   {
@@ -545,78 +545,78 @@
    "series": "SOXL",
    "band_pct": 0.0,
    "confirm_days": 1,
-   "cagr_pct": 12.1,
+   "cagr_pct": 12.3,
    "max_dd_pct": -76.6,
    "switches": 91,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -60.4
+   "dist_pct": -60.2
   },
   {
    "series": "SOXL",
    "band_pct": 3.0,
    "confirm_days": 1,
-   "cagr_pct": 17.7,
+   "cagr_pct": 17.9,
    "max_dd_pct": -75.9,
    "switches": 45,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -60.4
+   "dist_pct": -60.2
   },
   {
    "series": "SOXL",
    "band_pct": 3.0,
    "confirm_days": 2,
-   "cagr_pct": 24.3,
+   "cagr_pct": 24.4,
    "max_dd_pct": -74.3,
    "switches": 29,
    "time_in_market_pct": 65.0,
    "in_market": false,
-   "dist_pct": -60.4
+   "dist_pct": -60.2
   },
   {
    "series": "SOXX",
    "band_pct": 0.0,
    "confirm_days": 1,
-   "cagr_pct": 26.3,
+   "cagr_pct": 26.4,
    "max_dd_pct": -79.2,
    "switches": 61,
    "time_in_market_pct": 78.0,
    "in_market": false,
-   "dist_pct": -11.9
+   "dist_pct": -11.8
   },
   {
    "series": "SOXX",
    "band_pct": 3.0,
    "confirm_days": 1,
-   "cagr_pct": 19.1,
+   "cagr_pct": 19.3,
    "max_dd_pct": -86.3,
    "switches": 25,
    "time_in_market_pct": 78.0,
    "in_market": false,
-   "dist_pct": -11.9
+   "dist_pct": -11.8
   },
   {
    "series": "SOXX",
    "band_pct": 5.0,
    "confirm_days": 1,
-   "cagr_pct": 29.5,
+   "cagr_pct": 29.6,
    "max_dd_pct": -77.8,
    "switches": 11,
    "time_in_market_pct": 78.0,
    "in_market": false,
-   "dist_pct": -11.9
+   "dist_pct": -11.8
   },
   {
    "series": "SOXX",
    "band_pct": 3.0,
    "confirm_days": 2,
-   "cagr_pct": 21.6,
+   "cagr_pct": 21.8,
    "max_dd_pct": -86.4,
    "switches": 15,
    "time_in_market_pct": 78.0,
    "in_market": false,
-   "dist_pct": -11.9
+   "dist_pct": -11.8
   }
  ],
  "disclaimer": "本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。"
