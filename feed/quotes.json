@@ -1,6 +1,6 @@
 {
- "fetched_at_tpe": "2026-11-20 10:28 台北",
- "fetched_at_et": "2026-11-19 21:28 ET",
+ "fetched_at_tpe": "2026-11-21 10:37 台北",
+ "fetched_at_et": "2026-11-20 21:37 ET",
  "market_status": "Closed",
  "one_liner": "SOXL $45.30（-8.04%）｜市場狀態 Closed",
  "vix_term_ratio": null,
@@ -24,16 +24,16 @@
   {
    "symbol": "SOXX",
    "label": "SOXX 費半 ETF",
-   "last": 141.85,
-   "change_pct": 0.28,
+   "last": 137.95,
+   "change_pct": -2.75,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "SPY",
    "label": "S&P 500",
-   "last": 730.25,
-   "change_pct": -0.3,
+   "last": 715.84,
+   "change_pct": -1.97,
    "ext_last": null,
    "ext_change_pct": null
   },
@@ -48,56 +48,56 @@
   {
    "symbol": "NVDA",
    "label": "Nvidia",
-   "last": 150.96,
-   "change_pct": -2.89,
+   "last": 145.98,
+   "change_pct": -3.3,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AVGO",
    "label": "Broadcom",
-   "last": 354.05,
-   "change_pct": 3.64,
+   "last": 346.65,
+   "change_pct": -2.09,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AMD",
    "label": "AMD",
-   "last": 530.14,
-   "change_pct": 5.31,
+   "last": 489.19,
+   "change_pct": -7.72,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "MU",
    "label": "Micron",
-   "last": 705.27,
-   "change_pct": -1.0,
+   "last": 690.44,
+   "change_pct": -2.1,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "TSM",
    "label": "TSMC ADR",
-   "last": 362.55,
-   "change_pct": 0.8,
+   "last": 352.007,
+   "change_pct": -2.93,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AMAT",
    "label": "Applied Materials",
-   "last": 352.3,
-   "change_pct": 0.88,
+   "last": 338.93,
+   "change_pct": -3.65,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "LRCX",
    "label": "Lam Research",
-   "last": 211.67,
-   "change_pct": 0.47,
+   "last": 203.68,
+   "change_pct": -3.77,
    "ext_last": null,
    "ext_change_pct": null
   }
