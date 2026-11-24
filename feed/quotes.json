@@ -1,8 +1,105 @@
 {
- "fetched_at_tpe": null,
- "fetched_at_et": null,
- "market_status": null,
- "one_liner": null,
+ "fetched_at_tpe": "2026-11-24 16:21 台北",
+ "fetched_at_et": "2026-11-24 03:21 ET",
+ "market_status": "Closed",
+ "one_liner": "SOXL $30.92（-31.74%）｜市場狀態 Closed",
  "vix_term_ratio": null,
- "rows": []
+ "rows": [
+  {
+   "symbol": "SOXL",
+   "label": "SOXL 三倍做多半導體",
+   "last": 30.92,
+   "change_pct": -31.74,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "SOXS",
+   "label": "SOXS 三倍做空半導體",
+   "last": 83.3,
+   "change_pct": 31.93,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "SOXX",
+   "label": "SOXX 費半 ETF",
+   "last": 140.22,
+   "change_pct": 13.63,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "SPY",
+   "label": "S&P 500",
+   "last": 722.51,
+   "change_pct": 4.74,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "QQQ",
+   "label": "Nasdaq 100",
+   "last": 608.45,
+   "change_pct": -5.67,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "NVDA",
+   "label": "Nvidia",
+   "last": 128.3744,
+   "change_pct": -12.06,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "AVGO",
+   "label": "Broadcom",
+   "last": 304.41,
+   "change_pct": -12.19,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "AMD",
+   "label": "AMD",
+   "last": 424.39,
+   "change_pct": -13.25,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "MU",
+   "label": "Micron",
+   "last": 594.51,
+   "change_pct": -13.89,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "TSM",
+   "label": "TSMC ADR",
+   "last": 319.34,
+   "change_pct": -9.3,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "AMAT",
+   "label": "Applied Materials",
+   "last": 346.87,
+   "change_pct": 14.62,
+   "ext_last": null,
+   "ext_change_pct": null
+  },
+  {
+   "symbol": "LRCX",
+   "label": "Lam Research",
+   "last": 183.27,
+   "change_pct": -10.02,
+   "ext_last": null,
+   "ext_change_pct": null
+  }
+ ]
 }

@@ -1,6 +1,6 @@
 # 03 訊號驗證表（買點與賣點的歷史命中率）
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 23 條固定規則在 10 年 SOXL 日線上的實測。**任何勝率都必須連同右邊的基準與 N 一起引用**；p 是單尾二項檢定（對基準），q 是 Benjamini-Hochberg 多重檢定校正。
 

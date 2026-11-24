@@ -1,7 +1,7 @@
 # SOXL Quant → Meta AI（Muse）吸收包
 
 > 這個資料夾是給 AI agent 整包讀的。全部是純 Markdown 加一份 JSON，沒有程式碼、沒有圖片、沒有金鑰。
-> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-11-23**，產生 2026-11-24 05:25:12 台北。
+> 每個美股交易日收盤後自動重建：GitHub Actions 在台北 06:15 更新公開網址（07:00、08:30 各重試一次），本機排程 07:30；資料日 **2026-11-23**，產生 2026-11-24 08:21:37 台北。
 
 ## 三十秒版
 
@@ -68,7 +68,7 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `prompts/daily_briefing.md` | 0.9 KB |
 | `prompts/holder_check.md` | 0.6 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
-| `data/latest.json` | 102.1 KB |
+| `data/latest.json` | 104.8 KB |
 | `data/schema.json` | 17.9 KB |
 | `data/signals.json` | 11.0 KB |
 

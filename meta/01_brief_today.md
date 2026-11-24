@@ -1,44 +1,44 @@
 # 01 今日簡報
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 與 `feed/latest.md` 逐字相同；Muse 每天至少讀這一份。
 
 # SOXL 2026-11-23（一）收盤 · 🔴 賣出 / 減碼 · $43.21（+39.93%）
-> 官方日線 · 產生 2026-11-24 05:25:12 台北 · 自動計算的研究參考，不是投資建議 · 三倍槓桿單日可 ±15%｜⚠️ 資料降級：options: HTTP Error 403: Forbidden
+> 官方日線 · 產生 2026-11-24 08:21:37 台北 · 自動計算的研究參考，不是投資建議 · 三倍槓桿單日可 ±15%｜⚠️ 資料降級：options: HTTP Error 403: Forbidden
 
 **TL;DR** 趨勢偏空、底部條件還沒成立：現在不是買點。 綜合 **-0.86**（−2 ~ +2）· 多/中/空 7%/33%/60% · 信心 高 · 倉位上限 **10%** · 底部檢核 1/8
 與前一交易日：評級不變（連續 16 個交易日 🔴賣出 / 減碼）；綜合分數 -0.72 → -0.86（-0.14）；崩跌前兆 73 → 67
 
 ## 新手一眼看懂
 - **現在該不該買？** ❌ **不該買**。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 EMA5 $43.54 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 3.2% 試單）。
-- **今天最大的事：** Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 13:13 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。
+- **今天最大的事：** Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 15:57 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。
 - **已持有的人：** 硬停損 $29.82（價值區下緣 VAL / 近 10 日最低）；現價已在吊燈線 $70.83 之下（-39.0%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $43.54 / $46.83 先減碼
 - **明天只盯一個價：** $43.54（條件買點，收盤站上才算）
-- **48 小時內風險：** 11/26（四） 美股休市（NYSE 假日）；地緣風險升溫（Reuters：Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, of…）；關稅 / 出口管制收緊（Reuters：US imposes sanctions on dozens linked to Iran's shadow banking networks）；聯準會偏鷹（Reuters：Fed's Williams says inflation still too high, signals more rate hikes…）；崩跌前兆分數 67/100（≥ 60 注意）
+- **48 小時內風險：** 11/26（四） 美股休市（NYSE 假日）；地緣風險升溫（AP News：Ukrainian naval drones strike a new Russian warship in Libya, and othe…）；關稅 / 出口管制收緊（The New York Times：Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm…）；聯準會偏鷹（Reuters：Fed's Williams says inflation still too high, signals more rate hikes…）；崩跌前兆分數 67/100（≥ 60 注意）
 
 ## 六個儀表（能不能加碼、宏觀、費半、大戶、Put/Call、崩跌）
 | 儀表 | 燈 | 讀數 | 一句話 |
 |---|---|---|---|
 | SOXL 能不能加碼？ | 🔴 | 不能加碼 | VIX/VIX3M 1.04 倒掛：歷史上這種狀態加碼的賠率最差，只能減碼或空手。 |
-| 現在的宏觀消息 | 🔴 | 偏空｜🌍 Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says（Reuters） | 地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。 |
+| 現在的宏觀消息 | 🔴 | 偏空｜🌍 Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news（AP News） | 地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。 |
 | 費半（SOXX）整體走向 | 🔴 | 空頭｜$140.22（+13.63%） | 費半空頭：SOXL 的反彈多半是空頭回補，T1 / T2 當減碼點。 |
 | 大戶怎麼走 | ⚪ | 資料不足 | CBOE 選擇權鏈沒有大單資料。 |
 | Put/Call | 🟢 | SOXL 成交 None（n/a）｜全市場個股 0.55（1 年第 21 百分位） | 中性區：期權市場沒有極端恐慌，也沒有自滿。 |
 | 崩跌指數 | 🟡 | 67 / 100（注意） | 分數進入注意區：盯 VIX 期限結構與派發日，不加碼。 |
 - 費半（SOXX）整體走向：5 日 -0.7%、20 日 -14.5%；距 20MA -5.8%、50MA -16.3%、200MA -13.0%；16 檔成分股站上 50MA 18.8%、200MA 31.2%；年線濾網：空手（出場線 $156.26）
 - 因子等級（借 Seeking Alpha 的 A+ … F 寫法，分數來自 24 因子評分表）：期權籌碼 **D** · 量能 **F** · 技術趨勢 **F** · 廣度 **F** · 宏觀 **C** · 情緒 **C+** · 消息 **D-** → 總評 **D-**
-- 四個聲音：3 空 / 1 中性 / 0 多 → 一致偏空，不加碼：量化評級 賣出 / 減碼（綜合 -0.86）；訊號驗證 沒有驗證過的買點（不開新倉）；時事 / 宏觀 偏空（淨影響 -0.31）；費半趨勢 空頭
+- 四個聲音：3 空 / 1 中性 / 0 多 → 一致偏空，不加碼：量化評級 賣出 / 減碼（綜合 -0.86）；訊號驗證 沒有驗證過的買點（不開新倉）；時事 / 宏觀 偏空（淨影響 -0.25）；費半趨勢 空頭
 
 ## 今日時事（過去 36 小時，對 SOXL 的影響）
-- 新聞氣壓 **偏空**（淨影響 -0.31，701 則，抓取 2026-11-24 13:24 台北）：🔧半導體與 AI 19空/75多、🌍地緣政治 122空/3多、📉市場波動 37空/34多、🏦聯準會與利率 14空/0多
-- 🟢 🔧 半導體與 AI（11/24 13:13，CNBC）Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia → 龍頭財報、訂單或資本支出轉強
-- 🔴 🌍 地緣政治（11/24 12:18，Reuters）Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says → 地緣風險升溫
-- 🟢 🔧 半導體與 AI（11/24 06:01，Financial Times）Nasdaq jumps 7% as Nvidia shares soar → 龍頭財報、訂單或資本支出轉強
+- 新聞氣壓 **偏空**（淨影響 -0.25，706 則，抓取 2026-11-24 16:21 台北）：🔧半導體與 AI 16空/80多、🌍地緣政治 110空/1多、📉市場波動 36空/36多、🏛️政策與關稅 20空/3多
+- 🟢 🔧 半導體與 AI（11/24 15:57，CNBC）Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia → 龍頭財報、訂單或資本支出轉強
 - 🔴 🌍 地緣政治（11/24 05:23，AP News）Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news → 地緣風險升溫
-- 🔴 🏛️ 政策與關稅（11/24 03:39，Reuters）US imposes sanctions on dozens linked to Iran's shadow banking networks → 關稅或出口管制收緊
-- 🔴 🏛️ 政策與關稅（11/24 11:12，The New York Times）Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal → 關稅或出口管制收緊
-- Seeking Alpha（SOXL / SOXX / NVDA 近 72 小時；連結在 JSON `flash.seeking_alpha[].link`）：利多「TSMC, SK Hynix, and Asian tech surge after Jensen Huang's return as Nvidia CEO」（新聞）；中性「Nvidia After Huang's Return: Rubin Carries The Buy Case」（分析）；中性「Indiscriminate Selling On Semiconductors Makes No Sense」（分析）
+- 🔴 🌍 地緣政治（11/24 05:03，Reuters）Zelenskiy says intelligence shows Russia planning new strikes on Ukraine → 地緣風險升溫
+- 🔴 🏛️ 政策與關稅（11/24 12:17，The New York Times）Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal → 關稅或出口管制收緊
+- 🟢 🔧 半導體與 AI（11/24 05:23，Seeking Alpha）ASML surges 9% as chip stocks rally (ASML:NASDAQ) → 龍頭財報、訂單或資本支出轉強
+- 🔴 🏛️ 政策與關稅（11/24 03:38，Reuters）US imposes sanctions on dozens linked to Iran's shadow banking networks → 關稅或出口管制收緊
+- Seeking Alpha（SOXL / SOXX / NVDA 近 72 小時；連結在 JSON `flash.seeking_alpha[].link`）：中性「Michael Burry cuts Nvidia puts by 75%, exits semiconductor ETF puts」（新聞）；利空「China warns Jensen Huang Nvidia comeback won't end 'malicious' US risks」（新聞）；中性「U.S. adds Alibaba unit, six Megaspeed affiliates to trade blacklist」（新聞）
 - ⚠️ 地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。
 - ⚠️ 關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。
 - ⚠️ 聯準會偏鷹的消息在 24 小時內：殖利率若續升，成長股反彈空間受限。
@@ -109,15 +109,15 @@
 - 資料風險：options: HTTP Error 403: Forbidden；期權牆與 GEX 為模型推算、每日 OI 結算後重算
 
 ## 情緒、廣度與籌碼
-- CNN Fear & Greed 17.0（極度恐懼 Extreme Fear；前值 17.0）｜VIX 26.62 / VIX3M 25.50 → 1.044（flat）｜SKEW 140.4｜VVIX 117.4
+- CNN Fear & Greed 17.1（極度恐懼 Extreme Fear；前值 17.0）｜VIX 26.62 / VIX3M 25.50 → 1.044（flat）｜SKEW 140.4｜VVIX 117.4
 - 16 檔成分股站上 20MA 6% / 50MA 19% / 200MA 31%；權值加權日漲跌 +13.96%；RSI14 37、MACD 柱 -0.14、KD 22/24
 
-## 消息面（近 7 日 利多 149 / 利空 182，比值 0.82）
-- 主題：個股動能/買盤利多 ×25、獲利了結/基本面利空 ×25、殖利率/通膨/關稅宏觀利空 ×5、監管/地緣政治 ×4
-- 多 - AI adoption grows in Asia, but measuring the gains remains tricky（CNBC）
-- 多 - Malaysia tech, data centre stocks join Nvidia’s rebound after Jensen Huang’s comeback（The Edge Malaysia）
-- 空 - U.S. adds Megaspeed to trade blacklist over export control concerns amid Nvidia controversy（CNBC）
-- 空 - Fed Rate Hike Bets Build Ahead Of December Meet: Fed’s John Williams Says Inflation Still ‘Too High’（Stocktwits）
+## 消息面（近 7 日 利多 151 / 利空 184，比值 0.82）
+- 主題：獲利了結/基本面利空 ×28、個股動能/買盤利多 ×26、AI 估值/融資疑慮 ×7、監管/地緣政治 ×5
+- 多 - Huang's Nvidia comeback sends Tower soaring（Globes - Israel Business News）
+- 多 - Direxion Semiconductor Bull 3X ETF (SOXL) Price Prediction: Sharp rebound tests resistance, but trend damage is still visible（Blockchain News）
+- 空 - AI market bubble shows signs of deflation as $9 trillion evaporates from U.S. stocks（KuCoin）
+- 空 - Signal joins United Airlines, banks in limiting AI agents over customer risks（CNBC）
 
 ## 自我驗證
 - 最近 10 次有結果的評級，方向正確 8/10（80%）；連續同評級 16 個交易日

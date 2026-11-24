@@ -1,6 +1,6 @@
 # 02 今日交易計畫（單頁）
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 只回答一件事：明天要不要做、在哪裡做、哪裡錯了就走。數字全部來自 `trade_plan` 區塊。
 

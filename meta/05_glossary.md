@@ -1,6 +1,6 @@
 # 05 名詞表（新手版）
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 簡報與訊號表用到的每個名詞，一句話說清楚。
 

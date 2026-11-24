@@ -1,6 +1,6 @@
 {
  "schema": "soxl-quant-brief/2",
- "generated_at": "2026-11-24 05:25:12",
+ "generated_at": "2026-11-24 08:21:37",
  "generated_at_tz": "Asia/Taipei",
  "data_as_of": "2026-11-23",
  "data_as_of_zh": "11/23（一）",
@@ -316,7 +316,7 @@
  },
  "sentiment": {
   "fear_greed": {
-   "score": 17.0,
+   "score": 17.1,
    "rating": "extreme fear",
    "rating_zh": "極度恐懼 Extreme Fear",
    "previous_close": 17.0,
@@ -992,7 +992,7 @@
    {
     "category": "7. 消息面 (News Sentiment)",
     "metric": "近 7 日利多 / 利空新聞比",
-    "value": "利多 149 則 vs 利空 182 則 (0.82x)",
+    "value": "利多 151 則 vs 利空 184 則 (0.82x)",
     "score": -1,
     "weight": 6,
     "kind": "trend"
@@ -1009,7 +1009,7 @@
     "metric": "CNN Fear & Greed (逆勢)",
     "value": "17 極度恐懼 Extreme Fear | 一週前 26 | 一月前 17",
     "pts": 4,
-    "why": "七項子指標：S&P 500 動能 3；創 52 週新高 vs 新低家數 28；上漲 vs 下跌成交量 17；5 日 Put/Call 比率 7；VIX 波動率 39；垃圾債需求 18；避險需求 6"
+    "why": "七項子指標：S&P 500 動能 3；創 52 週新高 vs 新低家數 29；上漲 vs 下跌成交量 18；5 日 Put/Call 比率 7；VIX 波動率 39；垃圾債需求 18；避險需求 6"
    }
   ],
   "bear_case": [
@@ -2402,7 +2402,7 @@
    "text": "評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 EMA5 $43.54 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 3.2% 試單）。",
    "basis": "trade_plan.side=no_trade, rating_5=2, rr_blend=2.15"
   },
-  "biggest_thing": "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 13:13 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
+  "biggest_thing": "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 15:57 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
   "flash_label": "偏空",
   "holder": "硬停損 $29.82（價值區下緣 VAL / 近 10 日最低）；現價已在吊燈線 $70.83 之下（-39.0%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $43.54 / $46.83 先減碼",
   "watch": {
@@ -2411,55 +2411,33 @@
   },
   "risk_48h": [
    "11/26（四） 美股休市（NYSE 假日）",
-   "地緣風險升溫（Reuters：Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, of…）",
-   "關稅 / 出口管制收緊（Reuters：US imposes sanctions on dozens linked to Iran's shadow banking networks）",
+   "地緣風險升溫（AP News：Ukrainian naval drones strike a new Russian warship in Libya, and othe…）",
+   "關稅 / 出口管制收緊（The New York Times：Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm…）",
    "聯準會偏鷹（Reuters：Fed's Williams says inflation still too high, signals more rate hikes…）",
    "崩跌前兆分數 67/100（≥ 60 注意）"
   ],
   "lines": [
    "現在該不該買？❌ 不該買。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。要等的條件：收盤站上 EMA5 $43.54 且量能 RVOL ≥ 1.2 → 條件成立後次日開盤進場（反彈單）（到了也只用 3.2% 試單）。",
-   "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 13:13 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
+   "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 15:57 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
    "已持有的人：硬停損 $29.82（價值區下緣 VAL / 近 10 日最低）；現價已在吊燈線 $70.83 之下（-39.0%）：移動停損早已觸發，剩餘部位以硬停損為準；反彈到 $43.54 / $46.83 先減碼。",
    "明天只盯一個價：$43.54（條件買點，收盤站上才算）。",
-   "48 小時內風險：11/26（四） 美股休市（NYSE 假日）；地緣風險升溫（Reuters：Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, of…）；關稅 / 出口管制收緊（Reuters：US imposes sanctions on dozens linked to Iran's shadow banking networks）；聯準會偏鷹（Reuters：Fed's Williams says inflation still too high, signals more rate hikes…）；崩跌前兆分數 67/100（≥ 60 注意）。"
+   "48 小時內風險：11/26（四） 美股休市（NYSE 假日）；地緣風險升溫（AP News：Ukrainian naval drones strike a new Russian warship in Libya, and othe…）；關稅 / 出口管制收緊（The New York Times：Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm…）；聯準會偏鷹（Reuters：Fed's Williams says inflation still too high, signals more rate hikes…）；崩跌前兆分數 67/100（≥ 60 注意）。"
   ]
  },
  "flash": {
-  "as_of_tpe": "2026-11-24 13:24",
+  "as_of_tpe": "2026-11-24 16:21",
   "window_h": 36,
   "label": "偏空",
-  "net": -0.31,
-  "n_relevant": 701,
-  "beginner_line": "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 13:13 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
+  "net": -0.25,
+  "n_relevant": 706,
+  "beginner_line": "今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 15:57 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。",
   "top": [
    {
     "title": "Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia",
     "publisher": "CNBC",
     "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE55Qzd6R1BVMkNsU2hwVWc4OElya24tNzEwcjFjd1NyVkczM2dDTHk2WnNzdkxlR2huZW1IcTgtMDBTUVU3WWxZNW1PeFQyaHgwdGl3LTlaVjV1cEtWa0JSQmNuQ3hnQmViVG5XYndIVEFaRFVEUzJ30gF8QVVfeXFMTWJnbFVGZ0NXUU1Xb04xRi1tMnlKazVMVWxSOUpYSWtBV2dHVHZycUpyUk1XX24zQ2o4bHFEVDEyaklmcktGaTFvMHlualhDckJrZ25tMDB5VnEzbTRYQmhEOThhNDZSWWtMSDYya2ZHckRQLUtEZGl0Tmp2TQ?oc=5",
-    "time_tpe": "11/24 13:13",
-    "age_h": 0.2,
-    "category": "半導體與 AI",
-    "emoji": "🔧",
-    "impact": 2,
-    "why_zh": "龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。"
-   },
-   {
-    "title": "Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says",
-    "publisher": "Reuters",
-    "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQRl9vM3Z6UzJTZlZjU3JmcDhQem1tVS1rMS1yemtlVjFicVlnZjVqTFRBUGlrWG1LTWU1b29waVI2NEthUnZFZ0VzMVRaclZDaURJNWk0MDNOdWtaQnJwU2RteUhISWdqYXg0R2VoSEd0S0ZKM01hVUxTS2pwbWZSOHdVNkRYUmVkRURSRTN6RmtvemF1bmFFZnUtZXZwU1JkV0hha3lLSGVoaGR2cE5hSTdIZ2pibk1W?oc=5",
-    "time_tpe": "11/24 12:18",
-    "age_h": 1.1,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": -2,
-    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
-    "title": "Nasdaq jumps 7% as Nvidia shares soar",
-    "publisher": "Financial Times",
-    "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNeXhpd01xVDBQSlFMWUJzZktLSGh3WXZ0b3JfRTdwSEV4Rll0bjlIc3FfM3MwemllQlRidmpiOEpUbHJBQzZ4YU1ZOFNhMmVpMjBWc3RULWppdmxLZVdERHFTLXJHSjU3aTFWcmFrakkzS3VpTDFkSE45Vk1TbmszWUhzcVM?oc=5",
-    "time_tpe": "11/24 06:01",
-    "age_h": 7.4,
+    "time_tpe": "11/24 15:57",
+    "age_h": 0.4,
     "category": "半導體與 AI",
     "emoji": "🔧",
     "impact": 2,
@@ -2470,29 +2448,51 @@
     "publisher": "AP News",
     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQNkttSjlveXdrMHJKLVNYMWNTMFh3YlJtLXRtTXcwUnI2Z3VMOWJPajRpelJzRDk0ZG0xekVqSlpoM1dac1RwU045bjdjREd3NENUYTdHcHFiMEt3WWdVcDA4S3JMOVBfR2hNdV9YLXpiNTd6OC01QzctQmxaX2I4TmNmLXd4MVJxZkZ5T09NT01uZHhpYVNKQ052YVUybll3SHl1MTBNMGx2Um1vekdPTVptQU1XUQ?oc=5",
     "time_tpe": "11/24 05:23",
-    "age_h": 8.0,
+    "age_h": 11.0,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
     "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
    },
    {
-    "title": "US imposes sanctions on dozens linked to Iran's shadow banking networks",
+    "title": "Zelenskiy says intelligence shows Russia planning new strikes on Ukraine",
     "publisher": "Reuters",
-    "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxON2NaMVlXcGRFQ3BpRFVieGtVRzR4bXFtTXRTRnpSV3JmNzY1REhheG5xNlV5MlptZ1lIM1BQWUhGcTBZNWpHckdxZG1kWUZoZUdxSnRneHJhVzBpUzg0ZGpXQ1lQblItbHg5WXpNUXBqbHpWZ0NqZzdQZEdhNTZKbDZXaHNydXhYM05hd2YtY1lvU0JkVnJBQ3diRVNDV210Z0pZdm5mRnMtUEk4TTNkOXNDMGpvbmpD?oc=5",
-    "time_tpe": "11/24 03:39",
-    "age_h": 9.8,
+    "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUEtCdFptTFlUZFVRQTdNbV9MZTBUM1AwRXFBVlptR2RoZ0h4S1RVUEgtVTJLSzhTTVBVZVRSU1YxMlhVQzBNZEh2MmM1UlI2MUNLQ3kzN2JpY1I5dERzQlBoc1hHel9QaU9qOWltdEdScE96OHJfUXVkX1ZLaXpJVDdDSUoxX0ZkMXBVMUFwaTUtMzlYQUVPSUgxLWZSQ0pXSzZmUExIWERRNi10X1JFaw?oc=5",
+    "time_tpe": "11/24 05:03",
+    "age_h": 11.3,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal",
+    "publisher": "The New York Times",
+    "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNNXE4aUdTVGFvS0Nqd0tXS2E2Y2IyU0dQSEhGRVM2WlVwdXRRczRRUlNuZ09QWjY0OUJrLVZYeEdTaE9hTW83VG9mMV9aVFNVZWQzT3QwMXZaNGd0WmV5LXE2QURZQ1lUSlI5VWdSLWlOYkp0OFZZVFlvMDVYbmhERk91cUZkcGd1dm1UTkMtTEJvU2pmRHk4WW95RUc0SmNQdllqbw?oc=5",
+    "time_tpe": "11/24 12:17",
+    "age_h": 4.1,
     "category": "政策與關稅",
     "emoji": "🏛️",
     "impact": -2,
     "why_zh": "關稅或出口管制收緊：半導體供應鏈首當其衝（NVDA、AMAT、LRCX 的中國營收），SOXL 的跌幅通常是 SOXX 的 3 倍。"
    },
    {
-    "title": "Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal",
-    "publisher": "The New York Times",
-    "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNNXE4aUdTVGFvS0Nqd0tXS2E2Y2IyU0dQSEhGRVM2WlVwdXRRczRRUlNuZ09QWjY0OUJrLVZYeEdTaE9hTW83VG9mMV9aVFNVZWQzT3QwMXZaNGd0WmV5LXE2QURZQ1lUSlI5VWdSLWlOYkp0OFZZVFlvMDVYbmhERk91cUZkcGd1dm1UTkMtTEJvU2pmRHk4WW95RUc0SmNQdllqbw?oc=5",
-    "time_tpe": "11/24 11:12",
-    "age_h": 2.2,
+    "title": "ASML surges 9% as chip stocks rally (ASML:NASDAQ)",
+    "publisher": "Seeking Alpha",
+    "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBDTHVWdFhBU1B6Y0RWNmxFZG13akZXdjZGUXkxb1F5cGY3cVExejRnNmQ1bi0tUGl1akRvNDR5Y0o3UmlPaFp4c1hfbEV5eWdyOVhrN3FXTzl0SThHeU9KeFVpNkJBRG54Rnp2THdTRk0za3hsUlI4eWtoWDk?oc=5",
+    "time_tpe": "11/24 05:23",
+    "age_h": 11.0,
+    "category": "半導體與 AI",
+    "emoji": "🔧",
+    "impact": 2,
+    "why_zh": "龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。"
+   },
+   {
+    "title": "US imposes sanctions on dozens linked to Iran's shadow banking networks",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxON2NaMVlXcGRFQ3BpRFVieGtVRzR4bXFtTXRTRnpSV3JmNzY1REhheG5xNlV5MlptZ1lIM1BQWUhGcTBZNWpHckdxZG1kWUZoZUdxSnRneHJhVzBpUzg0ZGpXQ1lQblItbHg5WXpNUXBqbHpWZ0NqZzdQZEdhNTZKbDZXaHNydXhYM05hd2YtY1lvU0JkVnJBQ3diRVNDV210Z0pZdm5mRnMtUEk4TTNkOXNDMGpvbmpD?oc=5",
+    "time_tpe": "11/24 03:38",
+    "age_h": 12.7,
     "category": "政策與關稅",
     "emoji": "🏛️",
     "impact": -2,
@@ -2503,7 +2503,7 @@
     "publisher": "Reuters",
     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNa3lvbHFTMGFKUm9paUJYVzFoQzd1QnQtSzAtTlZmSlFyRW5Sc1hic3p2MVV0VWVrYjFkNDdQZlFTUWMzZGFueG5yMTVMcGhLWUxwQi16Ujk5b2ppMVRWTGowaHlMZDQ4Z19xbWpCQTRFVzFHSHhxeW9kbG80OTVtSEZsb3REX29FRFFPR0xzTnFjYXh6?oc=5",
     "time_tpe": "11/24 07:38",
-    "age_h": 5.8,
+    "age_h": 8.7,
     "category": "聯準會與利率",
     "emoji": "🏦",
     "impact": -1,
@@ -2514,7 +2514,7 @@
     "publisher": "Bloomberg.com",
     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNU2FnY19ZVXo4MGlTUlpSamM4Z0Fwd2J0aGxxMWlDYXNXMkFYc2ZtSkpfRS1aQ2VLdFdKSEVPaHdmanA0NzBONHd2dFhUbXlKWE1JRGhZaXVOcG5PdlZqLU9xMGd3UWFid0NuMmpYYnByMmxad2FpZXgza2U1NHRVbDZnV2szanN3aUxROW5JSmFUQnZKbFpnbWZMdmhzQTZKanlsV0pxZWI2TTh1MzdmZGQyTmk?oc=5",
     "time_tpe": "11/24 04:37",
-    "age_h": 8.8,
+    "age_h": 11.7,
     "category": "市場波動",
     "emoji": "📉",
     "impact": -1,
@@ -2523,33 +2523,11 @@
   ],
   "more": [
    {
-    "title": "Zelenskiy says intelligence shows Russia planning new strikes on Ukraine",
-    "publisher": "Reuters",
-    "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUEtCdFptTFlUZFVRQTdNbV9MZTBUM1AwRXFBVlptR2RoZ0h4S1RVUEgtVTJLSzhTTVBVZVRSU1YxMlhVQzBNZEh2MmM1UlI2MUNLQ3kzN2JpY1I5dERzQlBoc1hHel9QaU9qOWltdEdScE96OHJfUXVkX1ZLaXpJVDdDSUoxX0ZkMXBVMUFwaTUtMzlYQUVPSUgxLWZSQ0pXSzZmUExIWERRNi10X1JFaw?oc=5",
-    "time_tpe": "11/24 05:03",
-    "age_h": 8.4,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": -2,
-    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
-    "title": "Zelenskyy hails Ukraine’s attack on a Russian warship docked at a naval base in Libya",
-    "publisher": "AP News",
-    "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPR1VjenRaWHFSYy04RXNZOGtGZ21ldWg3a1B4WVp3dk1OY2pPZ2pRcXFCLTk0YnJjalVEMnBqV2M2UnpCSENVWVNPVDhEZXhNQTdPZnlPWDJhNXR5VThOTVdKT2JRYmJfOW9hTzdqRUdMakNOUEFHVmdwWnNNOEx6ZmFiRVc5Z1JyZE5nNHFwODlkTkp5aHRVNUZxZVo2aDR0TnN6U2VRTlE?oc=5",
-    "time_tpe": "11/24 01:49",
-    "age_h": 11.6,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": -2,
-    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
     "title": "Ukraine says it sank Russian warship off coast of Libya, far from front line",
     "publisher": "The Washington Post",
     "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPV20xUGlHSnVvUEZleTFMQlpfeEctdDFYZ2d2LXppQ0RqWndqWGpvMVVsSzhXeEdscVZCa3U1NmdCUEt2bzdWdGFmTHVhdkFMdFZMSk5MbVdIWjlhX0thSGlqSTlNVklUbGhjRWJDdHY5WHJFa3JGRmJYWm8za0JyQTJKRUtSYTVkanlHTnNSLVFUTFhmdFlJXzZZcjR4UTJleHJfMGlJU0xkbE1hNXNteGQzMWJRUlE?oc=5",
     "time_tpe": "11/24 09:30",
-    "age_h": 3.9,
+    "age_h": 6.8,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
@@ -2560,62 +2538,29 @@
     "publisher": "The Washington Post",
     "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQQ01rTDUyQUlHbDdURmstWlM2VWZFTkk3OTBNWWdOUWpfM3BKeE5yMXpEbUlzNGxLZUx2b0pOZWZZUm53WDFSUjhCMjJDTHdfbGJ3SmVGVG1wNzhRV1YwVnVYNkFtRG42LTVSVUNjZUw4UU5LdXRaZktCUzF6ZndpUFdFM2lZdmh5OTFVcG9BYkRZUEdyMC02T0RvNTJQcnJGUjZxMHgxaERRT0t1NFRIYk91OVZBdVU?oc=5",
     "time_tpe": "11/24 06:43",
-    "age_h": 6.7,
+    "age_h": 9.6,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
     "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
-    "title": "Senate GOP leaders signal openness to cutting off Iran war funding as shutdown inches closer",
-    "publisher": "The Washington Post",
-    "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxObmtRUDdfTnJma1dTMV9ZNVlTemswSC1JeHZqei1LUnBTVS1FdTlTaU53eTVLN1RUeXFTZHRJUkdsZlFidmF2RVhLaWtLalVGODBJTUllc2R3bFdPYTZ5c21wekt3OTViZEFhSElIUW9QQlp5VVhQbEd1dTVkYWtxVlN6ZVM0VVBCRWVKdzVJLXZYdWQ2OTQzRkliS0dscUlNVVhBWHU0T19Td1NsZ0prZEl6Q3BBQQ?oc=5",
-    "time_tpe": "11/24 03:00",
-    "age_h": 10.4,
-    "category": "政策與關稅",
-    "emoji": "🏛️",
-    "impact": -2,
-    "why_zh": "關稅或出口管制收緊：半導體供應鏈首當其衝（NVDA、AMAT、LRCX 的中國營收），SOXL 的跌幅通常是 SOXX 的 3 倍。"
-   },
-   {
-    "title": "Netanyahu Wants to Attack Iran. Does That Serve Israel or Him?",
-    "publisher": "The New York Times",
-    "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOTmZFWmc5YXF6STNWM3VCUWlPOF8xbC1BOWZPTTM1Q20wY3BvRmdQdE5kNW1Idy03OUpDV1JCNGRLS2Ywblc0MGI1QWZWaGx5RW5LTzdkUFBtRjdvVUUzdjRyeVZvUnh3d0RzdTVnU0VBdDF2RlhmWmdFNDVoWjFFRS1NWWE?oc=5",
-    "time_tpe": "11/24 02:54",
-    "age_h": 10.5,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": -2,
-    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
-    "title": "Ukraine’s Attack Off Coast of Libya Shows Reach of Its Naval Drones",
-    "publisher": "The New York Times",
-    "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPUHEzbzJfUE1ETm0takZFX3J0VjJoUWJhRURCZ2Z6OEtGMTNQc3BSUlowblMwZ1NsWEdPdTBBbHVZSVFIcjlsR2RTUExGbHRZb2hoQ3dHbG91OTRfZlZ3Q3dJTkhlM2NFRjJtb2ZSZ3NodHJJbGhxekVGV2pGd0Nab21EbVJ0X0E?oc=5",
-    "time_tpe": "11/24 02:09",
-    "age_h": 11.3,
-    "category": "地緣政治",
-    "emoji": "🌍",
-    "impact": -2,
-    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
-   },
-   {
-    "title": "ASML surges 9% as chip stocks rally (ASML:NASDAQ)",
-    "publisher": "Seeking Alpha",
-    "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBDTHVWdFhBU1B6Y0RWNmxFZG13akZXdjZGUXkxb1F5cGY3cVExejRnNmQ1bi0tUGl1akRvNDR5Y0o3UmlPaFp4c1hfbEV5eWdyOVhrN3FXTzl0SThHeU9KeFVpNkJBRG54Rnp2THdTRk0za3hsUlI4eWtoWDk?oc=5",
-    "time_tpe": "11/24 05:23",
-    "age_h": 8.0,
-    "category": "半導體與 AI",
-    "emoji": "🔧",
-    "impact": 2,
-    "why_zh": "龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。"
    },
    {
     "title": "What strike on Russian ship in Libya says about spread of Ukraine war",
     "publisher": "BBC",
-    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA4Nkh0dF9ndTRBVjktYnQtQWh4clVUZVlwcmtIdjFLa0dfeW5Wb3NFVlhuYXJ4d0Y0c2ZLZG5zaTd0TEdnNHFFVzhUV3VYS1lXWnYyZHFzSjUzdTg?oc=5",
+    "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFAzRlpROXRSV044RXVOaF82dVp1Y3NpM0FjdGgtcm1EWTRDY3V0REVZckZEbHE2Y2F1VGp5S3NLdk5kUkNrN1lBOW1IQVVnXzN3TXVHTUNVMzJyNkdWWWc?oc=5",
     "time_tpe": "11/24 04:48",
-    "age_h": 8.6,
+    "age_h": 11.5,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "The Ukraine-Russia war is escalating – and it will go global unless Europe speaks with one voice | Simon Tisdall",
+    "publisher": "The Guardian",
+    "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPR04wVEpvVktIXzloaDJpTndrT2N4ZndnSVlheldaWUx6VUhtbnQzSVRSM2pWZV8tOHUyV2o5Mm56VDBQNG8xS25JTV80OWh6UFNNdFNHODd3NFBfZG8wTi1PcUQtOHp0SGJJZVU3RUhtSkI0YlhkLUIyLXotaU1rakhLMl93YWxsT1E1eS1QUkNWUzhNOXFtRm1wWGdMN2duX3RpanNn?oc=5",
+    "time_tpe": "11/24 16:02",
+    "age_h": 0.3,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
@@ -2626,7 +2571,18 @@
     "publisher": "The Guardian",
     "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNWHdha3RzX1VGNFF5Y0pKOHBlaTM1eGJ5ZHpGQUdDMGJXSmgzcjAzcGlzMEJQOEZ3MXo2RjBWRmJrWG01MUY0NGVOaFNsVWdpdVF1OFpkMHNvNmY3QVRwZ3pQMGFtdHFkLTRBM3FLOEhTaE8xdXpEdENkM21DSDNmU1BJdFZCY1hxbDZKMVNnbi1Vblo2QnM0RGJKbnhpQmNfSkxXYWJVdEg3a3AzWW9sNWdYVzd3LW1FdnZYQjdRNXJPMW1LRkRFOEZ2dS1UX0U1NEc0aEhINGtXZ1ZNdDI4cg?oc=5",
     "time_tpe": "11/24 12:20",
-    "age_h": 1.1,
+    "age_h": 4.0,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Ukraine confirms it used naval drones to strike two Russian ships off Libya",
+    "publisher": "The Guardian",
+    "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONjlYcEJxcWh6djFUeEhBbnR4eHJKWHdqOVNOVHhwc2ZGM3QtWGtDNUN3bHA2eUN0WEV3SkxwRVVyNXgzZzVlVHU5YXBZVm5CQmRoNUQ5ck00Rk1lOGFGc3FLRUFFelRnckhkaF9oVmplSE9UR2lEdEFQbFBNRjMya2l0WmFsTVR3bDM4SjNGS0FwOGJhblBsRmNKTQ?oc=5",
+    "time_tpe": "11/24 10:30",
+    "age_h": 5.9,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
@@ -2637,7 +2593,7 @@
     "publisher": "Politico",
     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOeVR4X1QxSE5QdndMMENMQXhvbElkOXN1R3VyUWNhRzRBTjdORnlPZG5QcUNkUGhGM3ZWQmF4cmRDTkhBSWJmcFVqUy14WFJoQk56cXJoZWQ3bVEyY0tuc1hLTXNQYXlKUWJzM3BRN3AwRXVXeGFSZVo5eVJKM3FKMDdoaklhbTZfcXRodUpCNA?oc=5",
     "time_tpe": "11/24 07:58",
-    "age_h": 5.4,
+    "age_h": 8.4,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
@@ -2648,11 +2604,55 @@
     "publisher": "AP News",
     "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPWGJMRW1Walh4UFRXQldMQUlQU3l2XzZUOFZSZS1sZUxRM0syc2MwR0ZDZkMtdXN5cVlYSnhmamo3NXJRdXQ2aVEtVVRGbk9rNUxSTWdBUWVtTmNoOUtObl8xajZGSGV5S01OOTV2ZjRYaXZrVHgweWJ4U1k4eUQ1QmQ1VkNfRlF4QnpTMnBmeDA4M1NCVVExRG1XMXJ6ekFXNEpPTlNobw?oc=5",
     "time_tpe": "11/24 00:47",
-    "age_h": 12.6,
+    "age_h": 15.6,
     "category": "地緣政治",
     "emoji": "🌍",
     "impact": -2,
     "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Zelenskyy praises ‘exemplary’ drone operation that sank Russian warship in a Libyan port",
+    "publisher": "CNBC",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9lc3J5YnQ2WG51eXIzRzBBR1lkWW14ZExHS1JrbUR3b2c2eFNNa19pX0lSemJRZm1XZnBHZHVSUDQ0dVZNR0FIUXRTY2RDMU11RlZ4S2Vzc2hWU2VSdXdaU1JmanZDaDNHR2ttOUZQR0Z2OHPSAXhBVV95cUxPN1JVdVdLWUM3eEhYbU5LQjlNQ1VzTW40SFlNVl9aaF83OXNHSVJDRC1SUDRzbzA5VGhIZTJCbElXZkI2VzlpRkJsaFBlcDlnd1p3dUtaMG5KOTV6RW1mU2d2RzF5SFUwMWhTNkw1X29vRnl0eVlJOEM?oc=5",
+    "time_tpe": "11/23 18:09",
+    "age_h": 22.2,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Iran says it will use all its tools to confront US naval blockade",
+    "publisher": "Reuters",
+    "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNaWxsYjRUNUVtQlVrWm1YSFE3eHduckRPNW5CN0llMTJydFI3dGJIa2ZiTENBSU9HYVYtejVzM2JVUy1nbW9wQmdOZGJhdTlMT2R6cTBYNmFUME9aZ1BhTFI2THpRdlJRY21UeW9odHdFWGZxSjlTSVQ5VlBOV2pSckFraW1JWUtOd3dqVWFDZC0yM0t4RFRKWEktV29YTFdLTlJlZ1NsNlcyZ3phdzlVcTlCQ0pTM29GODhJUDVjUQ?oc=5",
+    "time_tpe": "11/23 18:01",
+    "age_h": 22.3,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Ukraine blows up Russian warship in Libya’s Benghazi naval base",
+    "publisher": "Financial Times",
+    "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNTHJicXdLY1Nhd3J3ZURuYkhJRGdwWjdJMkxwZTAtazd3aHZ0WU1wVkVVZzN1Yl9SRlVqTURrUC1EUk1HSDMyWDhlRTc3cVEtSV9RdkVzV3o5OGFnOFV2QXZ5b0RhZC00R0poZFhGdmhpYUhXSFdna1A4UXUzWEFQMWF4NTY?oc=5",
+    "time_tpe": "11/23 16:45",
+    "age_h": 23.6,
+    "category": "地緣政治",
+    "emoji": "🌍",
+    "impact": -2,
+    "why_zh": "地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。"
+   },
+   {
+    "title": "Asia chipmaking stocks soar tracking Nvidia rally; S.Korea, Taiwan lead",
+    "publisher": "Yahoo Finance",
+    "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNWldsWm4xazNVWEdObXJDcF92UVZ6dW80ZTV3SjFmVGRtRnVTZS1HNzlDSHU2ZmhBYzNWN19jQ0Z1NTFqaWEzMGJBRi0zM0JXVkJBeWJqQk5BbVh6VDRrRGFWZ3kxbkx2SWNNX0k1Tkl4UGlYQkdoUkVrT3Z4TlRUR25wWGVkdExlUTZSemRyUmpyVVJOUWdhenQyM1JpMkR5Mnc?oc=5",
+    "time_tpe": "11/24 10:15",
+    "age_h": 6.1,
+    "category": "半導體與 AI",
+    "emoji": "🔧",
+    "impact": 2,
+    "why_zh": "龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。"
    }
   ],
   "flags": {
@@ -2664,14 +2664,14 @@
   },
   "flag_evidence": {
    "geo_escalation_24h": {
-    "title": "Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says",
-    "publisher": "Reuters",
-    "time_tpe": "11/24 12:18"
+    "title": "Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news",
+    "publisher": "AP News",
+    "time_tpe": "11/24 05:23"
    },
    "tariff_shock_24h": {
-    "title": "US imposes sanctions on dozens linked to Iran's shadow banking networks",
-    "publisher": "Reuters",
-    "time_tpe": "11/24 03:39"
+    "title": "Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal",
+    "publisher": "The New York Times",
+    "time_tpe": "11/24 12:17"
    },
    "fed_hawkish_24h": {
     "title": "Fed's Williams says inflation still too high, signals more rate hikes possible",
@@ -2684,18 +2684,18 @@
     "flag": "geo_escalation_24h",
     "text": "地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。",
     "evidence": {
-     "title": "Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says",
-     "publisher": "Reuters",
-     "time_tpe": "11/24 12:18"
+     "title": "Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news",
+     "publisher": "AP News",
+     "time_tpe": "11/24 05:23"
     }
    },
    {
     "flag": "tariff_shock_24h",
     "text": "關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。",
     "evidence": {
-     "title": "US imposes sanctions on dozens linked to Iran's shadow banking networks",
-     "publisher": "Reuters",
-     "time_tpe": "11/24 03:39"
+     "title": "Trump Administration Imposes Sanctions on Megaspeed, Singaporean Firm at Center of Nvidia Scandal",
+     "publisher": "The New York Times",
+     "time_tpe": "11/24 12:17"
     }
    },
    {
@@ -2712,54 +2712,87 @@
    {
     "category": "半導體與 AI",
     "emoji": "🔧",
-    "n": 248,
-    "neg": 19,
-    "pos": 75
+    "n": 260,
+    "neg": 16,
+    "pos": 80
    },
    {
     "category": "地緣政治",
     "emoji": "🌍",
-    "n": 219,
-    "neg": 122,
-    "pos": 3
+    "n": 206,
+    "neg": 110,
+    "pos": 1
    },
    {
     "category": "市場波動",
     "emoji": "📉",
-    "n": 108,
-    "neg": 37,
-    "pos": 34
-   },
-   {
-    "category": "聯準會與利率",
-    "emoji": "🏦",
-    "n": 60,
-    "neg": 14,
-    "pos": 0
+    "n": 111,
+    "neg": 36,
+    "pos": 36
    },
    {
     "category": "政策與關稅",
     "emoji": "🏛️",
-    "n": 52,
-    "neg": 19,
-    "pos": 2
+    "n": 54,
+    "neg": 20,
+    "pos": 3
+   },
+   {
+    "category": "聯準會與利率",
+    "emoji": "🏦",
+    "n": 54,
+    "neg": 13,
+    "pos": 0
    },
    {
     "category": "經濟數據",
     "emoji": "📊",
-    "n": 14,
+    "n": 21,
     "neg": 0,
-    "pos": 1
+    "pos": 4
    }
   ],
   "seeking_alpha": [
+   {
+    "title": "Michael Burry cuts Nvidia puts by 75%, exits semiconductor ETF puts",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+    "symbol": "NVDA",
+    "kind": "新聞",
+    "time_tpe": "11/24 15:45",
+    "age_h": 0.6,
+    "category": "半導體與 AI",
+    "impact": 0,
+    "tone": "中性"
+   },
+   {
+    "title": "China warns Jensen Huang Nvidia comeback won't end 'malicious' US risks",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+    "symbol": "NVDA",
+    "kind": "新聞",
+    "time_tpe": "11/24 14:47",
+    "age_h": 1.6,
+    "category": "半導體與 AI",
+    "impact": -1,
+    "tone": "利空"
+   },
+   {
+    "title": "U.S. adds Alibaba unit, six Megaspeed affiliates to trade blacklist",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+    "symbol": "NVDA",
+    "kind": "新聞",
+    "time_tpe": "11/24 13:47",
+    "age_h": 2.6,
+    "category": null,
+    "impact": 0,
+    "tone": "中性"
+   },
    {
     "title": "TSMC, SK Hynix, and Asian tech surge after Jensen Huang's return as Nvidia CEO",
     "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
     "symbol": "NVDA",
     "kind": "新聞",
     "time_tpe": "11/24 12:15",
-    "age_h": 1.2,
+    "age_h": 4.1,
     "category": "半導體與 AI",
     "impact": 1,
     "tone": "利多"
@@ -2770,7 +2803,7 @@
     "symbol": "NVDA",
     "kind": "分析",
     "time_tpe": "11/24 07:12",
-    "age_h": 6.2,
+    "age_h": 9.2,
     "category": "半導體與 AI",
     "impact": 0,
     "tone": "中性"
@@ -2781,7 +2814,7 @@
     "symbol": "SOXX",
     "kind": "分析",
     "time_tpe": "11/24 06:16",
-    "age_h": 7.1,
+    "age_h": 10.1,
     "category": "半導體與 AI",
     "impact": 0,
     "tone": "中性"
@@ -2792,7 +2825,7 @@
     "symbol": "NVDA",
     "kind": "分析",
     "time_tpe": "11/24 05:37",
-    "age_h": 7.8,
+    "age_h": 10.7,
     "category": "半導體與 AI",
     "impact": 0,
     "tone": "中性"
@@ -2803,41 +2836,8 @@
     "symbol": "SOXX",
     "kind": "分析",
     "time_tpe": "11/24 05:23",
-    "age_h": 8.0,
+    "age_h": 11.0,
     "category": null,
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "Christmas Came Early For AI: Jensen Huang Is Back",
-    "link": "https://seekingalpha.com/article/4971190-christmas-came-early-for-ai-jensen-huang-is-back?source=feed_symbol_SOXX",
-    "symbol": "SOXX",
-    "kind": "分析",
-    "time_tpe": "11/24 05:16",
-    "age_h": 8.1,
-    "category": null,
-    "impact": 0,
-    "tone": "中性"
-   },
-   {
-    "title": "Nvidia shares surge more than 30%, add $1T in market cap, as Jensen Huang returns",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
-    "kind": "新聞",
-    "time_tpe": "11/24 05:05",
-    "age_h": 8.3,
-    "category": "半導體與 AI",
-    "impact": 1,
-    "tone": "利多"
-   },
-   {
-    "title": "SA analysts weigh in on Jensen Huang's return and what it means for Nvidia",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
-    "symbol": "NVDA",
-    "kind": "新聞",
-    "time_tpe": "11/24 04:49",
-    "age_h": 8.6,
-    "category": "半導體與 AI",
     "impact": 0,
     "tone": "中性"
    }
@@ -2871,7 +2871,7 @@
    {
     "key": "macro",
     "title": "現在的宏觀消息",
-    "value": "偏空｜🌍 Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says（Reuters）",
+    "value": "偏空｜🌍 Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news（AP News）",
     "short": "偏空，有旗標",
     "light": "red",
     "emoji": "🔴",
@@ -3029,7 +3029,7 @@
     },
     {
      "voice": "時事 / 宏觀（36 小時）",
-     "reading": "偏空（淨影響 -0.31）",
+     "reading": "偏空（淨影響 -0.25）",
      "tone": "bear",
      "field": "flash.label"
     },
@@ -3134,7 +3134,7 @@
   {
    "item": "Fear & Greed 從極度恐懼區回升 (> 25 且上升)",
    "ok": false,
-   "now": "17.0 (前值 17.0)"
+   "now": "17.1 (前值 17.0)"
   },
   {
    "item": "5 日上漲/下跌量能比 > 1 (買盤回流)",
@@ -3145,149 +3145,177 @@
  "watch": [
   "價格：守 $29.82（價值區下緣 VAL / 近 10 日最低）、攻 $43.54（EMA5）",
   "期權：n/a 到期（Max Pain $n/a，P/C n/a）；Gamma 翻正位 $None",
-  "情緒：Fear & Greed 17.0 是否回升 >25；VIX 26.62 與期限結構 1.044（<0.92 才算回穩）",
+  "情緒：Fear & Greed 17.1 是否回升 >25；VIX 26.62 與期限結構 1.044（<0.92 才算回穩）",
   "板塊：16 檔成分股站上 20MA 比例 6% → 目標 >40%；大戶期權淨方向 n/a → 轉正",
   "崩跌前兆分數 67 → 回落 <60"
  ],
  "news": {
-  "articles_total": 1106,
+  "articles_total": 1161,
   "sources": {
    "yahoo": 0,
-   "google": 852,
-   "rss": 254
+   "google": 908,
+   "rss": 253
   },
-  "bull_7d": 149,
-  "bear_7d": 182,
+  "bull_7d": 151,
+  "bear_7d": 184,
   "bull_bear_ratio": 0.82,
   "themes_7d": [
    {
-    "tag": "個股動能/買盤利多",
-    "count": 25
-   },
-   {
     "tag": "獲利了結/基本面利空",
-    "count": 25
+    "count": 28
    },
    {
-    "tag": "殖利率/通膨/關稅宏觀利空",
-    "count": 5
+    "tag": "個股動能/買盤利多",
+    "count": 26
+   },
+   {
+    "tag": "AI 估值/融資疑慮",
+    "count": 7
    },
    {
     "tag": "監管/地緣政治",
-    "count": 4
+    "count": 5
    },
    {
     "tag": "訂單/資本支出利多",
     "count": 4
    },
    {
-    "tag": "AI 估值/融資疑慮",
-    "count": 3
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "count": 2
    }
   ],
   "by_day": [
    {
     "date": "2026-11-24",
-    "bull_count": 20,
-    "bear_count": 3,
-    "neutral_count": 15,
-    "net_sentiment_ratio": 0.74,
+    "bull_count": 27,
+    "bear_count": 7,
+    "neutral_count": 29,
+    "net_sentiment_ratio": 0.59,
     "soxl_perf": "非交易日 / 尚未收盤"
    },
    {
     "date": "2026-11-23",
-    "bull_count": 109,
-    "bear_count": 92,
-    "neutral_count": 178,
-    "net_sentiment_ratio": 0.08,
+    "bull_count": 103,
+    "bear_count": 79,
+    "neutral_count": 167,
+    "net_sentiment_ratio": 0.13,
     "soxl_perf": "$43.21 (+39.93%)"
    },
    {
     "date": "2026-11-22",
-    "bull_count": 3,
-    "bear_count": 19,
+    "bull_count": 2,
+    "bear_count": 20,
     "neutral_count": 26,
-    "net_sentiment_ratio": -0.73,
+    "net_sentiment_ratio": -0.82,
     "soxl_perf": "非交易日 / 尚未收盤"
    },
    {
     "date": "2026-11-21",
-    "bull_count": 2,
-    "bear_count": 15,
+    "bull_count": 3,
+    "bear_count": 14,
     "neutral_count": 29,
-    "net_sentiment_ratio": -0.76,
+    "net_sentiment_ratio": -0.65,
     "soxl_perf": "非交易日 / 尚未收盤"
    },
    {
     "date": "2026-11-20",
     "bull_count": 6,
-    "bear_count": 41,
-    "neutral_count": 48,
-    "net_sentiment_ratio": -0.74,
+    "bear_count": 43,
+    "neutral_count": 45,
+    "net_sentiment_ratio": -0.76,
     "soxl_perf": "$30.88 (-31.83%)"
    },
    {
     "date": "2026-11-19",
     "bull_count": 6,
-    "bear_count": 8,
+    "bear_count": 10,
     "neutral_count": 24,
-    "net_sentiment_ratio": -0.14,
+    "net_sentiment_ratio": -0.25,
     "soxl_perf": "$45.30 (-8.04%)"
    },
    {
     "date": "2026-11-18",
-    "bull_count": 3,
-    "bear_count": 4,
-    "neutral_count": 8,
-    "net_sentiment_ratio": -0.14,
+    "bull_count": 4,
+    "bear_count": 11,
+    "neutral_count": 11,
+    "net_sentiment_ratio": -0.47,
     "soxl_perf": "$49.26 (+0.39%)"
    }
   ],
   "top_bull": [
    {
-    "title": "AI adoption grows in Asia, but measuring the gains remains tricky",
-    "publisher": "CNBC",
+    "title": "Huang's Nvidia comeback sends Tower soaring",
+    "publisher": "Globes - Israel Business News",
     "tag": "個股動能/買盤利多",
-    "time_utc": "05:07",
-    "link": "https://www.cnbc.com/2026/11/24/aws-asia-gains-roi.html"
+    "time_utc": "08:09",
+    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNYW5aTTVHcjNIeHZMNGlKSTNDeHd6NWczTm92ZDJ2ZmlJT3d3cjlnQ0c0N1hBZzEzWjhDZnFwbWVLS3JCZy1yRnpfRnF2UlZIREQzNVZDYVNob1NuU2F5RzlpcEJza3FEUmFhRzFibjhqNHJJRXpBQk1pcUhVODNGVlYyZjNaS3ZhcFRwOGVSbHBmdw?oc=5"
    },
    {
-    "title": "Malaysia tech, data centre stocks join Nvidia’s rebound after Jensen Huang’s comeback",
-    "publisher": "The Edge Malaysia",
+    "title": "Direxion Semiconductor Bull 3X ETF (SOXL) Price Prediction: Sharp rebound tests resistance, but trend damage is still visible",
+    "publisher": "Blockchain News",
     "tag": "個股動能/買盤利多",
-    "time_utc": "04:58",
-    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFB3UHhpYzNkLU50TjVOMjZ2U2k4Qno4UWRXS3FSMklDSjBmOXgxVW1UME44cEd2elRRbFRtRXJPWTZqNjIzVTF0ZXhpN3VGRkll?oc=5"
+    "time_utc": "07:47",
+    "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxORFFIWS13WjJlbkZmOGkzU3NDRkIzUG1NaXBNYUljRDVSaGZpTkdXcEdGR2FWMjM5MkkxWnMtTmw2cDhNVjN4OFI1RHJ5b0E2TEFuVkJweFhKNDRRQTRQNXozdmJHODBUaU1oUWRtMHZvSkxLUERvUGZMdjd3MlVjcGN4S2F5b1lFRGZRcjVncjkzbDgwVjlqNzgyczNEVVA1Rnc?oc=5"
    },
    {
-    "title": "Stocks Rebound Sharply as Nvidia Reinstates CEO Huang",
-    "publisher": "Nasdaq",
+    "title": "The KOSPI jumped more than 6% on the 24th, recovering to the 5,000-point level. Samsung Electronics",
+    "publisher": "매일경제",
     "tag": "個股動能/買盤利多",
-    "time_utc": "04:44",
-    "link": "https://www.nasdaq.com/articles/stocks-rebound-sharply-nvidia-reinstates-ceo-huang-0"
+    "time_utc": "06:53",
+    "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFA4NEEyRGNIVjZHLVFuVlZnZTdOS0RVQ0FhbzA3M0ZuaENxR2Y5T0U1MkFTeGtHNmc0TWlsQTJTaXA5QVRINF9rVUFGeUl1OXM?oc=5"
    },
    {
-    "title": "TSMC, SK Hynix, and Asian tech surge after Jensen Huang's return as Nvidia CEO",
-    "publisher": "Seeking Alpha",
+    "title": "MU Stock $707.70: 19% Rally Meets Dell Results Tonight",
+    "publisher": "FinanceFeeds",
     "tag": "個股動能/買盤利多",
-    "time_utc": "04:15",
-    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA"
+    "time_utc": "06:51",
+    "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPNFBBVm9jYUQ1Q3ZhU2U2cjBsN1hoc2hKQmJUQzNVRkRZTk1ZVF9IekpKV0NGakRxdy1HVVlYWm1zZjZNTjRzTEllTncza01mR1FiU0pJcC01TG5jM0hMUlRfdFQ4eW5CaGNxNV9GM0s4SW1PMGZjNGFjd0lBVGlLSk9oVF91OFdlekFtdWtic0JUd244MTNDUEtvel9PVzFiTmlfU3h1THlSMnpyTFZrRDJiSnJzQQ?oc=5"
+   },
+   {
+    "title": "Bitcoin And Stocks Are Moving In Different Directions: Arthur Hayes Says Nvidia's Rally Is The 'Worst Thing' For Crypto",
+    "publisher": "TradingView",
+    "tag": "個股動能/買盤利多",
+    "time_utc": "06:45",
+    "link": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxOMXI1Q0o4eUZNRDF3b2xOYUZ2YVU5RV9mZW9nSm4yNVE2VVlUQUpDWGNKSnZ4SDJDY1FCcEFRcVVtWTVuWExiYmFINXB1cW9uWGUyRE8wZWxDZEFPcFp1Q3hwekg3YVNlM3ZpZHVtN0tVUmNYYzNZZHVfN01zTmhSQXE1dU54bGQxTS1tZWpNeHlWalc2SkhRd0tfLVI5S0duTkxrSERLQlA5TnlrdWJCZGVfNGIzbkFMQVpxT3h4WVRPdTBIWHFpR1VWQUtJdWNIQkw4OXFVbWZFZjF0OXRmVEg2eE1odFZESmktUlFoa1YwNmlHV1Q5OG9CZktBZ244SWd5R2NrY3A?oc=5"
    },
    {
     "title": "Markets soar as Huang returns as Nvidia CEO",
     "publisher": "The Washington Post",
     "tag": "個股動能/買盤利多",
-    "time_utc": "03:52",
+    "time_utc": "05:43",
     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQakE1eld6Ynlnd3ExWkk3QndCd0RUM0E0M3I2eTFHREVyUG5ESEJoUmdJZFhYNG4xRi1VTGlHX0gwOXFMVm9zZl82MlRnZ1QzbU42Z3Fka2VIX0JTakE2b0FSOHBzU2xLaHpwVWMtS0Z5YjhtRnR5MHJLczJrdkh0aGpQT2hXanVWSWZuRkx4RGRwOUE?oc=5"
-   },
-   {
-    "title": "AMD Stock Dips Overnight After Nvidia-Triggered Rally: AMD Registers 337M Shares For Resale Tied To OpenAI, Meta Warrants",
-    "publisher": "Yahoo Finance",
-    "tag": "個股動能/買盤利多",
-    "time_utc": "03:47",
-    "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNdEJEc3NMNGhjTHlKR2tiMTFLWHZrYjBTUmdsMjZseVRCWVpCdDVKUmxCV0kzYnE4MFhPQno1cHZIQzBOWGhzQ0FvNXdsN1dRcnd5RDY2VG13UnlqU1V5Yi1EZGdvTGxTdGc2XzM2RHRzbE01NGFOaThXMlhqTjVuVUlWN1RuM3FHME9kdEFEMUdud1hYVG5tRGNhRk0?oc=5"
    }
   ],
   "top_bear": [
+   {
+    "title": "AI market bubble shows signs of deflation as $9 trillion evaporates from U.S. stocks",
+    "publisher": "KuCoin",
+    "tag": "殖利率/通膨/關稅宏觀利空",
+    "time_utc": "07:37",
+    "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQcktfakJLRVdmbVZETHc2RHZxM21MMVMxOVpCbDlTVzU3Z01CZzZXZmxjam42TDhyRzhWYVc5Qlo0LTJwMmd1QmtidzE5OVVVNE9tdGFObDBXYW5CbE1hby1qbFl3c1FfMDNsVkwtWGJQOXFZLUN5eVNydWt2d25Wa3hhcy1UNm5SY2F2bGZLVS00QnVYbXc2ZjdRSTI4WGd3U0ltdGxRcWUwUUE?oc=5"
+   },
+   {
+    "title": "Signal joins United Airlines, banks in limiting AI agents over customer risks",
+    "publisher": "CNBC",
+    "tag": "監管/地緣政治",
+    "time_utc": "07:25",
+    "link": "https://www.cnbc.com/2026/11/24/signal-airlines-banks-ai-limit.html"
+   },
+   {
+    "title": "China warns Jensen Huang Nvidia comeback won't end 'malicious' US risks",
+    "publisher": "Seeking Alpha",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "06:47",
+    "link": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA"
+   },
+   {
+    "title": "Micron (MU) Stock Forecast: Memory Price Risks, AI Demand and Key Levels",
+    "publisher": "FXLeaders",
+    "tag": "獲利了結/基本面利空",
+    "time_utc": "05:48",
+    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQeDRfMG9uSFBSSTBqanl2S0pRZHFkbFVNUnBuTDlMQTYxdnVIYXB2c3F3SlR4WHZVZXJad3JIT1NDcUR0Wm1ab3hPMVNnQWZvV2pJY1dyOTBDVWlkbURIblVySk9SZUVCODVqVi0yWlcwcE9Tc1hRX3lzQndFVUwxb19Pa0pXMmNJMVpUcmswVjB1bTVEelE?oc=5"
+   },
    {
     "title": "U.S. adds Megaspeed to trade blacklist over export control concerns amid Nvidia controversy",
     "publisher": "CNBC",
@@ -3296,39 +3324,11 @@
     "link": "https://www.cnbc.com/2026/11/24/us-adds-megaspeed-to-trade-blacklist-over-export-control-concerns-.html"
    },
    {
-    "title": "Fed Rate Hike Bets Build Ahead Of December Meet: Fed’s John Williams Says Inflation Still ‘Too High’",
-    "publisher": "Stocktwits",
-    "tag": "殖利率/通膨/關稅宏觀利空",
-    "time_utc": "01:12",
-    "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNMTdkSEVkTG41NS1DY1F3cC1QNnhJem9Gd2V0bFpmdVQ5MFVta1JfSXVqYVF4aTRPeXljS3hyNTZlYkZMcWJzaXlEZWJYT1RZWEViUUJTdS1WX0JRaS04YkRJVFpWbmZOczVKTnJaX2hiRXpkVFR4M3Q1amsyck1VbzdlaHRvV05SQWFhQXFCVFJRam5SNlQxTEVmT1hPbldlRFowbFRwa25iUDBhdkJTR1J0MGtrUFk?oc=5"
-   },
-   {
-    "title": "The Nasdaq Just Had Its Best Day Since April 2025. Anthropic Stock Fell Anyway.",
-    "publisher": "Nasdaq",
+    "title": "Trump’s Extraordinary Nvidia Intervention Sidelines National Security Concerns",
+    "publisher": "The New York Times",
     "tag": "獲利了結/基本面利空",
-    "time_utc": "00:42",
-    "link": "https://www.nasdaq.com/articles/nasdaq-just-had-its-best-day-april-2025-anthropic-stock-fell-anyway"
-   },
-   {
-    "title": "Micron: Sell As This May Be The Long-Awaited Cyclical Downturn (Rating Downgrade)",
-    "publisher": "Seeking Alpha",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "23:38",
-    "link": "https://seekingalpha.com/article/4971220-micron-sell-as-this-may-be-the-long-awaited-cyclical-downturn?source=feed_symbol_MU"
-   },
-   {
-    "title": "Roundhill Analysts: Memory Stock Drop Not Fundamentals",
-    "publisher": "조선일보",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "23:10",
-    "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQa25VNW9nZWFibkRHajZBdFdFdFlVczMwQWdCc1lpMTEwMjB2SndpWlJXZlZUSzRrNmlRUlY3a2tncmRWX1Nac0tLY0hkNFhOM0RoV282Wmw0VmRyY2YyZWZHZV9FeDZvbXBkUGFFNTJEeng4WUhjQ3VpeTkwSUxRZXRKRzZVZy1JU2N4RGJ3?oc=5"
-   },
-   {
-    "title": "Only Six Nasdaq-100 Stocks Fell As Nvidia Raises Big Questions",
-    "publisher": "Forbes",
-    "tag": "獲利了結/基本面利空",
-    "time_utc": "22:23",
-    "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOWWF4cnRlSE1lT185ajBiXzRoTUx5dktyRWxpelRfU3ltMTZJWFA4ZGVOaWRDWHgxTEpRNW9sREd3N21MUjR2blFkbFZGU3NlMmhuN1hWM2hqUDlJMGVreFBicDNsQkZLcmR1ZTFTWHpjRE5kMlJXOEwzOFRLdTlVNlRNQTRINkhZWkUtWlJBeVlSakJhQktDVGltbGZPYm0wa1RsTmVIbEkwUk16WktRU25DTzlVN09jdXI2UzdCcERWd2pzMjZYQXg1cFJoSXM?oc=5"
+    "time_utc": "00:55",
+    "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOY3A4YXNjbWpURzZIbVp4YTkwUTh0V0V3ekhXbmpjU2RlSzZEV053Zk1NTXFENk5lNDc4TjJWb040em10bzFvU2hvUUpiaFY2TXB3czgzTFpsYk5PeUs4M3VRNy1DUXBKWXd3T2JGNUd6bHMxdTJfSFhQWGxyamlPdjFReEgzS1RoWGc?oc=5"
    }
   ]
  },
@@ -3397,12 +3397,109 @@
   }
  },
  "quotes": {
-  "fetched_at_tpe": null,
-  "fetched_at_et": null,
-  "market_status": null,
-  "one_liner": null,
+  "fetched_at_tpe": "2026-11-24 16:21 台北",
+  "fetched_at_et": "2026-11-24 03:21 ET",
+  "market_status": "Closed",
+  "one_liner": "SOXL $30.92（-31.74%）｜市場狀態 Closed",
   "vix_term_ratio": null,
-  "rows": []
+  "rows": [
+   {
+    "symbol": "SOXL",
+    "label": "SOXL 三倍做多半導體",
+    "last": 30.92,
+    "change_pct": -31.74,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SOXS",
+    "label": "SOXS 三倍做空半導體",
+    "last": 83.3,
+    "change_pct": 31.93,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SOXX",
+    "label": "SOXX 費半 ETF",
+    "last": 140.22,
+    "change_pct": 13.63,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "SPY",
+    "label": "S&P 500",
+    "last": 722.51,
+    "change_pct": 4.74,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "QQQ",
+    "label": "Nasdaq 100",
+    "last": 608.45,
+    "change_pct": -5.67,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "NVDA",
+    "label": "Nvidia",
+    "last": 128.3744,
+    "change_pct": -12.06,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AVGO",
+    "label": "Broadcom",
+    "last": 304.41,
+    "change_pct": -12.19,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AMD",
+    "label": "AMD",
+    "last": 424.39,
+    "change_pct": -13.25,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "MU",
+    "label": "Micron",
+    "last": 594.51,
+    "change_pct": -13.89,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "TSM",
+    "label": "TSMC ADR",
+    "last": 319.34,
+    "change_pct": -9.3,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "AMAT",
+    "label": "Applied Materials",
+    "last": 346.87,
+    "change_pct": 14.62,
+    "ext_last": null,
+    "ext_change_pct": null
+   },
+   {
+    "symbol": "LRCX",
+    "label": "Lam Research",
+    "last": 183.27,
+    "change_pct": -10.02,
+    "ext_last": null,
+    "ext_change_pct": null
+   }
+  ]
  },
  "changes": {
   "has_previous": true,
@@ -3412,7 +3509,7 @@
   "composite_prev": -0.72,
   "composite_delta": -0.14,
   "crash_risk_delta": -6.0,
-  "fear_greed_delta": 7.3,
+  "fear_greed_delta": 7.4,
   "vix_delta": -9.27,
   "size_pct_prev": 10,
   "same_verdict_streak_days": 16,
@@ -3643,7 +3740,7 @@
    "emoji": "🔴",
    "size_pct": 10,
    "crash_risk": 67.0,
-   "fear_greed": 17.0,
+   "fear_greed": 17.1,
    "vix": 26.62,
    "fwd_ret_5d": null,
    "fwd_ret_10d": null

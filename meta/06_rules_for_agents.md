@@ -1,6 +1,6 @@
 # 06 給 AI Agent 的解讀規則
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > Muse 或任何 agent 轉述這份資料時必須遵守的規則；違反任何一條就會把研究參考講成投資建議。
 
@@ -24,7 +24,7 @@
 
 今天套進去會是：
 
-> （1）今天 **賣出 / 減碼**：⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫。（2）最重要的理由：最大空方理由：均線結構 (20 / 50 / 200MA)（空頭排列 (Bearish Alignment) | 距 20MA -30.9% / 50MA -57.5% / 200MA -65.0%）；最大多方理由：原油走勢 (通膨/利率傳導，ETF 代理)（Brent 原油 (BNO ETF 代理) 20 日 -20.19% | 20D 相關 -0.17）；今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 13:13 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。（3）要盯的價位：停損 $29.82、T1 $62.57、Gamma 翻正 n/a。48 小時內：11/26（四） 美股休市（NYSE 假日）。
+> （1）今天 **賣出 / 減碼**：⛔ 不開新倉：沒有驗證過的買點成立；下面是觸發後才執行的條件計畫。（2）最重要的理由：最大空方理由：均線結構 (20 / 50 / 200MA)（空頭排列 (Bearish Alignment) | 距 20MA -30.9% / 50MA -57.5% / 200MA -65.0%）；最大多方理由：原油走勢 (通膨/利率傳導，ETF 代理)（Brent 原油 (BNO ETF 代理) 20 日 -20.19% | 20D 相關 -0.17）；今天最大的事：Dow soars 1,400 points; Nasdaq surges 6% in its best day since April 2025 as Jensen Huang returns to Nvidia（CNBC，11/24 15:57 台北）→ 🔧 半導體與 AI，對 SOXL 利多：龍頭財報、訂單或資本支出轉強：直接推升 SOXX 成分股。（3）要盯的價位：停損 $29.82、T1 $62.57、Gamma 翻正 n/a。48 小時內：11/26（四） 美股休市（NYSE 假日）。
 
 ## 好句子與壞句子（數字取自今天的資料）
 

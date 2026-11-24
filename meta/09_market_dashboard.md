@@ -1,6 +1,6 @@
 # 09 市場儀表板：能不能加碼、宏觀、費半、大戶、Put/Call、崩跌指數
 
-> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 05:25:12 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-23**（美股交易日）· 產生 2026-11-24 08:21:37 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 六個最常被問的問題，每個一格：讀數、燈號、一句話、細節、數字來源欄位。全部由 `data/latest.json` 既有欄位推導；燈號規則在 `soxl_quant/dashboard.py`。
 
@@ -19,7 +19,7 @@
 
 ### 🔴 現在的宏觀消息：偏空，有旗標
 
-- 讀數：偏空｜🌍 Russian attack kills 2 people, wounds 22 in Ukraine's Zaporizhzhia, official says（Reuters）
+- 讀數：偏空｜🌍 Ukrainian naval drones strike a new Russian warship in Libya, and other Mideast news（AP News）
 - 一句話：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
 - 細節：10Y 4.920%（+0.0 bps）；油 $56.66（-4.00%）；VIX 26.62（-25.83%）；美元 29.78（+0.54%）
 - 注意：時事是關鍵字規則分類（非 LLM）；宏觀數字為前一交易日收盤
@@ -73,7 +73,7 @@
 |---|---|---|
 | 量化評級（24 因子） | 賣出 / 減碼（綜合 -0.86） | 🔴 空 |
 | 訊號驗證（10 年回測） | 沒有驗證過的買點（不開新倉） | 🟡 中性 |
-| 時事 / 宏觀（36 小時） | 偏空（淨影響 -0.31） | 🔴 空 |
+| 時事 / 宏觀（36 小時） | 偏空（淨影響 -0.25） | 🔴 空 |
 | 費半趨勢（SOXX） | 空頭 | 🔴 空 |
 
 - **四個聲音：3 空 / 1 中性 / 0 多 → 一致偏空，不加碼**
@@ -95,14 +95,14 @@
 
 | 方向 | 標的・類型・時間 | 標題 |
 |---|---|---|
+| 中性 | NVDA・新聞・11/24 15:45 | [Michael Burry cuts Nvidia puts by 75%, exits semiconductor ETF puts](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 利空 | NVDA・新聞・11/24 14:47 | [China warns Jensen Huang Nvidia comeback won't end 'malicious' US risks](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
+| 中性 | NVDA・新聞・11/24 13:47 | [U.S. adds Alibaba unit, six Megaspeed affiliates to trade blacklist](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
 | 利多 | NVDA・新聞・11/24 12:15 | [TSMC, SK Hynix, and Asian tech surge after Jensen Huang's return as Nvidia CEO](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
 | 中性 | NVDA・分析・11/24 07:12 | [Nvidia After Huang's Return: Rubin Carries The Buy Case](https://seekingalpha.com/article/4971214-nvidia-after-huang-return-rubin-carries-buy-case?source=feed_symbol_NVDA) |
 | 中性 | SOXX・分析・11/24 06:16 | [Indiscriminate Selling On Semiconductors Makes No Sense](https://seekingalpha.com/article/4971206-indiscriminate-selling-on-semiconductors-makes-no-sense?source=feed_symbol_SOXX) |
 | 中性 | NVDA・分析・11/24 05:37 | [Nvidia: Huang's Return Takes The Biggest Risk Off The Table](https://seekingalpha.com/article/4971197-nvidia-huangs-return-takes-the-biggest-risk-off-the-table?source=feed_symbol_NVDA) |
 | 中性 | SOXX・分析・11/24 05:23 | [2026 Was A Year Of Sharp Rotations: Why 2027 Could See A Broader Rally](https://seekingalpha.com/article/4971192-2026-was-a-year-of-sharp-rotations-why-2027-could-see-a-broader-rally?source=feed_symbol_SOXX) |
-| 中性 | SOXX・分析・11/24 05:16 | [Christmas Came Early For AI: Jensen Huang Is Back](https://seekingalpha.com/article/4971190-christmas-came-early-for-ai-jensen-huang-is-back?source=feed_symbol_SOXX) |
-| 利多 | NVDA・新聞・11/24 05:05 | [Nvidia shares surge more than 30%, add $1T in market cap, as Jensen Huang returns](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
-| 中性 | NVDA・新聞・11/24 04:49 | [SA analysts weigh in on Jensen Huang's return and what it means for Nvidia](https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA) |
 
 - 「新聞」= Seeking Alpha 新聞台；「分析」= 投稿作者的意見文章，方向只依標題關鍵字判斷。來源：Seeking Alpha 公開 RSS（個股 combined feed、Wall Street Breakfast、Market Outlook、Macro View）。
 
