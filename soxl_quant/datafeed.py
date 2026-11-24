@@ -6,6 +6,19 @@ All outbound requests are restricted to an explicit HTTPS host allow-list
 CNN Fear & Greed data API).  Responses are cached on disk (JSON) with a TTL so
 that repeated runs during development never hammer upstream APIs (Yahoo returns
 HTTP 429 after bursts of ~40 requests), and failures degrade gracefully.
+
+Offline replay: with the environment variable ``SOXL_OFFLINE=1`` the layer makes
+no network request, serves a cached response whatever its age, never writes to
+the cache and never clears it (also when a caller asks for a refresh), and an
+uncached source raises ``FeedError`` with the URL so callers degrade exactly as
+they do on a failed fetch.  Without the variable nothing changes.
+
+Limit of the replay: the switch freezes the cache, not the clock.  Some lookups
+are keyed by today's date (the CBOE daily put/call statistics by UTC date, the
+earnings calendar by local date), and news ages are measured from now.  A replay
+therefore reproduces a cached run exactly only on the UTC date of that run.  On
+a later date those lookups ask for dates that were never cached, miss, and
+degrade like a failed fetch, so numbers that depend on them can differ.
 """
 
 from __future__ import annotations
@@ -13,6 +26,7 @@ from __future__ import annotations
 from datetime import date, datetime, time as dtime, timedelta, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import time
@@ -23,9 +37,24 @@ from zoneinfo import ZoneInfo
 
 from . import marketclock
 
+OFFLINE_ENV = "SOXL_OFFLINE"
+_OFFLINE_OFF_VALUES = {"", "0", "false", "no", "off"}
+
+
+def offline() -> bool:
+  """True when ``SOXL_OFFLINE`` asks for an offline replay from the disk cache.
+
+  Read on every call (not at import) so one process can switch modes.  Any value
+  other than empty / 0 / false / no / off counts as offline, so a typo such as
+  ``SOXL_OFFLINE=yes`` fails safe (no network, no cache write).
+  """
+  return os.environ.get(OFFLINE_ENV, "").strip().lower() not in _OFFLINE_OFF_VALUES
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 CACHE_DIR = BASE_DIR / ".cache"
-CACHE_DIR.mkdir(exist_ok=True)
+if not offline():  # an offline replay never writes to the cache, not even to create its directory
+  CACHE_DIR.mkdir(exist_ok=True)
 
 ALLOWED_HOSTS = {
     "query1.finance.yahoo.com",
@@ -79,12 +108,14 @@ def _cache_get(key: str, ttl_sec: int) -> dict | list | None:
     payload = json.loads(p.read_text(encoding="utf-8"))
   except (OSError, json.JSONDecodeError):
     return None
-  if time.time() - float(payload.get("_fetched_at", 0)) > ttl_sec:
+  if not offline() and time.time() - float(payload.get("_fetched_at", 0)) > ttl_sec:  # offline: any age is served
     return None
   return payload.get("data")
 
 
 def _cache_put(key: str, data: dict | list) -> None:
+  if offline():  # offline replay: the cache is read-only
+    return
   p = _cache_path(key)
   p.write_text(
       json.dumps({"_fetched_at": time.time(), "_key": key, "data": data}),
@@ -117,6 +148,8 @@ def safe_https_get(
   parsed = urllib.parse.urlparse(url)
   if parsed.scheme != "https" or parsed.netloc not in ALLOWED_HOSTS:
     raise ValueError(f"Disallowed URL host or scheme: {url}")
+  if offline():  # offline replay: no request leaves the machine; callers degrade as on a failed fetch
+    raise FeedError(f"offline ({OFFLINE_ENV}=1): no cached response for {url}")
   host = parsed.netloc
   if time.time() < _HOST_BLOCKED_UNTIL.get(host, 0.0):
     raise FeedError(f"{host} is rate-limited (circuit open); skipping {url}")
@@ -1028,7 +1061,12 @@ def fetch_history_with_proxy(symbol: str, period_range: str = "1y") -> tuple[lis
 
 
 def clear_cache() -> int:
-  """Delete all cached payloads. Returns number of files removed."""
+  """Delete all cached payloads. Returns number of files removed.
+
+  Offline replay (``SOXL_OFFLINE=1``): deletes nothing and returns 0, also when a caller asks for a refresh.
+  """
+  if offline():
+    return 0
   n = 0
   for p in CACHE_DIR.glob("*.json"):
     p.unlink(missing_ok=True)

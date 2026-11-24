@@ -635,7 +635,7 @@ def to_markdown(br: dict, with_links: bool = True) -> str:
   L.append(f"- {hist_txt}；連續同評級 {ch.get('same_verdict_streak_days')} 個交易日" + (f"；上次評級改變 {ch.get('previous_date')}" if ch.get("verdict_changed") else ""))
   if with_links:
     lk = br.get("links") or {}
-    L.append(f"- 完整報告 {lk.get('report_html')} ・ 新手版 {lk.get('simple_html')} ・ JSON {lk.get('brief_json')}（新聞連結在 news.top_bull[].link）")
+    L.append(f"- 儀表板 {lk.get('report_html')}（{lk.get('simple_html')} 是同一頁）・ JSON {lk.get('brief_json')}（新聞連結在 news.top_bull[].link）")
   L.append("")
   L.append(f"_{br.get('disclaimer')}_")
   return "\n".join(L) + "\n"

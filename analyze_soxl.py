@@ -8,7 +8,8 @@ Usage (from this folder, using the project virtualenv):
 
 Outputs (same folder):
     soxl_analysis_data.json     structured results for every module
-    soxl_analysis_report.html   investor dashboard (open in any browser)
+    index.html                  the dashboard page (open in any browser); soxl_analysis_report.html
+                                and soxl_simple.html hold the same page
 
 The analytics live in the `soxl_quant/` package:
     datafeed      secure, cached, rate-limit-aware data layer (Nasdaq / CBOE / CNN / Treasury / Yahoo / Google News)
@@ -21,7 +22,7 @@ The analytics live in the `soxl_quant/` package:
     scoring       7-dimension -2..+2 scorecard with trend vs contrarian sub-scores
     playbook      next-step verdict, price ladder, scenarios, re-entry checklist
     postmortem    lessons learned from the most recent major drawdown
-    report_html   dashboard renderer
+    report_page   dashboard page (report_chart, report_sections and report_html hold its parts)
 """
 
 import sys

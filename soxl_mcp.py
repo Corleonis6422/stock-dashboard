@@ -83,8 +83,8 @@ def t_get_latest(args: dict) -> str:
     data = data[section]
   else:
     # the full payload is ~500 KB; default to a trimmed view
-    data = {k: v for k, v in data.items() if k not in ("technicals", "options", "macro", "early_warning", "heatmap", "news", "sentiment", "postmortem", "benchmarks_recent", "soxl_recent", "light_history")}
-    data["_sections"] = ["technicals", "options", "sentiment", "heatmap", "macro", "early_warning", "news", "scoring", "playbook", "postmortem", "benchmarks_recent", "soxl_recent", "verdict_history", "schedule"]
+    data = {k: v for k, v in data.items() if k not in ("technicals", "options", "macro", "early_warning", "heatmap", "news", "sentiment", "postmortem", "benchmarks_recent", "soxl_recent", "light_history", "stress_chart")}
+    data["_sections"] = ["technicals", "options", "sentiment", "heatmap", "macro", "early_warning", "news", "scoring", "playbook", "postmortem", "benchmarks_recent", "soxl_recent", "verdict_history", "schedule", "stress_chart"]
     data["_hint"] = "呼叫 get_latest(section='options') 等取得完整區段"
   return json.dumps(data, ensure_ascii=False, indent=1)
 
@@ -187,8 +187,9 @@ RESOURCES = [
     {"uri": "soxl://brief/latest.txt", "name": "SOXL 每日簡報 (短訊)", "mimeType": "text/plain", "path": briefmod.FEED_DIR / "latest.txt"},
     {"uri": "soxl://feed/rss.xml", "name": "SOXL 簡報 RSS", "mimeType": "application/rss+xml", "path": briefmod.FEED_DIR / "rss.xml"},
     {"uri": "soxl://feed/quotes.json", "name": "上次更新時的報價快照", "mimeType": "application/json", "path": briefmod.FEED_DIR / "quotes.json"},
-    {"uri": "soxl://report/simple.html", "name": "新手版頁面", "mimeType": "text/html", "path": BASE_DIR / "soxl_simple.html"},
-    {"uri": "soxl://report/full.html", "name": "完整報告頁面", "mimeType": "text/html", "path": BASE_DIR / "soxl_analysis_report.html"},
+    # one page under two old names: the uri, name and mimeType stay as agents know them; `description` says they are the same page
+    {"uri": "soxl://report/simple.html", "name": "新手版頁面", "mimeType": "text/html", "path": BASE_DIR / "soxl_simple.html", "description": "儀表板頁面（soxl_simple.html）。兩張舊頁面已合併成一頁，內容與 soxl://report/full.html 相同。"},
+    {"uri": "soxl://report/full.html", "name": "完整報告頁面", "mimeType": "text/html", "path": BASE_DIR / "soxl_analysis_report.html", "description": "儀表板頁面（soxl_analysis_report.html = index.html）。第一屏是結論與組合圖，證據在摺疊裡。"},
     {"uri": "soxl://data/full.json", "name": "完整分析 JSON", "mimeType": "application/json", "path": BASE_DIR / "soxl_analysis_data.json"},
     {"uri": "soxl://docs/agents.md", "name": "Agent 串接說明", "mimeType": "text/markdown", "path": BASE_DIR / "AGENTS.md"},
 ]
@@ -241,7 +242,7 @@ def handle(msg: dict):
       _log(f"tool {name} failed: {e}\n{traceback.format_exc()}")
       return _result(id_, {"content": [{"type": "text", "text": f"{type(e).__name__}: {e}"}], "isError": True})
   if method == "resources/list":
-    return _result(id_, {"resources": [{k: r[k] for k in ("uri", "name", "mimeType")} for r in RESOURCES if r["path"].exists()]})
+    return _result(id_, {"resources": [{k: r[k] for k in ("uri", "name", "mimeType", "description") if k in r} for r in RESOURCES if r["path"].exists()]})
   if method == "resources/read":
     uri = params.get("uri")
     r = RES_MAP.get(uri)

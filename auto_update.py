@@ -30,7 +30,7 @@
     .venv/bin/python auto_update.py notify-test    測試 macOS 通知
 
 每次成功更新都會：重新抓取所有 API → 重算評分 → 寫出 soxl_analysis_data.json /
-soxl_analysis_report.html (= index.html) / soxl_simple.html → feed/latest.{json,md,txt} + rss.xml
+同一份頁面的三個檔名 index.html = soxl_analysis_report.html = soxl_simple.html → feed/latest.{json,md,txt} + rss.xml
 → 追加 history/verdicts.jsonl → logs/last_run.json → 推播（macOS + notify_config.json 頻道）→ git push。
 """
 
@@ -58,6 +58,7 @@ from soxl_quant import scheduler  # noqa: E402
 
 LOCK_PATH = scheduler.LOG_DIR / ".auto_update.lock"
 LOCK_STALE_SEC = 3 * 3600
+# one page under three file names (soxl_quant/report_page.py); these two names stay for notifications and old links
 SIMPLE_HTML = BASE_DIR / "soxl_simple.html"
 REPORT_HTML = BASE_DIR / "soxl_analysis_report.html"
 MCP_SERVER = BASE_DIR / "soxl_mcp.py"

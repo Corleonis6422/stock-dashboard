@@ -186,7 +186,7 @@ def doc_methodology(br: dict) -> str:
     out += f"| {c.get('category')} | {c.get('weight')} |\n"
   out += """
 - `composite` = 加權平均（−2 … +2）；`trend_score` 是趨勢面（均線、量能、廣度、宏觀），`contrarian_score` 是逆勢面（情緒、期權、消息）。
-- 五級：強力買進 / 買進 / 觀望 / 賣出・減碼 / 強力賣出（`rating_5` 5 → 1）；新手版再用「底部檢核八項」微調文字與倉位上限（`size_pct`：通過 ≥ 8 項且偏多 100%，≥ 6 項 50%，≥ 3 項 25%，否則 10% 或 0%）。
+- 五級：強力買進 / 買進 / 觀望 / 賣出・減碼 / 強力賣出（`rating_5` 5 → 1）；評級文字（`verdict.label`）再用「底部檢核八項」微調文字與倉位上限（`size_pct`：通過 ≥ 8 項且偏多 100%，≥ 6 項 50%，≥ 3 項 25%，否則 10% 或 0%）。
 - 評級是投票，不是指令；`consensus.{buy,hold,sell}_pct` 告訴你有多少權重站在哪一邊。
 
 ## 3. 訊號驗證（backtest）
@@ -569,7 +569,8 @@ def doc_llms_txt(br: dict, base: str) -> str:
           f"- [Market dashboard]({base}meta/09_market_dashboard.md): six gauges (add-on? macro, SOX index trend, whales, put/call, crash score), factor grades A+..F, four voices\n"
           f"- [Methodology]({base}meta/04_methodology.md)\n- [Glossary]({base}meta/05_glossary.md)\n- [History]({base}meta/07_history.md)\n"
           f"- [Structured JSON]({base}meta/data/latest.json) (schema soxl-quant-brief/2), [schema]({base}meta/data/schema.json)\n\n"
-          f"## Optional\n\n- [Full report HTML]({base}soxl_analysis_report.html)\n- [Beginner HTML]({base}soxl_simple.html)\n- [RSS]({base}feed/rss.xml)\n")
+          f"## Optional\n\n- [Dashboard HTML]({base}index.html) (one page: verdict and combined chart first, evidence in folds)\n"
+          f"- [Full report HTML]({base}soxl_analysis_report.html) (same page as the dashboard)\n- [Beginner HTML]({base}soxl_simple.html) (same page as the dashboard)\n- [RSS]({base}feed/rss.xml)\n")
 
 
 PROMPTS = {

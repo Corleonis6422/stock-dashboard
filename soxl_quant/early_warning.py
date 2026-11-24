@@ -429,6 +429,17 @@ def peak_checklist(daily: list[dict], soxl: list[dict], lookback: int = 30) -> d
 
 def analyze(soxl: list[dict], vixc: dict, treasury: list[dict] | None, fg_hist: list[dict] | None, pc_hist: list[dict] | None,
             hyg: list[dict] | None, spy: list[dict] | None, soxs: list[dict] | None) -> dict:
+  return analyze_with_series(soxl, vixc, treasury, fg_hist, pc_hist, hyg, spy, soxs)[0]
+
+
+def analyze_with_series(soxl: list[dict], vixc: dict, treasury: list[dict] | None, fg_hist: list[dict] | None, pc_hist: list[dict] | None,
+                        hyg: list[dict] | None, spy: list[dict] | None, soxs: list[dict] | None) -> tuple[dict, list[dict]]:
+  """``analyze()`` plus the whole daily score series.
+
+  Returns ``(result, series)``.  ``result`` is exactly what ``analyze()`` returns.  ``series`` is
+  ``[{"date", "score"}]`` for every scored session, oldest first; ``result["chart"]`` holds the
+  latest 130 of the same values, so the two are equal on every shared date.
+  """
   def series(name: str) -> dict[str, float]:
     return {r["date"]: r["close"] for r in vixc.get(name, [])}
 
@@ -454,4 +465,4 @@ def analyze(soxl: list[dict], vixc: dict, treasury: list[dict] | None, fg_hist: 
       "contributions": contributions, "chart": chart, "event_study": study, "analogs": analogs, "peak_checklist": check,
       "weights": WEIGHTS, "labels": LABELS, "family": FAMILY,
       "score_history_90d": [{"date": x["date"], "score": x["score"], "raw": x["raw"]} for x in daily[-90:]],
-  }
+  }, [{"date": x["date"], "score": x["score"]} for x in daily]

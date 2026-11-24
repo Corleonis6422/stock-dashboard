@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Rendering QA harness for the SOXL dashboards (headless Chrome).
+"""Rendering QA harness for the SOXL page (headless Chrome).
 
-For each page × mode × viewport width it builds a QA copy of the HTML (CSP relaxed
-ONLY in the copy, all <details> opened), injects a measurement script, runs Chrome
---dump-dom and collects:
+The page is one file under three names; the checks load ``index.html``.  For each chart view x
+viewport width it builds a QA copy of the HTML (CSP relaxed ONLY in the copy, all <details>
+opened), injects a measurement script, runs Chrome --dump-dom and collects:
 
   svg-text-clipped   <text> whose bbox leaves the SVG viewBox (gets cut by overflow:hidden)
   svg-text-overlap   two <text> labels in the same SVG overlapping each other
@@ -13,13 +13,21 @@ ONLY in the copy, all <details> opened), injects a measurement script, runs Chro
   page-hscroll       the whole page scrolls horizontally
   html-text-overlap  sibling text blocks overlapping (e.g. tile labels)
 
-Usage (from the project folder; needs Google Chrome, override with CHROME_PATH):
-  .venv/bin/python tools/qa_render.py                          # full matrix: 2 pages × modes × 9 widths
-  .venv/bin/python tools/qa_render.py 1440 900 390             # chosen widths
-  .venv/bin/python tools/qa_render.py --shot s3 1400           # screenshot one section → .qa/
-  .venv/bin/python tools/qa_render.py --shot all 390 soxl_analysis_report.html 3000
+A chart view that is not shown has no box, so each view (daily, weekly) gets its own runs.
 
-Exit code 1 when any issue is found (handy after editing report_html.py / report_simple.py).
+Usage (from the project folder; needs Google Chrome, override with CHROME_PATH):
+  python3 tools/qa_render.py                          # full matrix: the chart views x 9 widths
+  python3 tools/qa_render.py 1440 900 390             # chosen widths
+  python3 tools/qa_render.py --snapshots              # the page of every history/snapshots/*.json.gz at 1440, 768, 390
+  python3 tools/qa_render.py --snapshots DIR 1440 390 # payloads (.json, .json.gz) of another folder, chosen widths
+  python3 tools/qa_render.py --first-screen           # boxes of the seven first-screen items + budgets, per view
+  python3 tools/qa_render.py --first-screen 1440 390  # the same at chosen widths
+  python3 tools/qa_render.py --crosshair 1440 390     # scripted pointer and touch on the crosshair, per view
+  python3 tools/qa_render.py --shot first 1440 index.html 800 weekly   # first screen, page as loaded → .qa/
+  python3 tools/qa_render.py --shot sec-plan 1400     # screenshot one section, folds open → .qa/
+  python3 tools/qa_render.py --shot all 390 index.html 3000
+
+Exit code 1 when any issue is found (handy after editing report_page.py, report_chart.py or report_sections.py).
 """
 from __future__ import annotations
 
@@ -43,7 +51,7 @@ QA_JS = r"""
 (function(){
   document.querySelectorAll('details').forEach(function(d){ d.open = true; });
   var res = {vw: window.innerWidth, docW: document.documentElement.scrollWidth, issues: []};
-  function secOf(el){ var s = el.closest('section'); return s ? (s.id || s.className.split(' ')[0]) : (el.closest('header') ? 'header' : 'body'); }
+  function secOf(el){ var s = el.closest('section'); return s ? (s.id || s.className.split(' ')[0]) : (el.closest('header') ? 'header' : (el.closest('main') ? 'main' : 'body')); }
   function short(s){ return (s || '').replace(/\s+/g, ' ').trim().slice(0, 70); }
   if (document.documentElement.scrollWidth > window.innerWidth + 1) {
     res.issues.push({type: 'page-hscroll', sec: 'page', detail: 'docW ' + document.documentElement.scrollWidth + ' > vw ' + window.innerWidth});
@@ -206,21 +214,30 @@ QA_JS = r"""
 """
 
 
-def make_variant(page: str, mode: str, only: str | None = None, extra_css: str = "") -> Path:
+def page_views(page: str = "index.html") -> list[str]:
+  """The chart views the page offers (``data-views`` of ``[data-chart]``); [] when it has no chart."""
+  src_path = Path(page) if Path(page).is_absolute() else BASE / page
+  m = re.search(r'<div[^>]*\bdata-chart\b[^>]*\bdata-views="([a-z ]+)"', src_path.read_text(encoding="utf-8"))
+  return m.group(1).split() if m else []
+
+
+def make_variant(page: str, only: str | None = None, extra_css: str = "", view: str | None = None,
+                 script: str | None = QA_JS, tag: str = "") -> Path:
   src_path = Path(page) if Path(page).is_absolute() else BASE / page
   src = src_path.read_text(encoding="utf-8")
   page = src_path.name
   html = re.sub(r'<meta http-equiv="Content-Security-Policy"[^>]*>', "", src, count=1)
   html = re.sub(r'<meta http-equiv="refresh"[^>]*>', "", html, count=1)
-  if mode == "pro":
-    html = html.replace('<body class="beginner">', '<body class="">', 1)
+  if view:  # the page script starts from data-active-view when neither the URL nor the browser store names a view
+    html = re.sub(r'(<div[^>]*\bdata-chart\b[^>]*\bdata-active-view=")[a-z]+(")', rf"\g<1>{view}\g<2>", html, count=1)
   css = extra_css
   if only:
-    css += f"body > section:not(#{only}), body > .note, body > .auto, header.top, .foot {{display:none !important}}"
+    css += f"body > *:not(#{only}):not(:has(#{only})):not(script):not(style) {{display:none !important}}"
   if css:
     html = html.replace("</head>", f"<style>{css}</style></head>", 1)
-  html = html.replace("</body>", f"<script>{QA_JS}</script></body>", 1)
-  out = OUT / f"qa_{page.replace('.html', '')}_{mode}{'_' + only if only else ''}.html"
+  if script:
+    html = html.replace("</body>", f"<script>{script}</script></body>", 1)
+  out = OUT / (f"qa_{page.replace('.html', '')}" + (f"_{view}" if view else "") + (f"_{only}" if only else "") + (f"_{tag}" if tag else "") + ".html")
   out.write_text(html, encoding="utf-8")
   return out
 
@@ -284,14 +301,322 @@ def summarize(tag: str, r: dict, verbose: int = 6) -> int:
   return len(issues)
 
 
+PAGE = "index.html"                  # the one page; soxl_analysis_report.html and soxl_simple.html hold the same bytes
+SNAPSHOT_WIDTHS = [1440, 768, 390]   # the widths for the pages built from stored daily payloads
+WIDTHS = [1440, 1280, 1100, 1024, 900, 768, 600, 430, 390]
+FIRST_SCREEN_SECS = ("header", "main", "readouts", "chart", "chart-rules", "evidence")   # section names of the first screen and the strip
+WIDE_PX, WIDE_FOLD = 1440, 800       # first screen: the top 800 px at 1440 px width
+NARROW_PX, NARROW_FOLD = 390, 700    # and the top 700 px at 390 px width
+NARROW_CHART_TOP, NARROW_CHART_H = 1400, 700   # at 390 px the chart starts above this line and is at most this tall
+
+# Where the first-screen items sit, in page coordinates, with the page as loaded (no fold opened).
+FS_JS = r"""
+(function(){
+  var W = document.querySelector('[data-chart]');
+  var res = {vw: window.innerWidth, vh: window.innerHeight, docW: document.documentElement.scrollWidth, docH: document.documentElement.scrollHeight,
+             view: W ? W.getAttribute('data-active-view') : null, items: [], extra: {}, problems: [], labels: 0, bars: 0};
+  function rnd(x){ return Math.round(x * 10) / 10; }
+  function box(el){ var r = el.getBoundingClientRect(); return {l: rnd(r.left + window.scrollX), t: rnd(r.top + window.scrollY), r: rnd(r.right + window.scrollX), b: rnd(r.bottom + window.scrollY), w: rnd(r.width), h: rnd(r.height)}; }
+  function shown(el){ var r = el.getBoundingClientRect(); return (r.width > 0 || r.height > 0) && getComputedStyle(el).visibility !== 'hidden'; }
+  document.querySelectorAll('[data-r2]').forEach(function(el){ var o = box(el); o.n = el.getAttribute('data-r2'); o.name = el.getAttribute('data-r2-name'); o.shown = shown(el); res.items.push(o); });
+  [['volume', '[data-readout="volume"]'], ['chart-rules', '[data-chart-rulebox]'], ['evidence', '[data-evidence-strip]'], ['drawing', '[data-cross-target="' + res.view + '"]']].forEach(function(p){
+    var el = document.querySelector(p[1]); if (el && shown(el)) res.extra[p[0]] = box(el);
+  });
+  if (res.docW > res.vw + 1) res.problems.push('page-hscroll: docW ' + res.docW + ' > vw ' + res.vw);
+  var cb = document.querySelector('[data-chart-box]');
+  if (cb) {
+    [cb].concat(Array.prototype.slice.call(cb.querySelectorAll('*'))).forEach(function(el){
+      if (el.closest('svg')) return;
+      var cs = getComputedStyle(el); if (cs.display === 'none' || cs.display === 'inline') return;
+      if (el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1) res.problems.push('chart-hscroll: ' + el.tagName.toLowerCase() + '.' + el.className + ' scrollW ' + el.scrollWidth + ' > clientW ' + el.clientWidth);
+    });
+    var cr = cb.getBoundingClientRect();
+    if (cr.left < -0.5 || cr.right > window.innerWidth + 0.5) res.problems.push('chart-outside: box x ' + cr.left.toFixed(1) + '..' + cr.right.toFixed(1) + ' in a viewport of ' + window.innerWidth);
+  }
+  // labels, leaders and arrow heads against the candles of the latest 20 bars
+  var tgt = W && W.querySelector('[data-cross-target="' + res.view + '"]');
+  if (tgt) {
+    var bars = Array.prototype.slice.call(tgt.querySelectorAll('[data-series="candles"] [data-bar]'));
+    var last = bars.slice(-20).map(function(g){ return {i: g.getAttribute('data-bar'), r: g.getBoundingClientRect()}; });
+    var labs = Array.prototype.slice.call(tgt.parentElement.querySelectorAll('.sx-l, .sx-ld, .sx-ah')).filter(function(el){ return getComputedStyle(el).display !== 'none'; });
+    res.labels = labs.length; res.bars = bars.length;
+    labs.forEach(function(el){
+      var a = el.getBoundingClientRect();
+      last.forEach(function(c){
+        var ox = Math.min(a.right, c.r.right) - Math.max(a.left, c.r.left), oy = Math.min(a.bottom, c.r.bottom) - Math.max(a.top, c.r.top);
+        if (ox > 0.25 && oy > 0.25) res.problems.push('label-on-candle: "' + ((el.textContent || '').trim() || el.className) + '" covers bar ' + c.i + ' by ' + ox.toFixed(1) + ' x ' + oy.toFixed(1) + ' px');
+      });
+    });
+  }
+  // placeholder tokens in the text the first screen shows
+  var txt = '';
+  ['header', 'main'].forEach(function(sel){ var el = document.querySelector(sel); if (el) txt += ' ' + el.innerText; });
+  [[/\bNone\b/, 'None'], [/\bn\/a\b/i, 'n/a'], [/\bnan\b/i, 'nan'], [/\bnull\b/, 'null'], [/\bundefined\b/, 'undefined'], [/\$(?!\s?[\d,.]*\d)/, '$ with no number'],
+   [/\(\s*\)|（\s*）|\[\s*\]|【\s*】|「\s*」/, 'empty brackets']].forEach(function(t){ if (t[0].test(txt)) res.problems.push('placeholder: ' + t[1]); });
+  res.chars = txt.replace(/\s+/g, '').length;
+  var pre = document.createElement('pre'); pre.id = 'qa-result'; pre.textContent = JSON.stringify(res);
+  document.body.appendChild(pre);
+  if (window.parent !== window) { try { window.parent.postMessage(JSON.stringify(res), '*'); } catch (e) {} }
+})();
+"""
+
+# A scripted pointer and a scripted finger at the x position of three bars; the read-out must show that bar.
+CROSS_JS = r"""
+(function(){
+  var W = document.querySelector('[data-chart]');
+  var res = {vw: window.innerWidth, view: W ? W.getAttribute('data-active-view') : null, checks: [], problems: [], bars: 0};
+  function done(){
+    var pre = document.createElement('pre'); pre.id = 'qa-result'; pre.textContent = JSON.stringify(res); document.body.appendChild(pre);
+    if (window.parent !== window) { try { window.parent.postMessage(JSON.stringify(res), '*'); } catch (e) {} }
+  }
+  var tgt = W && W.querySelector('[data-cross-target="' + res.view + '"]');
+  var ro = W && W.querySelector('[data-crosshair-readout][data-pane="' + res.view + '"]');
+  if (!tgt || !ro) { res.problems.push('no crosshair target or no read-out'); done(); return; }
+  var svg = tgt.querySelector('svg'), step = parseFloat(svg.getAttribute('data-step')), line = tgt.querySelector('[data-crosshair-line]');
+  var bars = Array.prototype.slice.call(tgt.querySelectorAll('[data-series="candles"] [data-bar]')), n = bars.length;
+  res.bars = n;
+  var picks = [0, Math.floor(n / 3), Math.floor(2 * n / 3)].filter(function(v, k, a){ return a.indexOf(v) === k; });
+  function val(name){ var el = ro.querySelector('[data-f="' + name + '"]'); return el ? {v: el.getAttribute('data-v'), t: el.textContent} : null; }
+  function want(b){ return {date: b.getAttribute('data-d'), close: b.getAttribute('data-c'), vix: b.getAttribute('data-vix'), volume: b.getAttribute('data-v'), crash: b.getAttribute('data-cr')}; }
+  function xy(i){ var r = svg.getBoundingClientRect(); return [r.left + r.width * (i + 0.5) * step / 1000, r.top + r.height * 0.3]; }
+  function touch(name, x, y){
+    var ev;
+    try { var t = new Touch({identifier: 7, target: tgt, clientX: x, clientY: y}); ev = new TouchEvent(name, {bubbles: true, touches: [t], targetTouches: [t], changedTouches: [t]}); }
+    catch (e) { ev = new Event(name, {bubbles: true}); Object.defineProperty(ev, 'touches', {value: [{clientX: x, clientY: y}]}); }
+    tgt.dispatchEvent(ev);
+  }
+  var KINDS = [
+    ['pointermove (mouse)', function(x, y){ tgt.dispatchEvent(new PointerEvent('pointermove', {bubbles: true, clientX: x, clientY: y, pointerType: 'mouse'})); }],
+    ['mousemove', function(x, y){ tgt.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: x, clientY: y})); }],
+    ['pointerdown (touch)', function(x, y){ tgt.dispatchEvent(new PointerEvent('pointerdown', {bubbles: true, clientX: x, clientY: y, pointerType: 'touch'})); }],
+    ['touchstart', function(x, y){ touch('touchstart', x, y); }],
+    ['touchmove', function(x, y){ touch('touchmove', x, y); }]
+  ];
+  KINDS.forEach(function(k){
+    picks.forEach(function(i){
+      tgt.dispatchEvent(new PointerEvent('pointerleave', {pointerType: 'mouse'}));   // back to the latest bar
+      var p = xy(i); k[1](p[0], p[1]);
+      var w = want(bars[i]), bad = [];
+      ['date', 'close', 'vix', 'volume', 'crash'].forEach(function(f){
+        var g = val(f);
+        if (!g) { if (f === 'date' || f === 'close' || f === 'volume' || w[f] !== null) bad.push(f + ': no field in the read-out'); return; }
+        if (g.v !== w[f]) bad.push(f + ': read-out ' + g.v + ' != bar ' + w[f]);
+      });
+      if (ro.getAttribute('data-bar') !== String(i)) bad.push('read-out data-bar ' + ro.getAttribute('data-bar') + ' != ' + i);
+      if (line) { var lr = line.getBoundingClientRect(); if (Math.abs(lr.left + lr.width / 2 - p[0]) > 0.75) bad.push('line at ' + (lr.left + lr.width / 2).toFixed(1) + ' px, bar at ' + p[0].toFixed(1) + ' px'); }
+      res.checks.push({kind: k[0], bar: i, x: Math.round(p[0] * 10) / 10, ok: !bad.length, bad: bad, text: ro.innerText.replace(/\s+/g, ' ').trim()});
+    });
+  });
+  tgt.dispatchEvent(new PointerEvent('pointerleave', {pointerType: 'mouse'}));
+  if (ro.getAttribute('data-bar') !== String(n - 1)) res.problems.push('after the pointer leaves, the read-out does not return to the latest bar');
+  done();
+})();
+"""
+
+
+def crop_png(path: Path, width: int, height: int) -> None:
+  """Keep the top-left ``width`` x ``height`` pixels of an 8-bit RGB or RGBA PNG (standard library only)."""
+  import struct
+  import zlib
+  data = path.read_bytes()
+  if data[:8] != b"\x89PNG\r\n\x1a\n":
+    return
+  pos, chunks = 8, []
+  while pos + 8 <= len(data):
+    ln, typ = struct.unpack(">I4s", data[pos:pos + 8])
+    chunks.append((typ, data[pos + 8:pos + 8 + ln]))
+    pos += 12 + ln
+  w, h, depth, ctype, _c, _f, interlace = struct.unpack(">IIBBBBB", next(c for t, c in chunks if t == b"IHDR"))
+  if depth != 8 or ctype not in (2, 6) or interlace or (w <= width and h <= height):
+    return
+  bpp = 4 if ctype == 6 else 3
+  raw = zlib.decompress(b"".join(c for t, c in chunks if t == b"IDAT"))
+  stride, nw = w * bpp, min(w, width)
+  rows, prev = [], bytearray(stride)
+  for y in range(min(h, height)):
+    f = raw[y * (stride + 1)]
+    line = bytearray(raw[y * (stride + 1) + 1:(y + 1) * (stride + 1)])
+    if f == 1:
+      for i in range(bpp, stride):
+        line[i] = (line[i] + line[i - bpp]) & 255
+    elif f == 2:
+      for i in range(stride):
+        line[i] = (line[i] + prev[i]) & 255
+    elif f == 3:
+      for i in range(stride):
+        line[i] = (line[i] + (((line[i - bpp] if i >= bpp else 0) + prev[i]) >> 1)) & 255
+    elif f == 4:
+      for i in range(stride):
+        a, b, c = (line[i - bpp] if i >= bpp else 0), prev[i], (prev[i - bpp] if i >= bpp else 0)
+        pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
+        line[i] = (line[i] + (a if pa <= pb and pa <= pc else (b if pb <= pc else c))) & 255
+    prev = line
+    rows.append(b"\x00" + bytes(line[:nw * bpp]))
+
+  def chunk(typ: bytes, body: bytes) -> bytes:
+    return struct.pack(">I", len(body)) + typ + body + struct.pack(">I", zlib.crc32(typ + body) & 0xFFFFFFFF)
+
+  path.write_bytes(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", nw, len(rows), 8, ctype, 0, 0, 0))
+                   + chunk(b"IDAT", zlib.compress(b"".join(rows), 9)) + chunk(b"IEND", b""))
+
+
+def shot_first(width: int, view: str | None = None, page: str = PAGE) -> Path:
+  """Screenshot of the first screen of the unmodified page as loaded (no fold opened), with ``view`` shown.
+
+  1440 x 800 and wider screens use the window itself.  Below 500 px Chrome refuses the window width,
+  so the page loads in an iframe of that width and the picture is cropped to it (390 x 700).
+  """
+  src_path = Path(page) if Path(page).is_absolute() else BASE / page
+  height = NARROW_FOLD if width < 500 else WIDE_FOLD
+  url = src_path.as_uri() + (f"#view={view}" if view else "")
+  out = OUT / f"first_{src_path.stem}_{width}_{view or 'default'}.png"
+  if width < 500:
+    wrap = OUT / f"qa_first_wrap_{width}_{view or 'default'}.html"
+    wrap.write_text(f'<!doctype html><html><body style="margin:0;background:#070b14"><iframe src="{url}" style="display:block;width:{width}px;height:{height}px;border:0"></iframe></body></html>', encoding="utf-8")
+    chrome([f"--window-size=520,{height}", "--allow-file-access-from-files", f"--screenshot={out}", wrap.as_uri()])
+    crop_png(out, width, height)
+  else:
+    chrome([f"--window-size={width},{height}", f"--screenshot={out}", url])
+  return out
+
+
+def first_screen_report(widths: list[int], page: str = PAGE) -> int:
+  """Print where the seven first-screen items sit for each chart view, and check the budgets.
+
+  The page is measured as loaded: no fold opened.  At 1440 px all seven items and
+  the rule lines end inside the top 800 px.  At 390 px items 1 to 6 end inside the top 700 px, the
+  chart starts above 1,400 px and is at most 700 px tall.  At every width the page and the chart
+  need no horizontal scroll, no label covers a candle of the latest 20 bars, and the first screen
+  shows no placeholder token.  Returns the number of failed runs.
+  """
+  fails = 0
+  for view in page_views(page) or [None]:
+    v = make_variant(page, view=view, script=FS_JS, tag="fs")
+    for w in widths:
+      r = measure(v, w, NARROW_FOLD if w < 500 else WIDE_FOLD)
+      tag = f"first-screen|{view or 'no-chart'}|{w}"
+      if "error" in r:
+        print(f"[{tag}] ERROR {r}")
+        fails += 1
+        continue
+      print(f"[{tag}] vw={r['vw']} docW={r['docW']} docH={r['docH']} view={r['view']} bars={r['bars']} labels={r['labels']} first-screen chars={r.get('chars')}")
+      items = {int(i["n"]): i for i in r["items"]}
+      for n in sorted(items):
+        i = items[n]
+        print(f"   R2 {n} {i['name']:<8} x {i['l']:>7.1f} .. {i['r']:<7.1f} y {i['t']:>7.1f} .. {i['b']:<7.1f} ({i['w']:.1f} x {i['h']:.1f})" + ("" if i["shown"] else "  NOT SHOWN"))
+      for k, e in r["extra"].items():
+        print(f"   {k:<13} x {e['l']:>7.1f} .. {e['r']:<7.1f} y {e['t']:>7.1f} .. {e['b']:<7.1f} ({e['w']:.1f} x {e['h']:.1f})")
+      bad = list(r["problems"])
+      if sorted(items) != [1, 2, 3, 4, 5, 6, 7] or not all(i["shown"] for i in items.values()):
+        bad.append(f"r2-items: found {sorted(items)}, expected 1 to 7, all shown")
+      else:
+        if w >= WIDE_PX:
+          low = max(i["b"] for i in items.values())
+          rules_b = (r["extra"].get("chart-rules") or {}).get("b", 0)
+          print(f"   budget {WIDE_FOLD} px: lowest item ends at {low:.1f}, rule lines end at {rules_b:.1f}")
+          if low > WIDE_FOLD:
+            bad.append(f"budget: an item ends at {low:.1f} px, below the first {WIDE_FOLD} px")
+          if rules_b > WIDE_FOLD:
+            bad.append(f"budget: the rule lines end at {rules_b:.1f} px, below the first {WIDE_FOLD} px")
+        if w <= NARROW_PX:
+          low = max(items[n]["b"] for n in range(1, 7))
+          print(f"   budget {NARROW_FOLD} px: items 1 to 6 end at {low:.1f}; chart starts at {items[7]['t']:.1f} and is {items[7]['h']:.1f} tall")
+          if low > NARROW_FOLD:
+            bad.append(f"budget: items 1 to 6 end at {low:.1f} px, below the first {NARROW_FOLD} px")
+          if items[7]["t"] >= NARROW_CHART_TOP:
+            bad.append(f"budget: the chart starts at {items[7]['t']:.1f} px, not above {NARROW_CHART_TOP} px")
+          if items[7]["h"] > NARROW_CHART_H:
+            bad.append(f"budget: the chart is {items[7]['h']:.1f} px tall, more than {NARROW_CHART_H} px")
+      for b in bad:
+        print(f"   FAIL {b}")
+      fails += 1 if bad else 0
+  print("FIRST SCREEN FAILED RUNS:", fails)
+  return fails
+
+
+def crosshair_report(widths: list[int], page: str = PAGE) -> int:
+  """Move a scripted pointer and a scripted finger to three bars of each view; the read-out must show each bar's stored values."""
+  fails = 0
+  for view in page_views(page) or [None]:
+    v = make_variant(page, view=view, script=CROSS_JS, tag="cross")
+    for w in widths:
+      r = measure(v, w, NARROW_FOLD if w < 500 else WIDE_FOLD)
+      tag = f"crosshair|{view or 'no-chart'}|{w}"
+      if "error" in r:
+        print(f"[{tag}] ERROR {r}")
+        fails += 1
+        continue
+      checks = r["checks"]
+      bad = [c for c in checks if not c["ok"]]
+      print(f"[{tag}] vw={r['vw']} bars={r['bars']} checks={len(checks)} failed={len(bad)}" + ("".join(f" | {p}" for p in r["problems"])))
+      seen = set()
+      for c in checks:
+        if c["ok"] and c["bar"] in seen:
+          continue
+        seen.add(c["bar"])
+        print(f"   {'ok  ' if c['ok'] else 'FAIL'} {c['kind']:<20} bar {c['bar']:>3} at x {c['x']:>7.1f} → {c['text'][:110]}" + ("".join(f" | {b}" for b in c["bad"])))
+      kinds = Counter(c["kind"] for c in checks if c["ok"])
+      print("   passed by event: " + ", ".join(f"{k} {n}" for k, n in kinds.items()))
+      fails += 1 if (bad or r["problems"] or not checks) else 0
+  print("CROSSHAIR FAILED RUNS:", fails)
+  return fails
+
+
+def layout_report(widths: list[int], page: str = PAGE, quiet: bool = False) -> int:
+  """The layout checks on one page: every chart view, every width, every fold open.  Returns the issue count."""
+  total, runs = 0, 0
+  by_type: Counter = Counter()
+  by_sec: Counter = Counter()
+  for view in page_views(page) or [None]:
+    v = make_variant(page, view=view)
+    for w in widths:
+      r = measure(v, w)
+      total += summarize(f"{Path(page).stem}|{view or 'no-chart'}|{w}", r)
+      runs += 1
+      for i in r.get("issues", []):
+        by_type[i["type"]] += 1
+        by_sec[i["sec"]] += 1
+  if not quiet:
+    first = sum(c for sec, c in by_sec.items() if sec in FIRST_SCREEN_SECS)
+    print("RUNS:", runs)
+    print("BY TYPE:", ", ".join(f"{k}:{v}" for k, v in sorted(by_type.items())) or "none")
+    print("BY SECTION:", ", ".join(f"{k}:{v}" for k, v in sorted(by_sec.items())) or "none")
+    print(f"FIRST SCREEN, CHART AND EVIDENCE STRIP ({', '.join(FIRST_SCREEN_SECS)}):", first)
+    print("TOTAL ISSUES:", total)
+  return total
+
+
+def snapshots_report(folder: Path, widths: list[int]) -> int:
+  """Build the page from every stored daily payload of ``folder`` and run the layout checks on it.  Returns the issue count."""
+  import gzip
+  sys.path.insert(0, str(BASE))
+  from soxl_quant import report_page
+  files = sorted(f for f in folder.iterdir() if f.name.endswith((".json", ".json.gz")))
+  total = 0
+  for f in files:
+    payload = json.load(gzip.open(f, "rt", encoding="utf-8") if f.name.endswith(".gz") else open(f, encoding="utf-8"))
+    name = f.name.replace(".json.gz", "").replace(".json", "")
+    page = OUT / f"snap_{name}.html"
+    page.write_text(report_page.render(payload), encoding="utf-8")
+    n = layout_report(widths, str(page), quiet=True)
+    print(f"== {name}: {n} issues at {widths} ({page.stat().st_size:,} bytes)", flush=True)
+    total += n
+  print("PAYLOADS:", len(files))
+  print("TOTAL ISSUES:", total)
+  return total
+
+
 if __name__ == "__main__":
   if len(sys.argv) >= 2 and sys.argv[1] == "--shot":
     sec, width = sys.argv[2], int(sys.argv[3])
-    page = sys.argv[4] if len(sys.argv) > 4 else "soxl_analysis_report.html"
+    page = sys.argv[4] if len(sys.argv) > 4 else PAGE
     height = int(sys.argv[5]) if len(sys.argv) > 5 else 2600
-    mode = sys.argv[6] if len(sys.argv) > 6 else "pro"
-    v = make_variant(page, mode, only=None if sec == "all" else sec)
-    out = OUT / f"shot_{Path(page).stem}_{sec}_{width}_{mode}.png"
+    view = sys.argv[6] if len(sys.argv) > 6 else None
+    if sec == "first":  # the first screen of the unmodified page: its own size, no fold opened
+      print(shot_first(width, view, page))
+      sys.exit(0)
+    v = make_variant(page, only=None if sec == "all" else sec, view=view)
+    out = OUT / f"shot_{Path(page).stem}_{sec}_{width}{'_' + view if view else ''}.png"
     if width < 500:  # Chrome headless enforces >=500px windows: render inside a narrow iframe
       wrap = v.with_name(v.stem + f"_shot{width}.html")
       wrap.write_text(f'<!doctype html><html><body style="margin:0;background:#070b14"><iframe src="{v.name}" style="width:{width}px;height:{height}px;border:0"></iframe></body></html>', encoding="utf-8")
@@ -300,12 +625,11 @@ if __name__ == "__main__":
       shot(v, width, height, out)
     print(out)
     sys.exit(0)
-  widths = [int(w) for w in sys.argv[1:]] or [1440, 1280, 1100, 1024, 900, 768, 600, 430, 390]
-  total = 0
-  for page, modes in (("soxl_analysis_report.html", ("pro", "beginner")), ("soxl_simple.html", ("pro",))):
-    for mode in modes:
-      v = make_variant(page, mode)
-      for w in widths:
-        total += summarize(f"{page.split('.')[0]}|{mode}|{w}", measure(v, w))
-  print("TOTAL ISSUES:", total)
-  sys.exit(1 if total else 0)
+  if len(sys.argv) >= 2 and sys.argv[1] == "--snapshots":
+    rest = sys.argv[2:]
+    folder = Path(rest.pop(0)) if rest and not rest[0].isdigit() else BASE / "history" / "snapshots"
+    sys.exit(1 if snapshots_report(folder, [int(w) for w in rest] or SNAPSHOT_WIDTHS) else 0)
+  if len(sys.argv) >= 2 and sys.argv[1] in ("--first-screen", "--crosshair"):
+    widths = [int(w) for w in sys.argv[2:]] or WIDTHS
+    sys.exit(1 if (first_screen_report if sys.argv[1] == "--first-screen" else crosshair_report)(widths) else 0)
+  sys.exit(1 if layout_report([int(w) for w in sys.argv[1:]] or WIDTHS) else 0)

@@ -24,7 +24,7 @@ import shutil
 import subprocess
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_PATHS = ["soxl_analysis_data.json", "soxl_analysis_report.html", "index.html", "soxl_simple.html", "feed", "history/verdicts.jsonl", "history/snapshots"]
+DEFAULT_PATHS = ["soxl_analysis_data.json", "soxl_analysis_report.html", "index.html", "soxl_simple.html", "feed", "meta", "history/verdicts.jsonl", "history/snapshots"]
 _ENV = {
     "PATH": "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin",
     "HOME": str(Path.home()), "LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8",

@@ -19,6 +19,7 @@ Today: 🔴 賣出 / 減碼 | composite -0.86 | plan no_trade | stop $29.82 | T1
 
 ## Optional
 
-- [Full report HTML](https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html)
-- [Beginner HTML](https://corleonis6422.github.io/stock-dashboard/soxl_simple.html)
+- [Dashboard HTML](https://corleonis6422.github.io/stock-dashboard/index.html) (one page: verdict and combined chart first, evidence in folds)
+- [Full report HTML](https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html) (same page as the dashboard)
+- [Beginner HTML](https://corleonis6422.github.io/stock-dashboard/soxl_simple.html) (same page as the dashboard)
 - [RSS](https://corleonis6422.github.io/stock-dashboard/feed/rss.xml)

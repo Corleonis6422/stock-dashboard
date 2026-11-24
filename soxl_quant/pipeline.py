@@ -21,7 +21,9 @@ def _step(label: str):
 
 def run(write_html: bool = True, refresh: bool = False) -> dict:
   t0 = time.time()
-  if refresh:
+  if datafeed.offline():
+    _step(f"{datafeed.OFFLINE_ENV}=1: offline replay from the disk cache (no network request, cache read-only" + (", refresh ignored)" if refresh else ")"))
+  elif refresh:
     n = datafeed.clear_cache()
     _step(f"Cache cleared ({n} files)")
   warnings: list[str] = []
@@ -106,14 +108,16 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
       aux[sym] = None
   fg_hist = (sen.get("fear_greed") or {}).get("history")
   pc_hist = (sen.get("put_call") or {}).get("history")
+  ews_series: list[dict] = []  # every scored session {"date", "score"}; early_warning.chart keeps the latest 130 only
   try:
-    ews = early_warning.analyze(soxl, vixc, treasury, fg_hist, pc_hist, aux.get("HYG"), aux.get("SPY"), aux.get("SOXS"))
+    ews, ews_series = early_warning.analyze_with_series(soxl, vixc, treasury, fg_hist, pc_hist, aux.get("HYG"), aux.get("SPY"), aux.get("SOXS"))
     es = ews["event_study"]
     _step(f"    crash risk today {ews['today']['score']} pct (raw {ews['today']['raw']}) ({ews['today']['zone']}); episodes {es['n_episodes']} (top-type {es['n_top_episodes']}, flagged@80 {es['top_episodes_flagged']}); precision@80 {es['stats_top_80']['precision_pct']}% base {es['stats_top_80']['base_rate_pct']}% lift {es['stats_top_80']['lift']}x")
   except Exception as e:  # noqa: BLE001
     warnings.append(f"early_warning: {e}")
     traceback.print_exc()
     ews = {"today": {"date": tech["latest_date"], "score": 0, "zone": "n/a", "n_active": 0}, "contributions": [], "chart": [], "event_study": {}, "analogs": {"conditions": []}, "peak_checklist": {}, "score_history_90d": []}
+    ews_series = []
 
   _step("7/9 News: bullish vs bearish classification ...")
   try:
@@ -162,6 +166,7 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
   bt: dict = {}
   tp: dict = {}
   soxx10: list[dict] | None = None
+  soxl10: list[dict] | None = None
   try:
     from . import backtest, tradeplan
     soxl10 = datafeed._augment_latest("SOXL", "etf", datafeed.fetch_nasdaq_history("SOXL", "etf", years=10))
@@ -209,6 +214,22 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
     warnings.append(f"dashboard: {e}")
     traceback.print_exc()
 
+  _step("8d/9 Combined chart data: daily + weekly bars, VIX spikes, trend channel, volume profile, evidence strip ...")
+  sc: dict = {}
+  try:  # descriptive only: nothing below feeds a rating, a score, a level or the trade plan
+    from . import stress_chart
+    # the whole CBOE VIX history; when the VIX complex of step 6 failed to load, the 5-year VIX rows of step 5 (same CBOE source)
+    vix_hist = vixc.get("VIX") or vix_rows
+    sc = stress_chart.build(soxl, vix_hist, ews_series, ews, soxl_long=soxl10, final=data_status["final"])
+    st = sc.get("spike_stats") or {}
+    if st.get("within_cap") is False:
+      warnings.append(f"stress_chart: the VIX spike rule marks {st.get('share_pct')}% of the loaded VIX history (cap {st.get('cap_pct')}%)")
+    _step(f"    {stress_chart.describe(sc)}")
+  except Exception as e:  # noqa: BLE001
+    warnings.append(f"stress_chart: {e}")
+    traceback.print_exc()
+    sc = {}
+
   payload = {
       "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "data_as_of": tech["latest_date"],
@@ -216,7 +237,7 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
       "warnings": warnings,
       "technicals": tech, "options": opt, "sentiment": sen, "heatmap": hm, "macro": mac,
       "early_warning": ews, "news": nws, "newsflash": flash, "scoring": score, "playbook": pb, "postmortem": pm,
-      "backtest": bt, "trade_plan": tp, "dashboard": dash,
+      "backtest": bt, "trade_plan": tp, "dashboard": dash, "stress_chart": sc,
       "benchmarks_recent": {sym: [{"date": r["date"], "close": r["close"]} for r in (aux.get(sym) or [])[-40:]] for sym in ("SOXX", "SPY")},
       "soxl_recent": [{k: r[k] for k in ("date", "open", "high", "low", "close", "volume")} for r in soxl[-30:]],
   }
@@ -247,15 +268,9 @@ def run(write_html: bool = True, refresh: bool = False) -> dict:
     warnings.append(f"snapshot: {e}")
 
   if write_html:
-    from . import report_html, report_simple
-    out = BASE_DIR / "soxl_analysis_report.html"
-    html_text = report_html.render(payload)
-    fsio.atomic_write_text(out, html_text)
-    _step(f"    Saved HTML → {out} ({out.stat().st_size/1024:.0f} KB)")
-    out2 = BASE_DIR / "soxl_simple.html"
-    fsio.atomic_write_text(out2, report_simple.render(payload))
-    _step(f"    Saved 新手版 → {out2} ({out2.stat().st_size/1024:.0f} KB)")
-    fsio.atomic_write_text(BASE_DIR / "index.html", html_text)  # GitHub Pages landing page = full report
+    from . import report_page
+    pages = report_page.write_pages(payload, BASE_DIR)  # one page under three names: every old URL still opens it
+    _step(f"    Saved HTML → {pages[0]} ({pages[0].stat().st_size/1024:.0f} KB) = " + " = ".join(q.name for q in pages[1:]))
 
   # ---- agent feed: upcoming events + live quotes + one-page brief (JSON / Markdown / text / RSS)
   payload["_feed"] = build_feed(payload, label="    ")

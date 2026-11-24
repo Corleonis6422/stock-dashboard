@@ -231,19 +231,19 @@ def send_webhook(ch: dict, m: Message) -> tuple[bool, str]:
 
 
 def send_google_chat(ch: dict, m: Message) -> tuple[bool, str]:
-  text = f"*{m.title}*\n{m.text}\n<{m.links.get('simple_html', '')}|新手版>｜<{m.links.get('report_html', '')}|完整報告>"
+  text = f"*{m.title}*\n{m.text}\n<{m.links.get('report_html', '')}|儀表板>"
   status, resp = _json_post(str(ch.get("url") or ""), {"text": text[:4000]}, {}, _HOSTS["google_chat"])
   return _ok(status), f"HTTP {status} {resp[:120]}"
 
 
 def send_slack(ch: dict, m: Message) -> tuple[bool, str]:
-  text = f"*{m.title}*\n{m.text}\n<{m.links.get('simple_html', '')}|新手版>｜<{m.links.get('report_html', '')}|完整報告>"
+  text = f"*{m.title}*\n{m.text}\n<{m.links.get('report_html', '')}|儀表板>"
   status, resp = _json_post(str(ch.get("url") or ""), {"text": text[:3900], "unfurl_links": False}, {}, _HOSTS["slack"])
   return _ok(status), f"HTTP {status} {resp[:120]}"
 
 
 def send_discord(ch: dict, m: Message) -> tuple[bool, str]:
-  content = f"**{m.title}**\n{m.text}\n{m.links.get('simple_html', '')}"
+  content = f"**{m.title}**\n{m.text}\n{m.links.get('report_html', '')}"
   status, resp = _json_post(str(ch.get("url") or ""), {"content": content[:1900]}, {}, _HOSTS["discord"])
   return _ok(status), f"HTTP {status} {resp[:120]}"
 
@@ -253,7 +253,7 @@ def send_telegram(ch: dict, m: Message) -> tuple[bool, str]:
   token, chat_id = str(ch.get("bot_token") or ""), str(ch.get("chat_id") or "")
   if not re.match(r"^\d{5,12}:[A-Za-z0-9_-]{30,60}$", token) or not re.match(r"^-?\d{1,20}$", chat_id):
     return False, "bot_token / chat_id 格式不正確"
-  text = f"<b>{_h.escape(m.title)}</b>\n{_h.escape(m.text)}\n<a href=\"{_h.escape(m.links.get('simple_html', ''))}\">新手版</a>｜<a href=\"{_h.escape(m.links.get('report_html', ''))}\">完整報告</a>"
+  text = f"<b>{_h.escape(m.title)}</b>\n{_h.escape(m.text)}\n<a href=\"{_h.escape(m.links.get('report_html', ''))}\">儀表板</a>"
   status, resp = _json_post(f"https://api.telegram.org/bot{token}/sendMessage", {"chat_id": chat_id, "text": text[:4000], "parse_mode": "HTML", "disable_web_page_preview": True}, {}, _HOSTS["telegram"])
   return _ok(status), f"HTTP {status} {resp[:120]}"
 
@@ -262,7 +262,7 @@ def send_line(ch: dict, m: Message) -> tuple[bool, str]:
   token, to = str(ch.get("channel_access_token") or ""), str(ch.get("to") or "")
   if not token or not re.match(r"^[URC][0-9a-f]{32}$", to):
     return False, "channel_access_token / to 格式不正確（to 應為 U/R/C + 32 hex）"
-  text = f"{m.title}\n{m.text}\n新手版 {m.links.get('simple_html', '')}"
+  text = f"{m.title}\n{m.text}\n儀表板 {m.links.get('report_html', '')}"
   status, resp = _json_post("https://api.line.me/v2/bot/message/push", {"to": to, "messages": [{"type": "text", "text": text[:4900]}]}, {"Authorization": f"Bearer {token}"}, _HOSTS["line"])
   return _ok(status), f"HTTP {status} {resp[:120]}"
 
@@ -279,7 +279,7 @@ def send_email(ch: dict, m: Message) -> tuple[bool, str]:
   msg["To"] = ", ".join(to)
   msg.set_content(m.markdown)
   if ch.get("attach_html", True):
-    for key in ("simple_html", "report_html"):
+    for key in ("report_html",):   # one page: soxl_simple.html holds the same bytes, so it is not attached a second time
       p = m.paths.get(key)
       if p and Path(p).exists():
         msg.add_attachment(Path(p).read_bytes(), maintype="text", subtype="html", filename=Path(p).name)

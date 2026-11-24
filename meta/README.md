@@ -63,12 +63,12 @@ Muse 第一次吸收時請讓它讀 `06_rules_for_agents.md` 與 `05_glossary.md
 | `07_history.md` | 2.5 KB |
 | `08_today_news.md` | 9.3 KB |
 | `09_market_dashboard.md` | 8.3 KB |
-| `llms.txt` | 1.9 KB |
+| `llms.txt` | 2.1 KB |
 | `prompts/first_time.md` | 7.5 KB |
 | `prompts/daily_briefing.md` | 0.9 KB |
 | `prompts/holder_check.md` | 0.6 KB |
 | `prompts/weekly_review.md` | 0.5 KB |
-| `data/latest.json` | 104.0 KB |
+| `data/latest.json` | 102.1 KB |
 | `data/schema.json` | 17.9 KB |
 | `data/signals.json` | 11.0 KB |
 

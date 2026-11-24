@@ -29,6 +29,6 @@
     "refresh_cache": "排程第一次嘗試是否清快取（確保抓到當日收盤）；重試時沿用快取",
     "notify": "完成/失敗時顯示 macOS 通知",
     "notify_sound": "通知音效名稱（Glass / Ping / Pop / 空字串 = 靜音）",
-    "open_after_update": "更新成功後自動用瀏覽器開啟新手版頁面"
+    "open_after_update": "更新成功後自動用瀏覽器開啟儀表板頁面"
   }
 }

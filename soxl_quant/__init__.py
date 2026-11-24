@@ -11,5 +11,6 @@ Modules:
   news           daily bullish vs bearish news classification
   early_warning  crash early-warning system, event study & lessons learned
   scoring        -2 ~ +2 multi-factor scorecard
-  report_html    investor-friendly HTML dashboard renderer
+  report_page    the one viewer page: first screen, combined chart, ten sections
+                 (report_chart, report_sections, report_html hold its parts)
 """

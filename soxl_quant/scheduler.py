@@ -65,7 +65,7 @@ DEFAULT_CONFIG: dict = {
         "refresh_cache": "排程第一次嘗試是否清快取（確保抓到當日收盤）；重試時沿用快取",
         "notify": "完成/失敗時推播（macOS 通知 + notify_config.json 內啟用的頻道：webhook / Google Chat / Slack / Telegram / LINE / email / agentapi …）",
         "notify_sound": "通知音效名稱（Glass / Ping / Pop / 空字串 = 靜音）",
-        "open_after_update": "更新成功後自動用瀏覽器開啟新手版頁面",
+        "open_after_update": "更新成功後自動用瀏覽器開啟儀表板頁面",
         "publish": "git_push=true 時，每次成功更新後自動 commit 輸出檔並 push 到 remote/branch（→ GitHub Pages 更新 feed/ 與 HTML）",
         "feed": "base_url = GitHub Pages 網址，用來組 feed/latest.json 等連結給 agent",
     },

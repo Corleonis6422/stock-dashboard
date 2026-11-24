@@ -115,6 +115,6 @@
 
 ## 自我驗證
 - 最近 10 次有結果的評級，方向正確 8/10（80%）；連續同評級 16 個交易日
-- 完整報告 https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html ・ 新手版 https://corleonis6422.github.io/stock-dashboard/soxl_simple.html ・ JSON https://corleonis6422.github.io/stock-dashboard/feed/latest.json（新聞連結在 news.top_bull[].link）
+- 儀表板 https://corleonis6422.github.io/stock-dashboard/soxl_analysis_report.html（https://corleonis6422.github.io/stock-dashboard/soxl_simple.html 是同一頁）・ JSON https://corleonis6422.github.io/stock-dashboard/feed/latest.json（新聞連結在 news.top_bull[].link）
 
 _本簡報由公開資料自動計算，僅供研究參考，不構成投資建議；SOXL 為三倍槓桿 ETF，單日波動可達 ±15%，請自行評估風險。_
