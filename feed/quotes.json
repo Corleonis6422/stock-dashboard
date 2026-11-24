@@ -1,103 +1,103 @@
 {
- "fetched_at_tpe": "2026-11-21 10:37 台北",
- "fetched_at_et": "2026-11-20 21:37 ET",
+ "fetched_at_tpe": "2026-11-24 13:25 台北",
+ "fetched_at_et": "2026-11-24 00:25 ET",
  "market_status": "Closed",
- "one_liner": "SOXL $45.30（-8.04%）｜市場狀態 Closed",
+ "one_liner": "SOXL $30.92（-31.74%）｜市場狀態 Closed",
  "vix_term_ratio": null,
  "rows": [
   {
    "symbol": "SOXL",
    "label": "SOXL 三倍做多半導體",
-   "last": 45.3,
-   "change_pct": -8.04,
+   "last": 30.92,
+   "change_pct": -31.74,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "SOXS",
    "label": "SOXS 三倍做空半導體",
-   "last": 63.2,
-   "change_pct": 8.22,
+   "last": 83.3,
+   "change_pct": 31.93,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "SOXX",
    "label": "SOXX 費半 ETF",
-   "last": 137.95,
-   "change_pct": -2.75,
+   "last": 123.4,
+   "change_pct": -10.55,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "SPY",
    "label": "S&P 500",
-   "last": 715.84,
-   "change_pct": -1.97,
+   "last": 690.43,
+   "change_pct": -3.55,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "QQQ",
    "label": "Nasdaq 100",
-   "last": 645.04,
-   "change_pct": -2.19,
+   "last": 608.45,
+   "change_pct": -5.67,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "NVDA",
    "label": "Nvidia",
-   "last": 145.98,
-   "change_pct": -3.3,
+   "last": 128.3744,
+   "change_pct": -12.06,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AVGO",
    "label": "Broadcom",
-   "last": 346.65,
-   "change_pct": -2.09,
+   "last": 304.41,
+   "change_pct": -12.19,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AMD",
    "label": "AMD",
-   "last": 489.19,
-   "change_pct": -7.72,
+   "last": 424.39,
+   "change_pct": -13.25,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "MU",
    "label": "Micron",
-   "last": 690.44,
-   "change_pct": -2.1,
+   "last": 594.51,
+   "change_pct": -13.89,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "TSM",
    "label": "TSMC ADR",
-   "last": 352.007,
-   "change_pct": -2.93,
+   "last": 319.34,
+   "change_pct": -9.3,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "AMAT",
    "label": "Applied Materials",
-   "last": 338.93,
-   "change_pct": -3.65,
+   "last": 302.63,
+   "change_pct": -10.71,
    "ext_last": null,
    "ext_change_pct": null
   },
   {
    "symbol": "LRCX",
    "label": "Lam Research",
-   "last": 203.68,
-   "change_pct": -3.77,
+   "last": 183.27,
+   "change_pct": -10.02,
    "ext_last": null,
    "ext_change_pct": null
   }
