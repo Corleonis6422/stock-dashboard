@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel><title>SOXL Quant 每日簡報</title><link>https://corleonis6422.github.io/stock-dashboard/</link><description>SOXL 三倍做多半導體 ETF 每日量化評級、關鍵價位、情緒與消息面摘要（自動產生，非投資建議）</description><language>zh-tw</language><lastBuildDate>Thu, 26 Nov 2026 03:42:38 +0000</lastBuildDate><item><title>SOXL 2026-11-25 🔴 賣出 / 減碼 收盤 $32.02 (-1.78%) 綜合 -0.84</title><link>https://corleonis6422.github.io/stock-dashboard/feed/2026-11-25.md</link><guid isPermaLink="false">soxl-brief-2026-11-25</guid><pubDate>Wed, 25 Nov 2026 19:42:26 +0000</pubDate><description>SOXL 2026-11-25 收盤 $32.02（-1.78%）
+<rss version="2.0"><channel><title>SOXL Quant 每日簡報</title><link>https://corleonis6422.github.io/stock-dashboard/</link><description>SOXL 三倍做多半導體 ETF 每日量化評級、關鍵價位、情緒與消息面摘要（自動產生，非投資建議）</description><language>zh-tw</language><lastBuildDate>Sat, 28 Nov 2026 03:25:37 +0000</lastBuildDate><item><title>SOXL 2026-11-27 🔴 減碼 / 觀望 收盤 $36.88 (+15.17%) 綜合 -0.57</title><link>https://corleonis6422.github.io/stock-dashboard/feed/2026-11-27.md</link><guid isPermaLink="false">soxl-brief-2026-11-27</guid><pubDate>Fri, 27 Nov 2026 19:25:26 +0000</pubDate><description>SOXL 2026-11-27 收盤 $36.88（+15.17%）
+🔴 減碼 / 觀望｜綜合 -0.57｜空 50% / 中 26% / 多 24%｜倉位上限 25%
+該不該買：✅ 可以買。驗證過的買訊今天成立（KD低檔金叉 今日觸發（勝率 65.7% vs 基準 56.5%，N=35，p=0.1768）→ 次日開盤進場）。 明天盯 $24.66（停損，唯一出場價）。
+儀表：🔴 加碼 不能加碼｜🔴 宏觀 偏空，有旗標｜🔴 費半 空頭 -22%/20日｜⚪ 大戶 資料不足｜🟢 P/C SOXL None，個股第 40 百分位｜🟢 崩跌 58/100 低
+✅ 今日有驗證過的買進訊號成立｜守 $24.66 → 看 $52.10 → $79.53（加權 2.4R）
+Put 牆 n/a / Call 牆 n/a / Gamma 翻正 n/a
+F&amp;G 25（極度恐懼 Extreme Fear）｜VIX 23.8（VIX/VIX3M 1.00）｜崩跌前兆 58/100
+時事（偏空）：利空「A ‘Silent War’ Grips Iran as Its Economy Strains Under U.S. Blockade」（WSJ）
+變化：評級改變：賣出 / 減碼 → 減碼 / 觀望；綜合分數 -0.84 → -0.57（+0.27）
+事件：12/1（二） MRVL 財報（盤後）；12/4（五） 週選擇權到期；12/9（三） FOMC 利率決議 12/8–9（含點陣圖 SEP）</description></item><item><title>SOXL 2026-11-25 🔴 賣出 / 減碼 收盤 $32.02 (-1.78%) 綜合 -0.84</title><link>https://corleonis6422.github.io/stock-dashboard/feed/2026-11-25.md</link><guid isPermaLink="false">soxl-brief-2026-11-25</guid><pubDate>Wed, 25 Nov 2026 19:42:26 +0000</pubDate><description>SOXL 2026-11-25 收盤 $32.02（-1.78%）
 🔴 賣出 / 減碼｜綜合 -0.84｜空 56% / 中 30% / 多 14%｜倉位上限 10%
 該不該買：❌ 不該買。評級「賣出 / 減碼」，沒有驗證過的買點，今天不開新倉。 明天盯 $37.27（條件買點，收盤站上才算）。
 儀表：🔴 加碼 不能加碼｜🔴 宏觀 偏空，有旗標｜🔴 費半 空頭 -26%/20日｜⚪ 大戶 資料不足｜🟢 P/C SOXL None，個股第 72 百分位｜🟡 崩跌 67/100 注意

@@ -1,74 +1,72 @@
 # 08 今日時事：過去 36 小時發生了什麼，對 SOXL 有什麼影響
 
-> 資料日 data_as_of **2026-11-25**（美股交易日）· 產生 2026-11-26 03:42:26 台北 · 資料狀態 官方日線 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
+> 資料日 data_as_of **2026-11-27**（美股交易日）· 產生 2026-11-28 03:25:26 台北 · 資料狀態 收盤即時報價補齊 · schema `soxl-quant-brief/2` · 來源 `feed/latest.json`
 >
 > 給新手與 agent 的「今天最大的事」。關鍵字規則分類（不是 LLM 判讀），影響分 −2 到 +2，排序 = |影響| × 新鮮度 × 來源權重。它不改變 24 因子評級，只在交易計畫裡變成警語。
 
 ## 一句話
 
-今天最大的事：US Chip Curbs Cause Billions in Deals to Grind to a Halt（Bloomberg，11/26 11:19 台北）→ 🏛️ 政策與關稅，對 SOXL 利空：關稅或出口管制收緊：半導體供應鏈首當其衝（NVDA、AMAT、LRCX 的中國營收），SOXL 的跌幅通常是 SOXX 的 3 倍。
+今天最大的事：A ‘Silent War’ Grips Iran as Its Economy Strains Under U.S. Blockade（WSJ，11/28 11:01 台北）→ 🌍 地緣政治，對 SOXL 利空：地緣風險升溫：油價與 VIX 上升時資金先逃離高 Beta 的半導體，三倍槓桿的 SOXL 通常跌最多。
 
 ## 新聞氣壓
 
-- **偏空**（淨影響 -0.65，−1 到 +1）；837 則相關標題；抓取 2026-11-26 11:41 台北；視窗 36 小時。
+- **偏空**（淨影響 -0.39，−1 到 +1）；548 則相關標題；抓取 2026-11-28 11:25 台北；視窗 36 小時。
 
 | 類別 | 則數 | 利空 | 利多 |
 |---|---|---|---|
-| 🔧 半導體與 AI | 248 | 53 | 13 |
-| 🌍 地緣政治 | 202 | 80 | 1 |
-| 🏛️ 政策與關稅 | 144 | 66 | 9 |
-| 📊 經濟數據 | 94 | 17 | 4 |
-| 📉 市場波動 | 77 | 41 | 9 |
-| 🏦 聯準會與利率 | 72 | 21 | 0 |
+| 🌍 地緣政治 | 184 | 104 | 2 |
+| 🔧 半導體與 AI | 165 | 14 | 22 |
+| 📉 市場波動 | 68 | 9 | 43 |
+| 📊 經濟數據 | 55 | 4 | 6 |
+| 🏛️ 政策與關稅 | 40 | 18 | 1 |
+| 🏦 聯準會與利率 | 36 | 7 | 3 |
 
 ## 排名前八（每類最多 2 則）
 
 | 影響 | 類別・時間（台北）・來源 | 標題 | 對 SOXL 的意義 |
 |---|---|---|---|
-| 🔴 -2 | 🏛️ 政策與關稅・11/26 11:19・Bloomberg | [US Chip Curbs Cause Billions in Deals to Grind to a Halt](https://news.google.com/rss/articles/CBMitwFBVV95cUxOZFVpdE9oSXNXbl90bmNha3ZhcE1zcUwwdWVhX2NrV0g1b1VTeHZ0LWZxNF9mX0pFbmNFU2Q1Mk45c04wdlZvNS1NSUhnU0Z6TGZOTXdnS3FoTnNJVWYtNy1VUk1JZmJKRlcwaWY0UGZ0alFwN0wzUm9sSld4MzduVk9yZEJDNHlYSXpQd1FuamZoR3YyUjVwNHdkN3hsclJ1bDNXV2FBcnRndzFmeVJWOWx5RzVBNGM?oc=5) | 關稅或出口管制收緊 |
-| 🔴 -2 | 🌍 地緣政治・11/26 11:08・Reuters | [Oil rises on supply concerns as Iran claims mine strikes on ships](https://news.google.com/rss/articles/CBMirAFBVV95cUxPWHpfX3p2RFoxU2l0SGZVbVdSejdGYkc0NFpERWlxVEtab0pQbGd1NUtqQ3c0cXprdWItUF9fRmVVVElET3BNbklnbElwaC1UZ0xoNnd4dE9Wb2dFVDFGN2JyQ3YyUVhfTWxsNGFWNFNURG5kX1pMdVBtb2QyLXFMaXZPM0ZPdGdud1hWdHFuTEpNQXBtdUh6RmpWcW1jelhTU0JHdmp3dWphb0hB?oc=5) | 地緣風險升溫 |
-| 🔴 -2 | 🌍 地緣政治・11/26 11:00・WSJ | [A ‘Silent War’ Grips Iran as Its Economy Strains Under U.S. Blockade](https://news.google.com/rss/articles/CBMisgFBVV95cUxPQUZoNE5qVlVJSWdVTHRMY1R0bFBac204aUVreDhOR3NtUE4yWjBESlJMUHZoLVo0NjdrTW1kUXF5RUxDQWJfRnhrdkJpSTF5VUduMWVDaU9aVjg3N3dCTW96TDUtQV9SRE9TSEN1Um9LTm0teG9MV2hrQkhEM0RDYnhCVVgzNHhpcEJ1cnc5azMzTm10am04MTZoS2wtc19RSTNSRW5sMlBGdWhaYWNlVmhn?oc=5) | 地緣風險升溫 |
-| 🔴 -2 | 🔧 半導體與 AI・11/26 06:44・Reuters | [S&P warns Nvidia's board may be compromised, puts chipmaker's rating on downgrade watch](https://news.google.com/rss/articles/CBMiuwFBVV95cUxNb1ZBby1iVDJnTmJwX3hDYWJpU2lxTUdLTHdlWHFqRHJUcmtTOWFuQkFRTlUyZTJBcGdNMWR3N3d1YlJIV05kWk1mU21JSDZmSVpZR1BlanpqRzFXSkg3NkxkeElWcHM0Q2Y4eFJKb3Fha29XakxYNFJ4cXExZHo4MFVDOHdDbENrQWs0d0lqQ3Z5cEVDRVBQR1hNNWZxSmhiUll4NFg1amZlU01oWm9fN2hkUFBBNkdKT21v?oc=5) | 龍頭財報、訂單或資本支出轉弱 |
-| 🔴 -2 | 🏛️ 政策與關稅・11/26 06:06・AP News | [US to hike tariffs on China, EU, Brazil and others over subsidized factories](https://news.google.com/rss/articles/CBMimgFBVV95cUxPcWJ0MDE3ZEJzV2tVdThRbXdzcGxXN0phLUpNTHAyVWlEQV9JNzVUWlpsRXp6ZHFTNnY1dnpKMHJjNExkUnZxTlRXdzZNTUFOeXhkUTk5XzF0ZW55b1lZcnhJYTkyYUt5N1lvdm5TZ3QyZDh5UkNsVmtHMmhuNm5xcGc3VmVUcV9fellldEtWcTdaYWJpRUlBcm5R?oc=5) | 關稅或出口管制收緊 |
-| 🔴 -2 | 📉 市場波動・11/26 05:52・Bloomberg | [Nasdaq 100 Enters Bear Market Territory as AI Angst Fuels Losses](https://news.google.com/rss/articles/CBMirwFBVV95cUxNZWw3QUJsbEp5MS1ZTDJGZ0Qyc1hHWDkxSWc0ZTVJbGgxeldKZ1B0SUlMTnI5VGdDSzZQZGsydEoyQzJUZ2NDcDJ4Y1Itd0xYNjNJN080RGtGZ3NsQlBYZU9vVVBZTXAzMDlCXzFPVWYxLXd4Zm9mZWhvaF9Td0tBaHNZTW9OVG5Ld2piVlZzUWMzczFSY19kbk1KNklUcFJwTlJlcUZlaEJmM2JyN1RR?oc=5) | 整體風險偏好惡化 |
-| 🔴 -2 | 📉 市場波動・11/26 01:20・Reuters | [UK stocks fall as banks, miners track Wall Street selloff](https://news.google.com/rss/articles/CBMiqgFBVV95cUxOTW1VcFBpakVFWW8xQ3dPdGNtZFRQRGJuX2tmOTVZOHBsa2hvQ3hkNHMwVmJvNmo1eHlxd0xkV2xDSFpuSGZqX2hUMWxQUV9xdVl5WTNfOXFRYnRYRGlKcF9xajludy1FQjY3R1dFT2pjYkEyXzRnYkd5amRiSDA4QkZyeFR3N0NKUGZsbDV2SW0xS085Qzl4bHdFSW1HNEVrX0hvbE5HUmo1QQ?oc=5) | 整體風險偏好惡化 |
-| 🔴 -2 | 🔧 半導體與 AI・11/26 01:02・Yahoo Finance | [AI Chip Stocks Extend Brutal Selloff as Nvidia, AMD and Broadcom Tumble Again](https://news.google.com/rss/articles/CBMilwFBVV95cUxQOGNIZXFsbUJWWmE0TDRiRjNqR29NM2dNOWRTSjRHUFFCa1Z2VGJacm9NTk42V1NlX25lVkhVWklReWNCNXpRcEY3TmE5TXBaaXFBd2tDejRoTmNrTzhfczJIUVNBakI1U2lsc1hodkRkbGdmTjhpY1U1emo5Y3N3WXZIX2VmOGl2NG0taVRjWG55dFBsWWFn?oc=5) | 龍頭財報、訂單或資本支出轉弱 |
+| 🔴 -2 | 🌍 地緣政治・11/28 11:01・WSJ | [A ‘Silent War’ Grips Iran as Its Economy Strains Under U.S. Blockade](https://news.google.com/rss/articles/CBMisgFBVV95cUxPQUZoNE5qVlVJSWdVTHRMY1R0bFBac204aUVreDhOR3NtUE4yWjBESlJMUHZoLVo0NjdrTW1kUXF5RUxDQWJfRnhrdkJpSTF5VUduMWVDaU9aVjg3N3dCTW96TDUtQV9SRE9TSEN1Um9LTm0teG9MV2hrQkhEM0RDYnhCVVgzNHhpcEJ1cnc5azMzTm10am04MTZoS2wtc19RSTNSRW5sMlBGdWhaYWNlVmhn?oc=5) | 地緣風險升溫 |
+| 🔴 -2 | 🌍 地緣政治・11/28 06:55・Reuters | [EXCLUSIVE: Russian military flotilla bound for Libya turns around after warship sunk on November 22, sources say](https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYmlHdGhKd3RFRUNYajhTdlVqdUdrckt5RmtIZEltNjE0OTVPMDhaSS1DTFlGQTU5Z19LRFpLRmpXdVJkcVpRY19iLU40eXpEWUhYdDNjMXhfRkJqckxleW8tY25rOVJFTzlGeGVaUTlwb1M1NVBXSzQwSG9hX2VQR1JiMVhXYk1mdG01ei1nR1ZmOFY5RWpnejVHRkJSa2RVTHRLeURHS3hCSHJMcGluWG1fQWNjS19wTy1RejVTWE5BMW8?oc=5) | 地緣風險升溫 |
+| 🟢 +2 | 📉 市場波動・11/27 21:46・WSJ | [Stock Futures Jump as AI Trade Set for Rebound](https://news.google.com/rss/articles/CBMilAFBVV95cUxNS0hzcmlIem9tcHVGU25zUE1LcVowbGZnWjA4NXgzVkt3Z1hUSDdYR0tUazluNXpjQlA0V3dPX1ZabGdBZ0xRTTBRbE5SUHd2TS1rQW8yTk55U3RCeloxdk1HeXdNMnBVeG5pV2xBTFZOTm9zcEFEdUNuVjNCOENYU29sYkRjc1psS3FFeGlIbEZIbmtQ?oc=5) | 整體風險偏好改善 |
+| 🟢 +2 | 📉 市場波動・11/27 15:34・Reuters | [Wall Street ends higher as battered AI stocks gain in volatile week](https://news.google.com/rss/articles/CBMilgFBVV95cUxNVGx5dUNYcGtCM2ZGUXB0RDNfNzF5TkNJNEctdjFiak5JRHExWWZVODg2c3hDcDZCUjdpWGpVYUg2bFE4UE5NQVJZUk52UzZGS082TTJiRWN4MTVxQlNXSTlmWnkzXzlyUzJONjlGSkNzVFNFSUlvRTRXQWxpbC1mQ2llcXRWWEIwZlpnVjBDZy1LcXU0MGc?oc=5) | 整體風險偏好改善 |
+| 🔴 -2 | 🏛️ 政策與關稅・11/27 08:00・Bloomberg | [Watch AI Rally Faces Fresh Test: Nvidia Curbs & Trump Tariffs](https://news.google.com/rss/articles/CBMilwFBVV95cUxPa3NYckVYckpGRmotV2s4OU9QTjdQU3hka1A1YzdzSXhTRWlhbGhENGtWYW8zQWhaU2FiTkxLUlJjMDhnUFJjUFpwZ1IwWmRySXVITXE4dTBuN1dpLUlFTEEtX1p4UkJDelBfWGJVb2tpWVRBUU9iMU1DTmItSmo3QXpWZ0RYeEpzMWNBLWRzMmE3Y3FNWnJn?oc=5) | 關稅或出口管制收緊 |
+| 🔴 -2 | 🏛️ 政策與關稅・11/27 01:38・Bloomberg.com | [Major US Trading Partners Respond to Trump’s New Tariffs](https://news.google.com/rss/articles/CBMirwFBVV95cUxOdHhkU2VvcmNqQzVQc0ZGYnIzOUUyZ2sxaXY0bThYVF9UbEdnYk9WM0x5SVdQZ3Etc05qbGpFWXFoU0taZUFCeUZKZWpDWEN6OUxBaE4tRFBIbXF5X2c4VFUtT3puVWFYbEFRSm54MTU2YkxST2E1anVJVDRBQ1dmLXdkdklOcG91aFpOXzNPdTA5TWM0QUJKbldQS0lHckF5SzBHSHNacFdTeTczcEpB?oc=5) | 關稅或出口管制收緊 |
+| 🟢 +1 | 🔧 半導體與 AI・11/28 04:16・MarketWatch | [These stocks soared the most during a wild week highlighted by Huang’s return to Nvidia](https://news.google.com/rss/articles/CBMiyAFBVV95cUxQMWh2ems4azAwYlZLLXh2X20zd0RsLWR4RFc1N1BmZ0NQTFpka096dVROdlZlYkV3SUQwcFdTNldWci1lZk9UeGlrTHNQRWo0RS15eE41Qm53N3c0LVBXNm9UOVJDV2RCUmQ1cmRIcW5xdEZMam5pakRtV0ZtY1FwSldDUmJTbG5rZnhmZVNybU5HWGRyRFB0V3l6NDJmZXBhYWVjai0tazBpN1hibE85bjFDRWV0WEdHcm9CZUJvWllEY0RrajlqZw?oc=5) | 龍頭財報、訂單或資本支出轉強 |
+| 🟢 +1 | 🔧 半導體與 AI・11/28 03:20・Seeking Alpha | [TSMC: Starting To Look Like A Buy Again (Rating Upgrade) (NYSE:TSM)](https://news.google.com/rss/articles/CBMikAFBVV95cUxQQnd3NWV0Z0NKOFNuTXktdTI0S05UZDluc2V1UVJld3YtZU1oRXpSZFRNSWVZNnhFZlhkOGlUX05zcTY2VTVGcHhJbkVvM1JrYWEyRDVwaHFPWTZvVGpFbUd6NU11cVE4TFVJLVBWdGZvV1ZmSHJWelAwSU1UbjM3MF9KVWFUS0c4MVJRdzljeTg?oc=5) | 龍頭財報、訂單或資本支出轉強 |
 
 ## 其他有方向的標題
 
-- 🔴 🏛️ 政策與關稅（11/26 05:25，Bloomberg）Gold Holds Decline as US Tariff Plans Reinforce Rate-Hike Bets
-- 🔴 🏛️ 政策與關稅（11/26 04:06，Bloomberg）US Targets China, EU With New Tariffs Citing Overcapacity
-- 🔴 🌍 地緣政治（11/26 00:26，AP News）Libyan army vows retaliation after 2 naval officers die of wounds from Ukrainian drone attack
-- 🔴 🏛️ 政策與關稅（11/26 09:24，The Washington Post）Trump proposes new tariffs on China, Europe and other trade partners
-- 🔴 🌍 地緣政治（11/26 02:00，The Washington Post）Eisenkot, pushing to oust Netanyahu, sharpens warnings over new Iran strikes
-- 🔴 🏛️ 政策與關稅（11/26 01:45，Seeking Alpha）Nvidia chip sellers looking for new buyers after US tightens export controls: report
-- 🔴 🏛️ 政策與關稅（11/26 00:59，MarketWatch）How soon Trump’s new tariffs could hit the economy — and your wallet
-- 🔴 🏛️ 政策與關稅（11/25 23:48，POLITICO.eu）EU rejects Trump’s case for new tariffs
-- 🔴 🌍 地緣政治（11/25 23:21，Reuters）Russian government official warns of Ukrainian drone attacks on utility infrastructure this winter
-- 🔴 🏛️ 政策與關稅（11/25 22:00，Financial Times）Donald Trump announces raft of new tariffs on major economies
-- 🔴 🌍 地緣政治（11/25 21:20，Reuters）Ukraine battles to keep lights on in Odesa as Russia strikes grid
-- 🔴 🌍 地緣政治（11/25 21:02，Reuters）Russian attack damages Ukraine's energy and gas sites, cuts power in five regions
+- 🔴 🌍 地緣政治（11/28 04:06，Reuters）US disables ship trying to leave Iran, as Tehran vows to confront blockade
+- 🔴 🌍 地緣政治（11/28 11:01，The Washington Post）After heavy strikes by Iran, U.S. naval base in Bahrain faces uncertain future
+- 🔴 🌍 地緣政治（11/27 23:16，Financial Times）Russia set to criminalise sharing information about Ukrainian strikes
+- 🔴 🌍 地緣政治（11/27 11:30，CNBC）Two Italians killed in Kuwait drone attack; Trump says Iran war ends ‘whenever I want it’
+- 🔴 🌍 地緣政治（11/28 01:39，The Hill）Military says it disabled vessel that ‘attempted to run the U.S. naval blockade’ against Iran
+- 🔴 🌍 地緣政治（11/28 11:11，Al Jazeera）Iran war live: Italy says drone in deadly Kuwait attack was made in Iran
+- 🟢 📉 市場波動（11/28 10:06，WSVN）Stocks jump to close out an erratic week that was also Wall Street’s best in more than a year
+- 🔴 🌍 地緣政治（11/28 10:03，Fox News）‘VICTORY AT HAND’: President Trump insists Iran will ‘never have a nuclear weapon’
+- 🔴 🌍 地緣政治（11/28 09:30，The Jerusalem Post）Areas near Bahrain US military base largely deserted months after Iran attacks
+- 🔴 🌍 地緣政治（11/28 08:50，Anchorage Daily News）U.S. military says it disabled another ship that tried to breach naval blockade on Iranian ports
+- 🔴 🌍 地緣政治（11/28 08:50，Yahoo）Iran Vows to Break US Blockade, Keep Hormuz Shut
+- 🔴 🌍 地緣政治（11/28 08:33，Tempo.co English）US Disables Ship in Gulf of Oman Under Iran Blockade
 
 ## 旗標（24 小時內、來源權重 ≥ 0.7 才會亮）
 
 | 旗標 | 狀態 | 依據 |
 |---|---|---|
-| 地緣風險升溫（`geo_escalation_24h`） | 🔺 亮 | Reuters「Oil rises on supply concerns as Iran claims mine strikes on ships」（11/26 11:08） |
-| 關稅 / 出口管制收緊（`tariff_shock_24h`） | 🔺 亮 | Bloomberg「US Chip Curbs Cause Billions in Deals to Grind to a Halt」（11/26 11:19） |
+| 地緣風險升溫（`geo_escalation_24h`） | 🔺 亮 | WSJ「A ‘Silent War’ Grips Iran as Its Economy Strains Under U.S. Blockade」（11/28 11:01） |
+| 關稅 / 出口管制收緊（`tariff_shock_24h`） | — 無 | — |
 | 龍頭資本支出轉弱（`capex_warning_24h`） | — 無 | — |
 | 聯準會剛公布決議（`fed_statement_24h`） | — 無 | — |
-| 聯準會偏鷹（`fed_hawkish_24h`） | 🔺 亮 | The New York Times「Another Hot Inflation Reading Keeps Fed on Track to Raise Rates Again」（11/26 03:13） |
+| 聯準會偏鷹（`fed_hawkish_24h`） | — 無 | — |
 
 ## 交易計畫因此加上的警語
 
 - ⚠️ 地緣風險 24 小時內升溫：進場前先看開盤 30 分鐘與 VIX/VIX3M，倒掛（≥ 1.0）就不進。
-- ⚠️ 關稅 / 出口管制收緊：半導體是直接受害者，當天的反彈單勝率沒有歷史依據，寧可晚一天。
-- ⚠️ 聯準會偏鷹的消息在 24 小時內：殖利率若續升，成長股反彈空間受限。
 
 ## 和今天的結論怎麼接
 
-- 現在該不該買？❌ **不該買**（依據 trade_plan.side=no_trade, rating_5=2, rr_blend=2.4）。時事只會讓「等」變得更有理由，不會把「不該買」變成「該買」。
-- 明天只盯一個價：$37.27（條件買點，收盤站上才算）。
+- 現在該不該買？✅ **可以買**（依據 trade_plan.side=long, rating_5=2, rr_blend=2.37）。時事只會讓「等」變得更有理由，不會把「不該買」變成「該買」。
+- 明天只盯一個價：$24.66（停損，唯一出場價）。
 
 ## 方法與限制
 
